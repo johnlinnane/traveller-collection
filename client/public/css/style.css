@@ -687,6 +687,31 @@ header .navItem span {
 }
 
 
+.search_container {
+    display: block;
+    /* overflow: hidden */
+    min-height: 250px;
+}
+
+.search_item_img {
+    width: 10vw;
+    max-height: 200px;
+}
+
+.search_item_image {
+    float:left;
+    margin: 15px;
+    
+}
+
+
+.search_item_info {
+    overflow: hidden;
+    
+}
+
+
+
 /*=============================
           IMAGE  PANEL
 ===============================*/

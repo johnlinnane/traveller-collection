@@ -1,5 +1,7 @@
 import React from 'react';
 import {css} from 'glamor';
+import { Link } from 'react-router-dom';
+
 
 const NewsItem = ({item}) => {
   
@@ -19,21 +21,42 @@ const NewsItem = ({item}) => {
   //   background: 'lightgrey'
   // })
 
-  return(
-    
-      // INSERT LINK HERE
+    const addDefaultImg = (ev) => {
+        const newImg = '/images/default/default.jpg';
+        if (ev.target.src !== newImg) {
+            ev.target.src = newImg
+        }  
+    } 
 
-      <div className="news_item item_grey">
+    console.log(item);
+    return(
+      
+        // INSERT LINK HERE
+        <Link to={`/items/${item._id}`}>
 
-         <h3>{item.title}</h3>
-         <div>
-           Description: {item.description}
-         </div>
-         <div>
-           Date: {item.date}
-         </div>
-      </div>
-  )
+
+            <div className="search_container news_item item_grey">
+              <div className="search_item_image">
+                  <img src={`/images/items/${item._id}/original/0.jpg`} 
+                      alt="Item" 
+                      onError={addDefaultImg}
+                      className="search_item_img"/>
+                  
+              </div>
+              
+              <div className="search_item_info">
+                  <h3>{item.title}</h3>
+                  
+                  { item.creator ?
+                      <div>
+                        <b>Creator: </b>{item.creator}
+                      </div>
+                  : null }
+                  
+              </div>
+            </div>
+        </Link>
+    )
 }
 
 export default NewsItem;
