@@ -1,0 +1,553 @@
+const express = require('express');
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+const mongoose = require('mongoose');
+// get() is for heroku
+const config = require('./config/config').get(process.env.NODE_ENV);
+const app = express();
+
+// file upload
+const cors = require('cors');
+const multer = require('multer');
+
+
+
+
+// connect to mongo
+mongoose.Promise = global.Promise;
+mongoose.connect(config.DATABASE);
+
+// bring in mongo model
+const { User } = require('./models/user');
+// const { Book } = require('./models/book');
+const { Item } = require('./models/item');
+const { Collection } = require('./models/collection');
+const { Cat } = require('./models/cat');
+const { SubCat } = require('./models/subcat');
+
+
+
+const { auth } = require('./middleware/auth');
+
+
+// set middleware
+app.use(bodyParser.json());
+app.use(cookieParser());
+app.use(cors())
+
+
+
+// FOR HEROKU
+// DIRECT TO BUILD FOLDER !!
+// static is css and js
+app.use(express.static('client/build'))
+
+
+
+// *************************************************************
+// **************************** GET ****************************
+// *************************************************************
+
+
+
+// deny access
+app.get('/api/auth', auth, (req, res) => {
+    res.json({
+        isAuth:true,
+        id:req.user._id,
+        email:req.user.email,
+        name:req.user.name,
+        lastname:req.user.lastname
+    })
+})
+
+
+
+// check if user is logged in, auth is middleware
+app.get('/api/logout', auth, (req, res) => {
+    //delete user's cookie info in the db
+    req.user.deleteToken(req.token, (err, user) => {
+        if(err) return res.status(400).send(err);
+        res.sendStatus(200)
+    })
+
+}) 
+
+
+// app.get('/api/getBook', (req,res) => {
+//     let id = req.query.id;
+//     Book.findById(id, (err, doc) => {
+//         if(err) return res.status(400).send(err);
+//         res.send(doc);
+//     })
+// })
+
+// * * * * * * * * * * * * * * * * * * * * getItemById
+app.get('/api/getItemById', (req,res) => {
+    let id = req.query.id;
+    Item.findById(id, (err, doc) => {
+        if(err) return res.status(400).send(err);
+        res.send(doc);
+    })
+})
+
+
+// * * * * * * * * * * * * * * * * * * * * searchItem
+app.get('/api/searchItem', (req,res) => {
+    let queryKey = req.query.key;
+    let queryValue = req.query.value;
+
+    var query = {};
+    query[queryKey] = queryValue;
+
+    Item.find( query , (err, doc) => {
+        if(err) return res.status(400).send(err);
+        res.send(doc);
+    })
+})
+
+
+
+// * * * * * * * * * * * * * * * * * * * * get all items TEST
+app.get('/api/allItems', (req, res) => {
+    // empty object returns all
+    Item.find({}, (err, items) => {
+        if(err) return res.status(400).send(err);
+        res.status(200).send(items);
+    })
+})
+
+
+// // get multiple books
+// app.get('/api/books', (req,res) => {
+//     // query should look like this: localhost:3001/api.books/books?skip=3?limit=2&order=asc
+//     let skip = parseInt(req.query.skip);
+//     let limit = parseInt(req.query.limit);
+//     let order = req.query.order;
+
+//     // order  = asc || desc
+//     Book.find().skip(skip).sort({_id:order}).limit(limit).exec((err,doc) => {
+//         if(err) return res.status(400).send(err);
+//         res.send(doc);
+//     })
+// })
+
+
+
+
+
+// * * * * * * * * * * * * * * * * * * * * get multiple items
+app.get('/api/items', (req,res) => {
+    // query should look like this: localhost:3001/api/items?skip=3?limit=2&order=asc
+    let skip = parseInt(req.query.skip);
+    let limit = parseInt(req.query.limit);
+    let order = req.query.order;
+
+    // order  = asc || desc
+    Item.find().skip(skip).sort({_id:order}).limit(limit).exec((err,doc) => {
+        if(err) return res.status(400).send(err);
+        res.send(doc);
+    })
+})
+
+
+
+
+
+
+
+// get reviewer by id
+app.get('/api/getReviewer', (req, res) => {
+    let id = req.query.id;
+
+    User.findById(id, (err, doc) => {
+        if(err) return res.status(400).send(err);
+        res.json({
+            name:doc.name,
+            lastname:doc.lastname
+        })
+    })
+})
+
+
+// * * * * * * * * * * * * * * * * * * * * get contributor by id
+app.get('/api/getContributor', (req, res) => {
+    let id = req.query.id;
+
+    User.findById(id, (err, doc) => {
+        if(err) return res.status(400).send(err);
+        res.json({
+            name:doc.name,
+            lastname:doc.lastname
+        })
+    })
+})
+
+
+// get users
+app.get('/api/users', (req, res) => {
+    // empty object returns all
+    User.find({}, (err, users) => {
+        if(err) return res.status(400).send(err);
+        res.status(200).send(users);
+    })
+})
+
+
+app.get('/api/user_posts', (req, res) => {
+    Book.find({ownerId:req.query.user}).exec( (err, docs) => {
+        if(err) return res.status(400).send(err);
+        res.send(docs);
+    })
+})
+
+app.get('/api/user_items', (req, res) => {
+    Item.find({ownerId:req.query.user}).exec( (err, docs) => {
+        if(err) return res.status(400).send(err);
+        res.send(docs);
+    })
+})
+
+
+
+// * * * * * * * * * * * * * * * * * * * * get all collections
+
+app.get('/api/collections', (req, res) => {
+    Collection.find({}, (err, items) => {
+        if(err) return res.status(400).send(err);
+        res.status(200).send(items);
+    })
+})
+
+
+
+// * * * * * * * * * * * * * * * * * * * * get collection by id
+
+
+app.get('/api/getCollById', (req,res) => {
+    let idQuery = req.query.id;
+    Collection.find({id: idQuery}, (err, doc) => {
+        if(err) return res.status(400).send(err);
+        res.send(doc);
+    })
+})
+
+
+// * * * * * * * * * * * * * * * * * * * * get all categories
+
+app.get('/api/categories', (req, res) => {
+    Cat.find({}, (err, items) => {
+        if(err) return res.status(400).send(err);
+        res.status(200).send(items);
+    })
+})
+
+
+
+// * * * * * * * * * * * * * * * * * * * * get all sub-categories
+
+app.get('/api/subcategories', (req, res) => {
+    SubCat.find({}, (err, items) => {
+        if(err) return res.status(400).send(err);
+        res.status(200).send(items);
+    })
+})
+
+
+// * * * * * * * * * * * * * * * * * * * * get item by collection
+
+
+app.get('/api/getItemByColl', (req, res) => {
+
+    let value = req.query.value;
+  
+    Item.find({ collection_id:value }).exec( (err, docs) => {
+        if(err) return res.status(400).send(err);
+        res.send(docs);
+    })
+})
+
+
+// * * * * * * * * * * * * * * * * * * * * get item by category
+
+
+app.get('/api/getItemsByCat', (req, res) => {
+
+    let value = req.query.value;
+  
+    Item.find({ category_ref:value }).exec( (err, docs) => {
+        if(err) return res.status(400).send(err);
+        res.send(docs);
+    })
+})
+
+
+
+// * * * * * * * * * * * * * * * * * * * * getNextItem
+app.get('/api/getNextItem', (req,res) => {
+    let oldId = req.query.oldId;
+    let query = {_id: {$gt: oldId}}
+    Item.findOne(query, (err, doc) => {
+        if(err) return res.status(400).send(err);
+        res.send(doc);
+    })
+})
+
+
+// * * * * * * * * * * * * * * * * * * * * getPrevItem
+app.get('/api/getPrevItem', (req,res) => {
+    let oldId = req.query.oldId;
+    // let query = {_id: {$lt: oldId}}, null, { sort: { '_id':-1 } };
+    Item.findOne({_id: {$lt: oldId}}, null, { sort: { '_id':-1 } }, (err, doc) => {
+        if(err) return res.status(400).send(err);
+        res.send(doc);
+    })
+})
+
+
+// * * * * * * * * * * * * * * * * * * * * get latest item
+app.get('/api/getLatestItem', (req,res) => {
+
+    Item.findOne({}, {}, { sort: { '_id':-1 } }, (err, doc) => {
+        if(err) return res.status(400).send(err);
+        res.send(doc);
+    })
+})
+
+
+// * * * * * * * * * * * * * * * * * * * * GET CAT / SUBCAT / COLL BY ID!
+
+
+app.get('/api/getCatById', (req, res) => {
+    let value = req.query.id;
+  
+    Cat.find({ cat_id:value }).exec( (err, docs) => {
+        if(err) return res.status(400).send(err);
+        res.send(docs);
+    })
+})
+
+
+app.get('/api/getSubcatById', (req, res) => {
+    let value = req.query.id;
+  
+    SubCat.find({ subcat_id:value }).exec( (err, docs) => {
+        if(err) return res.status(400).send(err);
+        res.send(docs);
+    })
+})
+
+
+
+
+
+
+
+
+
+// *******************************************************
+// ********************* POST ****************************
+// *******************************************************
+
+// app.post('/api/book', (req, res) => {
+//     const book = new Book(req.body);             // req is the data you post
+
+//     book.save((err, doc)=>{                      // saves the new document
+//         if(err) return res.status(400).send(err);
+//         res.status(200).json({
+//             post:true,
+//             bookId:doc._id                       // gets the id from the post
+//         })
+//       })
+// })
+
+
+// * * * * * * * * * * * * * * * * * * * * post new item
+app.post('/api/item', (req, res) => {
+    const item = new Item( req.body );             // req is the data you post
+
+    item.save( (err, doc) =>{                      // saves the new document
+        // console.log(doc._id);
+        if(err) return res.status(400).send(doc);
+        res.status(200).json({
+            post:true,
+            itemId:doc._id                       // gets the id from the post
+        })
+      })
+})
+
+
+// register user
+app.post('/api/register', (req, res) => {
+    // create new user document (user)
+    const user = new User(req.body);
+
+    user.save((err, doc) => {
+        if(err) return res.json({success:false});
+        res.status(200).json({
+            success:true,
+            user:doc
+        })
+    })
+})
+
+
+// create the login
+app.post('/api/login', (req, res) => {
+    // look through the whole database
+    User.findOne({'email':req.body.email}, (err, user) => {
+        // console.log(user);
+
+        if(!user) return res.json({isAuth:false, message:'Auth failed, email not found'});
+
+        user.comparePassword(req.body.password, (err, isMatch) => {
+            // console.log(user);
+
+            if(!isMatch) return res.json({
+                isAuth:false,
+                message:'Wrong password'
+            });
+            // generate token
+            user.generateToken((err, user) => {
+                if(err) return res.status(400).send(err);
+
+                res.cookie('auth', user.token).send({
+                    isAuth:true,
+                    id:user._id,
+                    email:user.email
+                });
+            });
+        });
+    });
+});
+
+
+
+
+
+
+// ****************************************************************
+// **************************** UPDATE ****************************
+// ****************************************************************
+
+
+
+
+
+
+// app.post('/api/book_update', (req, res) => {
+//     // new:true allows upsert
+//     Book.findByIdAndUpdate(req.body._id, req.body, {new:true}, (err, doc) => {
+//         if(err) return res.status(400).send(err);
+//         res.json({
+//             success:true,
+//             doc
+//         });
+//     })
+// })
+
+
+
+// * * * * * * * * * * * * * * * * * * * * update item
+app.post('/api/item_update', (req, res) => {
+    // console.log(req.body)
+    // new:true allows upsert
+    Item.findByIdAndUpdate(req.body._id, req.body, {new:true}, (err, doc) => {
+        if(err) return res.status(400).send(err);
+        res.json({
+            success:true,
+            doc
+        });
+    })
+})
+
+
+
+// ****************************************************************
+//  **************************** DELETE ***************************
+// ****************************************************************
+
+
+
+// app.delete('/api/delete_book', (req, res) => {
+//     let id = req.query.id;
+
+//     Book.findByIdAndRemove(id, (err, doc) => {
+//         if(err) return res.status(400).send(err);
+//         res.json(true);
+//     })
+// })
+
+// * * * * * * * * * * * * * * * * * * * *  delete item
+app.delete('/api/delete_item', (req, res) => {
+    let id = req.query.id;
+
+    Item.findByIdAndRemove(id, (err, doc) => {
+        if(err) return res.status(400).send(err);
+        res.json(true);
+    })
+})
+
+
+
+//  ************ FILE STUFF !!! ********************************************
+
+
+
+//create multer instance, for file saving
+let storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+    cb(null, 'public/images/uploads')
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + '-' +file.originalname )
+  }
+})
+
+// var upload = multer({ storage: storage }).single('file');
+let upload = multer({ storage: storage }).array('file')
+
+
+
+
+// post file
+app.post('/upload', function(req, res) {
+        // console.log(req);
+     
+        upload(req, res, function (err) {
+              if (err instanceof multer.MulterError) {
+                  return res.status(500).json(err)
+              } else if (err) {
+                  return res.status(500).json(err)
+              }
+        return res.status(200).send(req.file)
+    })
+});
+
+
+//  ******************* FOR HEROKU *************************************
+// if the server doesn't find the route, fall back to home dir
+if(process.env.NODE_ENV === 'production') {
+    const path = require('path');
+
+    app.get('/*', () => {
+        // mian root of directory
+        // find in /client/build/index.html 
+        res.sendfile(path.resolve(__dirname), '../client', 'build', 'index.html')
+    })
+}
+
+
+//  ********************************************************
+
+
+
+// run express app
+const port = process.env.PORT || 3001;
+
+
+
+
+app.listen(port, () => {
+    console.log(`SERVER RUNNING : port ${port}`)
+})

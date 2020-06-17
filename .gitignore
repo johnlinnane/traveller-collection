@@ -1,0 +1,6 @@
+/node_modules
+/client/node_modules
+/client/src/components/Sandbox
+/client/public/images
+/XXX
+.DS_Store
