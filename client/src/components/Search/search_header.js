@@ -21,7 +21,7 @@ const SearchHeader = (props) => {
         <input 
           type="text" 
           onChange={props.keywords}
-          placeholder="Type search here..."
+          placeholder={props.placeholder}
           
         />
   

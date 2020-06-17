@@ -60,6 +60,8 @@ class PanelView extends React.Component {
 				enter={transition.enter}
 				entered={transition.entered}
 				leaved={transition.leaved}
+				
+
 			>
 
                 { image_list ?

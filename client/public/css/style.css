@@ -55,6 +55,10 @@ img:before {
     padding: 7px;
 }
 
+.center {
+    text-align: center;
+}
+
 /*=============================
             HEADER
 ===============================*/
@@ -752,6 +756,61 @@ header .navItem span {
     
 }
 
+ /* grid stuff */
+
+
+
+.coll_grid_row {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 4px;
+}
+  
+/* Create two equal columns that sits next to each other */
+.coll_grid_column {
+    flex: 50%;
+    padding: 0 4px;
+}
+  
+.coll_grid_column img {
+    margin-top: 8px;
+    vertical-align: middle;
+    margin: 20px;
+    max-height: 200px;
+    /* width: 250px;
+    height: 250px; */
+    filter: brightness(50%) saturate(160%);
+}
+
+.coll_grid_column figcaption {
+    color: white;
+
+    display: block;
+    float: left;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 150px;
+    text-shadow: black 0px 0px 50px;
+    padding: 10px;
+    /* bottom: 75px; */
+    /* max-width: 400px; */
+    /* font-size: 10px; */
+    /* background-color: rgb(68, 68, 68); */
+
+}
+
+.coll_grid_column figure {
+    position: relative;
+    float: left;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+}
+
+.coll_grid_column p {
+    text-align: center;
+}
+
 /*=============================
             CATEGORIES
 ===============================*/
@@ -821,7 +880,69 @@ header .navItem span {
     text-shadow: 5px 5px 60px #000000;
 }
 
+ /* grid stuff */
 
+.cat_grid_row {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 4px;
+}
+  
+/* Create two equal columns that sits next to each other */
+.cat_grid_column {
+    flex: 50%;
+    padding: 0 4px;
+}
+  
+.cat_grid_column img {
+    margin-top: 8px;
+    vertical-align: middle;
+    margin: 20px;
+    max-height: 200px;
+    /* width: 250px;
+    height: 250px; */
+    filter: brightness(50%) saturate(160%);
+}
+
+.cat_grid_column figcaption {
+    color: white;
+
+    display: block;
+    float: left;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 150px;
+    text-shadow: black 0px 0px 50px;
+    padding: 10px;
+    /* bottom: 75px; */
+    /* max-width: 400px; */
+    /* font-size: 10px; */
+    /* background-color: rgb(68, 68, 68); */
+
+}
+
+.cat_grid_column figure {
+    position: relative;
+    float: left;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+}
+
+
+
+.rule p {
+    width: 100%; 
+    text-align: center; 
+    border-bottom: 1px solid #000; 
+    line-height: 0.1em;
+    margin: 10px 0 20px; 
+ } 
+ 
+ .rule p span { 
+     background:#fff; 
+     padding:0 10px; 
+ }
 
 /*=============================
             EDIT

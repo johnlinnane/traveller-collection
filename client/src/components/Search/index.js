@@ -20,21 +20,46 @@ class Search extends Component {
 
     }
 
-    getKeyword = (event) => {
+    getKeywordTitle = (event) => {
         let keyword = event.target.value.toLowerCase();
-        let filtered = this.props.items.items.filter( (item) => {
-            let match = item.title.toLowerCase();
-            return match.indexOf(keyword) > -1
+        let filteredByTitle = this.props.items.items.filter( (item) => {
+            if (item.title) {
+                let match = item.title.toLowerCase();
+                return match.indexOf(keyword) > -1
+            }
         });
-        if (keyword) {
+        if (keyword !== '') {
             this.setState({
-                filtered
+                filtered: filteredByTitle
             })
-        } else {
-            this.setState({
-                filtered: []
-            })
+        // } else {
+        //     this.setState({
+        //         filtered
+        //     })
         }
+    }
+
+
+    getKeywordCreator = (event) => {
+        
+            console.log('creator exists!');
+            let keyword = event.target.value.toLowerCase();
+            let filteredByCreator = this.props.items.items.filter( (item) => {
+                if (item.creator) {
+                    let match = item.creator.toLowerCase();
+                    return match.indexOf(keyword) > -1
+                }
+            });
+            if (keyword !== '') {
+                this.setState({
+                    filtered: filteredByCreator
+                })
+            // } else {
+                
+                // this.setState({
+                //     filtered:
+                // })
+            }
     }
 
   
@@ -46,7 +71,8 @@ class Search extends Component {
 
         return (
             <div className="main_view">
-                <SearchHeader keywords={this.getKeyword} />
+                <SearchHeader keywords={this.getKeywordTitle} placeholder="Title..."/>
+                <SearchHeader keywords={this.getKeywordCreator} placeholder="Creator..."/>
 
                 <NewsList news={this.state.filtered.length === 0 ? null : newsFiltered}>
                     {/* <h3>
