@@ -33,7 +33,7 @@ const Intro = () => {
                     <h1>Welcome to the Traveller Collection</h1>
                     <p>Traveller history and culture is a diverse and complex
                         subject, there is not one story to define Traveller
-                        identity, but many</p>
+                        identity, but many.</p>
                     <a href="/categories" className="btn">Enter</a>
                 </div>
                 

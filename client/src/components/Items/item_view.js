@@ -131,6 +131,7 @@ class ItemView extends Component {
             speed: 500,
             slidesToShow: 1,
             slidesToScroll: 1
+            // className: 'slides'
             // ...props.settings
         }
 
