@@ -2,29 +2,24 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-
 import { getItemsByCat, getCatById, getAllSubCats } from '../../actions';
-import PanelView from '../PanelView_DELETE/panel_view';
 import NavigationBar from '../../widgetsUI/navigation';
 
 
 class CatView  extends Component {
     
-
     componentDidMount() {
         let catId = this.props.match.params.id
         this.props.dispatch(getItemsByCat(catId));
         this.props.dispatch(getCatById(catId));
         this.props.dispatch(getAllSubCats(catId));
-
     }
-
 
     state = {
         info: [],
-        theseSubcats: []
+        theseSubcats: [],
+        subcatsUsed: []
     }
-
     
     navInfo = {
         catTitle: null,
@@ -41,7 +36,6 @@ class CatView  extends Component {
             nextProps.catitems.map( (item, i) => (
                     tempArray.push(
                         {
-                            // src: `/images/sq_thumb/${item.omeka.omeka_id}.jpg`,
                             src: `/images/items/${item._id}/sq_thumbnail/0.jpg`,
                             caption: item.title,
                             link: `/items/${item._id}` 
@@ -70,65 +64,111 @@ class CatView  extends Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if (this.props.subcats !== prevProps.subcats) {
 
-            if (this.props.subcats && this.props.subcats.length) {
-                let theseSubcats = [];
-                
+        let theseSubcats = this.state.theseSubcats;
+        let subcatsUsed = this.state.subcatsUsed;
+
+        if (this.props !== prevProps) {
+            
+            if (this.props.subcats !== prevProps.subcats) {
                 this.props.subcats.map( subcat => {
                     if (subcat.parent_cat == this.props.match.params.id) {
                         theseSubcats.push(subcat)
                     }
                 })
-                this.setState({
-                    theseSubcats
+            }
+
+            if (this.props.catitems !== prevProps.catitems) {
+                this.props.catitems.map( (item, i) => {
+                    if (!subcatsUsed.includes(item.subcategory_ref[0])) {
+                        subcatsUsed.push(item.subcategory_ref[0])
+                    }
                 })
             }
+
+            this.setState({
+                theseSubcats,
+                subcatsUsed
+            })
         }
     }
 
 
-
     renderSubCatItems = (subcat) => {
 
-        
         return ( 
             <div className="cat_grid_column">
-                
-                <div className="rule"><p><span>{subcat.title}</span></p></div>
-               
-                {this.props.catitems.map( (item, i) => (
-                    
-                    item.subcategory_ref[0] == subcat.subcat_id ?
-                        <div key={i}>
-                            <Link to={`/items/${item._id}`}key={i}>
-                                <figure key={i}>
-                                    <img src={`/images/items/${item._id}/sq_thumbnail/0.jpg`} 
-                                        alt={item.title} 
-                                        onError={this.addDefaultImg} />
-                                    <figcaption>{item.title}</figcaption>
-                                </figure>
-                            </Link>
-                            <br/>
-                        </div>
+
+                {this.state.subcatsUsed.includes(subcat.subcat_id)  ? 
+                    <div className="rule"><p><span>{subcat.title}</span></p></div>
+                : null }
+
+                { this.props.catitems.map( (item, i) => (
+                    item.subcategory_ref.includes(subcat.subcat_id) ?
+
+                            <div key={i}>
+                                <Link to={`/items/${item._id}`}key={i}>
+                                    <figure key={i}>
+                                        <img src={`/images/items/${item._id}/sq_thumbnail/0.jpg`} 
+                                            alt={item.title} 
+                                            onError={this.addDefaultImg} />
+                                        <figcaption>{item.title}</figcaption>
+                                    </figure>
+                                </Link>
+                                <br/>
+                            </div>
                     : null
                 ))}
             </div>
         )
     }
 
+
+
+    renderOtherItems = () => {
+        return (
+            <div className="cat_grid_column">
+
+                {/* {this.state.subcatsUsed.includes(subcat.subcat_id)  ?  */}
+                    <div className="rule"><p><span>General</span></p></div>
+                {/* : null } */}
+
+                { this.props.catitems.map( (item, i) => (
+                    !item.subcategory_ref.length ?
+
+                            <div key={i}>
+                                <Link to={`/items/${item._id}`}key={i}>
+                                    <figure key={i}>
+                                        <img src={`/images/items/${item._id}/sq_thumbnail/0.jpg`} 
+                                            alt={item.title} 
+                                            onError={this.addDefaultImg} />
+                                        <figcaption>{item.title}</figcaption>
+                                    </figure>
+                                </Link>
+                                <br/>
+                            </div>
+                    : null
+                ))}
+            </div>
+        )
+    }
+
+
     renderItemsBySub = () => {
-        // loop through all subcats
         return (
             <div>
                 {this.state.theseSubcats.map( subcat => (
-                    // render the items in each subcat
-                    // console.log(subcat);
                     <div className="cat_grid_row">
                         {this.renderSubCatItems(subcat)}
+                   
                     </div>
-                ))
-                }
+                ))}
+                {this.state.theseSubcats.map( subcat => (
+                    <div className="cat_grid_row">
+                   
+                   {/* {this.renderOtherItems(subcat)} */}
+                    </div>
+                ))}
             </div>
         )
     }
@@ -138,14 +178,15 @@ class CatView  extends Component {
 
 
     renderGrid = () => {
-        
         return(
             <div>
-                
-                    { this.props.catitems && this.props.catitems.length ?
-                        this.renderItemsBySub()
-                    : <p className="center">There are no items in this category.</p> }
-                
+                { this.props.catitems && this.props.catitems.length ?
+                    <div>
+                        {this.renderItemsBySub()}
+                        {this.renderOtherItems()}
+                        
+                    </div>
+                : <p className="center">There are no items in this category.</p> }
             </div>
     )}
 
@@ -163,10 +204,7 @@ class CatView  extends Component {
 
 
     render() {
-
         this.getCatName();
-
-        // console.log(this.state);
 
         let catinfo = this.props.catinfo;
 
@@ -179,10 +217,13 @@ class CatView  extends Component {
                     :null
                     }
 
-                    
                     { this.props.catitems ?
                         this.renderGrid()
                     : null }
+
+                    <div className="font_12">
+                        <Link to={`/cat-edit/${this.props.match.params.id}`}>Edit</Link>
+                    </div>
 
                 </div>
             </div>

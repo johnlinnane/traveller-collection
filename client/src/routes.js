@@ -32,6 +32,9 @@ import AllItems from './components/Admin/all_items';
 import Info from './components/Info/info';
 import Intro from './components/Intro/intro';
 
+import CatEdit from './containers/Admin/cat_edit';
+
+
 
 
 
@@ -72,6 +75,7 @@ const Routes = () => {
                 <Route path="/search" exact component={Auth(Search, true)}/>
                 <Route path="/collections" exact component={Auth(CollList, true)}/>
                 <Route path="/categories" exact component={Auth(CatList, true)}/>
+                <Route path="/cat-edit/:id" exact component={Auth(CatEdit, true)}/>
 
                 <Route path="/collection/:id" exact component={Auth(Collection, true)}/>
                 <Route path="/category/:id" exact component={Auth(CatView, true)}/>
