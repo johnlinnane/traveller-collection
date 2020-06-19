@@ -116,24 +116,26 @@ class EditItem extends PureComponent {
             // console.log(this.state);
 
 
-            if (item.external_link && item.external_link[0].url&& item.external_link[0].text) {
-                // console.log('yes');
-                dataForState = {
-                    formdata: {
-                        ...dataForState.formdata,
-                        external_link: [
-                            {
-                                url: item.external_link[0].url,
-                                text: item.external_link[0].text
-                            }
-                        ]
+            if (item.external_link) {
+                if (item.external_link[0].url || item.external_link[0].text) {
+                    // console.log('yes');
+                    dataForState = {
+                        formdata: {
+                            ...dataForState.formdata,
+                            external_link: [
+                                {
+                                    url: item.external_link[0].url,
+                                    text: item.external_link[0].text
+                                }
+                            ]
+                        }
                     }
+                    // console.log(dataForState);
+                    // console.log(this.state.formdata.external_link);
+                    this.setState({
+                        dataForState
+                    })
                 }
-                // console.log(dataForState);
-                // console.log(this.state.formdata.external_link);
-                this.setState({
-                    dataForState
-                })
             } 
 
             // console.log(this.state);
@@ -164,7 +166,6 @@ class EditItem extends PureComponent {
 
     handleInput = (event, name, level) => {
 
-        console.log(name);
 
         // make a copy of formdata
         const newFormdata = {
@@ -174,7 +175,7 @@ class EditItem extends PureComponent {
         // console.log(newFormdata);
 
         if (level === 'external_link') {
-                newFormdata[level][0][name] = event.target.value;
+            newFormdata[level][0][name] = event.target.value;
 
         } else if (level === 'geo') {
             newFormdata[level][name] = event.target.value;
@@ -296,8 +297,9 @@ class EditItem extends PureComponent {
             <form onSubmit={this.submitForm}>
                 
                 <h2>Edit item:</h2>
-
-                <img src={`/images/items/${items.item._id}/sq_thumbnail/0.jpg`} alt="Item" onError={this.addDefaultImg}/>
+                <div className="item_container">
+                    <img src={`/images/items/${items.item._id}/original/0.jpg`} alt="Item" onError={this.addDefaultImg}/>
+                </div>
 
                 <table>
                 <tbody>
@@ -366,12 +368,15 @@ class EditItem extends PureComponent {
                     <tr><td></td><td></td></tr>
                     <tr><td></td><td></td></tr>
 
-                    { items.item.external_link && items.item.external_link.length ?
+                    { items.item.external_link && items.item.external_link[0].url ?
                         this.createTextInput(items.item.external_link[0].url,'url', "External link url", "URL", 'external_link')
-                    : null }
-                    { items.item.external_link && items.item.external_link.length ?
+                    : this.createTextInput(this.state.formdata.external_link[0].url,'url', "External link url", "URL", 'external_link') }
+                    {/* : null } */}
+
+                    { items.item.external_link && items.item.external_link[0].text ?
                         this.createTextInput(items.item.external_link[0].text,'text', "External link text", 'Description of the link', "external_link")
-                    : null }
+                    : this.createTextInput(this.state.formdata.external_link[0].text,'text', "External link text", 'Description of the link', "external_link") }
+                    {/* : null } */}
 
                     <tr><td></td><td></td></tr>
                     <tr><td></td><td></td></tr>
@@ -380,7 +385,7 @@ class EditItem extends PureComponent {
                     {this.createTextInput(items.item.language,'language', "language", "Language")}
                     {this.createTextInput(items.item.reference,'reference', "reference", "Ref")}
                     {this.createTextInput(items.item.rights,'rights', "rights", "Rights")}
-                    { items.item.geo && items.item.geo.length ?
+                    { items.item.geo ?
                         this.createTextInput(items.item.geo.address,'address', "Where is the item currently located", "Address", 'geo')
                     : null }
 
@@ -434,6 +439,7 @@ class EditItem extends PureComponent {
     render() {
         // console.log(this.state);
 
+        console.log(this.state.formdata);
 
         let items = this.props.items;
         // console.log(this.props);

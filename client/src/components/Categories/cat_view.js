@@ -160,13 +160,6 @@ class CatView  extends Component {
                 {this.state.theseSubcats.map( subcat => (
                     <div className="cat_grid_row">
                         {this.renderSubCatItems(subcat)}
-                   
-                    </div>
-                ))}
-                {this.state.theseSubcats.map( subcat => (
-                    <div className="cat_grid_row">
-                   
-                   {/* {this.renderOtherItems(subcat)} */}
                     </div>
                 ))}
             </div>

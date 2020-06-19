@@ -109,7 +109,7 @@ class ItemView extends Component {
     renderField = (text, ref) => {
         if (ref) {
             return (
-                <p className="item_field">
+                <p className="item_field link_blue">
                     <b>{text}: </b>
                     <span dangerouslySetInnerHTML={{__html:  ref}}></span>
                 </p>
@@ -255,9 +255,10 @@ class ItemView extends Component {
 
 
                         {items.item.file_format == 'mp4' ?
-                            <video controls autoplay name="media">
-                                <source src={`/images/items/${items.item._id}/original/0.mp4`} type="video/mp4"/>
-                            </video>
+                            
+                                <video className="video" controls name="media">
+                                    <source src={`/images/items/${items.item._id}/original/0.mp4`} type="video/mp4"/>
+                                </video>
                         : null }
 
                         {/* {items.item.file_format === 'pdf' ?
@@ -307,7 +308,7 @@ class ItemView extends Component {
                     <div className="item_review">
 
                         {this.renderField('Subject', items.item.subject)}
-                        {this.renderField('Source', items.item.description)}
+                        {this.renderField('Description', items.item.description)}
                         {this.renderField('Source', items.item.source)}
                         {this.renderField('Date Created', items.item.date_created)}
                         {this.renderField('Contributor', items.item.contributor)}
@@ -321,7 +322,7 @@ class ItemView extends Component {
                         
                         {items.item && items.item.external_link && items.item.external_link[0].url ?
                             <span className="item_field">
-                                <p><b>External Link: </b><a href={items.item.external_link[0].url}>{items.item.external_link[0].text}</a></p>
+                                <p className="link_blue"><b>External Link: </b><a href={items.item.external_link[0].url} target="_blank">{items.item.external_link[0].text}</a></p>
                             </span>
                         : null }
 

@@ -46,7 +46,7 @@ img:before {
 
 @media(max-width: 650px) {
     .main_view {
-        margin: 0px 5% 50px 5%;
+        margin: 0px 0 50px 0;
     }
 }
 
@@ -498,7 +498,7 @@ header .navItem span {
 
 .item_container {
     box-sizing: border-box;
-    /* padding:20px; */
+    padding:20px;
 }
 
 .item_container .item_header {
@@ -604,7 +604,17 @@ header .navItem span {
 }
 
 
- 
+.link_blue a:active,
+.link_blue a:visited,
+.link_blue a:focus {
+    color:rgb(61, 66, 143)
+}
+
+.video {
+    width: 100%;
+}
+
+
 /*=============================
             LOADER
 ===============================*/
@@ -889,6 +899,14 @@ header .navItem span {
     transform: translate(-50%, -50%);
     text-shadow: 5px 5px 60px #000000;
 }
+
+@media(max-width: 500px) {
+    .centered {
+        font-size: x-small;
+    }
+}
+
+
 
  /* grid stuff */
 
