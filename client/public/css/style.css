@@ -55,6 +55,11 @@ img:before {
     padding: 7px;
 }
 
+.nav_bar span {
+    white-space: nowrap;
+}
+
+
 .center {
     text-align: center;
 }
@@ -515,7 +520,8 @@ header .navItem span {
 .item_container .item_header h5{
     margin: 5px 0px;
     font-size: 31px;
-    color: #02bcd4;
+    /* color: #02bcd4; */
+    color: #24727c;
 }
 
 .item_container .item_header .item_reviewer {
@@ -548,7 +554,7 @@ header .navItem span {
     background: #2f7983;
     color: #fff;
     box-sizing: border-box;
-    padding: 15px;
+    padding: 15px 15px 5px 15px;
     font-weight: 300;
     font-size: 15px;
 }
@@ -613,6 +619,12 @@ header .navItem span {
 .video {
     width: 100%;
 }
+
+.no_overflow {
+    overflow: hidden;
+    height: 50px;
+}
+
 
 
 /*=============================

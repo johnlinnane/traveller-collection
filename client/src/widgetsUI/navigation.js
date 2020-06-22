@@ -45,7 +45,7 @@ const NavigationBar = (props) => {
            
                 {props.navinfo && props.navinfo.subCatTitle ?
                     <Link to={`/category/${props.navinfo.catId}`}>
-                        <span>/ {props.navinfo.subCatTitle}</span>
+                        <span> / {props.navinfo.subCatTitle}</span>
                     </Link>
                 : null} 
         

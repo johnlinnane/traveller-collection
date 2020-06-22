@@ -79,11 +79,13 @@ class CatView  extends Component {
             }
 
             if (this.props.catitems !== prevProps.catitems) {
-                this.props.catitems.map( (item, i) => {
-                    if (!subcatsUsed.includes(item.subcategory_ref[0])) {
-                        subcatsUsed.push(item.subcategory_ref[0])
-                    }
-                })
+                if (this.props.catitems && this.props.catitems.length) {
+                    this.props.catitems.map( (item, i) => {
+                        if (!subcatsUsed.includes(item.subcategory_ref[0])) {
+                            subcatsUsed.push(item.subcategory_ref[0])
+                        }
+                    })
+                }
             }
 
             this.setState({

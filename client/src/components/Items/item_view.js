@@ -341,7 +341,7 @@ class ItemView extends Component {
                                     <div>
                                         <span className="white_txt">Previous Item</span>
                                     </div>
-                                    <div>
+                                    <div className="no_overflow">
                                         <span>{this.props.previtem.title}</span>
                                     </div>
                                 </Link>
