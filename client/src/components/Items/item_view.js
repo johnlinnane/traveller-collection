@@ -130,8 +130,13 @@ class ItemView extends Component {
             arrows: true,
             speed: 500,
             slidesToShow: 1,
-            slidesToScroll: 1
-            // className: 'slides'
+            slidesToScroll: 1,
+            className: 'slick_slider'
+            // variableWidth: true
+
+            
+
+
             // ...props.settings
         }
 
@@ -148,7 +153,6 @@ class ItemView extends Component {
                             // <img src={`/images/items/${items.item._id}/original/0.jpg`} alt="Item" onError={this.addDefaultImg}/>
                          }}
                     >
-                        {i}
                     </div>
                 </div>
             )

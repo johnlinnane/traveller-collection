@@ -157,6 +157,7 @@ class AddItem extends Component {
 
                             {this.createTextInput(this.state.formdata.title,'title', "Enter title", "Title")}
                             {this.createTextInput(this.state.formdata.creator,'creator', "Enter creator", "Creator")}
+                            {this.createTextInput(this.state.formdata.subject,'subject', "General subject matter", "Subject")}
 
                             <tr>
                                 <td className="label">
@@ -165,11 +166,44 @@ class AddItem extends Component {
                                 <td>
                                     <textarea
                                         value={this.state.formdata.description}
+                                        placeholder="Enter item description"
                                         onChange={(event) => this.handleInput(event, 'description')}
                                     />
                                 </td>
                             </tr>
 
+                            {this.createTextInput(this.state.formdata.source,'source', "Sources of information about the item", "Source")}
+                            {this.createTextInput(this.state.formdata.geo.address,'address', "Where is the item currently located", "Address", 'geo')}
+                            {this.createTextInput(this.state.formdata.date_created,'date_created', "Date item was created", "Date")}
+                            
+
+                            <tr><td></td><td></td></tr>
+                            <tr><td colspan="2"><hr /></td></tr>
+                            <tr><td></td><td></td></tr>
+
+
+                            {this.createTextInput(this.state.formdata.rights,'rights', "Rights", "Rights")}
+                            {this.createTextInput(this.state.formdata.further_info,'further_info', "Enter any further info, resources..", "Further Info")}
+                            {this.createTextInput(this.state.formdata.external_link[0].url,'url', "External link URL ie. https://www...", "External Link", 'external_link')}
+                            {this.createTextInput(this.state.formdata.external_link[0].text,'text', "Description of the link", '', "external_link")}
+
+
+                            <tr><td></td><td></td></tr>
+                            <tr><td colspan="2"><hr /></td></tr>
+                            <tr><td></td><td></td></tr>
+
+
+                            {this.createTextInput(this.state.formdata.item_format,'item_format', "The item's format", "Format")}
+                            {this.createTextInput(this.state.formdata.materials,'materials', "The materials used in the item", "Materials")}
+                            {this.createTextInput(this.state.formdata.physical_dimensions,'physical_dimensions', "Physical dimensions", "Dimensions")}
+                            
+                            <tr><td></td><td></td></tr>
+                            <tr><td colspan="2"><hr /></td></tr>
+                            <tr><td></td><td></td></tr>
+                            
+                            {this.createTextInput(this.state.formdata.editor,'editor', "Editor's name(s)", "Editor")}
+                            {this.createTextInput(this.state.formdata.publisher,'publisher', "Publisher", "Publisher")}
+                            {this.createTextInput(this.state.formdata.language,'language', "ie. Cant, Gammon, Romani", "Language")}
                             
                             <tr>
                                 <td className="label">
@@ -179,33 +213,22 @@ class AddItem extends Component {
                                     <div className="form_element">
                                         <input
                                             type="number"
-                                            placeholder="Enter pages"
+                                            placeholder="Enter number of pages"
                                             value={this.state.formdata.pages} 
                                             onChange={(event) => this.handleInput(event, 'pages')}                        />
                                     </div>
                                 </td>
                             </tr>
 
-                            {this.createTextInput(this.state.formdata.source,'source', "Enter item source", "Source")}
-                            {this.createTextInput(this.state.formdata.subject,'subject', "Subject", "Subject")}
-                            {this.createTextInput(this.state.formdata.date_created,'date_created', "Date item was created", "Date")}
-                            {this.createTextInput(this.state.formdata.contributor,'contributor', "contributor", "Contributor")}
-                            {this.createTextInput(this.state.formdata.item_format,'item_format', "The item's format", "Format")}
-                            {this.createTextInput(this.state.formdata.materials,'materials', "materials", "Materials")}
-                            {this.createTextInput(this.state.formdata.physical_dimensions,'physical_dimensions', "Physical dimensions", "Dimensions")}
-                            {this.createTextInput(this.state.formdata.editor,'editor', "editor", "Editor")}
-                            {this.createTextInput(this.state.formdata.publisher,'publisher', "publisher", "Publisher")}
-                            {this.createTextInput(this.state.formdata.further_info,'further_info', "Enter any further info, resources..", "Further Info")}
+                            {this.createTextInput(this.state.formdata.reference,'reference', "Reference code", "Ref")}
                             
-                            {this.createTextInput(this.state.formdata.external_link[0].url,'url', "External link url", "URL", 'external_link')}
-                            {this.createTextInput(this.state.formdata.external_link[0].text,'text', "External link text", 'Description of the link', "external_link")}
+                            
+                            <tr><td></td><td></td></tr>
+                            <tr><td colspan="2"><hr /></td></tr>
+                            <tr><td></td><td></td></tr>
 
-                            {this.createTextInput(this.state.formdata.language,'language', "language", "Language")}
-                            {this.createTextInput(this.state.formdata.reference,'reference', "reference", "Ref")}
-                            {this.createTextInput(this.state.formdata.rights,'rights', "rights", "Rights")}
 
-                            {this.createTextInput(this.state.formdata.geo.address,'address', "Item address", "Address", 'geo')}
-                        
+                            {this.createTextInput(this.state.formdata.contributor,'contributor', "Add your name here", "Contributor")}
                             
                             <tr>
                                 <td></td>
@@ -214,8 +237,7 @@ class AddItem extends Component {
 
 
                             <tr>
-                                <td></td>
-                                <td>
+                                <td colspan="2">
                                     <button type="submit">Save and Continue</button>
                                 </td>
                             </tr>

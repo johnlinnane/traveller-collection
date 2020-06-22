@@ -108,17 +108,16 @@ class CatView  extends Component {
                 { this.props.catitems.map( (item, i) => (
                     item.subcategory_ref.includes(subcat.subcat_id) ?
 
-                            <div key={i}>
-                                <Link to={`/items/${item._id}`}key={i}>
-                                    <figure key={i}>
-                                        <img src={`/images/items/${item._id}/sq_thumbnail/0.jpg`} 
-                                            alt={item.title} 
-                                            onError={this.addDefaultImg} />
-                                        <figcaption>{item.title}</figcaption>
-                                    </figure>
-                                </Link>
-                                <br/>
-                            </div>
+                        <div key={i}>
+                            <Link to={`/items/${item._id}`}key={i}>
+                                <figure key={i}>
+                                    <img src={`/images/items/${item._id}/sq_thumbnail/0.jpg`} 
+                                        alt={item.title} 
+                                        onError={this.addDefaultImg} />
+                                    <figcaption>{item.title}</figcaption>
+                                </figure>
+                            </Link>
+                        </div>
                     : null
                 ))}
             </div>

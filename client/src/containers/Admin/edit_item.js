@@ -306,9 +306,7 @@ class EditItem extends PureComponent {
                 
                     {this.createTextInput(items.item.title,'title', "Enter title", "Title")}
                     {this.createTextInput(items.item.creator,'creator', "Enter creator", "Creator")}
-
-
-
+                    {this.createTextInput(items.item.subject,'subject', "General subject matter", "Subject")}
 
                     <tr>
                         <td className="label">
@@ -326,12 +324,51 @@ class EditItem extends PureComponent {
                         </td>
                     </tr>
 
-                    {/* {this.createTextInput(items.item.description,'description', "Enter item description", "Description")} */}
+                    {this.createTextInput(items.item.source,'source', "Sources of information about the item", "Source")}
+                    { items.item.geo ?
+                        this.createTextInput(items.item.geo.address,'address', "Where is the item currently located", "Address", 'geo')
+                    : null }
+                    {this.createTextInput(items.item.date_created,'date_created', "Date item was created", "Date")}
+                        
+
+                    <tr><td></td><td></td></tr>
+                    <tr><td colspan="2"><hr /></td></tr>
+                    <tr><td></td><td></td></tr>
 
 
+                    {this.createTextInput(items.item.rights,'rights', "Rights", "Rights")}
+                    {this.createTextInput(items.item.further_info,'further_info', "Enter any further info, resources..", "Further Info")}
 
+                    { items.item.external_link && items.item.external_link[0].url ?
+                        this.createTextInput(items.item.external_link[0].url,'url', "External link URL ie. https://www...", "External Link", 'external_link')
+                    : this.createTextInput(this.state.formdata.external_link[0].url,'url', "External link URL ie. https://www...", "External Link", 'external_link') }
+                    {/* : null } */}
+
+                    { items.item.external_link && items.item.external_link[0].text ?
+                        this.createTextInput(items.item.external_link[0].text,'text', "Description of the link", '', "external_link")
+                    : this.createTextInput(this.state.formdata.external_link[0].text,'text', "Description of link", '', "external_link") }
+                    {/* : null } */}
+
+
+                    <tr><td></td><td></td></tr>
+                    <tr><td colspan="2"><hr /></td></tr>
+                    <tr><td></td><td></td></tr>
+                   
+ 
+                    {this.createTextInput(items.item.item_format,'item_format', "The item's format", "Format")}
+                    {this.createTextInput(items.item.materials,'materials', "The materials used in the item", "Materials")}
+                    {this.createTextInput(items.item.physical_dimensions,'physical_dimensions', "Physical dimensions", "Dimensions")}
 
                     
+                    <tr><td></td><td></td></tr>
+                    <tr><td colspan="2"><hr /></td></tr>
+                    <tr><td></td><td></td></tr>
+
+
+                    {this.createTextInput(items.item.editor,'editor', "Editor's name(s)", "Editor")}
+                    {this.createTextInput(items.item.publisher,'publisher', "Publisher", "Publisher")}
+                    {this.createTextInput(items.item.language,'language', "ie. Cant, Gammon, Romani", "Language")}
+
                     <tr>
                         <td className="label">
                             Pages
@@ -340,70 +377,32 @@ class EditItem extends PureComponent {
                             <div className="form_element">
                                 <input
                                     type="number"
-                                    placeholder="Enter pages"
+                                    placeholder="Enter number of pages"
                                     defaultValue={items.item.pages} 
-                                    onChange={(event) => this.handleInput(event, 'pages')}                        />
+                                    onChange={(event) => this.handleInput(event, 'pages')}
+                                />
                             </div>
                         </td>
                     </tr>
 
-                    {this.createTextInput(items.item.source,'source', "Enter item source", "Source")}
-                    {this.createTextInput(items.item.subject,'subject', "Subject", "Subject")}
-                    {this.createTextInput(items.item.date_created,'date_created', "Date item was created", "Date")}
-                
-                    {this.createTextInput(items.item.contributor,'contributor', "contributor", "Contributor")}
+                    {this.createTextInput(items.item.reference,'reference', "Reference code", "Ref")}
+
 
                     <tr><td></td><td></td></tr>
-                    <tr><td></td><td></td></tr>
-                    <tr><td></td><td></td></tr>
- 
-                    {this.createTextInput(items.item.item_format,'item_format', "The item's format", "Format")}
-                    {this.createTextInput(items.item.materials,'materials', "materials", "Materials")}
-                    {this.createTextInput(items.item.physical_dimensions,'physical_dimensions', "Physical dimensions", "Dimensions")}
-                    {this.createTextInput(items.item.editor,'editor', "editor", "Editor")}
-                    {this.createTextInput(items.item.publisher,'publisher', "publisher", "Publisher")}
-                    {this.createTextInput(items.item.further_info,'further_info', "Enter any further info, resources..", "Further Info")}
-                    
-                    <tr><td></td><td></td></tr>
-                    <tr><td></td><td></td></tr>
+                    <tr><td colspan="2"><hr /></td></tr>
                     <tr><td></td><td></td></tr>
 
-                    { items.item.external_link && items.item.external_link[0].url ?
-                        this.createTextInput(items.item.external_link[0].url,'url', "External link url", "URL", 'external_link')
-                    : this.createTextInput(this.state.formdata.external_link[0].url,'url', "External link url", "URL", 'external_link') }
-                    {/* : null } */}
 
-                    { items.item.external_link && items.item.external_link[0].text ?
-                        this.createTextInput(items.item.external_link[0].text,'text', "External link text", 'Description of the link', "external_link")
-                    : this.createTextInput(this.state.formdata.external_link[0].text,'text', "External link text", 'Description of the link', "external_link") }
-                    {/* : null } */}
-
-                    <tr><td></td><td></td></tr>
-                    <tr><td></td><td></td></tr>
-                    <tr><td></td><td></td></tr>
-                    
-                    {this.createTextInput(items.item.language,'language', "language", "Language")}
-                    {this.createTextInput(items.item.reference,'reference', "reference", "Ref")}
-                    {this.createTextInput(items.item.rights,'rights', "rights", "Rights")}
-                    { items.item.geo ?
-                        this.createTextInput(items.item.geo.address,'address', "Where is the item currently located", "Address", 'geo')
-                    : null }
+                    {this.createTextInput(items.item.contributor,'contributor', "Add your name here", "Contributor")}
 
                     <tr>
-                        <td></td>
-                        <td></td>
-                    </tr>
-
-                    <tr>
-                        <td></td>
-                        <td>
+                        <td colspan="2">
                             <button type="submit">Save and Continue</button>
                         </td>
                     </tr>
 
                     <tr>
-                        <td></td>
-                        <td>
+                        <td colspan="2">
                             
                             <button 
                                 type="button" 
@@ -412,14 +411,6 @@ class EditItem extends PureComponent {
                             >
                                 Delete item
                             </button>
-                            
-                            
-                            {/* <div className="delete_post">
-                                <div className="button" 
-                                    onClick={(e) => { if (window.confirm('Are you sure you wish to delete this item?')) this.deletePost(e) } }>
-                                    Delete item
-                                </div>
-                            </div> */}
                         </td>
                     </tr>
 
