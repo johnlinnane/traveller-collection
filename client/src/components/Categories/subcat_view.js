@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { getSubcat, getItemsBySubcat } from '../../actions';
+import { getSubcat, getItemsBySubcat, getCatById } from '../../actions';
 import NavigationBar from '../../widgetsUI/navigation';
 
 
@@ -41,11 +41,11 @@ class SubcatView  extends Component {
     componentDidUpdate(prevProps, prevState) {
 
 
-        if (prevProps.location !== this.props.location) {
-            if (this.props.location.catName ) {
+        if (prevProps !== this.props) {
+            if (this.props.subcat ) {
             
-                this.navInfo.catTitle = this.props.location.catName;
-                this.navInfo.catId = this.props.location.catId;
+                this.props.dispatch(getCatById(this.props.subcat.parent_cat))
+                
                     
                 
             }
@@ -82,6 +82,16 @@ class SubcatView  extends Component {
 
     render() {
         console.log(this.props);
+
+
+        if (this.props.catinfo) {
+            this.navInfo.catTitle = this.props.catinfo.title;
+            this.navInfo.catId = this.props.catinfo.cat_id;
+            this.navInfo.subCatTitle = this.props.subcat.title;
+            this.navInfo.subCatId = this.props.subcat.subcat_id;
+           
+        }
+
     
         return (
             <div className="main_view">
@@ -95,7 +105,7 @@ class SubcatView  extends Component {
                     { this.props.subcatitems && this.props.subcatitems.length ?
                         this.renderItems()
                         
-                    : <p className="center">There are no items in this category.</p> }
+                    : <p className="center">There are no items in this sub-category.</p> }
                 </div>
             </div>
         )
@@ -110,7 +120,8 @@ function mapStateToProps(state) {
         // catinfo: state.cats.catinfo,
         subcat: state.cats.subcat,
         subcats: state.cats.subcats,
-        subcatitems: state.cats.subcatitems
+        subcatitems: state.cats.subcatitems,
+        catinfo: state.cats.catinfo
         
     }
 }
