@@ -28,6 +28,8 @@ import ItemView from './components/Items/item_view';
 
 import CatList from './components/Categories/cats_list';
 import CatView from './components/Categories/cat_view';
+import SubcatView from './components/Categories/subcat_view';
+
 import AllItems from './components/Admin/all_items';
 import Info from './components/Info/info';
 import Intro from './components/Intro/intro';
@@ -79,6 +81,7 @@ const Routes = () => {
 
                 <Route path="/collection/:id" exact component={Auth(Collection, true)}/>
                 <Route path="/category/:id" exact component={Auth(CatView, true)}/>
+                <Route path="/subcategory/:id" exact component={Auth(SubcatView, true)}/>
                 <Route path="/info" exact component={(Info)}/>
 
                 <Route path="/sandbox" exact component={Auth(Sandbox, true)}/>

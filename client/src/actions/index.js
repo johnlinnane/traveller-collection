@@ -477,6 +477,49 @@ export function getLatestItem() {
     }
 }
 
+
+export function getSubcat(subcatId) {
+    const request = axios.get(`/api/getSubcat?subcatid=${subcatId}`)
+        .then(response => {
+                return response.data
+            }    
+        );
+    console.log(request);
+    return {
+        type: 'GET_SUBCAT',
+        payload: request
+    }
+}
+
+
+export function getItemsBySubcat(subcatId) {
+    const request = axios.get(`/api/getItemsBySubcat?subcatid=${subcatId}`)
+        .then(response => {
+                return response.data
+            }    
+        );
+    // console.log(request);
+    return {
+        type: 'GET_ITEMS_BY_SUBCAT',
+        payload: request
+    }
+}
+
+
+// not used
+export function getFirstItemBySubcat(catId, subcatId) {
+    const request = axios.get(`/api/getFirstItemBySubcat?catid=${catId}&subcatid=${subcatId}`)
+        .then(response => {
+                return response.data
+            }    
+        );
+    console.log(request);
+    return {
+        type: 'GET_FIRST_ITEM_SUBCAT',
+        payload: request
+    }
+}
+
 // * * * * * * * * * *  EDIT ITEMS * * * * * * * * * *  
 
 export function getItemById(id) {

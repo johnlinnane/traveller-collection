@@ -29,6 +29,25 @@ export default function(state={}, action) {
                 subcats:action.payload 
             };
 
+        case 'GET_FIRST_ITEM_SUBCAT':
+            return {
+                ...state,
+                firstitem: action.payload
+            }
+
+        case 'GET_ITEMS_BY_SUBCAT':
+            return {
+                ...state,
+                subcatitems: action.payload
+            }
+        case 'GET_SUBCAT':
+            console.log(action.payload);
+            return {
+                ...state,
+                subcat: action.payload
+            }
+
+
         default:
             return state;
     }

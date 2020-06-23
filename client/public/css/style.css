@@ -60,6 +60,10 @@ img:before {
     white-space: nowrap;
 }
 
+.nav_bar .wrap {
+    white-space: pre-line;
+}
+
 
 .center {
     text-align: center;
@@ -619,10 +623,14 @@ header .navItem span {
 }
 
 
-.link_blue a:active,
+/* .link_blue a:active,
 .link_blue a:visited,
 .link_blue a:focus {
     color:rgb(61, 66, 143)
+} */
+
+.item_field a {
+    color:rgb(78, 112, 150)
 }
 
 .video {

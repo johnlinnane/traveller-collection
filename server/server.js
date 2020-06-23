@@ -315,13 +315,50 @@ app.get('/api/getLatestItem', (req,res) => {
 })
 
 
+
+// * * * * * * * * * * * * * * * * * * * * get subcat info
+app.get('/api/getSubcat', (req,res) => {
+    let subcatId = req.query.subcatid;
+
+    SubCat.findOne({ subcat_id: subcatId}, {}, { sort: { '_id':1 } }, (err, doc) => {
+        if(err) return res.status(400).send(err);
+        res.send(doc);
+    })
+})
+
+
+// * * * * * * * * * * * * * * * * * * * * get items by subcat
+app.get('/api/getItemsBySubcat', (req,res) => {
+    let subcatId = req.query.subcatid;
+
+    Item.find({ subcategory_ref: subcatId}, {}, { sort: { '_id':1 } }, (err, doc) => {
+        if(err) return res.status(400).send(err);
+        res.send(doc);
+    })
+})
+
+
+
+// not used
+// * * * * * * * * * * * * * * * * * * * * get first item by subcat and cat
+app.get('/api/getFirstItemBySubcat', (req,res) => {
+    let catId = req.query.catid;
+    let subcatId = req.query.subcatid;
+
+    Item.findOne({category_ref: catId, subcategory_ref: subcatId}, {}, { sort: { '_id':1 } }, (err, doc) => {
+        if(err) return res.status(400).send(err);
+        res.send(doc);
+    })
+})
+
+
 // * * * * * * * * * * * * * * * * * * * * GET CAT / SUBCAT / COLL BY ID!
 
 
 app.get('/api/getCatById', (req, res) => {
     let value = req.query.id;
   
-    Cat.find({ cat_id:value }).exec( (err, docs) => {
+    Cat.findOne({ cat_id:value }).exec( (err, docs) => {
         if(err) return res.status(400).send(err);
         res.send(docs);
     })

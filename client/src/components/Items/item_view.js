@@ -326,7 +326,13 @@ class ItemView extends Component {
                         
                         {items.item && items.item.external_link && items.item.external_link[0].url ?
                             <span className="item_field">
-                                <p className="link_blue"><b>External Link: </b><a href={items.item.external_link[0].url} target="_blank">{items.item.external_link[0].text}</a></p>
+                                <p className="link_blue"><b>External Link: </b>
+                                
+                                    <Link to={items.item.external_link[0].url}  target="_blank">{items.item.external_link[0].text}</Link>
+                                    {/* <a href={items.item.external_link[0].url} target="_blank">{items.item.external_link[0].text}</a> */}
+                                </p>
+                            
+                            
                             </span>
                         : null }
 

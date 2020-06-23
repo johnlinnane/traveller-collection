@@ -90,6 +90,8 @@ export default function(state={}, action) {
                 ...state,
                 latest:action.payload
             }
+
+       
     
         default:
             return state;
