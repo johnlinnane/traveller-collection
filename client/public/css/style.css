@@ -652,6 +652,8 @@ header .navItem span {
 }
 .item_creator span {
     color: #252525;
+    display: block;
+    padding-bottom: 10px;
 }
 
 

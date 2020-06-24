@@ -296,7 +296,7 @@ class ItemView extends Component {
 
                         
                         {items.item.creator ?
-                            <h5 className="item_field item_creator"><span>Creator: </span>{items.item.creator}</h5>
+                            <h5 className="item_field item_creator"><span>Creator </span>{items.item.creator}</h5>
                         : null }
 
                         
