@@ -66,7 +66,7 @@ class SubcatView  extends Component {
                     { this.props.subcatitems.map( (item, i) => (
                         <div key={i}>
                             <Link to={`/items/${item._id}`}key={i}>
-                                <figure key={i}>
+                                <figure key={i}  className="item_list_figure">
                                     <img src={`/images/items/${item._id}/sq_thumbnail/0.jpg`} 
                                         alt={item.title} 
                                         onError={this.addDefaultImg} />

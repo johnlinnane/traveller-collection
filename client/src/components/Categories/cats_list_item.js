@@ -31,9 +31,9 @@ class CatItem extends Component {
                 <div className="container">
 
                     <div className="img_back">
-                        <img src={`/images/cover_img_cat/${cat.cat_id}.jpg`} alt="category cover" onError={this.addDefaultImg} />
+                        <img src={`/images/cover_img_cat/${cat.cat_id}.jpg`} alt="category cover" className="cat_list_img" onError={this.addDefaultImg} />
                     </div>
-                    <div class="centered"><h1>{cat.title}</h1></div>
+                    <div className="centered"><h1>{cat.title}</h1></div>
 
                     
                 </div>

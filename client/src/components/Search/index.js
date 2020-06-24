@@ -82,7 +82,6 @@ class Search extends Component {
 
 
         let filtered = this.state.filtered;
-        // let newsWhole = this.props.items.items;
 
         if (this.state.noMatch) {
             console.log('no match found')
@@ -91,14 +90,9 @@ class Search extends Component {
         return (
             <div className="main_view">
                 <SearchHeader keywords={this.getKeyword} placeholder="Search title, creator, description, address"/>
-                {/* <SearchHeader keywords={this.getKeywordCreator} placeholder="Creator..."/> */}
 
                 { !this.state.noMatch ?
-                <NewsList news={filtered.length === 0 ? null : filtered}>
-                    {/* <h3>
-                        Items: 
-                    </h3> */}
-                </NewsList>
+                    <NewsList news={filtered.length === 0 ? null : filtered} />
                 : <p className="center">No matches found</p>}
             </div>
 

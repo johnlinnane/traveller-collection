@@ -797,6 +797,7 @@ header .navItem span {
 .search_item_img {
     width: 10vw;
     max-height: 200px;
+    border-radius: 15px;
 }
 
 .search_item_image {
@@ -991,7 +992,16 @@ header .navItem span {
     }
 }
 
+.cat_list_img {
+    border-radius: 15px;
+}
 
+.subcat_list_img {
+    border-radius: 15px;
+}
+
+.item_list_figure {
+}
 
  /* grid stuff */
 
@@ -1024,7 +1034,7 @@ header .navItem span {
     float: left;
     position: absolute;
     top: 20px;
-    left: 20px;
+    left: 25px;
     width: 150px;
     text-shadow: black 0px 0px 50px;
     padding: 10px;

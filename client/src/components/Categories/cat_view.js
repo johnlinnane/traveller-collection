@@ -76,11 +76,12 @@ class CatView  extends Component {
                 
                 return (
                     <img src={`/images/items/${firstItem._id}/sq_thumbnail/0.jpg`} 
-                                alt={subCat.title} 
-                                onError={this.addDefaultImg} />
+                        alt={subCat.title} 
+                        onError={this.addDefaultImg} 
+                        className="subcat_list_img"/>
                 )
             } else {
-                return <img src={`/images/default/default.jpg`} alt="default item image" />
+                return <img src={`/images/default/default.jpg`} alt="default item image" className="subcat_list_img"/>
             }
            
                 
