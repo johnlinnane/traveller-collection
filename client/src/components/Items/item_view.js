@@ -246,9 +246,7 @@ class ItemView extends Component {
             <div>
                 {/* <ItemImageSlider /> */}
 
-                { this.navInfo.catTitle  ?
-                    <NavigationBar navinfo={this.navInfo} title={items.item.title}/>    
-                : null }
+                
 
                 <div className="item_container">
                     
@@ -401,8 +399,15 @@ class ItemView extends Component {
         }
 
         return (
-            <div className="main_view">
-                {this.renderItem(items)}
+            
+            <div>
+                { this.navInfo.catTitle  ?
+                    <NavigationBar navinfo={this.navInfo} title={items.item.title}/>    
+                : null }
+
+                <div className="main_view">
+                    {this.renderItem(items)}
+                </div>
             </div>
         );
     }

@@ -43,14 +43,16 @@ class SubcatView  extends Component {
 
         if (prevProps !== this.props) {
             if (this.props.subcat ) {
-            
                 this.props.dispatch(getCatById(this.props.subcat.parent_cat))
-                
-                    
-                
+            }
+
+            if (this.props.catinfo && this.props.subcat) {
+                this.navInfo.catTitle = this.props.catinfo.title;
+                this.navInfo.catId = this.props.catinfo.cat_id;
+                this.navInfo.subCatTitle = this.props.subcat.title;
+                this.navInfo.subCatId = this.props.subcat.subcat_id;
             }
         }
-        
     }
 
 
@@ -81,31 +83,28 @@ class SubcatView  extends Component {
 
 
     render() {
-        console.log(this.props);
+        // console.log(this.props);
 
 
-        if (this.props.catinfo) {
-            this.navInfo.catTitle = this.props.catinfo.title;
-            this.navInfo.catId = this.props.catinfo.cat_id;
-            this.navInfo.subCatTitle = this.props.subcat.title;
-            this.navInfo.subCatId = this.props.subcat.subcat_id;
-           
-        }
+        
 
     
         return (
-            <div className="main_view">
-                <div className="cat_view">
-                    <NavigationBar navinfo={this.navInfo}/>
-                    { this.props.subcat && this.props.subcat.title ?
-                        <h2 className="title">{this.props.subcat.title}</h2>
-                    : null}
-
-
-                    { this.props.subcatitems && this.props.subcatitems.length ?
-                        this.renderItems()
+            <div>
+                <NavigationBar navinfo={this.navInfo}/>
+                <div className="main_view">
+                    <div className="cat_view">
                         
-                    : <p className="center">There are no items in this sub-category.</p> }
+                        { this.props.subcat && this.props.subcat.title ?
+                            <h2 className="title">{this.props.subcat.title}</h2>
+                        : null}
+
+
+                        { this.props.subcatitems && this.props.subcatitems.length ?
+                            this.renderItems()
+                            
+                        : <p className="center">There are no items in this section.</p> }
+                    </div>
                 </div>
             </div>
         )

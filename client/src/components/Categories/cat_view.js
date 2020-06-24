@@ -29,8 +29,7 @@ class CatView  extends Component {
         type: 'Categories'
     }
 
-    componentWillReceiveProps(nextProps) {
-    }
+ 
 
     addDefaultImg = (ev) => {
         const newImg = '/images/default/default.jpg';
@@ -127,22 +126,25 @@ class CatView  extends Component {
 
 
     render() {
-        console.log(this.props)
+        // console.log(this.props)
         let catinfo = this.props.catinfo;
         
         return (
-            <div className="main_view">
-                <div className="cat_view">
+            <div>
+                <NavigationBar navinfo={this.navInfo}/>
 
-                    <NavigationBar navinfo={this.navInfo}/>
+                <div className="main_view">
+                    <div className="cat_view">
 
-                    { catinfo ? 
-                        <h2 className="title">{catinfo.title}</h2>
-                    :null
-                    }
+                        
+                        { catinfo ? 
+                            <h2 className="title">{catinfo.title}</h2>
+                        :null
+                        }
 
 
-                    {this.renderSubcats()}
+                        {this.renderSubcats()}
+                    </div>
                 </div>
             </div>
         )

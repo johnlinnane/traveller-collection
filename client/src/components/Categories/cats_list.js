@@ -58,11 +58,14 @@ class CatList extends Component {
         // let cats = this.props.cats;
 
         return (
-            <div className="main_view">
+            <div>
                 <NavigationBar navinfo={this.navInfo}/>
-                <div className="cat_list">
+                <div className="main_view">
                     
-                    {catsMap}
+                    <div className="cat_list">
+                        
+                        {catsMap}
+                    </div>
                 </div>
             </div>
 

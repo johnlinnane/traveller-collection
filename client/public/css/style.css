@@ -53,7 +53,15 @@ img:before {
 
 .nav_bar {
     background-color: #d3d3d3;
-    padding: 7px;
+    /* padding: 7px; */
+    padding: 7px 20%;
+}
+
+@media(max-width: 650px) {
+    .nav_bar {
+        padding: 7px 10px;
+}
+    }
 }
 
 .nav_bar span {

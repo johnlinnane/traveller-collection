@@ -114,16 +114,18 @@ class Collection  extends Component {
         this.getCollName();
         
         return (
-            
-            <div className="main_view">
-
+            <div>
                 <NavigationBar navinfo={this.navInfo}/>
-                  
-                {this.renderColl(this.props.coll)}
-               
-                {this.renderGrid()}
 
-              </div>
+                <div className="main_view">
+
+                  
+                    {this.renderColl(this.props.coll)}
+               
+                    {this.renderGrid()}
+
+                </div>
+            </div>
         )
     }
 }

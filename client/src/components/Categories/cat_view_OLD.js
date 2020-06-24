@@ -202,22 +202,25 @@ class CatView  extends Component {
         let catinfo = this.props.catinfo;
 
         return (
-            <div className="main_view">
-                <div className="cat_view">
-                    <NavigationBar navinfo={this.navInfo}/>
-                    { catinfo && catinfo.length > 0? 
-                        <h2 className="title">{catinfo[0].title}</h2>
-                    :null
-                    }
+            <div>
+                <NavigationBar navinfo={this.navInfo}/>
+                <div className="main_view">
+                    <div className="cat_view">
+                        
+                        { catinfo && catinfo.length > 0? 
+                            <h2 className="title">{catinfo[0].title}</h2>
+                        :null
+                        }
 
-                    { this.props.catitems ?
-                        this.renderGrid()
-                    : null }
+                        { this.props.catitems ?
+                            this.renderGrid()
+                        : null }
 
-                    <div className="font_12">
-                        <Link to={`/cat-edit/${this.props.match.params.id}`}>Edit</Link>
+                        <div className="font_12">
+                            <Link to={`/cat-edit/${this.props.match.params.id}`}>Edit</Link>
+                        </div>
+
                     </div>
-
                 </div>
             </div>
         )

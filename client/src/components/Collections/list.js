@@ -100,15 +100,18 @@ class CollList extends Component {
 
         return (
             // <div className="coll_list">
-            <div className="main_view">
+            <div>
                 <NavigationBar navinfo={this.state.navInfo}/>  
-                <div>
-                    {/* {this.props.collections ? */}
-                    
+
+                <div className="main_view">
+                    <div>
+                        {/* {this.props.collections ? */}
                         
-                            {items}
                             
-                    {/* : null} */}
+                                {items}
+                                
+                        {/* : null} */}
+                    </div>
                 </div>
             </div>
         );
