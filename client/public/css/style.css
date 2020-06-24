@@ -74,7 +74,9 @@ img:before {
     }
 }
 
-.nav_bar span {
+
+
+.nav_bar span .nowrap{
     white-space: nowrap;
 }
 
@@ -592,7 +594,7 @@ header .navItem span {
     width: 50%;
     height: 106px;
     /* background: #E91E63; */
-    background: #2f7983;
+    background: #4fb0bd;
     color: #fff;
     box-sizing: border-box;
     padding: 15px 15px 5px 15px;
@@ -612,7 +614,7 @@ header .navItem span {
     width: 50%;
     flex-grow: 1;
     height: 106px;
-    background: #757575;
+    background: #a4a4a4;
     color: #fff;
     font-weight: 300;
     padding: 15px;
@@ -633,6 +635,7 @@ header .navItem span {
 
 .item_container .item_main_img {
     width: 80%;
+    box-shadow: 20px 11px 21px 6px rgba(0,0,0,0.1);
 }
 
 .item_container .item_img {
@@ -1130,4 +1133,8 @@ header .navItem span {
     .news_item {
         color: blue
     }
+}
+
+.admin_view {
+    padding: 40px 0px;
 }

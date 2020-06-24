@@ -36,6 +36,8 @@ import Intro from './components/Intro/intro';
 
 import CatEdit from './containers/Admin/cat_edit';
 
+import Admin from './components/AdminSection'
+
 
 
 
@@ -83,6 +85,9 @@ const Routes = () => {
                 <Route path="/category/:id" exact component={Auth(CatView, true)}/>
                 <Route path="/subcategory/:id" exact component={Auth(SubcatView, true)}/>
                 <Route path="/info" exact component={(Info)}/>
+
+                <Route path="/admin" exact component={Auth(Admin, true)}/>
+
 
                 <Route path="/sandbox" exact component={Auth(Sandbox, true)}/>
                 
