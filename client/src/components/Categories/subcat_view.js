@@ -72,6 +72,7 @@ class SubcatView  extends Component {
                                         onError={this.addDefaultImg} />
                                     <figcaption>{item.title}</figcaption>
                                 </figure>
+                                
                             </Link>
                         </div>
                     ))}
