@@ -28,7 +28,7 @@ const NewsItem = ({item}) => {
         }  
     } 
 
-    console.log(item);
+    // console.log(item);
     return(
       
         // INSERT LINK HERE

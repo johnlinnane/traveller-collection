@@ -15,6 +15,16 @@ a:focus {
     color:black
 }
 
+
+.item_button {
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    appearance: button;
+
+    text-decoration: none;
+    color: initial;
+}
+
 .red_tag {
     background: #F44336;
     color: #fff;
@@ -76,6 +86,12 @@ img:before {
 .center {
     text-align: center;
 }
+
+.ext_link {
+    width: 5vw;
+}
+
+
 
 /*=============================
             HEADER
@@ -221,7 +237,9 @@ header .navItem span {
     font-size: small;
 }
 
-
+.item_container p {
+    max-width: 65ch;
+}
 
 /*=============================
             ITEM: SLIDER
@@ -565,6 +583,8 @@ header .navItem span {
     align-items: center;
     justify-content: center;
     margin-top: 40px;
+    
+
 }
 
 .item_container .item_box .left {
@@ -611,7 +631,7 @@ header .navItem span {
 
 }
 
-.item_container img {
+.item_container .item_main_img {
     width: 80%;
 }
 
@@ -621,6 +641,10 @@ header .navItem span {
 
 .item_field {
     padding-bottom: 1em;
+}
+
+.item_field b {
+    margin-bottom: 20px;
 }
 
 .item_creator {
@@ -650,6 +674,30 @@ header .navItem span {
     height: 50px;
 }
 
+.link_wrapper {
+    display: flex;
+    background-color: #a4a4a4;
+    width: 50%;
+    border-radius: 10px;
+
+
+}
+
+@media(max-width: 500px) {
+    .link_wrapper {
+        width: 100%;    }
+}
+
+.link_img {
+    margin: 15px;
+
+}
+
+.link_text {
+    padding: 15px;
+
+
+}
 
 
 /*=============================
@@ -732,7 +780,7 @@ header .navItem span {
 
 
 .search_input {
-    margin: 20px;
+    margin: 40px;
 }
 
 .search_input input {

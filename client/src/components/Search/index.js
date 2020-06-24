@@ -12,7 +12,8 @@ import { getAllItems } from '../../actions';
 class Search extends Component {
 
     state = {
-        filtered: []
+        filtered: [],
+        noMatch: null
     }
 
     componentDidMount() {
@@ -20,65 +21,85 @@ class Search extends Component {
 
     }
 
-    getKeywordTitle = (event) => {
+    getKeyword = (event) => {
         let keyword = event.target.value.toLowerCase();
-        let filteredByTitle = this.props.items.items.filter( (item) => {
+        let matchFound = false;
+        let filteredByKeyword = this.props.items.items.filter( (item) => {
+            let isMatch = false;
+
             if (item.title) {
                 let match = item.title.toLowerCase();
-                return match.indexOf(keyword) > -1
+                if (match.indexOf(keyword) > -1) {
+                    isMatch = true;
+                }
             }
+            if (item.creator) {
+                let match = item.creator.toLowerCase();
+                if (match.indexOf(keyword) > -1) {
+                    isMatch = true;
+                }
+            }
+            if (item.description) {
+                let match = item.description.toLowerCase();
+                if (match.indexOf(keyword) > -1) {
+                    isMatch = true;
+                }
+            }
+            if (item.geo && item.geo.address) {
+                let match = item.geo.address.toLowerCase();
+                if (match.indexOf(keyword) > -1) {
+                    isMatch = true;
+                }
+            }
+            if (isMatch) {
+                matchFound = true;
+                this.setState({
+                    noMatch: false
+                })
+                return true;
+            } 
+            
         });
+        if (!matchFound) {
+            this.setState({
+                noMatch: true
+            })
+        }
         if (keyword !== '') {
             this.setState({
-                filtered: filteredByTitle
+                filtered: filteredByKeyword
             })
-        // } else {
-        //     this.setState({
-        //         filtered
-        //     })
+        } else {
+            this.setState({
+                filtered: []
+            })
         }
     }
 
-
-    getKeywordCreator = (event) => {
-        
-            console.log('creator exists!');
-            let keyword = event.target.value.toLowerCase();
-            let filteredByCreator = this.props.items.items.filter( (item) => {
-                if (item.creator) {
-                    let match = item.creator.toLowerCase();
-                    return match.indexOf(keyword) > -1
-                }
-            });
-            if (keyword !== '') {
-                this.setState({
-                    filtered: filteredByCreator
-                })
-            // } else {
-                
-                // this.setState({
-                //     filtered:
-                // })
-            }
-    }
 
   
     render() {
 
 
-        let newsFiltered = this.state.filtered;
+        let filtered = this.state.filtered;
         // let newsWhole = this.props.items.items;
+
+        if (this.state.noMatch) {
+            console.log('no match found')
+        }
 
         return (
             <div className="main_view">
-                <SearchHeader keywords={this.getKeywordTitle} placeholder="Title..."/>
-                <SearchHeader keywords={this.getKeywordCreator} placeholder="Creator..."/>
+                <SearchHeader keywords={this.getKeyword} placeholder="Search title, creator, description, address"/>
+                {/* <SearchHeader keywords={this.getKeywordCreator} placeholder="Creator..."/> */}
 
-                <NewsList news={this.state.filtered.length === 0 ? null : newsFiltered}>
+                { !this.state.noMatch ?
+                <NewsList news={filtered.length === 0 ? null : filtered}>
                     {/* <h3>
                         Items: 
                     </h3> */}
                 </NewsList>
+                : <p className="center">No matches found</p>}
             </div>
 
         )

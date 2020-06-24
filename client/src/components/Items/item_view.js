@@ -110,7 +110,8 @@ class ItemView extends Component {
         if (ref) {
             return (
                 <p className="item_field link_blue">
-                    <b>{text}: </b>
+                    <p><b>{text}</b></p>
+                    
                     <span dangerouslySetInnerHTML={{__html:  ref}}></span>
                 </p>
             )
@@ -279,7 +280,10 @@ class ItemView extends Component {
 
                         { items.item && items.item._id && items.item.number_files == 1 && items.item.file_format !== 'mp4' && items.item.file_format !== 'pdf' ?
                             <div className="item_img">
-                                <img src={`/images/items/${items.item._id}/original/0.jpg`} alt="Item" onError={i => i.target.style.display='none'}/>
+                                <img src={`/images/items/${items.item._id}/original/0.jpg`} 
+                                className="item_main_img"
+                                alt="Item" 
+                                onError={i => i.target.style.display='none'}/>
                             </div>
                         : null}
 
@@ -322,20 +326,24 @@ class ItemView extends Component {
                         {this.renderField('Publisher', items.item.publisher)}
                         {this.renderField('Further Info', items.item.further_info)}
                         
-                        {items.item && items.item.external_link && items.item.external_link[0].url ?
-                            <span className="item_field">
-                                <p className="link_blue"><b>External Link: </b>
-                                
-                                    <Link to={items.item.external_link[0].url}  target="_blank">{items.item.external_link[0].text}</Link>
-                                    {/* <a href={items.item.external_link[0].url} target="_blank">{items.item.external_link[0].text}</a> */}
-                                </p>
-                            
-                            
-                            </span>
-                        : null }
+                        
 
                         {items.item && items.item.geo ?
                             this.renderField('Address', items.item.geo.address)
+                        : null }
+
+                        {items.item && items.item.external_link && items.item.external_link[0].url ?
+                                    <Link to={items.item.external_link[0].url}  target="_blank">
+                                        <div className="link_wrapper">
+                                            <div className="link_img">
+                                                <img src='/images/icons/ext_link.png' className="ext_link"/>
+                                            </div>
+
+                                            <div className="link_text">
+                                                {items.item.external_link[0].text}
+                                            </div>
+                                        </div>
+                                    </Link>
                         : null }
   
                     </div> 
