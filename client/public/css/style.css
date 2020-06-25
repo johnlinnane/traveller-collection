@@ -1135,6 +1135,28 @@ header .navItem span {
     }
 }
 
+
+/*=============================
+            ADMIN
+===============================*/
+
 .admin_view {
     padding: 40px 0px;
+}
+
+.change_cat_img {
+    width: 150px;
+    display: block;
+    padding: 15px;
+    border-radius: 25px;
+}
+
+.vert_tab {
+    display: flex;
+}
+
+
+.vert_tab_list {
+    display: flex;
+    flex-direction: column;
 }

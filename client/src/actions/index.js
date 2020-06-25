@@ -738,3 +738,16 @@ return {
         payload:request
     }
 }
+
+
+export function getSubcatByCat(catId) {
+    const request = axios.get(`/api/getSubcatByCat?catid=${catId}`)
+                        .then(response => {
+                                return response.data
+                            }
+                        );
+return {
+        type:'GET_SUBCAT_BY_CAT',
+        payload:request
+    }
+}

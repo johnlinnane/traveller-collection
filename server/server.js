@@ -351,7 +351,15 @@ app.get('/api/getFirstItemBySubcat', (req,res) => {
     })
 })
 
+// * * * * * * * * * * * * * * * * * * * * get subcats by cat
+app.get('/api/getSubcatByCat', (req,res) => {
+    let catId = req.query.catid;
 
+    SubCat.find({ parent_cat: catId}, {}, { sort: { '_id':1 } }, (err, doc) => {
+        if(err) return res.status(400).send(err);
+        res.send(doc);
+    })
+})
 
 
 // * * * * * * * * * * * * * * * * * * * * GET CAT / SUBCAT / COLL BY ID!

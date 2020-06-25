@@ -41,10 +41,16 @@ export default function(state={}, action) {
                 subcatitems: action.payload
             }
         case 'GET_SUBCAT':
-            console.log(action.payload);
+            // console.log(action.payload);
             return {
                 ...state,
                 subcat: action.payload
+            }
+        case 'GET_SUBCAT_BY_CAT':
+            console.log(action.payload);
+            return {
+                ...state,
+                subcatsbycat: action.payload
             }
 
 
