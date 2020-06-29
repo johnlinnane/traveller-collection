@@ -66,10 +66,10 @@ class EditItemSel extends PureComponent {
                 if (this.props.items.item.category_ref && this.props.items.item.category_ref.length) {
                     this.props.items.item.category_ref.map( (catref) => {
                         this.props.cats.map( (cat) => {
-                            if ( cat.cat_id == catref) {
+                            if ( cat._id == catref) {
                                 catsForState.push(
                                     {
-                                        value: cat.cat_id,
+                                        value: cat._id,
                                         label: cat.title
                                     }
                                 )
@@ -107,11 +107,11 @@ class EditItemSel extends PureComponent {
                         // loop through the item subcats
                         this.props.items.item.subcategory_ref.map( (subcatref) => {
                             this.props.subcats.map( (subcat) => {
-                                if ( subcat.subcat_id == subcatref) {
+                                if ( subcat._id == subcatref) {
                                     // make new array of formatted subcats for the form
                                     subcatsForState.push(
                                         {
-                                            value: subcat.subcat_id,
+                                            value: subcat._id,
                                             label: subcat.title
                                         }
                                     )
@@ -275,7 +275,7 @@ class EditItemSel extends PureComponent {
                     // console.log(newval.value, subcat.parent_cat);
                     if (newval.value == subcat.parent_cat){
                         newSubcatList.push({
-                            value: subcat.subcat_id,
+                            value: subcat._id,
                             label: subcat.title
                         })
                     }
@@ -367,7 +367,7 @@ class EditItemSel extends PureComponent {
         let catList = [];
         this.props.cats.map( cat => {
             catList.push({
-                value: cat.cat_id,
+                value: cat._id,
                 label: cat.title
             })
         })
@@ -394,7 +394,7 @@ class EditItemSel extends PureComponent {
                     // if subcat is part of the chosen cat
                     if (this.props.items.item.category_ref.indexOf(subcat.parent_cat) !== -1) {
                         subcatList.push({
-                            value: subcat.subcat_id,
+                            value: subcat._id,
                             label: subcat.title
                         })
                     }  
@@ -402,7 +402,7 @@ class EditItemSel extends PureComponent {
             } else {
                 this.props.subcats.map( subcat => {
                     subcatList.push({
-                        value: subcat.subcat_id,
+                        value: subcat._id,
                         label: subcat.title
                     })
                 })

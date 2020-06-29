@@ -60,7 +60,7 @@ class CatView  extends Component {
         if (this.props.catinfo ) {
            
             this.navInfo.catTitle = this.props.catinfo.title;
-            this.navInfo.catId = this.props.catinfo.cat_id;
+            this.navInfo.catId = this.props.catinfo._id;
                 
             
         }
@@ -70,22 +70,21 @@ class CatView  extends Component {
     renderImage = (subCat) => {
         if (this.props.catitems && this.props.catitems.length) {
             
-            const firstItem = this.props.catitems.find( item => item.subcategory_ref == subCat.subcat_id);
+            const firstItem = this.props.catitems.find( item => item.subcategory_ref == subCat._id);
             
             if (firstItem) {
-                
+                console.log(firstItem);    
                 return (
                     <img src={`/images/items/${firstItem._id}/sq_thumbnail/0.jpg`} 
-                        alt={subCat.title} 
+                        alt={firstItem.title} 
                         onError={this.addDefaultImg} 
                         className="subcat_list_img"/>
                 )
             } else {
                 return <img src={`/images/default/default.jpg`} alt="default item image" className="subcat_list_img"/>
             }
-           
-                
-            
+        } else {
+            return <img src={`/images/default/default.jpg`} alt="default item image" className="subcat_list_img"/>
         }
     }
 
@@ -102,7 +101,7 @@ class CatView  extends Component {
                                 
                                 
                                     <div key={i}>
-                                        <Link to={`/subcategory/${subcat.subcat_id}`} key={i}>
+                                        <Link to={`/subcategory/${subcat._id}`} key={i}>
                                             <figure>
                                                 {this.renderImage(subcat)}
                                                 <figcaption>{subcat.title}</figcaption>
@@ -127,7 +126,7 @@ class CatView  extends Component {
 
 
     render() {
-        // console.log(this.props)
+        // console.log(this.props.catitems)
         let catinfo = this.props.catinfo;
         
         return (
@@ -139,11 +138,14 @@ class CatView  extends Component {
 
                         
                         { catinfo ? 
-                            <h2 className="title">{catinfo.title}</h2>
+                            <div>
+                                <h2 className="title">{catinfo.title}</h2>
+                                <p className="description">{catinfo.description}</p>
+                            </div>
                         :null
                         }
 
-
+                        <hr />
                         {this.renderSubcats()}
                     </div>
                 </div>
@@ -156,6 +158,8 @@ class CatView  extends Component {
 
 
 function mapStateToProps(state) {
+    // console.log(state);
+
     return {
         catinfo: state.cats.catinfo,
         subcats: state.cats.subcats,

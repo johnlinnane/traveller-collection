@@ -3,10 +3,10 @@ const mongoose = require('mongoose');
 
 const subcatSchema = mongoose.Schema({
     
-    subcat_id: Number,
+    // subcat_id: Number,
     title: String,
     description: String,
-    parent_cat: Number,
+    parent_cat: String,
     cover_item: Number
 
 

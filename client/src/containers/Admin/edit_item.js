@@ -332,7 +332,7 @@ class EditItem extends PureComponent {
                         
 
                     <tr><td></td><td></td></tr>
-                    <tr><td colspan="2"><hr /></td></tr>
+                    <tr><td colSpan="2"><hr /></td></tr>
                     <tr><td></td><td></td></tr>
 
 
@@ -351,7 +351,7 @@ class EditItem extends PureComponent {
 
 
                     <tr><td></td><td></td></tr>
-                    <tr><td colspan="2"><hr /></td></tr>
+                    <tr><td colSpan="2"><hr /></td></tr>
                     <tr><td></td><td></td></tr>
                    
  
@@ -361,7 +361,7 @@ class EditItem extends PureComponent {
 
                     
                     <tr><td></td><td></td></tr>
-                    <tr><td colspan="2"><hr /></td></tr>
+                    <tr><td colSpan="2"><hr /></td></tr>
                     <tr><td></td><td></td></tr>
 
 
@@ -389,20 +389,20 @@ class EditItem extends PureComponent {
 
 
                     <tr><td></td><td></td></tr>
-                    <tr><td colspan="2"><hr /></td></tr>
+                    <tr><td colSpan="2"><hr /></td></tr>
                     <tr><td></td><td></td></tr>
 
 
                     {this.createTextInput(items.item.contributor,'contributor', "Add your name here", "Contributor")}
 
                     <tr>
-                        <td colspan="2">
+                        <td colSpan="2">
                             <button type="submit">Save and Continue</button>
                         </td>
                     </tr>
 
                     <tr>
-                        <td colspan="2">
+                        <td colSpan="2">
                             
                             <button 
                                 type="button" 

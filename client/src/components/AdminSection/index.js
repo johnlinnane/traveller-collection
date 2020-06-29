@@ -5,6 +5,7 @@ import 'react-tabs/style/react-tabs.css';
 
  
 import { getAllColls, getAllCats, getAllSubCats  } from '../../actions';
+import AdminCat from './admin_cat';
 
 
 class Admin extends React.Component  {
@@ -20,62 +21,52 @@ class Admin extends React.Component  {
 
     render() {
 
-        console.log(this.props)
+        // console.log(this.props)
 
         return (
             <div className="main_view admin_view">
-                <Tabs>
+                <Tabs >
+                    
+
+                    {/******** TOP TABS ***********/}
 
                     <TabList>
                         <Tab>Categories</Tab>
                         <Tab>Info Page</Tab>
                         <Tab>Intro Page</Tab>
-                        <Tab disabled>Toad</Tab>
+                        {/* <Tab disabled>Extra</Tab> */}
                     </TabList>
                 
+
+
+                    {/******** CATEGORIES ***********/}
 
                     <TabPanel>
                         
                         <h2>Categories</h2> 
                         
 
+                        {/******** SIDE TABS ***********/}
+
+                        <Tabs  defaultIndex={0} className="vert_tab">
+                            {this.props.cats ?
+                                <TabList className="vert_tab_list">
+                                    {this.props.cats.map( (cat, i) => (
+                                        <Tab key={i}>{cat.title}</Tab>
+                                    ))}
+                                </TabList>
+                            : null }
 
 
-                        <Tabs className="vert_tab">
-                            
+                            {/******** EACH SIDE TAB CONTENT ***********/}
+                            { this.props.cats ?
+                                this.props.cats.map( (cat, i) => (
+                                    <TabPanel key={i}>
 
-
-                                { this.props.cats ?
-                                    <TabList className="vert_tab_list">
-                                        {this.props.cats.map( (cat, i) => (
-                                            <Tab key={i}>{cat.title}</Tab>
-                                        ))}
-                                    </TabList>
-                                : null }
-
-
-                                { this.props.cats ?
-                                    
-                                        this.props.cats.map( (cat, i) => (
-                                            <TabPanel key={i}>
-                                                <h2>{cat.title}</h2>
-                                                <img className="change_cat_img" src={`/images/cover_img_cat/${cat.cat_id}.jpg`} key={i} />
-                                                <h3>Sub-categories</h3>
-                                                { this.props.subcats ?
-                                                    this.props.subcats.map( (subcat, i) => {
-                                                        if (subcat.parent_cat == cat.cat_id) {
-                                                            return <p key={i}>{subcat.title}</p>
-                                                        }
-                                                        
-                                                    } )    
-                                                : null }
-                                            </TabPanel>
-
-                                        ))
-                                : null }
-
-
-
+                                        <AdminCat chosenCatInfo={cat}/>
+                                    </TabPanel>
+                                ))
+                            : null }
 
                         </Tabs>
 
@@ -94,13 +85,37 @@ class Admin extends React.Component  {
                         <p>
                             <b>Info Page</b> 
                         </p>
+                        <input
+                            type="text"
+                            placeholder="Paragraph 1 Heading"
+                            defaultValue={null} 
+                            onChange={(event) => this.handleInput(event)}
+                        />
+                        <br />
+                        <textarea
+                            type="text"
+                            placeholder="Paragraph 1 Content"
+                            defaultValue={null} 
+                            onChange={(event) => this.handleInput(event)}
+                            rows={6}
+                        />
 
-                        <p>Paragraph 1 Heading</p>
-                        <p>Paragraph 1 Content</p>
                         <p>Paragraph 1 Image</p>
 
-                        <p>Paragraph 2 Heading</p>
-                        <p>Paragraph 2 Content</p>
+                        <input
+                            type="text"
+                            placeholder="Paragraph 2 Heading"
+                            defaultValue={null} 
+                            onChange={(event) => this.handleInput(event)}
+                        />
+                        <br />
+                        <textarea
+                            type="text"
+                            placeholder="Paragraph 2 Content"
+                            defaultValue={null} 
+                            onChange={(event) => this.handleInput(event)}
+                            rows={6}
+                        />
                         <p>Paragraph 2 Image</p>
                       
                     </TabPanel>
@@ -111,17 +126,23 @@ class Admin extends React.Component  {
                             <b>Intro Page</b> 
                         </p>
 
-                        <p>Text</p>
+                        <textarea
+                            type="text"
+                            placeholder="Text"
+                            defaultValue={null} 
+                            onChange={(event) => this.handleInput(event)}
+                            rows={6}
+                        />
 
                         <p>Choose Image</p>
                     </TabPanel>
 
 
-                    <TabPanel>
+                    {/* <TabPanel>
                     <p>
                             <b>Toad</b> 
                         </p>
-                    </TabPanel>
+                    </TabPanel> */}
 
 
             

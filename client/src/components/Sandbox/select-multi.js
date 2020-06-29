@@ -28,7 +28,7 @@ class Sandbox extends React.Component {
         if (nextProps.cats && nextProps.cats.length) {
             nextProps.cats.map( (cat, i) => {
                 catOptionsFromProps.push({
-                    value: cat.cat_id,
+                    value: cat._id,
                     label: cat.title
                 })
             })
@@ -37,7 +37,7 @@ class Sandbox extends React.Component {
                 nextProps.items.item.category_ref.map( (catref, i) => {
                     let catTitle;
                     nextProps.cats.map( (cat, i) => {
-                        if (cat.cat_id == catref) {
+                        if (cat._id == catref) {
                             catTitle = cat.title;
                             catsFromProps.push({
                                 value: catref,

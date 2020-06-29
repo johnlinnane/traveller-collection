@@ -3,10 +3,10 @@ const mongoose = require('mongoose');
 
 const cateogrySchema = mongoose.Schema({
     
-    cat_id: Number,
+    // cat_id: String,
     title: String,
     description: String,
-    cover_item: Number
+    // cover_item: String
 
     // sub_cats: [{
     //     sub_id: Number,

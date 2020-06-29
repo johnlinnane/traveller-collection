@@ -76,10 +76,10 @@ class ItemView extends Component {
         if (this.props.cats && this.props.cats.length) {
             this.props.cats.map( cat => {
                 
-                if (cat.cat_id === catId[0]) {
+                if (cat._id === catId[0]) {
                     // console.log(cat.title);
                     this.navInfo.catTitle = cat.title;
-                    this.navInfo.catId = cat.cat_id;
+                    this.navInfo.catId = cat._id;
                 }
                 return null;
             })
@@ -91,10 +91,10 @@ class ItemView extends Component {
         if (this.props.subcats && this.props.subcats.length) {
             this.props.subcats.map( subcat => {
                 
-                if (subcat.subcat_id == subCatId[0]) {
+                if (subcat._id == subCatId[0]) {
                     // console.log(cat.title);
                     this.navInfo.subCatTitle = subcat.title;
-                    this.navInfo.subCatId = subcat.subcat_id;
+                    this.navInfo.subCatId = subcat._id;
 
                 }
             })
@@ -109,11 +109,11 @@ class ItemView extends Component {
     renderField = (text, ref) => {
         if (ref) {
             return (
-                <p className="item_field link_blue">
+                <div className="item_field link_blue">
                     <p><b>{text}</b></p>
                     
                     <span dangerouslySetInnerHTML={{__html:  ref}}></span>
-                </p>
+                </div>
             )
         } 
     }

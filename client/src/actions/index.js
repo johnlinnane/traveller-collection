@@ -1,110 +1,5 @@
 import axios from 'axios';
 
-// **********************
-// *** DELETE ME ********
-
-// export function getBooks(
-//     limit = 10,
-//     start = 0,
-//     order = 'asc',
-//     list = ''
-// ) {
-//     const request = axios.get(`/api/books?limit=${limit}&skip=${start}&order=${order}`)
-//                         .then(response => {
-//                             if(list){
-//                                 return [...list, ...response.data]
-//                             } else {
-//                                 return response.data
-//                             }
-//                         })
-
-//     // console.log(request);
-
-//     return{
-//         type:'GET_BOOKS',
-//         payload:request
-//     }
-// }
-
-
-
-
-// **********************
-// *** DELETE ME ********
-
-// // two requests inside one action, book and user. user reduxthunk
-// export function getBookWithReviewer(id) {
-
-//     // reduxthunk's dispatched function sends payload to reducers whenever we are ready
-//     // as an alternative to getBooks
-//     const request = axios.get(`/api/getBook?id=${id}`)
-
-//     // return a dispatch function
-//     return (dispatch) => {
-
-//         // get the promise, using {{{destructuring}}}
-//         request.then(({data}) => {
-//             let book = data;
-//             // console.log(book);
-
-//             axios.get(`/api/getReviewer?id=${book.ownerId}`)
-//                 .then(({data}) => {
-                
-//                     let response = {
-//                         book, 
-//                         reviewer:data
-//                     }
-
-//                     // console.log(response);
-
-//                     // only gets executed when ready
-//                     dispatch({
-//                         type:'GET_BOOK_W_REVIEWER',
-//                         payload:response
-//                     })
-//                 })
-//         })
-//     }
-// }
-
-
-// // **********************
-// // *** DELETE ME ********
-// export function clearBookWithReviewer() {
-//     return {
-//         type:'CLEAR_BOOK_W_REVIEWER',
-//         payload:{
-//             book:{},
-//             reviewer:{}
-//         }
-//     }
-// }
-
-
-// // **********************
-// // *** DELETE ME ********
-// // book arg is json data
-// export function addBook(book) {
-//     const request = axios.post('/api/book', book)
-//                         .then(response => response.data);
-
-//     return {
-//         type: 'ADD_BOOK',
-//         payload:request
-//     }
-// }
-
-
-
-// // **********************
-// // *** DELETE ME ********
-// export function clearNewBook() {
-//     return {
-//         type:'CLEAR_NEWBOOK',
-//         payload:null
-//     }
-// }
-
 
 
 // get every post of particular user
@@ -133,52 +28,6 @@ export function getUserItems(userId) {
 
 
 
-// ******************** EDIT REVIEW ********************
-
-// // **********************
-// // *** DELETE ME ********
-// export function getBook(id) {
-//     const request = axios.get(`/api/getBook?id=${id}`)
-//                         .then(response => response.data);
-
-//     return {
-//         type:'GET_BOOK',
-//         payload:request
-//     }
-// }
-
-
-
-
-
-// // **********************
-// // *** DELETE ME ********
-// export function updateBook(data) {
-//     const request = axios.post(`/api/book_update`, data)
-//                         .then(response => response.data);
-//     return {
-//         type:'UPDATE_BOOK',
-//         payload:request
-//     }
-// }
-// export function deleteBook(id) {
-//     const request = axios.delete(`/api/delete_book?id=${id}`)
-//                         .then(response => response.data)
-//     return {
-//         type:'DELETE_BOOK',
-//         payload:request
-//     }
-// }
-// export function clearBook() {
-//     return {
-//         type:'CLEAR_BOOK',
-//         payload: {
-//             book: null,
-//             updateBook:false,
-//             postDeleted:false
-//         }
-//     }
-// }
 
 // * * * * * * * * * CLEAR ITEM * * * * * * 
 
@@ -376,17 +225,6 @@ export function clearNewItem() {
         payload:null
     }
 }
-
-// // get every post of particular user
-// export function getUserPosts(userId) {
-//     const request = axios.get(`/api/user_posts?user=${userId}`)
-//                         .then(response => response.data);
-//     return {
-//         type:'GET_USER_POSTS',
-//         payload:request
-//     }
-// }
-
 
 
 // // ended up not needing....
@@ -687,7 +525,7 @@ export function getItemsWithCat(catId) {
 
             console.log(data);
 
-            axios.get(`/api/getItemsByCat?value=${catInfo.cat_id}`)
+            axios.get(`/api/getItemsByCat?value=${catInfo._id}`)
 
                 .then(({data}) => {
                 
@@ -706,6 +544,39 @@ export function getItemsWithCat(catId) {
                     })
                 })
         })
+    }
+}
+
+export function addCat(cat) {
+    const request = axios.post('/api/add-cat', cat)
+                        .then(response => response.data);
+    
+
+    return {
+        type: 'ADD_CAT',
+        payload:request
+    }
+}
+
+
+
+export function deleteCat(id) {
+    const request = axios.delete(`/api/delete-cat?id=${id}`)
+                        .then(response => response.data)
+    return {
+        type:'DELETE_CAT',
+        payload:request
+    }
+}
+
+export function updateCat(data) {
+    console.log('updateCat called');
+    const request = axios.post(`/api/cat-update`, data)
+                        .then(response => response.data);
+    // console.log(data);
+    return {
+        type:'UPDATE_CAT',
+        payload:request
     }
 }
 
@@ -748,6 +619,39 @@ export function getSubcatByCat(catId) {
                         );
 return {
         type:'GET_SUBCAT_BY_CAT',
+        payload:request
+    }
+}
+
+
+export function addSubcat(subCat) {
+    const request = axios.post('/api/add-subcat', subCat)
+                        .then(response => response.data);
+    
+
+    return {
+        type: 'ADD_SUBCAT',
+        payload:request
+    }
+}
+
+
+export function deleteSubcat(id) {
+    const request = axios.delete(`/api/delete-subcat?id=${id}`)
+                        .then(response => response.data)
+    return {
+        type:'DELETE_SUBCAT',
+        payload:request
+    }
+}
+
+export function updateSubcat(data) {
+    console.log('updateSubcat called');
+    const request = axios.post(`/api/subcat-update`, data)
+                        .then(response => response.data);
+    // console.log(data);
+    return {
+        type:'UPDATE_SUBCAT',
         payload:request
     }
 }

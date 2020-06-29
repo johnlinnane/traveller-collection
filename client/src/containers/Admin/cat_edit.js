@@ -59,7 +59,7 @@ class CatEdit extends PureComponent {
         if (this.props !== prevProps ) {
 
             this.props.cats.map( cat => {
-                if (cat.cat_id == this.props.match.params.id) {
+                if (cat._id == this.props.match.params.id) {
                     this.setState({
                         catInfo: {...cat}
                     })
@@ -267,9 +267,9 @@ class CatEdit extends PureComponent {
                             
                                 <div>
                                     <h3>{this.state.catInfo.title}</h3>
-                                    <img src={`../images/cover_img_cat/${this.state.catInfo.cat_id}.jpg`}/>
+                                    <img src={`../images/cover_img_cat/${this.state.catInfo._id}.jpg`}/>
                                     <br/>
-                                    <input type="file" className="form-control" name="file" onChange={(e) => this.onChangeHandler(this.state.catInfo.cat_id, e)} />
+                                    <input type="file" className="form-control" name="file" onChange={(e) => this.onChangeHandler(this.state.catInfo._id, e)} />
                                     
                                 </div>
                         : null}

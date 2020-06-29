@@ -101,7 +101,7 @@ class EditItemFile extends PureComponent {
     }
 
 
-    // *************** UPDLOAD LOGIC ********************
+    // *************** UPLOAD LOGIC ********************
 
     onChangeHandler = (event) => {
 
@@ -173,7 +173,7 @@ class EditItemFile extends PureComponent {
         //define message container
         let err = ''
         // list allow mime type
-        const types = ['image/png', 'image/jpeg', 'image/gif', 'application/pdf']
+        const types = ['image/png', 'image/jpg', 'image/jpeg', 'image/gif', 'application/pdf', 'video/mp4', 'video/quicktime']
         // loop access array
         for(var x = 0; x<files.length; x++) {
          // compare file type find doesn't matach

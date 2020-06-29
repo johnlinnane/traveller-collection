@@ -25,8 +25,8 @@ const itemSchema = mongoose.Schema({
 
     collection_id: Number,
 
-    category_ref: [Number],
-    subcategory_ref: [Number], 
+    category_ref: [String],
+    subcategory_ref: [String], 
 
     item_format: String,
     materials: String,

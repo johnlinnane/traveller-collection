@@ -74,13 +74,7 @@ app.get('/api/logout', auth, (req, res) => {
 }) 
 
 
-// app.get('/api/getBook', (req,res) => {
-//     let id = req.query.id;
-//     Book.findById(id, (err, doc) => {
-//         if(err) return res.status(400).send(err);
-//         res.send(doc);
-//     })
-// })
+
 
 // * * * * * * * * * * * * * * * * * * * * getItemById
 app.get('/api/getItemById', (req,res) => {
@@ -118,19 +112,6 @@ app.get('/api/allItems', (req, res) => {
 })
 
 
-// // get multiple books
-// app.get('/api/books', (req,res) => {
-//     // query should look like this: localhost:3001/api.books/books?skip=3?limit=2&order=asc
-//     let skip = parseInt(req.query.skip);
-//     let limit = parseInt(req.query.limit);
-//     let order = req.query.order;
-
-//     // order  = asc || desc
-//     Book.find().skip(skip).sort({_id:order}).limit(limit).exec((err,doc) => {
-//         if(err) return res.status(400).send(err);
-//         res.send(doc);
-//     })
-// })
 
 
 
@@ -274,6 +255,7 @@ app.get('/api/getItemByColl', (req, res) => {
 app.get('/api/getItemsByCat', (req, res) => {
 
     let value = req.query.value;
+    console.log(value);
   
     Item.find({ category_ref:value }).exec( (err, docs) => {
         if(err) return res.status(400).send(err);
@@ -320,7 +302,7 @@ app.get('/api/getLatestItem', (req,res) => {
 app.get('/api/getSubcat', (req,res) => {
     let subcatId = req.query.subcatid;
 
-    SubCat.findOne({ subcat_id: subcatId}, {}, { sort: { '_id':1 } }, (err, doc) => {
+    SubCat.findOne({ _id: subcatId}, {}, { sort: { '_id':1 } }, (err, doc) => {
         if(err) return res.status(400).send(err);
         res.send(doc);
     })
@@ -368,7 +350,7 @@ app.get('/api/getSubcatByCat', (req,res) => {
 app.get('/api/getCatById', (req, res) => {
     let value = req.query.id;
   
-    Cat.findOne({ cat_id:value }).exec( (err, docs) => {
+    Cat.findOne({ _id:value }).exec( (err, docs) => {
         if(err) return res.status(400).send(err);
         res.send(docs);
     })
@@ -378,7 +360,7 @@ app.get('/api/getCatById', (req, res) => {
 app.get('/api/getSubcatById', (req, res) => {
     let value = req.query.id;
   
-    SubCat.find({ subcat_id:value }).exec( (err, docs) => {
+    SubCat.find({ _id:value }).exec( (err, docs) => {
         if(err) return res.status(400).send(err);
         res.send(docs);
     })
@@ -396,17 +378,6 @@ app.get('/api/getSubcatById', (req, res) => {
 // ********************* POST ****************************
 // *******************************************************
 
-// app.post('/api/book', (req, res) => {
-//     const book = new Book(req.body);             // req is the data you post
-
-//     book.save((err, doc)=>{                      // saves the new document
-//         if(err) return res.status(400).send(err);
-//         res.status(200).json({
-//             post:true,
-//             bookId:doc._id                       // gets the id from the post
-//         })
-//       })
-// })
 
 
 // * * * * * * * * * * * * * * * * * * * * post new item
@@ -469,7 +440,35 @@ app.post('/api/login', (req, res) => {
 });
 
 
+// * * * * * * * * * * * * * * * * * * * * post new category
+app.post('/api/add-cat', (req, res) => {
+    const cat = new Cat( req.body );             // req is the data you post
 
+    cat.save( (err, doc) =>{                      // saves the new document
+        // console.log(doc._id);
+        if(err) return res.status(400).send(doc);
+        res.status(200).json({
+            post:true,
+            catId:doc._id                       // gets the id from the post
+        })
+      })
+})
+
+
+
+// * * * * * * * * * * * * * * * * * * * * post new subcategory
+app.post('/api/add-subcat', (req, res) => {
+    const subcat = new SubCat( req.body );             // req is the data you post
+
+    subcat.save( (err, doc) =>{                      // saves the new document
+        // console.log(doc._id);
+        if(err) return res.status(400).send(doc);
+        res.status(200).json({
+            post:true,
+            catId:doc._id                       // gets the id from the post
+        })
+      })
+})
 
 
 
@@ -482,24 +481,39 @@ app.post('/api/login', (req, res) => {
 
 
 
-// app.post('/api/book_update', (req, res) => {
-//     // new:true allows upsert
-//     Book.findByIdAndUpdate(req.body._id, req.body, {new:true}, (err, doc) => {
-//         if(err) return res.status(400).send(err);
-//         res.json({
-//             success:true,
-//             doc
-//         });
-//     })
-// })
-
 
 
 // * * * * * * * * * * * * * * * * * * * * update item
 app.post('/api/item_update', (req, res) => {
-    // console.log(req.body)
     // new:true allows upsert
     Item.findByIdAndUpdate(req.body._id, req.body, {new:true}, (err, doc) => {
+        if(err) return res.status(400).send(err);
+        res.json({
+            success:true,
+            doc
+        });
+    })
+})
+
+
+
+// * * * * * * * * * * * * * * * * * * * * update cat
+app.post('/api/cat-update', (req, res) => {
+    // new:true allows upsert
+    Cat.findByIdAndUpdate(req.body._id, req.body, {new:true}, (err, doc) => {
+        if(err) return res.status(400).send(err);
+        res.json({
+            success:true,
+            doc
+        });
+    })
+})
+
+
+// * * * * * * * * * * * * * * * * * * * * update subcat
+app.post('/api/subcat-update', (req, res) => {
+    // new:true allows upsert
+    SubCat.findByIdAndUpdate(req.body._id, req.body, {new:true}, (err, doc) => {
         if(err) return res.status(400).send(err);
         res.json({
             success:true,
@@ -516,20 +530,34 @@ app.post('/api/item_update', (req, res) => {
 
 
 
-// app.delete('/api/delete_book', (req, res) => {
-//     let id = req.query.id;
-
-//     Book.findByIdAndRemove(id, (err, doc) => {
-//         if(err) return res.status(400).send(err);
-//         res.json(true);
-//     })
-// })
 
 // * * * * * * * * * * * * * * * * * * * *  delete item
 app.delete('/api/delete_item', (req, res) => {
     let id = req.query.id;
 
     Item.findByIdAndRemove(id, (err, doc) => {
+        if(err) return res.status(400).send(err);
+        res.json(true);
+    })
+})
+
+
+// * * * * * * * * * * * * * * * * * * * *  delete cat
+app.delete('/api/delete-cat', (req, res) => {
+    let id = req.query.id;
+
+    Cat.findByIdAndRemove(id, (err, doc) => {
+        if(err) return res.status(400).send(err);
+        res.json(true);
+    })
+})
+
+
+// * * * * * * * * * * * * * * * * * * * *  delete subcat
+app.delete('/api/delete-subcat', (req, res) => {
+    let id = req.query.id;
+
+    SubCat.findByIdAndRemove(id, (err, doc) => {
         if(err) return res.status(400).send(err);
         res.json(true);
     })

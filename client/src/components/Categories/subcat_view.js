@@ -48,9 +48,9 @@ class SubcatView  extends Component {
 
             if (this.props.catinfo && this.props.subcat) {
                 this.navInfo.catTitle = this.props.catinfo.title;
-                this.navInfo.catId = this.props.catinfo.cat_id;
+                this.navInfo.catId = this.props.catinfo._id;
                 this.navInfo.subCatTitle = this.props.subcat.title;
-                this.navInfo.subCatId = this.props.subcat.subcat_id;
+                this.navInfo.subCatId = this.props.subcat._id;
             }
         }
     }
@@ -100,6 +100,11 @@ class SubcatView  extends Component {
                             <h2 className="title">{this.props.subcat.title}</h2>
                         : null}
 
+                        { this.props.subcat && this.props.subcat.description ?
+                            <p className="description">{this.props.subcat.description}</p>
+                        : null}
+
+                        <hr />
 
                         { this.props.subcatitems && this.props.subcatitems.length ?
                             this.renderItems()

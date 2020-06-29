@@ -190,7 +190,7 @@ class CatView  extends Component {
     getCatName = () => {
         if (this.props.catinfo && this.props.catinfo.length) {
             this.navInfo.catTitle = this.props.catinfo[0].title;
-            this.navInfo.catId = this.props.catinfo[0].cat_id;
+            this.navInfo.catId = this.props.catinfo[0]._id;
         }
     }
 

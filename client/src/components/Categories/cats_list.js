@@ -46,7 +46,7 @@ class CatList extends Component {
             catsMap = cats.map( (cat, i) => {
                 // console.log(item);
                 return (
-                    <Link key={cat._id} to={`/category/${cat.cat_id}`}>
+                    <Link key={cat._id} to={`/category/${cat._id}`}>
                         <CatItem cat={cat}/>
                     </Link>
 

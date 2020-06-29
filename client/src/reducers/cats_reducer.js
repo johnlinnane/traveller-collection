@@ -47,10 +47,45 @@ export default function(state={}, action) {
                 subcat: action.payload
             }
         case 'GET_SUBCAT_BY_CAT':
-            console.log(action.payload);
+            // console.log(action.payload);
             return {
                 ...state,
                 subcatsbycat: action.payload
+            }
+
+        case 'ADD_CAT':
+            // console.log(action.payload);
+            return {
+                ...state,
+                newcat: action.payload
+            }
+        case 'DELETE_CAT':
+            return {
+                ...state,
+                catDeleted:action.payload
+            }
+        case 'ADD_SUBCAT':
+            // console.log(action.payload);
+            return {
+                ...state,
+                newsubcat: action.payload
+            }
+        case 'DELETE_SUBCAT':
+            return {
+                ...state,
+                subcatDeleted:action.payload
+            }
+        case 'UPDATE_CAT':
+            return {
+                ...state,
+                updateCat:action.payload.success,  // for update message
+                cat:action.payload.doc
+            }
+        case 'UPDATE_SUBCAT':
+            return {
+                ...state,
+                updateSubcat:action.payload.success,  // for update message
+                subcat:action.payload.doc
             }
 
 
