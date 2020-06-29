@@ -119,7 +119,7 @@ class AdminCat extends Component {
                     toast.error('upload fail')
                 })
         }
-        this.redirectUser(`/items/${this.props.items.item._id}`)
+        // this.redirectUser(`/items/${this.props.items.item._id}`)
 
 
     }
@@ -355,7 +355,7 @@ class AdminCat extends Component {
     render() {
 
 
-        // console.log(this.state)
+        console.log(this.props)
         return (
             <div className="admin">
                 { this.props.chosenCatInfo ? 

@@ -273,17 +273,22 @@ class ItemView extends Component {
                         : null }
 
                         
+                        { items.item && items.item._id && items.item.number_files == 1 ? 
+                            <p>Image</p>
+                        : null }
 
-                  
 
 
-
-                        { items.item && items.item._id && items.item.number_files == 1 && items.item.file_format !== 'mp4' && items.item.file_format !== 'pdf' ?
-                            <div className="item_img">
-                                <img src={`/images/items/${items.item._id}/original/0.jpg`} 
-                                className="item_main_img"
-                                alt="Item" 
-                                onError={i => i.target.style.display='none'}/>
+                        { items.item && items.item._id  && items.item.file_format !== 'mp4' && items.item.file_format !== 'pdf' ?
+                            <div>
+                                { items.item.number_files == null || items.item.number_files < 2 ?
+                                    <div className="item_img">
+                                        <img src={`/images/items/${items.item._id}/original/0.jpg`} 
+                                        className="item_main_img"
+                                        alt="Item" 
+                                        onError={i => i.target.style.display='none'}/>
+                                    </div>
+                                : null }
                             </div>
                         : null}
 
