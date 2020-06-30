@@ -99,8 +99,8 @@ class AdminCat extends Component {
                 data.append('file', this.state.selectedFile[x])
             }
 
-
-                axios.post(`http://localhost:8000/upload-cat/${this.props.chosenCatInfo._id}`, data, { 
+            //  axios.post(`http://localhost:8000/upload-cat/${this.props.chosenCatInfo._id}`, data, { 
+                axios.post(`http://64.225.34.134:8000/upload-cat/${this.props.chosenCatInfo._id}`, data, { 
                     // receive two parameter endpoint url ,form data 
                     onUploadProgress: ProgressEvent => {
                         this.setState({
