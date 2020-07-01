@@ -273,9 +273,7 @@ class ItemView extends Component {
                         : null }
 
                         
-                        { items.item && items.item._id && items.item.number_files == 1 ? 
-                            <p>Image</p>
-                        : null }
+                        
 
 
 
@@ -301,9 +299,16 @@ class ItemView extends Component {
 
                         
                         {items.item.creator ?
-                            <h5 className="item_field item_creator"><span>Creator </span>{items.item.creator}</h5>
+                            <div className="item_field item_creator item_review"><p><b>Creator </b></p><h5>{items.item.creator}</h5></div>
                         : null }
 
+
+
+                        {/* <div className="item_field link_blue">
+                            <p><b>{text}</b></p>
+                            
+                            <span dangerouslySetInnerHTML={{__html:  ref}}></span>
+                        </div> */}
                         
                         <div className="item_reviewer ">
                             <span className="item_field">

@@ -550,7 +550,7 @@ header .navItem span {
 .item_container .item_header {
     border-bottom: 1px solid #e1e1e1;
     margin-bottom: 20px;
-    text-align: center;
+    /* text-align: center; */
 }
 
 .item_container .item_header h2{
@@ -634,12 +634,12 @@ header .navItem span {
 }
 
 .item_container .item_main_img {
-    width: 80%;
+    width: 90%;
     box-shadow: 20px 11px 21px 6px rgba(0,0,0,0.1);
 }
 
 .item_container .item_img {
-    text-align: center;
+    /* text-align: center; */
 }
 
 .item_field {
@@ -1113,7 +1113,10 @@ header .navItem span {
 }
 
 
-
+.edit_main_img {
+    width: 90%;
+    box-shadow: 20px 11px 21px 6px rgba(0,0,0,0.1);
+}
 
 /*=============================
             SEARCH

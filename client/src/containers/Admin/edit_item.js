@@ -298,7 +298,11 @@ class EditItem extends PureComponent {
                 
                 <h2>Edit item:</h2>
                 <div className="item_container">
-                    <img src={`/images/items/${items.item._id}/original/0.jpg`} alt="Item" onError={this.addDefaultImg}/>
+                    <img src={`/images/items/${items.item._id}/original/0.jpg`} 
+                        alt="Item" 
+                        onError={this.addDefaultImg}
+                        className="edit_main_img"
+                    />
                 </div>
 
                 <table>
