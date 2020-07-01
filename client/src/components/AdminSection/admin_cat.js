@@ -421,87 +421,94 @@ class AdminCat extends Component {
 
                                 { this.state.formdata.subcats.length ?
                                     this.state.formdata.subcats.map( (subcat, i) => (
-                                        
-                                                subcat.parent_cat == this.props.chosenCatInfo._id ? 
-                                                    <tr key={i}>
-                                                        <td>
+                                        subcat.parent_cat == this.props.chosenCatInfo._id ? 
+                                            <tr key={i}>
+                                                <td>
+                                                    <input
+                                                        type="text"
+                                                        placeholder={subcat.title}
+                                                        defaultValue={subcat.title} 
+                                                        onChange={(event) => this.handleInput(event, 'subcat', 'title', subcat._id)}
+                                                    />
+                                                </td>
 
-                                                            <input
-                                                                type="text"
-                                                                placeholder={subcat.title}
-                                                                defaultValue={subcat.title} 
-                                                                onChange={(event) => this.handleInput(event, 'subcat', 'title', subcat._id)}
-                                                            />
+                                                <td>
+                                                    <input
+                                                        type="text"
+                                                        placeholder="Description"
+                                                        defaultValue={subcat.description} 
+                                                        onChange={(event) => this.handleInput(event, 'subcat', 'description', subcat._id)}
+                                                    />
+                                                </td>
 
-
-
-
-                                                        </td>
-
-                                                        <td>
-                                                            <input
-                                                                type="text"
-                                                                placeholder="Description"
-                                                                defaultValue={subcat.description} 
-                                                                onChange={(event) => this.handleInput(event, 'subcat', 'description', subcat._id)}
-                                                            />
-                                                        </td>
-                                                        <td>
-                                                            <button 
-                                                                type="button" 
-                                                                onClick={(e) => { if (window.confirm('Are you sure you want to remove this subcategory?')) this.deleteSubcat(e, subcat._id) } 
-                                                            }>  
-                                                                Remove
-                                                            </button>
-
-                                                        </td>
-                                                    </tr>
-                                                
-                                                : null 
-                                            
-                                        
+                                                <td>
+                                                    <button 
+                                                        type="button" 
+                                                        onClick={(e) => { if (window.confirm('Are you sure you want to remove this subcategory?')) this.deleteSubcat(e, subcat._id) } }
+                                                        className="remove"
+                                                    >  
+                                                        Remove
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        : null 
                                     ) )    
                                 : null }
+
                                 <tr >
-                                                        <td>
+                                    <td>
 
-                                                            <input
-                                                                type="text"
-                                                                placeholder="Add new subcategory"
-                                                                defaultValue={null} 
-                                                                onChange={(event) => this.handleInput(event, 'add_subcat', 'subcat_title')}
-                                                            />
+                                        <input
+                                            type="text"
+                                            placeholder="Add new subcategory"
+                                            defaultValue={null} 
+                                            onChange={(event) => this.handleInput(event, 'add_subcat', 'subcat_title')}
+                                        />
+                                    </td>
+
+                                    <td>
+                                        <input
+                                            type="text"
+                                            placeholder="Description"
+                                            defaultValue={null} 
+                                            onChange={(event) => this.handleInput(event, 'add_subcat', 'subcat_desc')}
+                                        />
+                                    </td>
+                                </tr>
+
+                                <tr className="spacer"></tr>
+
+                                <tr>
+                                    <td colSpan="2">
+                                        <button type="button" 
+                                            className="delete" 
+                                            onClick={(e) => { if (window.confirm('Are you sure you wish to delete this category?')) this.deleteCat(e, this.props.chosenCatInfo._id) } }
+                                        >
+                                            Delete Category
+                                        </button>
+
+                                    </td>
+                                </tr>
+
+                                <tr className="spacer"></tr>
+
+                                <tr>
+                                    <td>
+                                        <button type="submit">Save Changes</button>
+                                    </td>
+
+                                    <td>
+                                        <button type="button" onClick={this.cancel}>Cancel</button>
+                                    </td>
+                                    
+                                </tr>
+
+                                <tr className="spacer"></tr>
 
 
-
-
-                                                        </td>
-
-                                                        <td>
-                                                            <input
-                                                                type="text"
-                                                                placeholder="Description"
-                                                                defaultValue={null} 
-                                                                onChange={(event) => this.handleInput(event, 'add_subcat', 'subcat_desc')}
-                                                            />
-                                                        </td>
-
-
-                                                        {/* <td>
-                                                            <button type="button" onClick={this.addSubcat}>+</button>
-
-                                                        </td> */}
-                                                    </tr>
                             </tbody>
                             </table>
-                            <button type="button" 
-                                className="delete" 
-                                onClick={(e) => { if (window.confirm('Are you sure you wish to delete this category?')) this.deleteCat(e, this.props.chosenCatInfo._id) } }
-                            >
-                                Delete Category
-                            </button>
-                            <button type="button" onClick={this.cancel}>Cancel</button>
-                            <button type="submit">Save Changes</button>
+                            
                         </form>
                         
                     </div>
