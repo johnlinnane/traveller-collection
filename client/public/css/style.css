@@ -1305,3 +1305,10 @@ header .navItem span {
     width: 100px;
     padding: 10px 10px;
 }
+
+
+/* INTRO */
+
+.admin_intro {
+    text-align: left;
+}

@@ -24,6 +24,7 @@ const { Item } = require('./models/item');
 const { Collection } = require('./models/collection');
 const { Cat } = require('./models/cat');
 const { SubCat } = require('./models/subcat');
+const { Intro } = require('./models/intro');
 
 
 
@@ -366,9 +367,15 @@ app.get('/api/getSubcatById', (req, res) => {
     })
 })
 
+// ******************** get intro text
 
+app.get('/api/getIntroText', (req,res) => {
 
-
+    Intro.findOne({}, {}, { sort: { '_id':1 } }, (err, doc) => {
+        if(err) return res.status(400).send(err);
+        res.send(doc);
+    })
+})
 
 
 
@@ -522,6 +529,40 @@ app.post('/api/subcat-update', (req, res) => {
     })
 })
 
+
+
+// * * * * * * * * * * * * * * * * * * * * update intro text
+app.post('/api/update-intro-text', (req, res) => {
+    // new:true allows upsert
+
+    // console.log(req.body);
+
+    Intro.findOneAndUpdate({}, req.body, { sort: { '_id':1 } }, (err, doc) => {
+        if(err) return res.status(400).send(err);
+        res.json({
+            success:true,
+            doc
+        });
+    })
+})
+
+
+
+// Item.findOne({}, {}, { sort: { '_id':-1 } }, (err, doc) => {
+//     if(err) return res.status(400).send(err);
+//     res.send(doc);
+// })
+
+
+// Cat.findByIdAndUpdate(req.body._id, req.body, {new:true}, (err, doc) => {
+//     if(err) return res.status(400).send(err);
+//     res.json({
+//         success:true,
+//         doc
+//     });
+// })
+
+// Model.findOneAndUpdate(query, { name: 'jason bourne' }, options, callback)
 
 
 // ****************************************************************

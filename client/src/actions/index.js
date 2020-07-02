@@ -655,3 +655,34 @@ export function updateSubcat(data) {
         payload:request
     }
 }
+
+
+// ******************** INTRO ACTIONS ********************
+
+
+
+export function updateIntroText(data) {
+    console.log('updateIntroText called');
+    const request = axios.post(`/api/update-intro-text`, data)
+                        .then(response => response.data);
+    // console.log(data);
+    return {
+        type:'UPDATE_INTRO_TEXT',
+        payload:request
+    }
+}
+
+
+export function getIntroText() {
+    console.log('getIntroText called')
+    const request = axios.get(`/api/getIntroText`)
+        .then(response => {
+                return response.data
+            }    
+        );
+    console.log(request);
+    return {
+        type: 'GET_INTRO_TEXT',
+        payload: request
+    }
+}

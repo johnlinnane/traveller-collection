@@ -6,6 +6,7 @@ import 'react-tabs/style/react-tabs.css';
  
 import { getAllColls, getAllCats, getAllSubCats  } from '../../actions';
 import AdminCat from './admin_cat';
+import AdminIntro from './admin_intro';
 
 
 class Admin extends React.Component  {
@@ -16,7 +17,7 @@ class Admin extends React.Component  {
         this.props.dispatch(getAllSubCats());
     }
     
- 
+    
 
 
     render() {
@@ -32,7 +33,7 @@ class Admin extends React.Component  {
 
                     <TabList>
                         <Tab>Categories</Tab>
-                        <Tab>Info Page</Tab>
+                        <Tab disabled>Info Page</Tab>
                         <Tab>Intro Page</Tab>
                         {/* <Tab disabled>Extra</Tab> */}
                     </TabList>
@@ -70,16 +71,11 @@ class Admin extends React.Component  {
 
                         </Tabs>
 
-
-
-                    
-
-                       
-
-                       
-
                     </TabPanel>
 
+
+
+                    {/******** INFO ***********/}
 
                     <TabPanel>
                         <p>
@@ -121,20 +117,12 @@ class Admin extends React.Component  {
                     </TabPanel>
 
 
+
+                    {/******** INTRO ***********/}
+
+
                     <TabPanel>
-                        <p>
-                            <b>Intro Page</b> 
-                        </p>
-
-                        <textarea
-                            type="text"
-                            placeholder="Text"
-                            defaultValue={null} 
-                            onChange={(event) => this.handleInput(event)}
-                            rows={6}
-                        />
-
-                        <p>Choose Image</p>
+                        <AdminIntro />
                     </TabPanel>
 
 
