@@ -1312,3 +1312,41 @@ header .navItem span {
 .admin_intro {
     text-align: left;
 }
+
+
+/* INFO */
+
+.admin_info {
+    text-align: left;
+}
+
+.admin_info img {
+    width:250px
+}
+
+
+/*=============================
+            INFO
+===============================*/
+
+.info_page img {
+    width: 150px;
+    float: left;
+    padding-right: 25px;
+}
+
+
+.info_section {
+    float: left;
+    padding-bottom: 30px;
+}
+
+.info_section .para {
+}
+
+.info_heading {
+
+}
+.img_and_para {
+
+}

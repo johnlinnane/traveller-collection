@@ -7,6 +7,7 @@ import 'react-tabs/style/react-tabs.css';
 import { getAllColls, getAllCats, getAllSubCats  } from '../../actions';
 import AdminCat from './admin_cat';
 import AdminIntro from './admin_intro';
+import AdminInfo from './admin_info';
 
 
 class Admin extends React.Component  {
@@ -33,7 +34,7 @@ class Admin extends React.Component  {
 
                     <TabList>
                         <Tab>Categories</Tab>
-                        <Tab disabled>Info Page</Tab>
+                        <Tab>Info Page</Tab>
                         <Tab>Intro Page</Tab>
                         {/* <Tab disabled>Extra</Tab> */}
                     </TabList>
@@ -78,42 +79,8 @@ class Admin extends React.Component  {
                     {/******** INFO ***********/}
 
                     <TabPanel>
-                        <p>
-                            <b>Info Page</b> 
-                        </p>
-                        <input
-                            type="text"
-                            placeholder="Paragraph 1 Heading"
-                            defaultValue={null} 
-                            onChange={(event) => this.handleInput(event)}
-                        />
-                        <br />
-                        <textarea
-                            type="text"
-                            placeholder="Paragraph 1 Content"
-                            defaultValue={null} 
-                            onChange={(event) => this.handleInput(event)}
-                            rows={6}
-                        />
-
-                        <p>Paragraph 1 Image</p>
-
-                        <input
-                            type="text"
-                            placeholder="Paragraph 2 Heading"
-                            defaultValue={null} 
-                            onChange={(event) => this.handleInput(event)}
-                        />
-                        <br />
-                        <textarea
-                            type="text"
-                            placeholder="Paragraph 2 Content"
-                            defaultValue={null} 
-                            onChange={(event) => this.handleInput(event)}
-                            rows={6}
-                        />
-                        <p>Paragraph 2 Image</p>
-                      
+                        
+                        <AdminInfo />
                     </TabPanel>
 
 

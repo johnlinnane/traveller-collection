@@ -65,26 +65,27 @@ class AdminIntro extends Component {
             for(var x = 0; x<this.state.selectedFile.length; x++) {
                 data.append('file', this.state.selectedFile[x])
             }
-
-            //  axios.post(`http://localhost:8000/upload-intro-img`, data, { 
-                axios.post(`http://64.227.34.134:8000/upload-intro-img`, data, { 
-                    // receive two parameter endpoint url ,form data 
-                    onUploadProgress: ProgressEvent => {
-                        this.setState({
-                            loaded: (ProgressEvent.loaded / ProgressEvent.total*100)
-                        })
-                    }
-                })
-                .then(res => { // then print response status
-                    // console.log(res.config.data.id);
-                    // console.log(res.statusText);
-                    console.log(res);
-                    toast.success('upload success')
-                    alert('Files uploaded successfully')
-                })
-                .catch(err => { 
-                    toast.error('upload fail')
-                })
+            
+            // HOST-SELECT
+            // axios.post(`http://localhost:8000/upload-intro-img`, data, { 
+            axios.post(`http://64.227.34.134:8000/upload-intro-img`, data, { 
+                // receive two parameter endpoint url ,form data 
+                onUploadProgress: ProgressEvent => {
+                    this.setState({
+                        loaded: (ProgressEvent.loaded / ProgressEvent.total*100)
+                    })
+                }
+            })
+            .then(res => { // then print response status
+                // console.log(res.config.data.id);
+                // console.log(res.statusText);
+                console.log(res);
+                toast.success('upload success')
+                alert('Files uploaded successfully')
+            })
+            .catch(err => { 
+                toast.error('upload fail')
+            })
         }
         // this.redirectUser(`/items/${this.props.items.item._id}`)
 

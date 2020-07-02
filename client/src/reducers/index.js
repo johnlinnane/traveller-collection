@@ -6,6 +6,7 @@ import items from './items_reducer';
 import collections from './colls_reducer';
 import cats from './cats_reducer';
 import intros from './intros_reducer';
+import infos from './infos_reducer';
 
 
 
@@ -17,7 +18,8 @@ const rootReducer = combineReducers({
     items,
     collections,
     cats,
-    intros
+    intros,
+    infos
 });
 
 

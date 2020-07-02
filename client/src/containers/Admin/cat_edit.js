@@ -139,26 +139,26 @@ class CatEdit extends PureComponent {
                 data.append('file', this.state.selectedFile[x])
             }
 
-
-                // axios.post(`http://localhost:8000/upload-cat/${this.props.match.params.id}`, data, { 
-                    axios.post(`http://64.227.34.134:8000/upload-cat/${this.props.match.params.id}`, data, { 
-                    // receive two parameter endpoint url ,form data 
-                    onUploadProgress: ProgressEvent => {
-                        this.setState({
-                            loaded: (ProgressEvent.loaded / ProgressEvent.total*100)
-                        })
-                    }
-                })
-                .then(res => { // then print response status
-                    // console.log(res.config.data.id);
-                    // console.log(res.statusText);
-                    console.log(res);
-                    toast.success('upload success')
-                    alert('Files uploaded successfully')
-                })
-                .catch(err => { 
-                    toast.error('upload fail')
-                })
+            // HOST-SELECT
+            // axios.post(`http://localhost:8000/upload-cat/${this.props.match.params.id}`, data, { 
+            axios.post(`http://64.227.34.134:8000/upload-cat/${this.props.match.params.id}`, data, { 
+                // receive two parameter endpoint url ,form data 
+                onUploadProgress: ProgressEvent => {
+                    this.setState({
+                        loaded: (ProgressEvent.loaded / ProgressEvent.total*100)
+                    })
+                }
+            })
+            .then(res => { // then print response status
+                // console.log(res.config.data.id);
+                // console.log(res.statusText);
+                console.log(res);
+                toast.success('upload success')
+                alert('Files uploaded successfully')
+            })
+            .catch(err => { 
+                toast.error('upload fail')
+            })
         }
         this.redirectUser(`/category/${this.props.match.params.id}`)
 

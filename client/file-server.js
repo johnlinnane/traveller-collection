@@ -159,6 +159,41 @@ app.post(
 
 });
 
+// *********************** INFORMATION IMAGE ************************
+
+app.post(
+    '/upload-info/:number',
+    function(req, res) {
+        
+        let number = req.params.number;
+        console.log(req.file);
+
+     
+        multer({ storage: multer.diskStorage({
+            destination: function (req, file, cb) {
+
+                var dest = `./public/images/info`;
+                mkdirp.sync(dest);
+                cb(null, dest)
+                
+            },
+            filename: function (req, file, cb) {
+                cb(null, `${number}.jpg` );
+            }
+        }) }).single('file')(req, res, function (err) {
+            
+            if (err instanceof multer.MulterError) {
+                return res.status(500).json(err)
+            } else if (err) {
+                return res.status(500).json(err)
+            }
+
+        return res.status(200).send(req.file)
+    })
+
+});
+
+// ***********************************************************************
 
 
 const port = 8000;
@@ -168,3 +203,5 @@ app.listen(port, function() {
     console.log(`FILE-SERVER RUNNING : port ${port}`);
 
 });
+
+

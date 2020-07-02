@@ -686,3 +686,35 @@ export function getIntroText() {
         payload: request
     }
 }
+
+
+
+// ******************** INFO ACTIONS ********************
+
+
+
+export function updateInfoText(data) {
+    console.log('updateInfoText called');
+    const request = axios.post(`/api/update-info-text`, data)
+                        .then(response => response.data);
+    // console.log(data);
+    return {
+        type:'UPDATE_INFO_TEXT',
+        payload:request
+    }
+}
+
+
+export function getInfoText() {
+    // console.log('getInfoText called')
+    const request = axios.get(`/api/getInfoText`)
+        .then(response => {
+                return response.data
+            }    
+        );
+    // console.log(request);
+    return {
+        type: 'GET_INFO_TEXT',
+        payload: request
+    }
+}
