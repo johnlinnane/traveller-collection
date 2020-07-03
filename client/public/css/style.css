@@ -381,14 +381,14 @@ header .navItem span {
     width: 260px;
 }
 .rl_container.article input {
-    width: 80%;
+    width: 100%;
 }
 
 .rl_container.article textarea {
     background: #f7f7f7;
     border: 1px solid #ebebeb;
     border-radius: 3px;
-    width: 80%;
+    width: 100%;
     padding: 20px;
     box-sizing: border-box;
     margin-top: 20px;
@@ -403,7 +403,7 @@ header .navItem span {
 }
 
 .select {
-    width: 80%;
+    width: 100%;
 }
 
 .rl_container button {
@@ -418,7 +418,7 @@ header .navItem span {
     width: 260px;
 }
 .rl_container.article button {
-    width: 85%;
+    width: 100%;
 }
 
 .rl_container .conf_link {
@@ -1108,7 +1108,7 @@ header .navItem span {
 }
 
 .edit_page hr {
-    width: 85%;
+    width: 100%;
     margin: 0px;
 }
 
@@ -1117,6 +1117,30 @@ header .navItem span {
     width: 90%;
     box-shadow: 20px 11px 21px 6px rgba(0,0,0,0.1);
 }
+
+
+
+.edit_page .half_width button {
+    width: 48% !important;
+    /* margin: 5px; */
+} 
+
+.edit_page .half_width_l {
+    margin-right: 2%;
+}
+
+.edit_page .half_width_r {
+    margin-left: 2%;
+}
+
+.edit_page_2_save {
+    width: 60% !important;
+}
+
+.edit_page_3_finish {
+    width: 60% !important;
+}
+
 
 /*=============================
             SEARCH
@@ -1185,6 +1209,7 @@ header .navItem span {
 
 /* rl_container -> admin classes */
 
+/******** CAT */
 
 
 .admin {
@@ -1234,9 +1259,7 @@ header .navItem span {
     border: 1px solid #e1e1e1;
 }
 
-.select {
-    width: 80%;
-}
+
 
 .admin button {
     font-size: 15px;
@@ -1306,15 +1329,37 @@ header .navItem span {
     padding: 10px 10px;
 }
 
+.admin i {
+    cursor: pointer;
+}
 
-/* INTRO */
+.admin .tooltip {
+    position: relative;
+    display: inline-block;
+}
+  
+.admin .tooltiptext {
+    visibility: hidden;
+    padding-left: 15px;
+    position: absolute;
+    z-index: 1;
+}
+  
+.admin .tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+
+
+/******** INTRO */
 
 .admin_intro {
     text-align: left;
 }
 
 
-/* INFO */
+
+
+/******** INFO */
 
 .admin_info {
     text-align: left;
@@ -1323,6 +1368,9 @@ header .navItem span {
 .admin_info img {
     width:250px
 }
+
+
+
 
 
 /*=============================

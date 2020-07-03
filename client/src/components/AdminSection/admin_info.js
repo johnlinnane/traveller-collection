@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
+import { withRouter } from "react-router-dom";
+
 
 
 import { getInfoText, updateInfoText } from '../../actions';
@@ -82,8 +84,8 @@ class AdminInfo extends Component {
             }
 
             // HOST-SELECT
-            // axios.post(`http://localhost:8000/upload-info/${number}`, data, {
-            axios.post(`http://64.227.34.134:8000/upload-info/${number}`, data, { 
+            axios.post(`http://localhost:8000/upload-info/${number}`, data, {
+            // axios.post(`http://64.227.34.134:8000/upload-info/${number}`, data, { 
                 // receive two parameter endpoint url ,form data 
                 onUploadProgress: ProgressEvent => {
                     this.setState({
@@ -177,6 +179,9 @@ class AdminInfo extends Component {
         }  
     }
 
+    cancel = () => {
+        this.props.history.push(`/admin`)
+    }
 
 
     render() {
@@ -192,7 +197,7 @@ class AdminInfo extends Component {
             <div className="admin">
                 <div className="admin_info">
 
-                    <h1>Change the info about the info page</h1>
+                    <h1>Edit Info Page</h1>
 
 
                     <form onSubmit={this.submitForm}>
@@ -397,8 +402,22 @@ class AdminInfo extends Component {
                                     </div>
                                 </td>
                             </tr>
+                            
 
-                  
+                            <tr>
+                                <td colSpan="2"><hr/></td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <button type="submit">Save Changes</button>
+                                </td>
+
+                                <td>
+                                    <button type="button" onClick={this.cancel}>Cancel</button>
+                                </td>
+                                
+                            </tr>                  
 
 
                         </tbody>
@@ -422,4 +441,7 @@ function mapStateToProps(state) {
 }
 
 
-export default connect(mapStateToProps)(AdminInfo)
+export default withRouter(connect(mapStateToProps)(AdminInfo));
+
+
+

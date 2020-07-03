@@ -12,6 +12,12 @@ import AdminInfo from './admin_info';
 
 class Admin extends React.Component  {
     
+
+    state = {
+        tabIndexTop: 0,
+        tabIndexSide: 0
+    }
+
     componentDidMount() {
         this.props.dispatch(getAllColls())
         this.props.dispatch(getAllCats());
@@ -27,7 +33,7 @@ class Admin extends React.Component  {
 
         return (
             <div className="main_view admin_view">
-                <Tabs >
+                <Tabs selectedIndex={this.state.tabIndexTop} onSelect={tabIndexTop => this.setState({ tabIndexTop })}>
                     
 
                     {/******** TOP TABS ***********/}
@@ -50,7 +56,10 @@ class Admin extends React.Component  {
 
                         {/******** SIDE TABS ***********/}
 
-                        <Tabs  defaultIndex={0} className="vert_tab">
+                        <Tabs className="vert_tab" 
+                            selectedIndex={this.state.tabIndexSide} 
+                            onSelect={tabIndexSide => this.setState({ tabIndexSide })}
+                        >
                             {this.props.cats ?
                                 <TabList className="vert_tab_list">
                                     {this.props.cats.map( (cat, i) => (
@@ -91,13 +100,6 @@ class Admin extends React.Component  {
                     <TabPanel>
                         <AdminIntro />
                     </TabPanel>
-
-
-                    {/* <TabPanel>
-                    <p>
-                            <b>Toad</b> 
-                        </p>
-                    </TabPanel> */}
 
 
             

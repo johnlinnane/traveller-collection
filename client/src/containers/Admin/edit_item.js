@@ -211,6 +211,9 @@ class EditItem extends PureComponent {
         }, 1000)
     }
 
+    cancel = () => {
+        this.props.history.push(`/items/${this.props.match.params.id}`)
+    }
 
 
 
@@ -399,11 +402,7 @@ class EditItem extends PureComponent {
 
                     {this.createTextInput(items.item.contributor,'contributor', "Add your name here", "Contributor")}
 
-                    <tr>
-                        <td colSpan="2">
-                            <button type="submit">Save and Continue</button>
-                        </td>
-                    </tr>
+                    
 
                     <tr>
                         <td colSpan="2">
@@ -417,6 +416,17 @@ class EditItem extends PureComponent {
                             </button>
                         </td>
                     </tr>
+
+
+                    <tr className="half_width">
+                        <td colSpan="2" >
+                       
+                            <button type="button" className="half_width_l" onClick={this.cancel}>Cancel</button>
+                            <button type="submit" className="half_width_r">Save and Continue</button>
+
+                        </td>
+                        
+                    </tr>  
 
 
                 </tbody>

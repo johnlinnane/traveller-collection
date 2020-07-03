@@ -126,8 +126,8 @@ class EditItemFile extends PureComponent {
             }
 
             // HOST-SELECT
-            // axios.post(`http://localhost:8000/upload/${this.state.formdata._id}`, data, { 
-            axios.post(`http://64.227.34.134:8000/upload/${this.state.formdata._id}`, data, { 
+            axios.post(`http://localhost:8000/upload/${this.state.formdata._id}`, data, { 
+            // axios.post(`http://64.227.34.134:8000/upload/${this.state.formdata._id}`, data, { 
                 // receive two parameter endpoint url ,form data 
                 onUploadProgress: ProgressEvent => {
                     this.setState({
@@ -247,7 +247,9 @@ class EditItemFile extends PureComponent {
 
                     <div className="form_element">
                         <input type="file" className="form-control" multiple name="file" onChange={this.onChangeHandler}/>
-                        <button type="button" className="btn btn-success btn-block" onClick={this.onClickHandler}>Finish</button> 
+                        <div className="center">
+                            <button type="button" className="btn btn-success btn-block edit_page_3_finish" onClick={this.onClickHandler}>Upload Files and Finish</button> 
+                        </div>
                     </div>
 
 

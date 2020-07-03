@@ -537,9 +537,9 @@ class EditItemSel extends PureComponent {
                             : null }
 
                                 <tr>
-                                    <td></td>
-                                    <td>
-                                        <button type="submit">Save and Continue</button>
+                                    
+                                    <td colSpan="2" className="center">
+                                        <button type="submit" className="edit_page_2_save">Save and Continue</button>
                                     </td>
                                 </tr>
                             
