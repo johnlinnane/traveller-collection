@@ -8,6 +8,7 @@ import { getAllColls, getAllCats, getAllSubCats  } from '../../actions';
 import AdminCat from './admin_cat';
 import AdminIntro from './admin_intro';
 import AdminInfo from './admin_info';
+import AdminAddCat from './admin_add_cat';
 
 
 class Admin extends React.Component  {
@@ -65,6 +66,7 @@ class Admin extends React.Component  {
                                     {this.props.cats.map( (cat, i) => (
                                         <Tab key={i}>{cat.title}</Tab>
                                     ))}
+                                    <Tab  className="add_cat_tab">Add Category</Tab>
                                 </TabList>
                             : null }
 
@@ -78,6 +80,10 @@ class Admin extends React.Component  {
                                     </TabPanel>
                                 ))
                             : null }
+
+                            <TabPanel>
+                                <AdminAddCat />
+                            </TabPanel>
 
                         </Tabs>
 

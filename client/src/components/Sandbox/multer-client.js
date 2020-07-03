@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from "react-router-dom";
 import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
+// import { ToastContainer, toast } from 'react-toastify';
 
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import 'react-tabs/style/react-tabs.css';
+// import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+// import 'react-tabs/style/react-tabs.css';
 
-import { getAllColls, getAllCats, getAllSubCats  } from '../../actions';
-import { addCat, deleteCat, addSubcat, deleteSubcat, updateCat, updateSubcat  }  from '../../actions';
+// import { getAllColls, getAllCats, getAllSubCats  } from '../../actions';
+// import { addCat, deleteCat, addSubcat, deleteSubcat, updateCat, updateSubcat  }  from '../../actions';
 
 class Sandbox extends Component {
 

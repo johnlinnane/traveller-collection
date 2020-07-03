@@ -1350,6 +1350,16 @@ header .navItem span {
 }
 
 
+.add_cat_tab {
+    border-top: solid;
+    border-color: #474747;
+    border-width: thin;
+    list-style-type: none;
+    padding: 10px 14px;
+    margin-top: 7px;
+    color: #066785
+}
+
 /******** INTRO */
 
 .admin_intro {

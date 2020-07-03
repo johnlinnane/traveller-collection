@@ -140,8 +140,8 @@ class CatEdit extends PureComponent {
             }
 
             // HOST-SELECT
-            axios.post(`http://localhost:8000/upload-cat/${this.props.match.params.id}`, data, { 
-            // axios.post(`http://64.227.34.134:8000/upload-cat/${this.props.match.params.id}`, data, { 
+            // axios.post(`http://localhost:8000/upload-cat/${this.props.match.params.id}`, data, { 
+            axios.post(`http://64.227.34.134:8000/upload-cat/${this.props.match.params.id}`, data, { 
                 // receive two parameter endpoint url ,form data 
                 onUploadProgress: ProgressEvent => {
                     this.setState({
