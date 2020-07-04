@@ -71,18 +71,20 @@ class AdminAddCat extends Component {
         this.props.dispatch(addCat({
                 ...this.state.catdata,
         }));
+
         this.setState({
             saved: true
         })
 
-        // setTimeout(() => {
-        //     this.props.history.push(`/user/edit-item-sel/${this.props.items.newitem.itemId}`);
-        // }, 2000)
+        setTimeout(() => {
+            // this.props.history.push(`/user/edit-item-sel/${this.props.items.newitem.itemId}`);
+            this.props.history.push(`/admin`);
+        }, 2000)
     }
 
 
     render() {
-        console.log(this.state)
+        // console.log(this.state)
 
         return (
             <div className="admin">
@@ -166,6 +168,10 @@ class AdminAddCat extends Component {
                             </table>
                             
                         </form>
+
+                        {this.state.saved ?
+                            <p className="message">Sucessfully added new category!</p>
+                        : null}
                         
                     </div>
             </div>

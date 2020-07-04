@@ -50,7 +50,8 @@ class EditItem extends PureComponent {
             geo: {
                 address: ''
             }
-        }
+        },
+        saved: false
 
 
     }
@@ -78,86 +79,68 @@ class EditItem extends PureComponent {
         // can create a updatedFormdata variable, but no need
         if (this.props.items !== prevProps.items) {
 
-            let dataForState = {
-                formdata:{
-                    ...this.state.formdata,
-                    _id:item._id,
-                    title:item.title,  //
-                    creator:item.creator,  //
-                    description:item.description,  //
-                    pages:item.pages,  //
-                    collection_id:item.collection_id,  //
-                    source:item.source,   //
+            let newFormdata = {
+                
+                ...this.state.formdata,
+                _id:item._id,
+                title:item.title,  //
+                creator:item.creator,  //
+                description:item.description,  //
+                pages:item.pages,  //
+                collection_id:item.collection_id,  //
+                source:item.source,   //
 
-                    subject: item.subject,
-                    date_created: item.date_created,
-                    tags: item.tags,
-                    contributor: item.contributor,
-                    item_format: item.item_format,
-                    materials: item.materials,
-                    physical_dimensions: item.physical_dimensions,
-                    editor: item.editor,
-                    publisher: item.publisher,
-                    further_info: item.further_info,
-                    language: item.language,
-                    reference: item.reference,
-                    rights: item.rights,
-                    file_format: item.file_format,
-                    // address: item.geo.address,
-                    category_ref: item.category_ref,
-                    subcategory_ref: item.subcategory_ref
-                }
+                subject: item.subject,
+                date_created: item.date_created,
+                tags: item.tags,
+                contributor: item.contributor,
+                item_format: item.item_format,
+                materials: item.materials,
+                physical_dimensions: item.physical_dimensions,
+                editor: item.editor,
+                publisher: item.publisher,
+                further_info: item.further_info,
+                language: item.language,
+                reference: item.reference,
+                rights: item.rights,
+                file_format: item.file_format,
+                category_ref: item.category_ref,
+                subcategory_ref: item.subcategory_ref
+                
             }
 
-            this.setState({
-                ...dataForState
-            })
-            // console.log(item);
-            // console.log(this.state);
-
+         
 
             if (item.external_link) {
                 if (item.external_link[0].url || item.external_link[0].text) {
-                    // console.log('yes');
-                    dataForState = {
-                        formdata: {
-                            ...dataForState.formdata,
-                            external_link: [
-                                {
-                                    url: item.external_link[0].url,
-                                    text: item.external_link[0].text
-                                }
-                            ]
-                        }
+                    newFormdata = {
+                        ...newFormdata,
+                        external_link: [
+                            {
+                                url: item.external_link[0].url,
+                                text: item.external_link[0].text
+                            }
+                        ]
                     }
-                    // console.log(dataForState);
-                    // console.log(this.state.formdata.external_link);
-                    this.setState({
-                        dataForState
-                    })
                 }
             } 
 
-            // console.log(this.state);
 
 
-            if (item.geo && item.geo.address) {
-                // console.log(item.external_link[0].url);
-                dataForState = {
-                    formdata: {
-                        ...dataForState.formdata,
+            if (item.geo) {
+                if (item.geo.address || item.geo.address === '') {
+                    newFormdata = {
+                        ...newFormdata,
                         geo: {
                             address: item.geo.address
                         }
                     }
                 }
-                this.setState({
-                    ...dataForState
-                })
             }
-            // console.log(this.state);
             
-
+            this.setState({
+                formdata: newFormdata
+            })
             
         }
 
@@ -175,10 +158,17 @@ class EditItem extends PureComponent {
         // console.log(newFormdata);
 
         if (level === 'external_link') {
-            newFormdata[level][0][name] = event.target.value;
-
+            if (name === 'url') {
+                newFormdata.external_link[0].url = event.target.value;
+            }
+            if (name === 'text') {
+                newFormdata.external_link[0].text = event.target.value;
+            }
         } else if (level === 'geo') {
-            newFormdata[level][name] = event.target.value;
+            newFormdata.geo.address = event.target.value;
+            if (!event.target.value) {
+                newFormdata.geo.address = '';
+            }
         } else {
             newFormdata[name] = event.target.value;
         }
@@ -221,13 +211,20 @@ class EditItem extends PureComponent {
 
     submitForm = (e) => {
         e.preventDefault();
-        // console.log(this.state.formdata);
+        console.log(this.state.formdata);
 
         this.props.dispatch(updateItem({
                 ...this.state.formdata
             }
         ))
-        this.props.history.push(`/user/edit-item-sel/${this.props.items.item._id}`)
+
+        this.setState({
+            saved: true
+        })
+
+        // setTimeout(() => {
+        //     this.props.history.push(`/user/edit-item-sel/${this.props.items.item._id}`)
+        // }, 1000)
     }
 
     
@@ -271,7 +268,10 @@ class EditItem extends PureComponent {
     renderForm = () => {
         // console.log(this.state);
 
-        let items = this.props.items;
+        const items = this.props.items;
+        const formdata = this.state.formdata;
+
+
 
         return (
             <div>
@@ -301,7 +301,7 @@ class EditItem extends PureComponent {
                 
                 <h2>Edit item:</h2>
                 <div className="item_container">
-                    <img src={`/images/items/${items.item._id}/original/0.jpg`} 
+                    <img src={`/images/items/${formdata._id}/original/0.jpg`} 
                         alt="Item" 
                         onError={this.addDefaultImg}
                         className="edit_main_img"
@@ -311,9 +311,9 @@ class EditItem extends PureComponent {
                 <table>
                 <tbody>
                 
-                    {this.createTextInput(items.item.title,'title', "Enter title", "Title")}
-                    {this.createTextInput(items.item.creator,'creator', "Enter creator", "Creator")}
-                    {this.createTextInput(items.item.subject,'subject', "General subject matter", "Subject")}
+                    {this.createTextInput(formdata.title,'title', "Enter title", "Title")}
+                    {this.createTextInput(formdata.creator,'creator', "Enter creator", "Creator")}
+                    {this.createTextInput(formdata.subject,'subject', "General subject matter", "Subject")}
 
                     <tr>
                         <td className="label">
@@ -323,7 +323,7 @@ class EditItem extends PureComponent {
                             <textarea
                                 type="text"
                                 placeholder="Enter item description"
-                                defaultValue={items.item.description} 
+                                defaultValue={formdata.description} 
                                 onChange={(event) => this.handleInput(event, 'description')}
                                 rows={18}
                             />
@@ -331,11 +331,11 @@ class EditItem extends PureComponent {
                         </td>
                     </tr>
 
-                    {this.createTextInput(items.item.source,'source', "Sources of information about the item", "Source")}
-                    { items.item.geo ?
-                        this.createTextInput(items.item.geo.address,'address', "Where is the item currently located", "Address", 'geo')
+                    {this.createTextInput(formdata.source,'source', "Sources of information about the item", "Source")}
+                    { formdata.geo ?
+                        this.createTextInput(formdata.geo.address,'address', "Where is the item currently located", "Address", 'geo')
                     : null }
-                    {this.createTextInput(items.item.date_created,'date_created', "Date item was created", "Date")}
+                    {this.createTextInput(formdata.date_created,'date_created', "Date item was created", "Date")}
                         
 
                     <tr><td></td><td></td></tr>
@@ -343,18 +343,13 @@ class EditItem extends PureComponent {
                     <tr><td></td><td></td></tr>
 
 
-                    {this.createTextInput(items.item.rights,'rights', "Rights", "Rights")}
-                    {this.createTextInput(items.item.further_info,'further_info', "Enter any further info, resources..", "Further Info")}
+                    {this.createTextInput(formdata.rights,'rights', "Rights", "Rights")}
+                    {this.createTextInput(formdata.further_info,'further_info', "Enter any further info, resources..", "Further Info")}
 
-                    { items.item.external_link && items.item.external_link[0].url ?
-                        this.createTextInput(items.item.external_link[0].url,'url', "External link URL ie. https://www...", "External Link", 'external_link')
-                    : this.createTextInput(this.state.formdata.external_link[0].url,'url', "External link URL ie. https://www...", "External Link", 'external_link') }
-                    {/* : null } */}
+                    
+                    {this.createTextInput(formdata.external_link[0].url,'url', "External link URL ie. https://www...", "External Link", 'external_link')}
 
-                    { items.item.external_link && items.item.external_link[0].text ?
-                        this.createTextInput(items.item.external_link[0].text,'text', "Description of the link", '', "external_link")
-                    : this.createTextInput(this.state.formdata.external_link[0].text,'text', "Description of link", '', "external_link") }
-                    {/* : null } */}
+                    {this.createTextInput(formdata.external_link[0].text,'text', "Description of the link", '', "external_link")}
 
 
                     <tr><td></td><td></td></tr>
@@ -362,9 +357,9 @@ class EditItem extends PureComponent {
                     <tr><td></td><td></td></tr>
                    
  
-                    {this.createTextInput(items.item.item_format,'item_format', "The item's format", "Format")}
-                    {this.createTextInput(items.item.materials,'materials', "The materials used in the item", "Materials")}
-                    {this.createTextInput(items.item.physical_dimensions,'physical_dimensions', "Physical dimensions", "Dimensions")}
+                    {this.createTextInput(formdata.item_format,'item_format', "The item's format", "Format")}
+                    {this.createTextInput(formdata.materials,'materials', "The materials used in the item", "Materials")}
+                    {this.createTextInput(formdata.physical_dimensions,'physical_dimensions', "Physical dimensions", "Dimensions")}
 
                     
                     <tr><td></td><td></td></tr>
@@ -372,9 +367,9 @@ class EditItem extends PureComponent {
                     <tr><td></td><td></td></tr>
 
 
-                    {this.createTextInput(items.item.editor,'editor', "Editor's name(s)", "Editor")}
-                    {this.createTextInput(items.item.publisher,'publisher', "Publisher", "Publisher")}
-                    {this.createTextInput(items.item.language,'language', "ie. Cant, Gammon, Romani", "Language")}
+                    {this.createTextInput(formdata.editor,'editor', "Editor's name(s)", "Editor")}
+                    {this.createTextInput(formdata.publisher,'publisher', "Publisher", "Publisher")}
+                    {this.createTextInput(formdata.language,'language', "ie. Cant, Gammon, Romani", "Language")}
 
                     <tr>
                         <td className="label">
@@ -385,14 +380,14 @@ class EditItem extends PureComponent {
                                 <input
                                     type="number"
                                     placeholder="Enter number of pages"
-                                    defaultValue={items.item.pages} 
+                                    defaultValue={formdata.pages} 
                                     onChange={(event) => this.handleInput(event, 'pages')}
                                 />
                             </div>
                         </td>
                     </tr>
 
-                    {this.createTextInput(items.item.reference,'reference', "Reference code", "Ref")}
+                    {this.createTextInput(formdata.reference,'reference', "Reference code", "Ref")}
 
 
                     <tr><td></td><td></td></tr>
@@ -400,7 +395,7 @@ class EditItem extends PureComponent {
                     <tr><td></td><td></td></tr>
 
 
-                    {this.createTextInput(items.item.contributor,'contributor', "Add your name here", "Contributor")}
+                    {this.createTextInput(formdata.contributor,'contributor', "Add your name here", "Contributor")}
 
                     
 
@@ -432,6 +427,10 @@ class EditItem extends PureComponent {
                 </tbody>
                 </table>
 
+                {this.state.saved ?
+                        <p className="message center">Information saved!</p>
+                : null}
+
                 
     
 
@@ -452,9 +451,9 @@ class EditItem extends PureComponent {
         return (
             <div className="main_view">
                 <div className="rl_container article edit_page">
-                    { items.item ?    
-                        this.renderForm()
-                    : null }
+                    {/* { items.item ?     */}
+                        {this.renderForm()}
+                    {/* : null } */}
                 </div>
 
             {/* // <div className="form-group">

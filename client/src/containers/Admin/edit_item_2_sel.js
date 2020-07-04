@@ -34,7 +34,8 @@ class EditItemSel extends PureComponent {
         collList: null,
         catList: null,
         subcatList: [],
-        subcatsInitialised: false
+        subcatsInitialised: false,
+        saved: false
        
 
     }
@@ -335,10 +336,21 @@ class EditItemSel extends PureComponent {
 
     onSubmit = (e) => {
         e.preventDefault();
+
         this.props.dispatch(updateItem(
             { ...this.state.dataToUpdate }
         ))
-        this.props.history.push(`/user/edit-item-file/${this.props.match.params.id }`)
+
+        
+
+
+        this.setState({
+            saved: true
+        })
+
+        setTimeout(() => {
+            this.props.history.push(`/user/edit-item-file/${this.props.match.params.id }`)
+        }, 1000)
 
     }
 
@@ -600,6 +612,10 @@ class EditItemSel extends PureComponent {
                     
                         this.renderForm()
                     : null }
+
+                    {this.state.saved ?
+                        <p className="message center">Information saved!</p>
+                    : null}
 
                         
                 </div>

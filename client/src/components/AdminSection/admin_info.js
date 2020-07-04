@@ -14,15 +14,27 @@ class AdminInfo extends Component {
 
 
     state= {
+        
         formdata: {
-            heading_1: '',
-            heading_2: '',
-            heading_3: '',
-            heading_4: '',
-            paragraph_1: '',
-            paragraph_2: '',
-            paragraph_3: '',
-            paragraph_4: ''
+            sections: [
+                {
+                    heading: '',
+                    paragraph: ''
+                },
+                {
+                    heading: '',
+                    paragraph: ''
+                },
+                {
+                    heading: '',
+                    paragraph: ''
+                },
+                {
+                    heading: '',
+                    paragraph: ''
+                }
+            ]
+            
         }
     }
 
@@ -37,20 +49,34 @@ class AdminInfo extends Component {
 
             const infotext = this.props.infotext;
 
-            let formdata = {
-                heading_1: infotext.heading_1,
-                heading_2: infotext.heading_2,
-                heading_3: infotext.heading_3,
-                heading_4: infotext.heading_4,
-                paragraph_1: infotext.paragraph_1,
-                paragraph_2: infotext.paragraph_2,
-                paragraph_3: infotext.paragraph_3,
-                paragraph_4: infotext.paragraph_4
+            if (infotext.sections && infotext.sections.length) {
+                let formdata = {
+                    sections: [
+                        {
+                            heading: infotext.sections[0].heading,
+                            paragraph: infotext.sections[0].paragraph
+                        },
+                        {
+                            heading: infotext.sections[1].heading,
+                            paragraph: infotext.sections[1].paragraph
+                        },
+                        {
+                            heading: infotext.sections[2].heading,
+                            paragraph: infotext.sections[2].paragraph
+                        },
+                        {
+                            heading: infotext.sections[3].heading,
+                            paragraph: infotext.sections[3].paragraph
+                        }
+                    ]
+                    
+                }
+                this.setState({
+                    formdata
+                })
             }
 
-            this.setState({
-                formdata
-            })
+            
         }
     }
 
@@ -184,9 +210,121 @@ class AdminInfo extends Component {
     }
 
 
+
+    handleInput = (event, i, field) => {
+
+        const newFormdata = {
+            ...this.state.formdata
+        }
+
+
+        if (field === 'heading') {
+            newFormdata.sections[i].heading = event.target.value
+        }
+
+        if (field === 'paragraph') {
+            newFormdata.sections[i].paragraph = event.target.value
+        }
+
+        this.setState({
+            formdata: newFormdata
+        })
+    }
+
+
+
+    submitForm = (e) => {
+        e.preventDefault();
+
+
+
+        this.props.dispatch(updateInfoText(
+            this.state.formdata
+        ))
+
+   
+        this.setState({
+            saved: true
+        })
+
+        setTimeout(() => {
+            this.props.history.push(`/admin`);
+        }, 2000)
+        
+    }
+
+
+
+    renderRows = () => (
+        this.state.formdata.sections.map( (section, i) => (
+
+
+
+        <section className="info_table_section" key={i}>
+            <tr>
+                <td>
+                    Paragraph {i+1} Heading
+                </td>
+
+                <td>
+                    <input
+                        type="text"
+                        placeholder={`Paragraph ${i+1} Heading`}
+                        defaultValue={section.heading} 
+                        onChange={(event) => this.handleInput(event, i, 'heading')}
+                    />
+                </td>
+            </tr>
+
+            
+            <tr>
+                <td>
+                    Paragraph {i + 1} Body
+                </td>
+                <td>
+                    <textarea
+                        type="text"
+                        placeholder={`Paragraph ${i+1} Content`}
+                        defaultValue={section.paragraph} 
+                        onChange={(event) => this.handleInput(event, i, 'paragraph')}
+                        rows={6}
+                    />
+                </td>
+            </tr>
+
+            <tr>
+                <td>Paragraph {i + 1} Image</td>
+                <td>
+                    
+                    <img src={`/images/info/${i+1}.jpg`} onError={this.addDefaultImg}/>
+                    <div className="form_element">
+                        <input type="file" className="form-control" name="file" onChange={this.onChangeHandler}/>
+                        <br />
+                        <button type="button" className="btn btn-success btn-block" onClick={ () => {this.onClickHandler(i+1)} }>Upload</button> 
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td colSpan="2"><hr/></td>
+            </tr>
+
+            </section>
+
+
+
+
+
+
+
+
+        ))
+    )
+
+
     render() {
 
-        console.log(this.props)
+        console.log(this.state)
 
 
 
@@ -206,207 +344,8 @@ class AdminInfo extends Component {
 
 
 
+                            {this.renderRows()}
 
-
-
-                            {/* PARAGRAPH ONE */}
-                            
-                            <tr>
-                                <td>
-                                    Paragraph 1 Heading
-                                </td>
-
-                                <td>
-                                    <input
-                                        type="text"
-                                        placeholder="Paragraph 1 Heading"
-                                        defaultValue={this.state.formdata.heading_1} 
-                                        onChange={(event) => this.handleInput(event)}
-                                    />
-                                </td>
-                            </tr>
-
-                            
-                            <tr>
-                                <td>
-                                    Paragraph 1 Body
-                                </td>
-                                <td>
-                                    <textarea
-                                        type="text"
-                                        placeholder="Paragraph 1 Content"
-                                        defaultValue={this.state.formdata.paragraph_1} 
-                                        onChange={(event) => this.handleInput(event)}
-                                        rows={6}
-                                    />
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>Paragraph 1 Image</td>
-                                <td>
-                                    
-                                    <img src={`/images/info/1.jpg`} onError={this.addDefaultImg}/>
-                                    <div className="form_element">
-                                        <input type="file" className="form-control" name="file" onChange={this.onChangeHandler}/>
-                                        <br />
-                                        <button type="button" className="btn btn-success btn-block" onClick={ () => {this.onClickHandler(1)} }>Upload</button> 
-                                    </div>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td colSpan="2"><hr/></td>
-                            </tr>
-
-
-                            {/* PARAGRAPH TWO */}
-                            
-                            <tr>
-                                <td>
-                                    Paragraph 2 Heading
-                                </td>
-
-                                <td>
-                                    <input
-                                        type="text"
-                                        placeholder="Paragraph 2 Heading"
-                                        defaultValue={this.state.formdata.heading_2} 
-                                        onChange={(event) => this.handleInput(event)}
-                                    />
-                                </td>
-                            </tr>
-
-                            
-                            <tr>
-                                <td>
-                                    Paragraph 2 Body
-                                </td>
-                                <td>
-                                    <textarea
-                                        type="text"
-                                        placeholder="Paragraph 2 Content"
-                                        defaultValue={this.state.formdata.paragraph_2} 
-                                        onChange={(event) => this.handleInput(event)}
-                                        rows={6}
-                                    />
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>Paragraph 2 Image</td>
-                                <td>
-                                    <img src={`/images/info/2.jpg`} onError={this.addDefaultImg}/>
-                                    <div className="form_element">
-                                        <input type="file" className="form-control" name="file" onChange={this.onChangeHandler}/>
-                                        <br />
-                                        <button type="button" className="btn btn-success btn-block" onClick={ () => {this.onClickHandler(2)} }>Upload</button> 
-                                    </div>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td colSpan="2"><hr/></td>
-                            </tr>
-
-                            {/* PARAGRAPH THREE */}
-                            
-                            <tr>
-                                <td>
-                                    Paragraph 3 Heading
-                                </td>
-
-                                <td>
-                                    <input
-                                        type="text"
-                                        placeholder="Paragraph 3 Heading"
-                                        defaultValue={this.state.formdata.heading_3} 
-                                        onChange={(event) => this.handleInput(event)}
-                                    />
-                                </td>
-                            </tr>
-
-                            
-                            <tr>
-                                <td>
-                                    Paragraph 3 Body
-                                </td>
-                                <td>
-                                    <textarea
-                                        type="text"
-                                        placeholder="Paragraph 3 Content"
-                                        defaultValue={this.state.formdata.paragraph_3} 
-                                        onChange={(event) => this.handleInput(event)}
-                                        rows={6}
-                                    />
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>Paragraph 3 Image</td>
-                                <td>
-                                    <img src={`/images/info/3.jpg`} onError={this.addDefaultImg}/>
-                                    <div className="form_element">
-                                        <input type="file" className="form-control" name="file" onChange={this.onChangeHandler}/>
-                                        <br />
-                                        <button type="button" className="btn btn-success btn-block" onClick={ () => {this.onClickHandler(3)} }>Upload</button> 
-                                    </div>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td colSpan="2"><hr/></td>
-                            </tr>
-
-                            {/* PARAGRAPH FOUR */}
-                            
-                            <tr>
-                                <td>
-                                    Paragraph 4 Heading
-                                </td>
-
-                                <td>
-                                    <input
-                                        type="text"
-                                        placeholder="Paragraph 4 Heading"
-                                        defaultValue={this.state.formdata.heading_4} 
-                                        onChange={(event) => this.handleInput(event)}
-                                    />
-                                </td>
-                            </tr>
-
-                            
-                            <tr>
-                                <td>
-                                    Paragraph 4 Body
-                                </td>
-                                <td>
-                                    <textarea
-                                        type="text"
-                                        placeholder="Paragraph 4 Content"
-                                        defaultValue={this.state.formdata.paragraph_4} 
-                                        onChange={(event) => this.handleInput(event)}
-                                        rows={6}
-                                    />
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>Paragraph 4 Image</td>
-                                <td>
-                                    <img src={`/images/info/4.jpg`} onError={this.addDefaultImg}/>
-                                    <div className="form_element">
-                                        <input type="file" className="form-control" name="file" onChange={this.onChangeHandler}/>
-                                        <br />
-                                        <button type="button" className="btn btn-success btn-block" onClick={ () => {this.onClickHandler(4)} }>Upload</button> 
-                                    </div>
-                                </td>
-                            </tr>
-                            
-
-                            <tr>
-                                <td colSpan="2"><hr/></td>
-                            </tr>
 
                             <tr>
                                 <td>
@@ -424,7 +363,11 @@ class AdminInfo extends Component {
                         </table>
                     </form>
 
+                    {this.state.saved ?
+                        <p className="message center">Information page updated!</p>
+                    : null}
 
+                    
                 </div>
             </div>
         );

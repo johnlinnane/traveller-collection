@@ -84,7 +84,7 @@ const Routes = () => {
                 <Route path="/collection/:id" exact component={Auth(Collection, true)}/>
                 <Route path="/category/:id" exact component={Auth(CatView, true)}/>
                 <Route path="/subcategory/:id" exact component={Auth(SubcatView, true)}/>
-                <Route path="/info" exact component={(Info)}/>
+                <Route path="/info" exact component={Auth(Info, true)}/>
 
                 <Route path="/admin" exact component={Auth(Admin, true)}/>
 

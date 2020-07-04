@@ -93,7 +93,9 @@ img:before {
     width: 5vw;
 }
 
-
+.message {
+    color: #c22f25
+}
 
 /*=============================
             HEADER
@@ -1095,6 +1097,7 @@ header .navItem span {
     border: none;
     background: none;
     background-color: rgb(255, 255, 255);
+    /* vertical-align: top; */
 }
 
 .edit_page .label {
@@ -1357,7 +1360,8 @@ header .navItem span {
     list-style-type: none;
     padding: 10px 14px;
     margin-top: 7px;
-    color: #066785
+    color: #066785;
+    cursor: pointer;
 }
 
 /******** INTRO */
@@ -1379,6 +1383,9 @@ header .navItem span {
     width:250px
 }
 
+.info_table_section {
+    width: 100%;
+}
 
 
 

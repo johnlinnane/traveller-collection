@@ -18,7 +18,8 @@ class AdminIntro extends Component {
         introData: {
             title: '',
             body: ''
-        }
+        },
+        saved: false
     }
 
 
@@ -196,33 +197,15 @@ class AdminIntro extends Component {
             this.state.introData
         ))
 
-        // console.log({...this.state.formdata.cat});
-        // console.log(this.state.formdata.cat);
 
-        // this.props.dispatch(updateCat(
-        //         this.state.formdata.cat
-            
-        // ))
+        this.setState({
+            saved: true
+        })
 
-        // this.state.formdata.subcats.map( (subcat) =>{
-        //     if (subcat.isModified) {
-        //         // console.log(subcat)
-        //         this.props.dispatch(updateSubcat(
-        //             subcat
-        //         ))
-        //     }
-        // })
-
-        
-        // if (this.state.formdata.newSubcat.title) {
-        //     const newSubcat = this.state.formdata.newSubcat;
-        //     console.log(newSubcat);
-        //     this.props.dispatch(addSubcat(
-        //         newSubcat
-        //     ))
-        // }
-
-
+        setTimeout(() => {
+            // this.props.history.push(`/user/edit-item-sel/${this.props.items.newitem.itemId}`);
+            this.props.history.push(`/admin`);
+        }, 2000)
         
         // this.props.history.push(`/admin`)
     }
@@ -330,8 +313,14 @@ class AdminIntro extends Component {
                         </table>
                     </form>
 
+                    
 
                 </div>
+                
+                {this.state.saved ?
+                    <p className="message">Introduction page updated!</p>
+                : null}
+
             </div>
         );
     }

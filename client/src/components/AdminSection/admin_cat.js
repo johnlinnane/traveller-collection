@@ -37,7 +37,11 @@ class AdminCat extends Component {
         
             }
             
-        }
+        },
+        imgSrc: `/images/cover_img_cat/${this.props.chosenCatInfo._id}.jpg`,
+        saved: false,
+        deleted: false,
+        subRemoved: false
     }
 
     componentDidMount() {
@@ -70,6 +74,10 @@ class AdminCat extends Component {
             }
         }
     
+    }
+
+    getTabIndex = () => {
+        this.props.setTabIndex(this.props.index)
     }
 
 
@@ -122,7 +130,13 @@ class AdminCat extends Component {
         }
         // this.redirectUser(`/items/${this.props.items.item._id}`)
 
+        this.setState({
+            imgSrc : this.state.imgSrc + '?' + Math.random()
+        });
 
+        this.getTabIndex();
+
+        
     }
 
     maxSelectFile=(event)=>{
@@ -303,11 +317,26 @@ class AdminCat extends Component {
     deleteSubcat = (e, id, isNew) => {
         this.props.dispatch(deleteSubcat(id));
 
+        this.setState({
+            subRemoved: true
+        })
+
+        setTimeout(() => {
+            this.props.history.push(`/admin`);
+        }, 2000)
     }
 
     deleteCat = (e, id) => {
         this.props.dispatch(deleteCat(id));
 
+        this.setState({
+            deleted: true
+        })
+
+        setTimeout(() => {
+            // this.props.history.push(`/user/edit-item-sel/${this.props.items.newitem.itemId}`);
+            this.props.history.push(`/admin`);
+        }, 2000)
         
 
     }
@@ -342,9 +371,14 @@ class AdminCat extends Component {
             ))
         }
 
+        this.setState({
+            saved: true
+        })
 
+        setTimeout(() => {
+            this.props.history.push(`/admin`);
+        }, 2000)
         
-        // this.props.history.push(`/admin`)
     }
 
     cancel = () => {
@@ -356,7 +390,7 @@ class AdminCat extends Component {
     render() {
 
 
-        console.log(this.props)
+        // console.log(this.props)
         return (
             <div className="admin">
                 { this.props.chosenCatInfo ? 
@@ -402,7 +436,7 @@ class AdminCat extends Component {
 
                                 <tr>
                                     <td>
-                                        <img className="change_cat_img" src={`/images/cover_img_cat/${this.props.chosenCatInfo._id}.jpg`} onError={this.addDefaultImg}/>
+                                        <img className="change_cat_img" src={this.state.imgSrc} onError={this.addDefaultImg}/>
                                     </td>
                                     <td>
                                         <div className="form_element">
@@ -482,8 +516,17 @@ class AdminCat extends Component {
                                         />
                                     </td>
                                 </tr>
+                                
 
-                                <tr className="spacer"></tr>
+                                {this.state.subRemoved ?
+                                    <tr className="spacer">
+                                        <td colSpan="2" className="message center">
+                                            Subcategory removed!
+                                        </td>
+                                    </tr>
+                                : <tr className="spacer"></tr>}
+
+                                
 
                                 <tr>
                                     <td colSpan="2">
@@ -517,6 +560,16 @@ class AdminCat extends Component {
                             </table>
                             
                         </form>
+
+                        
+
+                        {this.state.deleted ?
+                            <p className="message">Category deleted!</p>
+                        : null}
+
+                        {this.state.saved ?
+                            <p className="message">All changes saved!</p>
+                        : null}
                         
                     </div>
                 : null }

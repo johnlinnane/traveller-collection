@@ -25,7 +25,12 @@ class Admin extends React.Component  {
         this.props.dispatch(getAllSubCats());
     }
     
-    
+    setTabIndex = (index) => {
+        console.log(index);
+        this.setState({
+            tabIndexSide: index
+        })
+    }
 
 
     render() {
@@ -76,7 +81,7 @@ class Admin extends React.Component  {
                                 this.props.cats.map( (cat, i) => (
                                     <TabPanel key={i}>
 
-                                        <AdminCat chosenCatInfo={cat}/>
+                                        <AdminCat chosenCatInfo={cat} index={i} setTabIndex={this.getTabIndex}/>
                                     </TabPanel>
                                 ))
                             : null }
