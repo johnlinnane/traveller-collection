@@ -16,7 +16,7 @@
 
 //     render() {
 
-//         const Header = tryRequire('/images/items/5eb4417bf2ff151113f3e178/original/0.pdf') ? 
+//         const Header = tryRequire('/media/items/5eb4417bf2ff151113f3e178/original/0.pdf') ? 
 //             <p>Exists</p>
 //             // tryRequire('yourPath').default 
 //         : <p>N'existe</p>;

@@ -1,5 +1,5 @@
 /node_modules
 /client/node_modules
-/client/public/images
+/client/public/media
 /XXX
 .DS_Store

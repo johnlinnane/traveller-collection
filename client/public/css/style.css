@@ -47,7 +47,7 @@ img:before {
     position: absolute;
     height: 50px;
     width: 50px; */
-    background-image: url(/images/default/default.jpg);
+    background-image: url(/media/default/default.jpg);
 }
 
 
@@ -245,6 +245,11 @@ header .navItem span {
     max-width: 65ch;
 }
 
+.item_pagenum {
+    max-width: none !important;
+}
+
+
 /*=============================
             ITEM: SLIDER
 ===============================*/
@@ -316,7 +321,7 @@ header .navItem span {
 #intro .bg-image {
     position: absolute;
     background: #333
-      url("/images/intro/intro.jpg");
+      url("/media/intro/intro.jpg");
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -704,6 +709,82 @@ header .navItem span {
     padding: 15px;
 
 
+}
+
+/* PDF CHAPTER INDEX TABLE */
+
+
+
+.index_table {
+    display:table;
+    margin: auto;         
+    width:auto;                
+    /* border:1px solid  #666666;          */
+    padding: 20px;
+   
+}
+
+.index_row {
+    display:table-row;
+    width:auto;
+    clear:both;
+    cursor: pointer;
+}
+
+.index_col {
+    float:left;
+    display:table-column;         
+    width:200px;         
+    /* border:1px solid  #ccc; */
+    background-color: #f7f7f7;
+    /* border-radius: 5px; */
+    margin: 2px;
+
+
+}
+
+.index_top {
+    background-color: rgb(233, 232, 232);
+    padding: 4px 0px;
+}
+
+.index_page {
+    width: 7vw;
+}
+
+.index_heading {
+    width: 15vw
+}
+
+.index_desc {
+    width: 20vw
+}
+
+
+.index_add_cont {
+    margin: 15px 7px;
+    text-align: left;
+    color: #535353
+}
+
+.index_add_cont span {
+    margin: 0px 10px;
+    
+}
+
+.index_add_rem {
+    text-align: center;
+    width: 20px !important;
+    height: 20px;
+    margin: 0px 2px;
+    border:1px solid  #ccc;
+    display: inline-block;
+
+
+}
+
+.index_cancelled {
+    margin: 30px;
 }
 
 

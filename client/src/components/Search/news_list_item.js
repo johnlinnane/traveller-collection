@@ -22,7 +22,7 @@ const NewsItem = ({item}) => {
   // })
 
     const addDefaultImg = (ev) => {
-        const newImg = '/images/default/default.jpg';
+        const newImg = '/media/default/default.jpg';
         if (ev.target.src !== newImg) {
             ev.target.src = newImg
         }  
@@ -37,7 +37,7 @@ const NewsItem = ({item}) => {
 
             <div className="search_container news_item item_grey">
               <div className="search_item_image">
-                  <img src={`/images/items/${item._id}/original/0.jpg`} 
+                  <img src={`/media/items/${item._id}/original/0.jpg`} 
                       alt="Item" 
                       onError={addDefaultImg}
                       className="search_item_img"/>

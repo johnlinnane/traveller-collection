@@ -96,7 +96,15 @@ const itemSchema = mongoose.Schema({
         address: String,
         latitude: Number,
         longitude: Number
-    }
+    },
+
+    pdf_page_index: [
+        {
+            page: Number,
+            heading: String,
+            description: String
+        }
+    ]
 
     
     

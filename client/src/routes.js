@@ -23,6 +23,7 @@ import UserItems from './components/Admin/userItems';
 import EditItem from './containers/Admin/edit_item';
 import EditItemSel from './containers/Admin/edit_item_2_sel';
 import EditItemFile from './containers/Admin/edit_item_3_file';
+import ChapterIndex from './containers/Admin/chapter_index';
 
 import ItemView from './components/Items/item_view';
 
@@ -87,6 +88,7 @@ const Routes = () => {
                 <Route path="/info" exact component={Auth(Info, true)}/>
 
                 <Route path="/admin" exact component={Auth(Admin, true)}/>
+                <Route path="/chapter-index/:id" exact component={Auth(ChapterIndex, true)}/>
 
 
                 <Route path="/sandbox" exact component={Auth(Sandbox, true)}/>

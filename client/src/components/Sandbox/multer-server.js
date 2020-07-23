@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 // //create multer instance, for file saving
 // var storage = multer.diskStorage({
 //     destination: function (req, file, cb) {
-//         cb(null, 'public/images/uploads')
+//         cb(null, 'public/media/uploads')
 //     },
 //     filename: function (req, file, cb) {
     
@@ -41,7 +41,7 @@ app.use(bodyParser.json());
 //         multer({ storage: multer.diskStorage({
 //             destination: function (req, file, cb) {
 
-//                 var dest = `public/images/items/${itemId}/original`;
+//                 var dest = `public/media/items/${itemId}/original`;
 //                 // fs.mkdirSync(dest, { recursive: true })
 //                 mkdirp.sync(dest);
 //                 cb(null, dest)
@@ -78,7 +78,7 @@ app.post(
         multer({ storage: multer.diskStorage({
             destination: function (req, file, cb) {
 
-                var dest = `../../../public/images/upload-test`;
+                var dest = `../../../public/media/upload-test`;
                 // fs.mkdirSync(dest, { recursive: true })
                 mkdirp.sync(dest);
                 cb(null, dest)

@@ -39,7 +39,7 @@ class Info extends Component {
 
                             <div className="img_and_para">
                                 <div>
-                                    <img src={`/images/info/${i+1}.jpg`} 
+                                    <img src={`/media/info/${i+1}.jpg`} 
                                         alt="Item" 
                                         onError={i => i.target.style.display='none'}/
                                     >

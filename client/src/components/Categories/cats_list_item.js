@@ -14,7 +14,7 @@ class CatItem extends Component {
     }
 
     addDefaultImg = (ev) => {
-        const newImg = '/images/default/default.jpg';
+        const newImg = '/media/default/default.jpg';
         if (ev.target.src !== newImg) {
             ev.target.src = newImg
         }  
@@ -31,7 +31,7 @@ class CatItem extends Component {
                 <div className="container">
 
                     <div className="img_back">
-                        <img src={`/images/cover_img_cat/${cat._id}.jpg`} alt="category cover" className="cat_list_img" onError={this.addDefaultImg} />
+                        <img src={`/media/cover_img_cat/${cat._id}.jpg`} alt="category cover" className="cat_list_img" onError={this.addDefaultImg} />
                     </div>
                     <div className="centered"><h1>{cat.title}</h1></div>
 

@@ -40,7 +40,7 @@ class Collection  extends Component {
 
 
     addDefaultImg = (ev) => {
-        const newImg = '/images/default/default.jpg';
+        const newImg = '/media/default/default.jpg';
         if (ev.target.src !== newImg) {
             ev.target.src = newImg
         }  
@@ -86,7 +86,7 @@ class Collection  extends Component {
                         this.props.items.map ( (item, i) => (
                             <Link to={`/items/${item._id}`}key={i}>
                                 <figure>
-                                    <img src={`/images/items/${item._id}/sq_thumbnail/0.jpg`} 
+                                    <img src={`/media/items/${item._id}/sq_thumbnail/0.jpg`} 
                                         alt={item.title} 
                                         onError={this.addDefaultImg} />
                                     <figcaption>{item.title}</figcaption>

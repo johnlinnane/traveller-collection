@@ -31,7 +31,7 @@ class Sandbox extends Component {
             <div className="pdf">
                 <div>
                     <Document className="pdf"
-                        file="/images/items/5eb4417bf2ff151113f3e178/original/0.pdf"
+                        file="/media/items/5eb4417bf2ff151113f3e178/original/0.pdf"
                         onLoadSuccess={this.onDocumentLoadSuccess}
                         // onLoadError={this.setState({ pdfError: true })}
                         

@@ -157,7 +157,7 @@ class AdminIntro extends Component {
 
 
     addDefaultImg = (ev) => {
-        const newImg = '/images/default/default.jpg';
+        const newImg = '/media/default/default.jpg';
         if (ev.target.src !== newImg) {
             ev.target.src = newImg
         }  
@@ -281,7 +281,7 @@ class AdminIntro extends Component {
 
                                 <tr>
                                     <td>
-                                        <img src={`/images/intro/intro.jpg`} onError={this.addDefaultImg}/>
+                                        <img src={`/media/intro/intro.jpg`} onError={this.addDefaultImg}/>
                                     </td>
                                 </tr>
 

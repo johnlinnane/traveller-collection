@@ -32,8 +32,8 @@ const SliderTemplates = (props) => {
                         <div className={style.featured_item}>
                             <div className={style.featured_image}
                                 style={{
-                                    // background: `url(/images/sq_thumb/${item.omeka.omeka_id}.jpg)`
-                                    background: `url(/images/items/${item._id}/thumbnail/0.jpg)`
+                                    // background: `url(/media/sq_thumb/${item.omeka.omeka_id}.jpg)`
+                                    background: `url(/media/items/${item._id}/thumbnail/0.jpg)`
                                 }}
                             >
                             </div>

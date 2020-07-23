@@ -205,6 +205,8 @@ class EditItem extends PureComponent {
         this.props.history.push(`/items/${this.props.match.params.id}`)
     }
 
+   
+
 
 
 
@@ -222,9 +224,9 @@ class EditItem extends PureComponent {
             saved: true
         })
 
-        // setTimeout(() => {
-        //     this.props.history.push(`/user/edit-item-sel/${this.props.items.item._id}`)
-        // }, 1000)
+        setTimeout(() => {
+            this.props.history.push(`/user/edit-item-sel/${this.props.items.item._id}`)
+        }, 1000)
     }
 
     
@@ -258,7 +260,7 @@ class EditItem extends PureComponent {
     // ****************************************************
 
     addDefaultImg = (ev) => {
-        const newImg = '/images/default/default.jpg';
+        const newImg = '/media/default/default.jpg';
         if (ev.target.src !== newImg) {
             ev.target.src = newImg
         }  
@@ -301,7 +303,7 @@ class EditItem extends PureComponent {
                 
                 <h2>Edit item:</h2>
                 <div className="item_container">
-                    <img src={`/images/items/${formdata._id}/original/0.jpg`} 
+                    <img src={`/media/items/${formdata._id}/original/0.jpg`} 
                         alt="Item" 
                         onError={this.addDefaultImg}
                         className="edit_main_img"
@@ -327,6 +329,20 @@ class EditItem extends PureComponent {
                                 onChange={(event) => this.handleInput(event, 'description')}
                                 rows={18}
                             />
+                            
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>
+
+                        </td>
+                        <td>
+                            <Link to={`/chapter-index/${this.state.formdata._id}`} target="_blank" >
+                                <button type="button" className="half_width_l">Add Chapter Index (PDF)</button>
+                            </Link>
+
                             
                         </td>
                     </tr>

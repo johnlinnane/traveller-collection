@@ -4,8 +4,10 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import {Progress} from 'reactstrap';
+import Select from 'react-select';
 
-import { getItemById, deleteItem } from '../../actions';
+
+import { getItemById, deleteItem, updateItem } from '../../actions';
 
 
 class EditItemFile extends PureComponent {
@@ -45,8 +47,23 @@ class EditItemFile extends PureComponent {
             }
         },
         selectedFile: null,
-        loaded: 0
-    
+        loaded: 0,
+        fileTypes: [
+            {
+                value: 'jpg',
+                label: "Image"
+            },
+            {
+                value: 'pdf',
+                label: "Document (PDF)"
+            },
+            {
+                value: 'mp4',
+                label: "Video (MP4)"
+            },
+        ],
+        selectedType: 'jpg'
+
     }
 
     componentDidMount() {
@@ -118,6 +135,14 @@ class EditItemFile extends PureComponent {
 
 
     onClickHandler = () => {
+
+        this.props.dispatch(updateItem(
+            { 
+                _id: this.state.formdata._id,
+                file_format: this.state.selectedType
+            }
+        ))
+
         const data = new FormData() 
         
         if (this.state.selectedFile) {
@@ -212,6 +237,14 @@ class EditItemFile extends PureComponent {
     // ****************************************************
 
 
+
+    handleFileType = (newValue) => {
+        
+        this.setState({
+            selectedType: newValue.value
+        })
+    }
+
     redirectUser = (url) => {
         setTimeout(() => {
             this.props.history.push(url)
@@ -219,14 +252,14 @@ class EditItemFile extends PureComponent {
     }
 
     // addDefaultImg = (ev) => {
-    //     const newImg = '/images/default/default.jpg';
+    //     const newImg = '/media/default/default.jpg';
     //     if (ev.target.src !== newImg) {
     //         ev.target.src = newImg
     //     }  
     // } 
 
     render() {
-        // console.log(this.state);
+        console.log(this.state);
         let items = this.props.items;
 
 
@@ -241,16 +274,37 @@ class EditItemFile extends PureComponent {
                         <span>Item: {this.props.items.item.title}</span>
                     : null }
 
+                    
 
-                    {/* <img src={`/images/items/${this.props.match.params.id}/sq_thumbnail/0.jpg`} alt="Item" onError={this.addDefaultImg}/> */}
+
+                    {/* <img src={`/media/items/${this.props.match.params.id}/sq_thumbnail/0.jpg`} alt="Item" onError={this.addDefaultImg}/> */}
 
 
                     <div className="form_element">
                         <input type="file" className="form-control" multiple name="file" onChange={this.onChangeHandler}/>
+
+                        <p>Select File Type:</p>
+
+                        <Select
+                            className="basic-single"
+                            classNamePrefix="select"
+                            defaultValue={this.state.fileTypes[0]}
+                            // isDisabled={isDisabled}
+                            // isLoading={isLoading}
+                            // isClearable={isClearable}
+                            // isRtl={isRtl}
+                            // isSearchable={isSearchable}
+                            name="color"
+                            options={this.state.fileTypes}
+                            onChange={this.handleFileType}
+                        />
+
                         <div className="center">
                             <button type="button" className="btn btn-success btn-block edit_page_3_finish" onClick={this.onClickHandler}>Upload Files and Finish</button> 
                         </div>
                     </div>
+
+                  
 
 
                     <div className="form-group">

@@ -13,7 +13,7 @@ class Intro extends Component  {
     }
 
     addDefaultImg = (ev) => {
-        const newImg = '/images/default/default.jpg';
+        const newImg = '/media/default/default.jpg';
         if (ev.target.src !== newImg) {
             ev.target.src = newImg
         }  
@@ -52,7 +52,7 @@ class Intro extends Component  {
                     
 
                     
-                        {/* <img src={`/images/intro/intro.jpg`} alt={"Item"} onError={addDefaultImg}/> */}
+                        {/* <img src={`/media/intro/intro.jpg`} alt={"Item"} onError={addDefaultImg}/> */}
                 
                 </div>
             // </Link>

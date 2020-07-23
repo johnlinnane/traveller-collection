@@ -17,7 +17,7 @@ let itemId = null;
 // //create multer instance, for file saving
 // var storage = multer.diskStorage({
 //     destination: function (req, file, cb) {
-//         cb(null, 'public/images/uploads')
+//         cb(null, 'public/media/uploads')
 //     },
 //     filename: function (req, file, cb) {
     
@@ -44,7 +44,7 @@ let itemId = null;
 //         multer({ storage: multer.diskStorage({
 //             destination: function (req, file, cb) {
 
-//                 var dest = `./public/images/items/${itemId}/original`;
+//                 var dest = `./public/media/items/${itemId}/original`;
 //                 // fs.mkdirSync(dest, { recursive: true })
 //                 mkdirp.sync(dest);
 //                 cb(null, dest)
@@ -81,8 +81,8 @@ let itemId = null;
 //         multer({ storage: multer.diskStorage({
 //             destination: function (req, file, cb) {
 
-//                 var dest = `./public/images/cover_img_cat`;
-//                 // var dest = `./public/images/upload_test`;
+//                 var dest = `./public/media/cover_img_cat`;
+//                 // var dest = `./public/media/upload_test`;
 //                 // fs.mkdirSync(dest, { recursive: true })
 //                 mkdirp.sync(dest);
 //                 cb(null, dest)
@@ -113,8 +113,8 @@ let itemId = null;
 // var storage = multer.diskStorage({
 //     destination: function (req, file, cb) {
 
-//         var dest = `./public/images/cover_img_cat`;
-//         // var dest = `./public/images/upload_test`;
+//         var dest = `./public/media/cover_img_cat`;
+//         // var dest = `./public/media/upload_test`;
 //         // fs.mkdirSync(dest, { recursive: true })
 //         mkdirp.sync(dest);
 //         cb(null, dest)
@@ -139,7 +139,7 @@ app.post(
             destination: function (req, file, cb) {
         
                 var dest = `./sharp-dump`;
-                // var dest = `./public/images/upload_test`;
+                // var dest = `./public/media/upload_test`;
                 // fs.mkdirSync(dest, { recursive: true })
                 mkdirp.sync(dest);
                 cb(null, dest)

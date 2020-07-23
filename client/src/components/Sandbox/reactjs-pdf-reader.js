@@ -11,7 +11,7 @@ class Sandbox extends React.Component {
         return (
             <PDFViewer
             document={{
-                url: '/images/items/5eb4417bf2ff151113f3e178/original/0.pdf',
+                url: '/media/items/5eb4417bf2ff151113f3e178/original/0.pdf',
                 
             }}
             scale={0.5}

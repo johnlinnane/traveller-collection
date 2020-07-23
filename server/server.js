@@ -625,7 +625,7 @@ app.delete('/api/delete-subcat', (req, res) => {
 //create multer instance, for file saving
 let storage = multer.diskStorage({
     destination: function (req, file, cb) {
-    cb(null, 'public/images/uploads')
+    cb(null, 'public/media/uploads')
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + '-' +file.originalname )

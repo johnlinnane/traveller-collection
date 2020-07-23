@@ -34,8 +34,8 @@ const ItemImageSlider = (props) => {
                                 {/* <div className={style.featured_image} */}
                                 <div className="featured_image"
                                     style={{
-                                        // background: `url(/images/items/${item._id}/thumbnail/0.jpg)`
-                                        background: `url(/images/items/5eb4417bf2ff151113f3e11f/thumbnail/0.jpg)`
+                                        // background: `url(/media/items/${item._id}/thumbnail/0.jpg)`
+                                        background: `url(/media/items/5eb4417bf2ff151113f3e11f/thumbnail/0.jpg)`
                                     }}
                                 >
                                 </div>

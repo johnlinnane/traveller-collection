@@ -21,7 +21,7 @@ const CollListItem = (props) => {
     // })
 
     const addDefaultImg = (ev) => {
-        const newImg = '/images/default/default.jpg';
+        const newImg = '/media/default/default.jpg';
         if (ev.target.src !== newImg) {
             ev.target.src = newImg
         }  
@@ -37,10 +37,10 @@ const CollListItem = (props) => {
         // <div className="coll_list_item">
         <div>
             
-            {/* <img src={`/images/items/${props.item.cover_item}/sq_thumbnail/0.jpg`} */}
-            {/* <img src={`/images/cover_img_coll/${props.item.id}.jpg`}
+            {/* <img src={`/media/items/${props.item.cover_item}/sq_thumbnail/0.jpg`} */}
+            {/* <img src={`/media/cover_img_coll/${props.item.id}.jpg`}
                 alt={"Item"}
-                // onError={"if (this.src != '/images/default/default.jpg') this.src = '/images/default/default.jpg';"} />
+                // onError={"if (this.src != '/media/default/default.jpg') this.src = '/media/default/default.jpg';"} />
                 onError={addDefaultImg} 
             />
 
@@ -54,7 +54,7 @@ const CollListItem = (props) => {
                 <div className="container">
 
                     <div className="img_back">
-                        <img src={`/images/cover_img_coll/${props.item.id}.jpg`} alt="category cover" onError={addDefaultImg} />
+                        <img src={`/media/cover_img_coll/${props.item.id}.jpg`} alt="category cover" onError={addDefaultImg} />
                     </div>
                     <div class="centered"><h1>{props.item.title}</h1></div>
 

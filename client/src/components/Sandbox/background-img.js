@@ -25,7 +25,7 @@ const Sandbox = (props) => {
     return(
       
         <Card style={{ width: '50%' }}>
-            <Card.Img src="/images/sq_thumb/1.jpg" alt="Card image" />
+            <Card.Img src="/media/sq_thumb/1.jpg" alt="Card image" />
             <Card.ImgOverlay>
                 <Card.Title>Card title</Card.Title>
                 <Card.Text>
@@ -41,7 +41,7 @@ const Sandbox = (props) => {
         // <div style={style}>
         //     <Image 
         //         style={background} responsive fluid
-        //         src="/images/sq_thumb/1.jpg">
+        //         src="/media/sq_thumb/1.jpg">
         //     </Image>
        
         //     <h1 style={textStyle}>Text over imageText over imageText over imageText over imageText over imageText over imageText over imageText over image</h1>
@@ -52,9 +52,9 @@ const Sandbox = (props) => {
         // <div className="coll_list_item">
             
 
-        //     {/* <img src={`/images/sq_thumb/1.jpg`} /> */}
+        //     {/* <img src={`/media/sq_thumb/1.jpg`} /> */}
 
-        //     <div className="overlay" style={{backgroundImage: "url('/images/sq_thumb/1.jpg')"}}>
+        //     <div className="overlay" style={{backgroundImage: "url('/media/sq_thumb/1.jpg')"}}>
         //         <span>Here is some title text</span>
         //     </div>
 

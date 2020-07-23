@@ -38,7 +38,7 @@ class AdminCat extends Component {
             }
             
         },
-        imgSrc: `/images/cover_img_cat/${this.props.chosenCatInfo._id}.jpg`,
+        imgSrc: `/media/cover_img_cat/${this.props.chosenCatInfo._id}.jpg`,
         saved: false,
         deleted: false,
         subRemoved: false
@@ -203,7 +203,7 @@ class AdminCat extends Component {
 
 
     addDefaultImg = (ev) => {
-        const newImg = '/images/default/default.jpg';
+        const newImg = '/media/default/default.jpg';
         if (ev.target.src !== newImg) {
             ev.target.src = newImg
         }  

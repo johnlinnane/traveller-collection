@@ -17,7 +17,7 @@ let index = 0;
 // //create multer instance, for file saving
 // var storage = multer.diskStorage({
 //     destination: function (req, file, cb) {
-//         cb(null, 'public/images/uploads')
+//         cb(null, 'public/media/uploads')
 //     },
 //     filename: function (req, file, cb) {
     
@@ -31,7 +31,7 @@ let index = 0;
 
 
 
-// *********************** ITEM IMAGE/S ************************
+// *********************** ITEM MEDIA ************************
 
 
 app.post(
@@ -41,12 +41,28 @@ app.post(
             storage: multer.diskStorage({
                 destination: function (req, file, cb) {
                     itemId = req.params.id;
-                    var dest = `./public/images/items/${itemId}/original`;
+                    var dest = `./public/media/items/${itemId}/original`;
                     mkdirp.sync(dest);
                     cb(null, dest)
                 },
                 filename: function (req, file, cb) {
-                    cb(null, `${index}.jpg` );
+                    let extArray = file.mimetype.split("/");
+                    let extension = extArray[extArray.length - 1];
+                    let ext = 'jpg';
+
+                    switch(extension) {
+                        case 'jpeg':
+                          ext = 'jpg'
+                          break;
+                        case 'png':
+                            ext = 'jpg'
+                            break;
+                        default:
+                          ext = extension
+                      }
+
+
+                    cb(null, `${index}.${ext}` );
                     index++;
                 }
             })
@@ -61,7 +77,7 @@ app.post(
 
             let width = 500;
             let height = 500;
-            var dest = `./public/images/items/${itemId}/sq_thumbnail`;
+            var dest = `./public/media/items/${itemId}/sq_thumbnail`;
             mkdirp.sync(dest);
 
             sharp(req.files[0].path)
@@ -75,6 +91,7 @@ app.post(
                         console.log(err);
                     }
                 })
+            index = 0;
         }
     
 )
@@ -98,8 +115,8 @@ app.post(
         multer({ storage: multer.diskStorage({
             destination: function (req, file, cb) {
 
-                var dest = `./public/images/cover_img_cat`;
-                // var dest = `./public/images/upload_test`;
+                var dest = `./public/media/cover_img_cat`;
+                // var dest = `./public/media/upload_test`;
                 // fs.mkdirSync(dest, { recursive: true })
                 mkdirp.sync(dest);
                 cb(null, dest)
@@ -136,8 +153,8 @@ app.post(
         multer({ storage: multer.diskStorage({
             destination: function (req, file, cb) {
 
-                var dest = `./public/images/intro`;
-                // var dest = `./public/images/upload_test`;
+                var dest = `./public/media/intro`;
+                // var dest = `./public/media/upload_test`;
                 // fs.mkdirSync(dest, { recursive: true })
                 mkdirp.sync(dest);
                 cb(null, dest)
@@ -172,7 +189,7 @@ app.post(
         multer({ storage: multer.diskStorage({
             destination: function (req, file, cb) {
 
-                var dest = `./public/images/info`;
+                var dest = `./public/media/info`;
                 mkdirp.sync(dest);
                 cb(null, dest)
                 

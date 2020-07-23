@@ -5,27 +5,27 @@ import StackGrid, { transitions, easings } from "react-stack-grid";
 
 const image_list = [
 	{
-		src: "/images/sq_thumb/1.jpg",
+		src: "/media/sq_thumb/1.jpg",
 		caption: "Old man",
 	},
 	{
-		src: "/images/sq_thumb/2.jpg",
+		src: "/media/sq_thumb/2.jpg",
 		caption: "Old book",
 	},
 	{
-		src: "/images/sq_thumb/3.jpg",
+		src: "/media/sq_thumb/3.jpg",
 		caption: "Roma Banner",
     },
     {
-		src: "/images/sq_thumb/11.jpg",
+		src: "/media/sq_thumb/11.jpg",
 		caption: "OldV man",
 	},
 	{
-		src: "/images/sq_thumb/12.jpg",
+		src: "/media/sq_thumb/12.jpg",
 		caption: "OlCd book",
 	},
 	{
-		src: "/images/sq_thumb/13.jpg",
+		src: "/media/sq_thumb/13.jpg",
 		caption: "RomCa Banner",
 	}
 ];

@@ -233,7 +233,7 @@ class CatEdit extends PureComponent {
     }
 
     // addDefaultImg = (ev) => {
-    //     const newImg = '/images/default/default.jpg';
+    //     const newImg = '/media/default/default.jpg';
     //     if (ev.target.src !== newImg) {
     //         ev.target.src = newImg
     //     }  
@@ -256,7 +256,7 @@ class CatEdit extends PureComponent {
                     : null } */}
 
 
-                    {/* <img src={`/images/items/${this.props.match.params.id}/sq_thumbnail/0.jpg`} alt="Item" onError={this.addDefaultImg}/> */}
+                    {/* <img src={`/media/items/${this.props.match.params.id}/sq_thumbnail/0.jpg`} alt="Item" onError={this.addDefaultImg}/> */}
 
 
                     
@@ -267,7 +267,7 @@ class CatEdit extends PureComponent {
                             
                                 <div>
                                     <h3>{this.state.catInfo.title}</h3>
-                                    <img src={`../images/cover_img_cat/${this.state.catInfo._id}.jpg`}/>
+                                    <img src={`../media/cover_img_cat/${this.state.catInfo._id}.jpg`}/>
                                     <br/>
                                     <input type="file" className="form-control" name="file" onChange={(e) => this.onChangeHandler(this.state.catInfo._id, e)} />
                                     

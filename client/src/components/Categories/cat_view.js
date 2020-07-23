@@ -32,7 +32,7 @@ class CatView  extends Component {
  
 
     addDefaultImg = (ev) => {
-        const newImg = '/images/default/default.jpg';
+        const newImg = '/media/default/default.jpg';
         if (ev.target.src !== newImg) {
             ev.target.src = newImg
         }  
@@ -75,16 +75,16 @@ class CatView  extends Component {
             if (firstItem) {
                 console.log(firstItem);    
                 return (
-                    <img src={`/images/items/${firstItem._id}/sq_thumbnail/0.jpg`} 
+                    <img src={`/media/items/${firstItem._id}/sq_thumbnail/0.jpg`} 
                         alt={firstItem.title} 
                         onError={this.addDefaultImg} 
                         className="subcat_list_img"/>
                 )
             } else {
-                return <img src={`/images/default/default.jpg`} alt="default item image" className="subcat_list_img"/>
+                return <img src={`/media/default/default.jpg`} alt="default item image" className="subcat_list_img"/>
             }
         } else {
-            return <img src={`/images/default/default.jpg`} alt="default item image" className="subcat_list_img"/>
+            return <img src={`/media/default/default.jpg`} alt="default item image" className="subcat_list_img"/>
         }
     }
 

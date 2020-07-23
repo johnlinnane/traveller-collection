@@ -30,9 +30,7 @@ class ItemView extends Component {
         numPages: null,
         setNumPages: null,
         pageNumber: 1,
-        setPageNumber: 1,
-
-        pdfPageNumber: 0
+        setPageNumber: 1
     }
 
     
@@ -48,7 +46,9 @@ class ItemView extends Component {
 
     }
 
+    componentWillReceiveProps() {
 
+    }
     
 
     componentWillUnmount() {
@@ -106,14 +106,6 @@ class ItemView extends Component {
 
     }
 
-    goToIndex = (pageNum) => {
-        this.setState({
-            pageNumber: parseInt(pageNum)
-        })
-
-    }
-
-    
     renderField = (text, ref) => {
         if (ref) {
             return (
@@ -193,22 +185,12 @@ class ItemView extends Component {
         const nextPage = () => {
             changePage(1);
         }
-
-        const handlePageChange = (event) => {
-            this.setState({
-                pageNumber: parseInt(event.target.value)
-            })
-        }
-
-
-        
-
         // ***************************************
         return (
             <div className="pdf_wrapper">
                 <div className="pdf">
                     <Document
-                        file={`/media/items/${this.props.match.params.id}/original/0.pdf`}
+                        file="/media/items/5eb4417bf2ff151113f3e178/original/0.pdf"
                         onLoadSuccess={onDocumentLoadSuccess}
                         // onLoadError={this.setState({ pdfError: true })}
                         
@@ -239,47 +221,13 @@ class ItemView extends Component {
                     Next
                 </button>
 
-                <p className="item_pagenum">
+                <p>
                     Page {pageNumber || (numPages ? 1 : '--')} of {numPages || '--'}
                     
                 </p>
 
                 <a href="/media/items/5eb4417bf2ff151113f3e178/original/0.pdf">[pdf]</a>
                 
-                <br />
-                {/* <input readOnly value={this.state.pdfPageNumber} onChange={(e) => {this.handlePageChange(e)}} ref={(input)=> this.myinput = input}/> */}
-
-                { this.props.items.item.pdf_page_index && this.props.items.item.pdf_page_index.length ?
-                    <div className="index_container">
-                        <div className="index_table">
-                            <div className="index_col index_top index_page">
-                                Page
-                            </div>
-                            <div className="index_col index_top index_heading">
-                                Heading
-                            </div>
-                            <div className="index_col index_top index_desc">
-                                Description
-                            </div>
-                            {this.props.items.item.pdf_page_index.map( (chapt, i) => (
-                                <div key={i} className="index_row" onClick={() => this.goToIndex(chapt.page)}>
-                                    <div className="index_col index_page">
-                                        {chapt.page}
-                                    </div>
-                                    <div className="index_col index_heading">
-                                        {chapt.heading}
-                                    </div>
-                                    <div className="index_col index_desc">
-                                        {chapt.description}
-                                    </div>
-                                </div>
-                        
-                        ))}
-                        </div>
-                    </div>
-                : null }
-
-
                 
             </div> 
         )
@@ -293,7 +241,7 @@ class ItemView extends Component {
 
 
 
-        // console.log(items);
+        console.log(items);
         return ( items.item ?
 
             <div>
@@ -453,8 +401,7 @@ class ItemView extends Component {
 
     render() {
 
-        console.log(this.state.pageNumber);
-        console.log(this.props)
+        // console.log(this.props);
 
 
         let items = this.props.items;

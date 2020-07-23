@@ -199,7 +199,7 @@ class AdminInfo extends Component {
 
 
     addDefaultImg = (ev) => {
-        const newImg = '/images/default/default.jpg';
+        const newImg = '/media/default/default.jpg';
         if (ev.target.src !== newImg) {
             ev.target.src = newImg
         }  
@@ -296,7 +296,7 @@ class AdminInfo extends Component {
                 <td>Paragraph {i + 1} Image</td>
                 <td>
                     
-                    <img src={`/images/info/${i+1}.jpg`} onError={this.addDefaultImg}/>
+                    <img src={`/media/info/${i+1}.jpg`} onError={this.addDefaultImg}/>
                     <div className="form_element">
                         <input type="file" className="form-control" name="file" onChange={this.onChangeHandler}/>
                         <br />

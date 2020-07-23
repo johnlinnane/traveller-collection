@@ -129,7 +129,7 @@ class Sandbox extends Component {
 
 
     // addDefaultImg = (ev) => {
-    //     const newImg = '/images/default/default.jpg';
+    //     const newImg = '/media/default/default.jpg';
     //     if (ev.target.src !== newImg) {
     //         ev.target.src = newImg
     //     }  
@@ -185,7 +185,7 @@ class Sandbox extends Component {
 
                                 <tr>
                                     <td>
-                                        {/* <img className="change_cat_img" src={`/images/cover_img_cat/${this.props.chosenCatInfo._id}.jpg`} onError={this.addDefaultImg}/> */}
+                                        {/* <img className="change_cat_img" src={`/media/cover_img_cat/${this.props.chosenCatInfo._id}.jpg`} onError={this.addDefaultImg}/> */}
                                     </td>
                                     <td>
                                         <div className="form_element">
