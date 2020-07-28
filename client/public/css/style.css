@@ -346,11 +346,12 @@ header .navItem span {
 #intro .btn {
     display: inline-block;
     background: #333;
-    color: #fff;
+    color: rgb(230, 230, 230);
     text-decoration: none;
     padding: 1em 2em;
     border: 1px solid #666;
     margin: 0.5em 0;
+    text-shadow: none;
 }
 
 #intro .btn:hover {
