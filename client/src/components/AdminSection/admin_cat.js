@@ -10,7 +10,7 @@ import { getAllColls, getAllCats, getAllSubCats  } from '../../actions';
 import { addCat, deleteCat, addSubcat, deleteSubcat, updateCat, updateSubcat  }  from '../../actions';
 
 
-const config = require('../../config').get(process.env.NODE_ENV);
+const config = require('../../config_client').get(process.env.NODE_ENV);
 
 
 class AdminCat extends Component {

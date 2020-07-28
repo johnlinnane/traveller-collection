@@ -21,7 +21,7 @@ class Intro extends Component  {
 
 
     render() {
-        console.log(this.props);
+        console.log(process.env.NODE_ENV);
         return (
             // <Link to="/categories">
 
@@ -46,8 +46,12 @@ class Intro extends Component  {
                         : null }
                         {this.props.text && this.props.text.body ?
                         <p>{this.props.text.body}</p>
+
+                        
+
                         : null}
                         <a href="/categories" className="btn">Enter</a>
+                        
                     </div>
                     
 

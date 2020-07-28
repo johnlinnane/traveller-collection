@@ -8,7 +8,7 @@ import {Progress} from 'reactstrap';
 // import { getItemById, deleteItem } from '../../actions';
 import { getAllCats } from '../../actions';
 
-const config = require('../../config').get(process.env.NODE_ENV);
+const config = require('../../config_client').get(process.env.NODE_ENV);
 
 class CatEdit extends PureComponent {
 
