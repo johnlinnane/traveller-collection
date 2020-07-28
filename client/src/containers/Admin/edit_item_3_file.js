@@ -9,7 +9,7 @@ import Select from 'react-select';
 
 import { getItemById, deleteItem, updateItem } from '../../actions';
 
-const config = require('../../config').get(process.env.NODE_ENV);
+const config = require('../../config_client').get(process.env.NODE_ENV);
 
 
 class EditItemFile extends PureComponent {
