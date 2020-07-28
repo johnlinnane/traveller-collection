@@ -4,9 +4,9 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import { withRouter } from "react-router-dom";
 
-
 import { getIntroText, updateIntroText } from '../../actions';
 
+const config = require('../../config').get(process.env.NODE_ENV);
 
 class AdminIntro extends Component {
 
@@ -70,8 +70,10 @@ class AdminIntro extends Component {
             }
             
             // HOST-SELECT
-            axios.post(`http://localhost:8000/upload-intro-img`, data, { 
+            // axios.post(`http://localhost:8000/upload-intro-img`, data, { 
             // axios.post(`http://64.227.34.134:8000/upload-intro-img`, data, { 
+            axios.post(`http://${config.IP_ADDRESS}:8000/upload-intro-img`, data, { 
+                
                 // receive two parameter endpoint url ,form data 
                 onUploadProgress: ProgressEvent => {
                     this.setState({

@@ -10,7 +10,9 @@ const config = {
 
   default:{
     SECRET: 'SUPERSECRETPASSWORD123',
-    DATABASE: 'mongodb://localhost:27017/collTest'
+    DATABASE: 'mongodb://localhost:27017/collTest',
+    IP_ADDRESS: 'localhost',
+    // IP_ADDRESS: '64.227.34.134'
   }
 }
 

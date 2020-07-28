@@ -3,12 +3,15 @@ import { connect } from 'react-redux';
 import { withRouter } from "react-router-dom";
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
-
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 
 import { getAllColls, getAllCats, getAllSubCats  } from '../../actions';
 import { addCat, deleteCat, addSubcat, deleteSubcat, updateCat, updateSubcat  }  from '../../actions';
+
+
+const config = require('../../config').get(process.env.NODE_ENV);
+
 
 class AdminCat extends Component {
 
@@ -108,8 +111,9 @@ class AdminCat extends Component {
             }
 
             // HOST-SELECT
-            axios.post(`http://localhost:8000/upload-cat/${this.props.chosenCatInfo._id}`, data, { 
+            // axios.post(`http://localhost:8000/upload-cat/${this.props.chosenCatInfo._id}`, data, { 
             // axios.post(`http://64.227.34.134:8000/upload-cat/${this.props.chosenCatInfo._id}`, data, { 
+            axios.post(`http://${config.IP_ADDRESS}:8000/upload-cat/${this.props.chosenCatInfo._id}`, data, { 
                 // receive two parameter endpoint url ,form data 
                 onUploadProgress: ProgressEvent => {
                     this.setState({
@@ -389,6 +393,7 @@ class AdminCat extends Component {
 
     render() {
 
+        // console.log(config.IP_ADDRESS);
 
         // console.log(this.props)
         return (
