@@ -247,7 +247,7 @@ class ChapterIndex extends PureComponent {
                 <span>Add/Remove Fields</span>
             </div>
 
-            <button type="submit" className="half_width_l" onClick={this.onSubmit}>Save and Continue</button>
+            <button type="submit" className="half_width_l" onClick={this.onSubmit}>Save and Return</button>
             <button type="button" className="half_width_l" onClick={(e) => { if (window.confirm('Cancelling will result in loss of all newly inputted information in this form.')) this.cancel(e) } }>Cancel</button>
 
         </div>
