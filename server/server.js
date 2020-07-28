@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 // get() is for heroku
 const config = require('./config/config').get(process.env.NODE_ENV);
+require('dotenv').config();
 const app = express();
 
 // file upload
@@ -674,7 +675,7 @@ if(process.env.NODE_ENV === 'production') {
 const port = process.env.PORT || 3001;
 
 
-
+console.log(process.env);
 
 app.listen(port, () => {
     console.log(`SERVER RUNNING : port ${port}`)
