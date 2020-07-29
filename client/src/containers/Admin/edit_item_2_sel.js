@@ -458,7 +458,25 @@ class EditItemSel extends PureComponent {
     renderForm = () => (
         <form onSubmit={this.onSubmit}>
                         
-                        <h2>Edit item:</h2>
+
+                        <div className="item_container">
+                            <Link to={`/items/${this.state.dataToUpdate._id}`} target="_blank" >
+
+                                <div className="container">
+
+                                    <div className="img_back">
+                                        <img src={`/media/items/${this.state.dataToUpdate._id}/original/0.jpg`} alt="item main image" className="edit_main_img" onError={this.addDefaultImg} />
+                                    </div>
+                                    {this.props.items && this.props.items.item ?
+                                        <div className="centered edit_img_text"><h2>{this.props.items.item.title}</h2></div>
+                                    : null}
+
+                                </div>
+                            </Link>
+                        </div>
+
+
+                        <h2>Edit Item Categories</h2>
                        
                         <table>
                         <tbody>

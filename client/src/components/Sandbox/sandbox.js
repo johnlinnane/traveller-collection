@@ -7,8 +7,8 @@ class Sandbox extends Component {
 
 
     state = {
-        lat: 37.7749,
-        lng: -122.4194,
+        lat: 52.232579,
+        lng: -8.670210,
         zoom: 13,
     }
 
@@ -19,9 +19,12 @@ class Sandbox extends Component {
                 <Map 
                     center={[this.state.lat, this.state.lng]} 
                     zoom={this.state.zoom} 
-                    style={{ width: '100%', height: '900px'}}
+                    style={{ width: '25%', height: '250px'}}
                 >
-                    
+                    <TileLayer
+                        attribution='&copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    />
                 </Map>
             </div>
         );

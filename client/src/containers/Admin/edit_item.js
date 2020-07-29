@@ -48,8 +48,11 @@ class EditItem extends PureComponent {
                 }
             ],
             geo: {
-                address: ''
-            }
+                address: '',
+                latitude: null,
+                longitude: null
+            },
+            location: ''
         },
         saved: false
 
@@ -105,7 +108,8 @@ class EditItem extends PureComponent {
                 rights: item.rights,
                 file_format: item.file_format,
                 category_ref: item.category_ref,
-                subcategory_ref: item.subcategory_ref
+                subcategory_ref: item.subcategory_ref,
+                location: item.location
                 
             }
 
@@ -128,11 +132,13 @@ class EditItem extends PureComponent {
 
 
             if (item.geo) {
-                if (item.geo.address || item.geo.address === '') {
+                if (item.geo.address || item.geo.latitude || item.geo.longitude === '') {
                     newFormdata = {
                         ...newFormdata,
                         geo: {
-                            address: item.geo.address
+                            address: item.geo.address,
+                            latitude: item.geo.latitude,
+                            longitude: item.geo.longitude
                         }
                     }
                 }
@@ -158,16 +164,11 @@ class EditItem extends PureComponent {
         // console.log(newFormdata);
 
         if (level === 'external_link') {
-            if (name === 'url') {
-                newFormdata.external_link[0].url = event.target.value;
-            }
-            if (name === 'text') {
-                newFormdata.external_link[0].text = event.target.value;
-            }
+                newFormdata.external_link[0][name] = event.target.value;
         } else if (level === 'geo') {
-            newFormdata.geo.address = event.target.value;
-            if (!event.target.value) {
-                newFormdata.geo.address = '';
+            newFormdata.geo[name] = event.target.value;
+            if (event.target.value === '') {
+                newFormdata.geo[name] = '';
             }
         } else {
             newFormdata[name] = event.target.value;
@@ -301,14 +302,24 @@ class EditItem extends PureComponent {
 
             <form onSubmit={this.submitForm}>
                 
-                <h2>Edit item:</h2>
                 <div className="item_container">
-                    <img src={`/media/items/${formdata._id}/original/0.jpg`} 
-                        alt="Item" 
-                        onError={this.addDefaultImg}
-                        className="edit_main_img"
-                    />
+                    <Link to={`/items/${this.state.formdata._id}`} target="_blank" >
+
+                        <div className="container">
+
+                            <div className="img_back">
+                                <img src={`/media/items/${formdata._id}/original/0.jpg`} alt="item main image" className="edit_main_img" onError={this.addDefaultImg} />
+                            </div>
+                            <div className="centered edit_img_text"><h2>{formdata.title}</h2></div>
+
+
+                        </div>
+
+                    </Link>
                 </div>
+
+                <h2>Edit Item Details</h2>
+
 
                 <table>
                 <tbody>
@@ -348,11 +359,23 @@ class EditItem extends PureComponent {
                     </tr>
 
                     {this.createTextInput(formdata.source,'source', "Sources of information about the item", "Source")}
-                    { formdata.geo ?
-                        this.createTextInput(formdata.geo.address,'address', "Where is the item currently located", "Address", 'geo')
-                    : null }
+                    
                     {this.createTextInput(formdata.date_created,'date_created', "Date item was created", "Date")}
                         
+
+                    <tr><td></td><td></td></tr>
+                    <tr><td colSpan="2"><hr /></td></tr>
+                    <tr><td></td><td></td></tr>
+
+                    {this.createTextInput(formdata.location,'location', "The item's general location", "Location")}
+
+                    
+                        
+                    {this.createTextInput(formdata.geo.address,'address', "Where is the item currently located", "Exact Address", 'geo')}
+                    {this.createTextInput(formdata.geo.latitude,'latitude', "Geo-location latitude ie. 52.232269", "Latitude", 'geo')}
+                    {this.createTextInput(formdata.geo.longitude,'longitude', "Geo-location longitude ie. -8.670860", "Longitude", 'geo')}
+                    
+
 
                     <tr><td></td><td></td></tr>
                     <tr><td colSpan="2"><hr /></td></tr>

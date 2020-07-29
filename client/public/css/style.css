@@ -1199,10 +1199,14 @@ header .navItem span {
 
 
 .edit_main_img {
-    width: 90%;
+    width: 40%;
     box-shadow: 20px 11px 21px 6px rgba(0,0,0,0.1);
 }
 
+.edit_img_text h2 {
+    all: revert;
+    color: #ffffff;
+}
 
 
 .edit_page .half_width button {

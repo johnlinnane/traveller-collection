@@ -8,6 +8,7 @@ const itemSchema = mongoose.Schema({
     title: String,
     creator: String,
     subject: String,
+    location: String,
     description: String,
     source: String,
     date_created: String,

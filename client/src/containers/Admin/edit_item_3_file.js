@@ -272,14 +272,22 @@ class EditItemFile extends PureComponent {
             <div className="main_view">
                 <div className="rl_container article edit_page">
                         
-                    <h2>Upload files:</h2>
+                    <div className="item_container">
+                        <Link to={`/items/${this.state.formdata._id}`} target="_blank" >
 
-                    {this.props.items && this.props.items.item ?
-                        <span>Item: {this.props.items.item.title}</span>
-                    : null }
+                            <div className="container">
 
-                    
+                                <div className="img_back">
+                                    <img src={`/media/items/${this.state.formdata._id}/original/0.jpg`} alt="item main image" className="edit_main_img" onError={this.addDefaultImg} />
+                                </div>
+                                
+                                <div className="centered edit_img_text"><h2>{this.state.formdata.title}</h2></div>
+                                
 
+                            </div>
+                        </Link>
+                    </div>
+                    <h2>Upload Files</h2>
 
                     {/* <img src={`/media/items/${this.props.match.params.id}/sq_thumbnail/0.jpg`} alt="Item" onError={this.addDefaultImg}/> */}
 
