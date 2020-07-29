@@ -4,7 +4,6 @@ const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 // get() is for heroku
 const config = require('./config/config').get(process.env.NODE_ENV);
-require('dotenv').config();
 const app = express();
 
 // file upload
