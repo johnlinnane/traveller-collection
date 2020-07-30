@@ -392,7 +392,7 @@ class EditItem extends PureComponent {
 
 
                     
-                    {this.createTextInput(formdata.location,'location', "The item's general location", "Location")}
+                    {this.createTextInput(formdata.location,'location', "The item's general location ie. Cashel", "Location")}
 
                     
                         
