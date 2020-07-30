@@ -54,7 +54,7 @@ class MainMap extends Component {
                         </Popup>
                     </Marker> */}
 
-                    {this.props.items.items ?
+                    {this.props.items.items && this.props.items.items.length ?
                         <div>
                             {this.props.items.items.map( (item, i) => (
                                 <Marker 
