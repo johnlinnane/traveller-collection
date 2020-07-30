@@ -217,7 +217,7 @@ class AdminCat extends Component {
 
 
         // make a copy of formdata
-        const newFormdata = {
+        let newFormdata = {
             ...this.state.formdata
         }
 

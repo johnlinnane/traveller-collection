@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
 // import axios from 'axios';
 // import Select from 'react-select';
 // import CreatableSelect from 'react-select/creatable';
@@ -53,6 +54,11 @@ class EditItem extends PureComponent {
                 longitude: null
             },
             location: ''
+        },
+        initMap: {
+            initLat: 53.342609,
+            initLong: -7.603976,
+            initZoom: 6.5
         },
         saved: false
 
@@ -157,7 +163,7 @@ class EditItem extends PureComponent {
 
 
         // make a copy of formdata
-        const newFormdata = {
+        let newFormdata = {
             ...this.state.formdata
         }
 
@@ -185,6 +191,22 @@ class EditItem extends PureComponent {
 
 
 
+    handleClick(e) {
+        console.log(e.latlng.lat);
+
+        this.setState({
+                formdata: {
+                    ...this.state.formdata,
+                    geo: {
+                        ...this.state.formdata.geo,
+                        latitude: e.latlng.lat,
+                        longitude: e.latlng.lng
+                    }
+                }
+            
+            
+        })
+    }
 
     
 
@@ -367,11 +389,33 @@ class EditItem extends PureComponent {
                     <tr><td colSpan="2"><hr /></td></tr>
                     <tr><td></td><td></td></tr>
 
+
+
+                    
                     {this.createTextInput(formdata.location,'location', "The item's general location", "Location")}
 
                     
                         
                     {this.createTextInput(formdata.geo.address,'address', "Where is the item currently located", "Exact Address", 'geo')}
+                    <tr>
+                        <td>Geo-location</td>
+                        <td>
+                        <Map 
+                            className="edit_map"
+                            center={[this.state.initMap.initLat, this.state.initMap.initLong]} 
+                            zoom={this.state.initMap.initZoom} 
+                            onClick={(e) => { this.handleClick(e)}}
+                            
+
+                            // style={{ height: this.state.showMap ? '350px' : '0px'}}
+                        >
+                            <TileLayer
+                                attribution='&copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                            />
+                        </Map>
+                        </td>
+                    </tr>
                     {this.createTextInput(formdata.geo.latitude,'latitude', "Geo-location latitude ie. 52.232269", "Latitude", 'geo')}
                     {this.createTextInput(formdata.geo.longitude,'longitude', "Geo-location longitude ie. -8.670860", "Longitude", 'geo')}
                     

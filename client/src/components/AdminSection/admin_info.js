@@ -215,7 +215,7 @@ class AdminInfo extends Component {
 
     handleInput = (event, i, field) => {
 
-        const newFormdata = {
+        let newFormdata = {
             ...this.state.formdata
         }
 

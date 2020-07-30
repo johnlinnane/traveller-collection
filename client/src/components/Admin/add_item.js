@@ -59,7 +59,7 @@ class AddItem extends Component {
     handleInput = (event, name, level) => {
         // console.log(event.target.value);
 
-        const newFormdata = {
+        let newFormdata = {
             ...this.state.formdata
         }
 
