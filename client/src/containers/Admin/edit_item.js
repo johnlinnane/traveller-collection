@@ -414,6 +414,8 @@ class EditItem extends PureComponent {
                                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                             />
                         </Map>
+                        <br/>
+                        Click on the map to get geolocation
                         </td>
                     </tr>
                     {this.createTextInput(formdata.geo.latitude,'latitude', "Geo-location latitude ie. 52.232269", "Latitude", 'geo')}
