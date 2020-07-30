@@ -391,6 +391,18 @@ app.get('/api/getInfoText', (req,res) => {
 
 
 
+//  ******************** get documents with coordinates
+
+app.get('/api/getItemsWithCoords', (req,res) => {
+    // console.log('getItemsWithCoords called')
+    Item.find( { "geo.latitude": {$ne:null} }, {}, { sort: { '_id':1 } }, (err, doc) => {
+        if(err) return res.status(400).send(err);
+        res.send(doc);
+    })
+})
+
+
+
 
 
 // *******************************************************

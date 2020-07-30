@@ -414,6 +414,7 @@ class ItemView extends Component {
                                         className="item_map"
                                         center={[this.props.items.item.geo.latitude, this.props.items.item.geo.longitude]} 
                                         zoom={this.state.mapZoom} 
+                                        style={{ height: this.state.showMap ? '350px' : '0px'}}
                                     >
                                         <TileLayer
                                             attribution='&copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'

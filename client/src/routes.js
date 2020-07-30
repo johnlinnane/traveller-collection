@@ -37,8 +37,10 @@ import Intro from './components/Intro/intro';
 
 import CatEdit from './containers/Admin/cat_edit';
 
-import Admin from './components/AdminSection'
+import Admin from './components/AdminSection';
 
+
+import MainMap from './components/MainMap';
 
 
 
@@ -90,6 +92,7 @@ const Routes = () => {
                 <Route path="/admin" exact component={Auth(Admin, true)}/>
                 <Route path="/chapter-index/:id" exact component={Auth(ChapterIndex, true)}/>
 
+                <Route path="/map" exact component={Auth(MainMap, true)}/>
 
                 <Route path="/sandbox" exact component={Auth(Sandbox, true)}/>
                 

@@ -91,6 +91,14 @@ export default function(state={}, action) {
                 latest:action.payload
             }
 
+        case 'GET_ITEMS_W_COORDS':
+            return {
+                ...state,
+                items:action.payload
+            }
+
+
+
        
     
         default:

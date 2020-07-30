@@ -70,6 +70,12 @@ const SidenavItems = ({user}) => {
         },
         {   type:'navItem',
             icon:'file-text-o',
+            text:'Map',
+            link:'/map',
+            restricted:false
+        },
+        {   type:'navItem',
+            icon:'file-text-o',
             text:'Search',
             link:'/search',
             restricted:false

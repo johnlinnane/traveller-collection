@@ -727,8 +727,10 @@ header .navItem span {
 
 .item_map {
     width: 75%; 
-    height: 350px;
+    /* height: 350px; */
     margin-bottom: 30px;
+    transition: height 2s;
+
 }
 
 /* PDF CHAPTER INDEX TABLE */
@@ -1520,4 +1522,17 @@ header .navItem span {
 }
 .img_and_para {
 
+}
+
+/*=============================
+            MAP
+===============================*/
+
+.main_map {
+    width: 75%; 
+    height: 750px;
+    /* margin-bottom: 30px; */
+    /* transition: height 2s;    */
+    
+    margin: auto;
 }

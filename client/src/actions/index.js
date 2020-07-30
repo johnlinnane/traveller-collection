@@ -358,6 +358,24 @@ export function getFirstItemBySubcat(catId, subcatId) {
     }
 }
 
+
+
+export function getItemsWithCoords() {
+    const request = axios.get(`/api/getItemsWithCoords`)
+        .then(response => {
+                return response.data
+            }    
+        );
+    console.log(request);
+    return {
+        type: 'GET_ITEMS_W_COORDS',
+        payload: request
+    }
+}
+
+
+
+
 // * * * * * * * * * *  EDIT ITEMS * * * * * * * * * *  
 
 export function getItemById(id) {
