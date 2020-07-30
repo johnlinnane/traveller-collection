@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Slick from 'react-slick';   // uses cdn css
+import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
 
 
 
@@ -32,7 +33,10 @@ class ItemView extends Component {
         pageNumber: 1,
         setPageNumber: 1,
 
-        pdfPageNumber: 0
+        pdfPageNumber: 0,
+
+        showMap: false,
+        mapZoom: 12
     }
 
     
@@ -394,6 +398,49 @@ class ItemView extends Component {
                             this.renderField('Address', items.item.geo.address)
                         : null }
 
+
+                        {this.props.items && this.props.items.item.geo.latitude && this.props.items.item.geo.longitude ? 
+                            <div>
+                                <div className="item_map_heading" onClick={() => this.setState({showMap: !this.state.showMap})}>
+                                    <p>
+                                        <b>View on Map </b> 
+                                        {this.state.showMap ?
+                                            <i class="fa fa-angle-up"></i>
+                                        : <i class="fa fa-angle-down"></i>}
+                                    </p>
+                                </div>
+                                {this.state.showMap ?
+                                    <Map 
+                                        className="item_map"
+                                        center={[this.props.items.item.geo.latitude, this.props.items.item.geo.longitude]} 
+                                        zoom={this.state.mapZoom} 
+                                    >
+                                        <TileLayer
+                                            attribution='&copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                                        />
+
+                                        <Marker 
+                                            position={[this.props.items.item.geo.latitude, this.props.items.item.geo.longitude]} 
+                                            // key={incident['incident_number']} 
+                                        >
+                                            <Popup>
+                                                <span><b>{this.props.items.item.title}</b></span>
+                                                <br/>
+                                                <span>{this.props.items.item.geo.address}</span><br/>
+                                                <br/>
+                                                <span>{this.props.items.item.geo.latitude}, {this.props.items.item.geo.longitude}</span><br/>
+                                            </Popup>
+                                        </Marker>
+                                    </Map>
+                                : null }
+                            </div>
+                        : null}
+
+
+
+                        
+
                         {items.item && items.item.external_link && items.item.external_link[0].url ?
                                     <Link to={items.item.external_link[0].url}  target="_blank">
                                         <div className="link_wrapper">
@@ -407,6 +454,9 @@ class ItemView extends Component {
                                         </div>
                                     </Link>
                         : null }
+
+
+                        
   
                     </div> 
 
@@ -453,7 +503,7 @@ class ItemView extends Component {
 
     render() {
 
-        console.log(this.state.pageNumber);
+        // console.log(this.state.pageNumber);
         console.log(this.props)
 
 

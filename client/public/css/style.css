@@ -712,6 +712,18 @@ header .navItem span {
 
 }
 
+/* MAP */
+
+.item_map_heading {
+    cursor: pointer;
+}
+
+.item_map {
+    width: 75%; 
+    height: 350px;
+    margin-bottom: 30px;
+}
+
 /* PDF CHAPTER INDEX TABLE */
 
 
@@ -787,6 +799,7 @@ header .navItem span {
 .index_cancelled {
     margin: 30px;
 }
+
 
 
 /*=============================
