@@ -377,7 +377,7 @@ class ItemView extends Component {
                     </div>
 
 
-                    <div className="item_review">
+                    <div className="item_review item_body">
 
                         {this.renderField('Subject', items.item.subject)}
                         {this.renderField('Description', items.item.description)}
@@ -405,8 +405,8 @@ class ItemView extends Component {
                                     <p>
                                         <b>View on Map </b> 
                                         {this.state.showMap ?
-                                            <i class="fa fa-angle-up"></i>
-                                        : <i class="fa fa-angle-down"></i>}
+                                            <i className="fa fa-angle-up"></i>
+                                        : <i className="fa fa-angle-down"></i>}
                                     </p>
                                 </div>
                                 {this.state.showMap ?
@@ -441,26 +441,26 @@ class ItemView extends Component {
 
                         
 
-                        {items.item && items.item.external_link && items.item.external_link[0].url ?
-                                    <Link to={items.item.external_link[0].url}  target="_blank">
-                                        <div className="link_wrapper">
-                                            <div className="link_img">
-                                                <img src='/media/icons/ext_link.png' className="ext_link"/>
-                                            </div>
-
-                                            <div className="link_text">
-                                                {items.item.external_link[0].text}
-                                            </div>
-                                        </div>
-                                    </Link>
-                        : null }
+                        
 
 
                         
   
                     </div> 
 
+                    {items.item && items.item.external_link && items.item.external_link[0].url ?
+                                <Link to={items.item.external_link[0].url}  target="_blank">
+                                    <div className="link_wrapper">
+                                        <div className="link_img">
+                                            <img src='/media/icons/ext_link.png' className="ext_link"/>
+                                        </div>
 
+                                        <div className="link_text">
+                                            {items.item.external_link[0].text}
+                                        </div>
+                                    </div>
+                                </Link>
+                    : null }
 
                     <div className="item_box">
                         <div className="left">

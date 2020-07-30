@@ -553,6 +553,7 @@ header .navItem span {
 .item_container {
     box-sizing: border-box;
     padding:20px;
+    width: 90%;
 }
 
 .item_container .item_header {
@@ -642,7 +643,7 @@ header .navItem span {
 }
 
 .item_container .item_main_img {
-    width: 90%;
+    width: 100%;
     box-shadow: 20px 11px 21px 6px rgba(0,0,0,0.1);
 }
 
@@ -662,7 +663,7 @@ header .navItem span {
     text-align: left;
 }
 .item_creator span {
-    color: #252525;
+    /* color: #252525; */
     display: block;
     padding-bottom: 10px;
 }
@@ -677,6 +678,12 @@ header .navItem span {
 .item_field a {
     color:rgb(78, 112, 150)
 }
+
+.item_body {
+    border-bottom: 1px solid #e1e1e1;
+    margin-bottom: 20px;
+}
+
 
 .video {
     width: 100%;
