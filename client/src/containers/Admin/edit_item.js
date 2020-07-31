@@ -138,7 +138,7 @@ class EditItem extends PureComponent {
 
 
             if (item.geo) {
-                if (item.geo.address || item.geo.latitude || item.geo.longitude === '') {
+                if (item.geo.address || item.geo.latitude || item.geo.longitude ) {
                     newFormdata = {
                         ...newFormdata,
                         geo: {
@@ -194,13 +194,16 @@ class EditItem extends PureComponent {
     handleClick(e) {
         console.log(e.latlng.lat);
 
+        let lat = parseFloat(e.latlng.lat).toFixed(6);
+        let lng = parseFloat(e.latlng.lng).toFixed(6);
+
         this.setState({
                 formdata: {
                     ...this.state.formdata,
                     geo: {
                         ...this.state.formdata.geo,
-                        latitude: e.latlng.lat,
-                        longitude: e.latlng.lng
+                        latitude: lat,
+                        longitude: lng
                     }
                 }
             
@@ -413,6 +416,13 @@ class EditItem extends PureComponent {
                                 attribution='&copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                             />
+
+                            { this.state.formdata.geo.latitude && this.state.formdata.geo.longitude ?
+                                
+                                <Marker 
+                                    position={[this.state.formdata.geo.latitude, this.state.formdata.geo.longitude]} 
+                                />
+                            : null }
                         </Map>
                         <br/>
                         Click on the map to get geolocation
