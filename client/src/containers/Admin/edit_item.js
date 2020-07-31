@@ -11,14 +11,11 @@ import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
 // import 'react-toastify/dist/ReactToastify.css';
 
 
-
 import { getItemById, updateItem, clearItem, deleteItem } from '../../actions';
 // import { getAllColls, getAllCats, getAllSubCats  } from '../../actions';
 
 
-
 class EditItem extends PureComponent {
-
 
     state = {
         formdata:{
@@ -29,7 +26,6 @@ class EditItem extends PureComponent {
             description: '',
             source: '',
             date_created: '',
-            
             contributor: '',
             item_format: '',
             materials: '',
@@ -61,14 +57,11 @@ class EditItem extends PureComponent {
             initZoom: 6.5
         },
         saved: false
-
-
     }
 
 
     componentDidMount() {
         this.props.dispatch(getItemById(this.props.match.params.id))
-
     }
 
 
@@ -81,8 +74,6 @@ class EditItem extends PureComponent {
         // console.log(prevProps);
         let item = this.props.items.item;
         // console.log(this.state.formdata);
-
-        
         // console.log(book);
 
         // can create a updatedFormdata variable, but no need
@@ -92,13 +83,12 @@ class EditItem extends PureComponent {
                 
                 ...this.state.formdata,
                 _id:item._id,
-                title:item.title,  //
-                creator:item.creator,  //
-                description:item.description,  //
-                pages:item.pages,  //
-                collection_id:item.collection_id,  //
-                source:item.source,   //
-
+                title:item.title,
+                creator:item.creator,
+                description:item.description,
+                pages:item.pages,
+                collection_id:item.collection_id,
+                source:item.source,
                 subject: item.subject,
                 date_created: item.date_created,
                 tags: item.tags,
@@ -116,11 +106,9 @@ class EditItem extends PureComponent {
                 category_ref: item.category_ref,
                 subcategory_ref: item.subcategory_ref,
                 location: item.location
-                
             }
-            let newLatLng = this.state.initMap;
 
-         
+            let newLatLng = this.state.initMap;
 
             if (item.external_link) {
                 if (item.external_link[0].url || item.external_link[0].text) {
@@ -171,7 +159,6 @@ class EditItem extends PureComponent {
 
     handleInput = (event, name, level) => {
 
-
         // make a copy of formdata
         let newFormdata = {
             ...this.state.formdata
@@ -189,7 +176,6 @@ class EditItem extends PureComponent {
         } else {
             newFormdata[name] = event.target.value;
         }
-
 
         // copy it back to state
         this.setState({
@@ -216,20 +202,13 @@ class EditItem extends PureComponent {
                         longitude: lng
                     }
                 }
-            
-            
         })
     }
-
-    
-
 
     deletePost = () => {
         this.props.dispatch(deleteItem(this.state.formdata._id));
         this.props.history.push('/user/all-items');
     }
-
-
 
     redirectUser = () => {
         setTimeout(() => {
@@ -240,11 +219,6 @@ class EditItem extends PureComponent {
     cancel = () => {
         this.props.history.push(`/items/${this.props.match.params.id}`)
     }
-
-   
-
-
-
 
 
     submitForm = (e) => {
@@ -270,7 +244,6 @@ class EditItem extends PureComponent {
 
 
     createTextInput = (existing, name, placeholder, inputLabel, level) => {
-
         return (
             <tr>
                 <td>
@@ -286,14 +259,10 @@ class EditItem extends PureComponent {
                         />
                     </div>
                 </td>
-
             </tr>
         )
     }
 
- 
-
-    // ****************************************************
 
     addDefaultImg = (ev) => {
         const newImg = '/media/default/default.jpg';
@@ -308,8 +277,6 @@ class EditItem extends PureComponent {
 
         const items = this.props.items;
         const formdata = this.state.formdata;
-
-
 
         return (
             <div>
@@ -334,31 +301,24 @@ class EditItem extends PureComponent {
                 : null
             } */}
 
-
             <form onSubmit={this.submitForm}>
                 
                 <div className="item_container">
                     <Link to={`/items/${this.state.formdata._id}`} target="_blank" >
-
                         <div className="container">
-
                             <div className="img_back">
                                 <img src={`/media/items/${formdata._id}/original/0.jpg`} alt="item main image" className="edit_main_img" onError={this.addDefaultImg} />
                             </div>
                             <div className="centered edit_img_text"><h2>{formdata.title}</h2></div>
-
-
                         </div>
-
                     </Link>
                 </div>
 
                 <h2>Edit Item Details</h2>
 
-
                 <table>
                 <tbody>
-                
+
                     {this.createTextInput(formdata.title,'title', "Enter title", "Title")}
                     {this.createTextInput(formdata.creator,'creator', "Enter creator", "Creator")}
                     {this.createTextInput(formdata.subject,'subject', "General subject matter", "Subject")}
@@ -375,26 +335,20 @@ class EditItem extends PureComponent {
                                 onChange={(event) => this.handleInput(event, 'description')}
                                 rows={18}
                             />
-                            
                         </td>
                     </tr>
 
 
                     <tr>
-                        <td>
-
-                        </td>
+                        <td></td>
                         <td>
                             <Link to={`/chapter-index/${this.state.formdata._id}`} target="_blank" >
                                 <button type="button" className="half_width_l">Add Chapter Index (PDF)</button>
                             </Link>
-
-                            
                         </td>
                     </tr>
 
                     {this.createTextInput(formdata.source,'source', "Sources of information about the item", "Source")}
-                    
                     {this.createTextInput(formdata.date_created,'date_created', "Date item was created", "Date")}
                         
 
@@ -402,40 +356,34 @@ class EditItem extends PureComponent {
                     <tr><td colSpan="2"><hr /></td></tr>
                     <tr><td></td><td></td></tr>
 
-
-
                     
                     {this.createTextInput(formdata.location,'location', "The item's general location ie. Cashel", "Location")}
-
-                    
-                        
                     {this.createTextInput(formdata.geo.address,'address', "Where is the item currently located", "Exact Address", 'geo')}
+
                     <tr>
                         <td>Geo-location</td>
                         <td>
-                        <Map 
-                            className="edit_map"
-                            center={[this.state.initMap.initLat, this.state.initMap.initLong]} 
-                            zoom={this.state.initMap.initZoom} 
-                            onClick={(e) => { this.handleClick(e)}}
-                            
-
-                            // style={{ height: this.state.showMap ? '350px' : '0px'}}
-                        >
-                            <TileLayer
-                                attribution='&copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                            />
-
-                            { this.state.formdata.geo.latitude && this.state.formdata.geo.longitude ?
-                                
-                                <Marker 
-                                    position={[this.state.formdata.geo.latitude, this.state.formdata.geo.longitude]} 
+                            <Map 
+                                className="edit_map"
+                                center={[this.state.initMap.initLat, this.state.initMap.initLong]} 
+                                zoom={this.state.initMap.initZoom} 
+                                onClick={(e) => { this.handleClick(e)}}
+                                // style={{ height: this.state.showMap ? '350px' : '0px'}}
+                            >
+                                <TileLayer
+                                    attribution='&copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                                 />
-                            : null }
-                        </Map>
-                        <br/>
-                        Click on the map to set geolocation
+
+                                { this.state.formdata.geo.latitude && this.state.formdata.geo.longitude ?
+                                    
+                                    <Marker 
+                                        position={[this.state.formdata.geo.latitude, this.state.formdata.geo.longitude]} 
+                                    />
+                                : null }
+                            </Map>
+                            <br/>
+                            Click on the map to set geolocation
                         </td>
                     </tr>
                     
@@ -457,6 +405,7 @@ class EditItem extends PureComponent {
                         </td>
                     </tr>
 
+
                     <tr>
                         <td className="label">
                             Longitude
@@ -474,6 +423,7 @@ class EditItem extends PureComponent {
                         </td>
                     </tr>
 
+
                     <tr><td></td><td></td></tr>
                     <tr><td colSpan="2"><hr /></td></tr>
                     <tr><td></td><td></td></tr>
@@ -481,10 +431,7 @@ class EditItem extends PureComponent {
 
                     {this.createTextInput(formdata.rights,'rights', "Rights", "Rights")}
                     {this.createTextInput(formdata.further_info,'further_info', "Enter any further info, resources..", "Further Info")}
-
-                    
                     {this.createTextInput(formdata.external_link[0].url,'url', "External link URL ie. https://www...", "External Link", 'external_link')}
-
                     {this.createTextInput(formdata.external_link[0].text,'text', "Description of the link", '', "external_link")}
 
 
@@ -533,8 +480,6 @@ class EditItem extends PureComponent {
 
                     {this.createTextInput(formdata.contributor,'contributor', "Add your name here", "Contributor")}
 
-                    
-
                     <tr>
                         <td colSpan="2">
                             
@@ -551,14 +496,10 @@ class EditItem extends PureComponent {
 
                     <tr className="half_width">
                         <td colSpan="2" >
-                       
-                            <button type="button" className="half_width_l" onClick={this.cancel}>Cancel</button>
+                            <button type="button" className="half_width_l" onClick={(e) => { if (window.confirm('Are you sure you wish to cancel? All data entered will be lost!')) this.cancel(e) }}>Cancel</button>
                             <button type="submit" className="half_width_r">Save and Continue</button>
-
                         </td>
-                        
                     </tr>  
-
 
                 </tbody>
                 </table>
@@ -567,9 +508,6 @@ class EditItem extends PureComponent {
                         <p className="message center">Information saved!</p>
                 : null}
 
-                
-    
-
             </form>
             </div>
         )
@@ -577,19 +515,12 @@ class EditItem extends PureComponent {
 
 
     render() {
-        // console.log(this.state);
-
-        console.log(this.state.formdata);
-
         let items = this.props.items;
-        // console.log(this.props);
 
         return (
             <div className="main_view">
                 <div className="rl_container article edit_page">
-                    {/* { items.item ?     */}
                         {this.renderForm()}
-                    {/* : null } */}
                 </div>
 
             {/* // <div className="form-group">
@@ -619,5 +550,3 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(EditItem)
-
-
