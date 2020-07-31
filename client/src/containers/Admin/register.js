@@ -35,17 +35,33 @@ class Register extends PureComponent {
         this.setState({lastname:event.target.value})
     }
 
+    
+    // componentWillReceiveProps(nextProps) {
+    //     if(nextProps.user.register === false) {
+    //         this.setState({error:'Error, try again'})
+    //     } else {
+    //         this.setState({
+    //             name:'', 
+    //             lastname:'',
+    //             email:'',
+    //             password:''
+    //         })
+    //     }
+    // }
+
     // reset the state when form is submitted
-    componentWillReceiveProps(nextProps) {
-        if(nextProps.user.register === false) {
-            this.setState({error:'Error, try again'})
-        } else {
-            this.setState({
-                name:'', 
-                lastname:'',
-                email:'',
-                password:''
-            })
+    componentDidUpdate(prevProps, prevState) {
+        if (this.props != prevProps) {
+            if(this.props.user.register === false) {
+                this.setState({error:'Error, try again'})
+            } else {
+                this.setState({
+                    name:'', 
+                    lastname:'',
+                    email:'',
+                    password:''
+                })
+            }
         }
     }
 
@@ -81,7 +97,7 @@ class Register extends PureComponent {
 
     render() {
 
-        // console.log(this.props);
+        console.log(this.props);
 
         let user = this.props.user;
 

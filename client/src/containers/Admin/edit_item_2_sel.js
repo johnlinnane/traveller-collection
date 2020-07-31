@@ -204,7 +204,12 @@ class EditItemSel extends PureComponent {
         this.props.history.push('/user/all-items');
     }
 
-
+    addDefaultImg = (ev) => {
+        const newImg = '/media/default/default.jpg';
+        if (ev.target.src !== newImg) {
+            ev.target.src = newImg
+        }  
+    } 
 
     redirectUser = (url) => {
         setTimeout(() => {

@@ -22,10 +22,18 @@ class Login extends Component {
         this.setState({password:event.target.value})
     }
 
+    // componentWillReceiveProps(nextProps) {
+    //     if(nextProps.user.login.isAuth) {
+    //         this.props.history.push('/user')
+    //     }
+    // }
+
     // redirect to user screen when login
-    componentWillReceiveProps(nextProps) {
-        if(nextProps.user.login.isAuth) {
-            this.props.history.push('/user')
+    componentDidUpdate(prevProps, prevState) {
+        if (this.props != prevProps) {
+            if(this.props.user.login.isAuth) {
+                this.props.history.push('/user')
+            }
         }
     }
 

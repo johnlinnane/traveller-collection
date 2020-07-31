@@ -243,11 +243,17 @@ class EditItemFile extends PureComponent {
 
 
     handleFileType = (newValue) => {
-        
         this.setState({
             selectedType: newValue.value
         })
     }
+
+    addDefaultImg = (ev) => {
+        const newImg = '/media/default/default.jpg';
+        if (ev.target.src !== newImg) {
+            ev.target.src = newImg
+        }  
+    } 
 
     redirectUser = (url) => {
         setTimeout(() => {

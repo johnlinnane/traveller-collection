@@ -118,6 +118,7 @@ class EditItem extends PureComponent {
                 location: item.location
                 
             }
+            let newLatLng = this.state.initMap;
 
          
 
@@ -149,9 +150,18 @@ class EditItem extends PureComponent {
                     }
                 }
             }
+
+            if (item.geo && item.geo.latitude && item.geo.longitude) {
+                newLatLng = {
+                    initLat: item.geo.latitude,
+                    initLong: item.geo.longitude,
+                    initZoom: 6.5
+                }
+            }
             
             this.setState({
-                formdata: newFormdata
+                formdata: newFormdata,
+                initMap: newLatLng
             })
             
         }
@@ -425,13 +435,44 @@ class EditItem extends PureComponent {
                             : null }
                         </Map>
                         <br/>
-                        Click on the map to get geolocation
+                        Click on the map to set geolocation
                         </td>
                     </tr>
-                    {this.createTextInput(formdata.geo.latitude,'latitude', "Geo-location latitude ie. 52.232269", "Latitude", 'geo')}
-                    {this.createTextInput(formdata.geo.longitude,'longitude', "Geo-location longitude ie. -8.670860", "Longitude", 'geo')}
                     
+                    
+                    <tr>
+                        <td className="label">
+                            Latitude
+                        </td>
+                        <td>
+                            <div className="form_element">
+                                <input
+                                    type="number"
+                                    placeholder="Geo-location latitude ie. 52.232269"
+                                    defaultValue={formdata.geo.latitude} 
+                                    onChange={(event) => this.handleInput(event, 'latitude', 'geo')}
+                                    className="input_latlng"
+                                />
+                            </div>
+                        </td>
+                    </tr>
 
+                    <tr>
+                        <td className="label">
+                            Longitude
+                        </td>
+                        <td>
+                            <div className="form_element">
+                                <input
+                                    type="number"
+                                    placeholder="Geo-location longitude ie. -8.670860"
+                                    defaultValue={formdata.geo.longitude} 
+                                    onChange={(event) => this.handleInput(event, 'longitude', 'geo')}
+                                    className="input_latlng"
+                                />
+                            </div>
+                        </td>
+                    </tr>
 
                     <tr><td></td><td></td></tr>
                     <tr><td colSpan="2"><hr /></td></tr>

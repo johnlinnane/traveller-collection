@@ -46,9 +46,7 @@ class ItemView extends Component {
 
     }
 
-    componentWillReceiveProps() {
-
-    }
+ 
     
 
     componentWillUnmount() {

@@ -1257,6 +1257,22 @@ header .navItem span {
     height: 300px;
     margin-top: 20px;
 }
+
+.input_latlng {
+    margin: 1px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+   -webkit-appearance: none;
+   margin: 0;
+}
+
+input[type="number"] {
+   -moz-appearance: textfield;
+}
+
+
 /*=============================
             SEARCH
 ===============================*/
