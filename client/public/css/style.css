@@ -236,6 +236,13 @@ header .navItem span {
     text-align: center;
 }
 
+.pdf_page {
+    height: 1000px;
+    width: 650px;
+    /* max-height: 1000px; */
+    overflow-y: auto;
+}
+
 .pdf_wrapper a {
     color: #000dc4;
     font-size: small;

@@ -34,6 +34,7 @@ class ItemView extends Component {
         setPageNumber: 1,
 
         pdfPageNumber: 0,
+        pdfScale: 1,
 
         showMap: false,
         mapZoom: 12
@@ -198,6 +199,19 @@ class ItemView extends Component {
             changePage(1);
         }
 
+
+        const scaleDown = () => {
+            this.setState({
+                pdfScale: this.state.pdfScale - 0.2
+            })
+        }
+
+        const scaleUp = () => {
+            this.setState({
+                pdfScale: this.state.pdfScale + 0.2
+            })
+        }
+
         const handlePageChange = (event) => {
             this.setState({
                 pageNumber: parseInt(event.target.value)
@@ -217,14 +231,16 @@ class ItemView extends Component {
                         // onLoadError={this.setState({ pdfError: true })}
                         
                         
-                    >
-                        <Page 
-                            className={"pdf_page"}
-                            pageNumber={pageNumber}
-                            // width={Math.min(width * 0.9, 400)} 
-                            width={650} 
-                            // scale={0.5}
-                        />
+                    >   
+                        <div className="pdf_page">
+                            <Page 
+                                className={"pdf_page"}
+                                pageNumber={pageNumber}
+                                // width={Math.min(width * 0.9, 400)} 
+                                width={650} 
+                                scale={this.state.pdfScale}
+                            />
+                        </div>
                     </Document>
                 </div> 
                 <br />
@@ -235,6 +251,7 @@ class ItemView extends Component {
                 >
                     Previous
                 </button>
+
                 <button
                     type="button"
                     disabled={pageNumber >= numPages}
@@ -242,6 +259,25 @@ class ItemView extends Component {
                 >
                     Next
                 </button>
+
+                <br />
+
+                <button
+                    type="button"
+                    // disabled={pageNumber >= numPages}
+                    onClick={scaleDown}
+                >
+                    -
+                </button>
+
+                <button
+                    type="button"
+                    disabled={pageNumber >= numPages}
+                    onClick={scaleUp}
+                >
+                    +
+                </button>
+
 
                 <p className="item_pagenum">
                     Page {pageNumber || (numPages ? 1 : '--')} of {numPages || '--'}
