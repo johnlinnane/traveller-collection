@@ -27,11 +27,11 @@ class Sandbox extends Component {
                       item.file_format === 'pdf' ?
                             <div key={i}>
                               {/* {item.title} */}
-                              {/* <br/> */}
-                              cp ~/TC/traveller-collection/client/public/media/items/{item._id}/original/0.jpg
-                              ~/TC/traveller-collection/client/public/media/items/{item._id}/original/0.pdf;
+                              <br/>
+                              cp /Users/johnlinnane/DEV/traveller-collection/client/public/media/items/{item._id}/original/0.jpg
+                              /Users/johnlinnane/DEV/traveller-collection/client/public/media/items/{item._id}/original/0.pdf;
                               
-                              {/* <br/><br/> */}
+                              <br/><br/>
                             </div>
                       : null
                     ))

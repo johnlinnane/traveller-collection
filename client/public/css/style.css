@@ -1225,6 +1225,10 @@ header .navItem span {
     box-shadow: 20px 11px 21px 6px rgba(0,0,0,0.1);
 }
 
+.edit_img_text {
+    width: 40%;
+}
+
 .edit_img_text h2 {
     all: revert;
     color: #ffffff;
