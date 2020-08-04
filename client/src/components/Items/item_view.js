@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Slick from 'react-slick';   // uses cdn css
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
+import FontAwesome from 'react-fontawesome';
+
 
 
 
@@ -243,50 +245,50 @@ class ItemView extends Component {
                         </div>
                     </Document>
                 </div> 
-                <br />
-                <button
-                    type="button"
-                    disabled={pageNumber <= 1}
-                    onClick={previousPage}
-                >
-                    Previous
-                </button>
 
-                <button
-                    type="button"
-                    disabled={pageNumber >= numPages}
-                    onClick={nextPage}
-                >
-                    Next
-                </button>
+                <div className="pdf_control_panel">
+                    <div className="pdf_prev_next">
+                        <button
+                            type="button"
+                            disabled={pageNumber <= 1}
+                            onClick={previousPage}
+                        >
+                            Previous
+                        </button>
 
-                <br />
-
-                <button
-                    type="button"
-                    // disabled={pageNumber >= numPages}
-                    onClick={scaleDown}
-                >
-                    -
-                </button>
-
-                <button
-                    type="button"
-                    disabled={pageNumber >= numPages}
-                    onClick={scaleUp}
-                >
-                    +
-                </button>
+                        <button
+                            type="button"
+                            disabled={pageNumber >= numPages}
+                            onClick={nextPage}
+                        >
+                            Next
+                        </button>
+                    </div>
 
 
-                <p className="item_pagenum">
-                    Page {pageNumber || (numPages ? 1 : '--')} of {numPages || '--'}
+
+                    <FontAwesome 
+                        className="fa-search-minus pdf_scale"
+                        onClick={scaleDown}
+                    />
+
+
+                    <FontAwesome 
+                        className="fa-search-plus pdf_scale"
+                        onClick={scaleUp}
+                    />
                     
-                </p>
 
-                <a href="/media/items/5eb4417bf2ff151113f3e178/original/0.pdf">[pdf]</a>
-                
-                <br />
+                    <span className="item_pagenum">
+                        Page {pageNumber || (numPages ? 1 : '--')} of {numPages || '--'}
+                        
+                    </span>
+
+                    <a href="/media/items/5eb4417bf2ff151113f3e178/original/0.pdf">[pdf]</a>
+                    
+                </div>
+
+                {/* <br /> */}
                 {/* <input readOnly value={this.state.pdfPageNumber} onChange={(e) => {this.handlePageChange(e)}} ref={(input)=> this.myinput = input}/> */}
 
                 { this.props.items.item.pdf_page_index && this.props.items.item.pdf_page_index.length ?
