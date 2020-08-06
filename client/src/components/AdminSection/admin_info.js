@@ -4,43 +4,21 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import { withRouter } from "react-router-dom";
 
-
-
 import { getInfoText, updateInfoText } from '../../actions';
 
 const config = require('../../config_client').get(process.env.NODE_ENV);
 
 class AdminInfo extends Component {
 
-
     state= {
-        
         formdata: {
-            sections: [
-                {
-                    heading: '',
-                    paragraph: ''
-                },
-                {
-                    heading: '',
-                    paragraph: ''
-                },
-                {
-                    heading: '',
-                    paragraph: ''
-                },
-                {
-                    heading: '',
-                    paragraph: ''
-                }
-            ]
-            
-        }
+            sections: []
+        },
+        imgUrls: []
     }
 
     componentDidMount() {
         this.props.dispatch(getInfoText());
-
     }
 
 
@@ -50,33 +28,28 @@ class AdminInfo extends Component {
             const infotext = this.props.infotext;
 
             if (infotext.sections && infotext.sections.length) {
-                let formdata = {
-                    sections: [
-                        {
-                            heading: infotext.sections[0].heading,
-                            paragraph: infotext.sections[0].paragraph
-                        },
-                        {
-                            heading: infotext.sections[1].heading,
-                            paragraph: infotext.sections[1].paragraph
-                        },
-                        {
-                            heading: infotext.sections[2].heading,
-                            paragraph: infotext.sections[2].paragraph
-                        },
-                        {
-                            heading: infotext.sections[3].heading,
-                            paragraph: infotext.sections[3].paragraph
-                        }
-                    ]
-                    
-                }
+                console.log(infotext.sections.length);
+
+
+                let tempSections = [];
+                let tempImgUrls = [];
+
+                infotext.sections.map( (section, i) => {
+                    tempSections[i] = {
+                        heading: section.heading,
+                        paragraph: section.paragraph
+                    }
+
+                    tempImgUrls[i] = `/media/info/${i+1}.jpg`;
+                } )
+
                 this.setState({
-                    formdata
+                    formdata: {
+                        sections: tempSections
+                    },
+                    imgUrls: tempImgUrls
                 })
             }
-
-            
         }
     }
 
@@ -87,7 +60,7 @@ class AdminInfo extends Component {
 
     // *************** UPLOAD LOGIC ********************
 
-    onChangeHandler = (event) => {
+    onChangeHandler = (event, i) => {
 
 
         var files = event.target.files;
@@ -97,6 +70,13 @@ class AdminInfo extends Component {
                 selectedFile: files
             })
         }
+
+        let tempImgSrc = this.state.imgUrls;
+        tempImgSrc[i] = URL.createObjectURL(event.target.files[0]);
+
+        this.setState({
+            imgSrc: tempImgSrc
+        })
     }
 
 
@@ -208,7 +188,7 @@ class AdminInfo extends Component {
     }
 
     cancel = () => {
-        this.props.history.push(`/admin`)
+        this.props.history.push(`/admin/0`)
     }
 
 
@@ -250,7 +230,7 @@ class AdminInfo extends Component {
         })
 
         setTimeout(() => {
-            this.props.history.push(`/admin`);
+            this.props.history.push(`/admin/0`);
         }, 2000)
         
     }
@@ -262,7 +242,8 @@ class AdminInfo extends Component {
 
 
 
-        <section className="info_table_section" key={i}>
+        <React.Fragment key={i}>
+
             <tr>
                 <td>
                     Paragraph {i+1} Heading
@@ -298,9 +279,9 @@ class AdminInfo extends Component {
                 <td>Paragraph {i + 1} Image</td>
                 <td>
                     
-                    <img src={`/media/info/${i+1}.jpg`} onError={this.addDefaultImg}/>
+                    <img src={this.state.imgUrls[i]} onError={this.addDefaultImg}/>
                     <div className="form_element">
-                        <input type="file" className="form-control" name="file" onChange={this.onChangeHandler}/>
+                        <input type="file" className="form-control" name="file" onChange={(event) => this.onChangeHandler(event, i)}/>
                         <br />
                         <button type="button" className="btn btn-success btn-block" onClick={ () => {this.onClickHandler(i+1)} }>Upload</button> 
                     </div>
@@ -311,7 +292,8 @@ class AdminInfo extends Component {
                 <td colSpan="2"><hr/></td>
             </tr>
 
-            </section>
+        </React.Fragment>
+
 
 
 
@@ -341,12 +323,13 @@ class AdminInfo extends Component {
 
 
                     <form onSubmit={this.submitForm}>
-                        <table>
+                        <table className="info_table_section" >
                             <tbody>
 
 
-
-                            {this.renderRows()}
+                            {this.state.formdata.sections ?
+                                this.renderRows()
+                            : null }
 
 
                             <tr>

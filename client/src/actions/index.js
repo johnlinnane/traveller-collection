@@ -579,6 +579,7 @@ export function addCat(cat) {
 
 
 export function deleteCat(id) {
+    console.log('delete cat called');
     const request = axios.delete(`/api/delete-cat?id=${id}`)
                         .then(response => response.data)
     return {

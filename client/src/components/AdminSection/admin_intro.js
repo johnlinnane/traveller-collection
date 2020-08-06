@@ -19,7 +19,8 @@ class AdminIntro extends Component {
             title: '',
             body: ''
         },
-        saved: false
+        saved: false,
+        imgSrc: '/media/intro/intro.jpg'
     }
 
 
@@ -47,7 +48,7 @@ class AdminIntro extends Component {
 
     // *************** UPLOAD LOGIC ********************
 
-    onChangeHandler = (event) => {
+    onImgChange = (event) => {
 
 
         var files = event.target.files;
@@ -57,6 +58,10 @@ class AdminIntro extends Component {
                 selectedFile: files
             })
         }
+
+        this.setState({
+            imgSrc: URL.createObjectURL(event.target.files[0])
+        })
     }
 
 
@@ -199,6 +204,7 @@ class AdminIntro extends Component {
             this.state.introData
         ))
 
+        this.onClickHandler();
 
         this.setState({
             saved: true
@@ -206,15 +212,15 @@ class AdminIntro extends Component {
 
         setTimeout(() => {
             // this.props.history.push(`/user/edit-item-sel/${this.props.items.newitem.itemId}`);
-            this.props.history.push(`/admin`);
+            this.props.history.push(`/admin/0`);
         }, 2000)
         
-        // this.props.history.push(`/admin`)
+        // this.props.history.push(`/admin/0`)
     }
 
 
     cancel = () => {
-        this.props.history.push(`/admin`)
+        this.props.history.push(`/admin/0`)
     }
 
     render() {
@@ -283,7 +289,7 @@ class AdminIntro extends Component {
 
                                 <tr>
                                     <td>
-                                        <img src={`/media/intro/intro.jpg`} onError={this.addDefaultImg}/>
+                                        <img src={this.state.imgSrc} onError={this.addDefaultImg}/>
                                     </td>
                                 </tr>
 
@@ -293,17 +299,18 @@ class AdminIntro extends Component {
                                     
                                     <td>
                                         <div className="form_element">
-                                            <input type="file" className="form-control" multiple name="file" onChange={this.onChangeHandler}/>
-                                            <br />
-                                            <button type="button" className="btn btn-success btn-block" onClick={this.onClickHandler}>Upload</button> 
+                                            <input type="file" className="form-control intro_input" multiple name="file" onChange={this.onImgChange}/>
+                                            {/* <br />
+                                            <button type="button" className="btn btn-success btn-block" onClick={this.onClickHandler}>Upload</button>  */}
                                         </div>
                                     </td>
                                 </tr>
 
-                                <tr>
-                                    <td colSpan="2">
+                                <tr className="intro_buttons">
+                                    {/* <td colSpan="2"> */}
+                                    <td>
                                         <button type="submit">Save Changes</button>
-                                  
+                                    
                                         <button type="button" onClick={this.cancel}>Cancel</button>
                                     </td>
                                     

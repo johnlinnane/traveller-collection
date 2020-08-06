@@ -1529,6 +1529,14 @@ input[type="number"] {
     text-align: left;
 }
 
+.intro_buttons button {
+    width: 40%;
+    margin-right: 20px;
+}
+
+.intro_input {
+    width: 40% !important;
+}
 
 
 

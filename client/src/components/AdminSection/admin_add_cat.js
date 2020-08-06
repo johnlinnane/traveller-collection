@@ -37,7 +37,7 @@ class AdminAddCat extends Component {
     }
 
     cancel = () => {
-        this.props.history.push(`/admin`)
+        this.props.history.push(`/admin/0`)
     }
 
 
@@ -78,7 +78,7 @@ class AdminAddCat extends Component {
 
         setTimeout(() => {
             // this.props.history.push(`/user/edit-item-sel/${this.props.items.newitem.itemId}`);
-            this.props.history.push(`/admin`);
+            this.props.history.push(`/admin/0`);
         }, 2000)
     }
 

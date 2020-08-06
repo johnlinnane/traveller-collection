@@ -91,7 +91,7 @@ class AdminCat extends Component {
 
     // *************** UPLOAD LOGIC ********************
 
-    onChangeHandler = (event) => {
+    onImgChange = (event) => {
 
 
         var files = event.target.files;
@@ -276,7 +276,7 @@ class AdminCat extends Component {
 
 
 
-    deleteCat = (e, id) => {
+    removeCat = (e, id) => {
         this.props.dispatch(deleteCat(id));
 
         this.setState({
@@ -311,7 +311,7 @@ class AdminCat extends Component {
 
 
 
-    deleteSubcat = (id) => {
+    removeSubcat = (id) => {
         const tempAllSubcats = this.state.formdata.allSubcats;
         let removeIndex = this.state.formdata.allSubcats.map(subcat => subcat._id).indexOf(id);
 
@@ -439,7 +439,7 @@ class AdminCat extends Component {
                                     </td>
                                     <td>
                                         <div className="form_element">
-                                            <input type="file" className="form-control" multiple name="file" onChange={this.onChangeHandler}/>
+                                            <input type="file" className="form-control" multiple name="file" onChange={this.onImgChange}/>
                                             <br />
                                             {/* <button type="button" className="btn btn-success btn-block" onClick={this.onClickHandler}>Upload</button>  */}
                                         </div>
@@ -477,7 +477,7 @@ class AdminCat extends Component {
 
                                                 <td>
 
-                                                <div className="tooltip" onClick={(e) => { if (window.confirm('Are you sure you want to remove this subcategory?')) this.deleteSubcat(subcat._id) } }>
+                                                <div className="tooltip" onClick={(e) => { if (window.confirm('Are you sure you want to remove this subcategory?')) this.removeSubcat(subcat._id) } }>
                                                     <i className="fa fa-times-circle"></i>
                                                     <span className="tooltiptext">Remove</span>
                                                 </div>
@@ -509,7 +509,7 @@ class AdminCat extends Component {
                                     <td colSpan="2">
                                         <button type="button" 
                                             className="delete" 
-                                            onClick={(e) => { if (window.confirm('Are you sure you wish to delete this category?')) this.deleteCat(this.props.chosenCatInfo._id) } }
+                                            onClick={(e) => { if (window.confirm('Are you sure you wish to delete this category?')) this.removeCat(e, this.props.chosenCatInfo._id) } }
                                         >
                                             Delete Category
                                         </button>
