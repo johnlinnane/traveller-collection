@@ -645,8 +645,6 @@ return {
 export function addSubcat(subCat) {
     const request = axios.post('/api/add-subcat', subCat)
                         .then(response => response.data);
-    
-
     return {
         type: 'ADD_SUBCAT',
         payload:request

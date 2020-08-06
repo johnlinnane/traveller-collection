@@ -89,7 +89,7 @@ const Routes = () => {
                 <Route path="/subcategory/:id" exact component={Auth(SubcatView, true)}/>
                 <Route path="/info" exact component={Auth(Info, true)}/>
 
-                <Route path="/admin" exact component={Auth(Admin, true)}/>
+                <Route path="/admin/:tab" exact component={Auth(Admin, true)}/>
                 <Route path="/chapter-index/:id" exact component={Auth(ChapterIndex, true)}/>
 
                 <Route path="/map" exact component={Auth(MainMap, true)}/>

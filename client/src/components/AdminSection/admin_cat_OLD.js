@@ -24,22 +24,27 @@ class AdminCat extends Component {
                 description: this.props.chosenCatInfo.description || null
 
             },
-            // theseSubcats: [],
-            allSubcats: [],
-
-
-            // newSubcat: {
+            subcats: [],
+            // presentNewSubcat: {
             //     title: null,
             //     description: null,
-            //     parent_cat: this.props.chosenCatInfo._id
+            //     parent_cat: this.props.chosenCatInfo._id,
+            //     isNew: true
+            // },
+            // newSubcats: []
+
+            newSubcat: {
+                title: null,
+                description: null,
+                parent_cat: this.props.chosenCatInfo._id
         
-            // }
+            }
             
         },
         imgSrc: `/media/cover_img_cat/${this.props.chosenCatInfo._id}.jpg`,
         saved: false,
-        catDeleted: false,
-        // subRemoved: false
+        deleted: false,
+        subRemoved: false
     }
 
     componentDidMount() {
@@ -53,17 +58,12 @@ class AdminCat extends Component {
 
         if (this.props.subcats && this.props.subcats.length) {
             if (this.props.subcats != prevProps.subcats) {
-
-                let tempAllSubcats = [];
-                let tempTheseSubcats = [];
+                let tempSubcats = []
 
                 if (this.props.subcats) {
-
-                    tempAllSubcats = this.props.subcats;
-
                     this.props.subcats.map( (subcat, i) => {
                         if (subcat.parent_cat == this.props.chosenCatInfo._id) {
-                            tempTheseSubcats.push(subcat)
+                            tempSubcats.push(subcat)
                         }
                     })
                 }
@@ -71,8 +71,7 @@ class AdminCat extends Component {
                 this.setState({
                     formdata: {
                         ...this.state.formdata,
-                        allSubcats: tempAllSubcats,
-                        // theseSubcats: tempTheseSubcats
+                        subcats: tempSubcats
                     }
                 })
             }
@@ -107,6 +106,8 @@ class AdminCat extends Component {
         })
 
     }
+
+
 
     onClickHandler = () => {
         const data = new FormData() 
@@ -216,24 +217,6 @@ class AdminCat extends Component {
     // ****************************************************
 
 
-    handleCatInput = (event, field) => {
-
-        let newFormdata = {
-            ...this.state.formdata
-        }
-
-        if (field === 'cat_title') {
-            newFormdata.cat.title = event.target.value;
-
-        } else if (field === 'cat_description') {
-            newFormdata.cat.description = event.target.value;
-        } 
-
-        this.setState({
-            formdata: newFormdata
-        })
-    }
-
 
 
     addDefaultImg = (ev) => {
@@ -243,92 +226,136 @@ class AdminCat extends Component {
         }  
     }
 
+    handleInput = (event, type, field, subcatId) => {
 
 
-    handleSubCatInput(event, field, i) {
-        // console.log(field, i);
-        let newSubCatArray = this.state.formdata.allSubcats;
-
-        switch(field) {
-            case 'title':
-                newSubCatArray[i].title = event.target.value;
-                break;
-            case 'description':
-                newSubCatArray[i].description = event.target.value;
-                break;
-            default:
+        // make a copy of formdata
+        let newFormdata = {
+            ...this.state.formdata
         }
 
-        newSubCatArray[i].isModified = true;
 
-        console.log(newSubCatArray);
+        if (type === 'cat') {
+            if (field === 'cat_title') {
+                newFormdata.cat.title = event.target.value;
 
-        this.setState({
-            formdata: {
-                ...this.state.formdata,
-                allSubcats: newSubCatArray
-                
+            } else if (field === 'cat_description') {
+                newFormdata.cat.description = event.target.value;
+            } 
+        }
+
+        if (type === 'subcat') {
+            this.state.formdata.subcats.map( (subcat, i ) => {
+                if (subcat._id === subcatId) {
+                    if (field === 'title') {
+                        newFormdata.subcats[i].title = event.target.value;
+                    } else if (field === 'description') {
+                        newFormdata.subcats[i].description = event.target.value;
+                    }
+                    newFormdata.subcats[i].isModified = true;
+                }
+            })
+        }
+
+        if (type === 'add_subcat') {
+            
+            if (field === 'subcat_title') {
+                newFormdata.newSubcat.title = event.target.value;
+            }  if (field === 'subcat_desc') {
+                newFormdata.newSubcat.description = event.target.value;
             }
-        }) 
+
+
+            
+
+        }
+
+
+        // copy it back to state
+        this.setState({
+            formdata: newFormdata
+
+        })
     }
 
 
+    // addSubcat = () => {
+        
+    //     if (this.state.formdata.presentNewSubcat.title) {
+    //         this.setState({
+    //             formdata: {
+    //                 ...this.state.formdata,
+    //                 subcats: [
+    //                     ...this.state.formdata.subcats,
+    //                     this.state.formdata.presentNewSubcat
+    //                 ]
+    //             }
+    //         })
 
 
+    //         this.setState({
+                
+    //                 presentNewSubcat: {
+    //                     title: null,
+    //                     description: null,
+    //                     parent_cat: this.props.chosenCatInfo._id,
+    //                     isNew: true
+    //                 }
+    //         })
+    //     }
+
+        
+        // if (this.state.formdata.newSubcat.title) {
+        //     const newSubcat = this.state.formdata.newSubcat;
+        //     console.log(newSubcat);
+        //     // this.props.dispatch(addSubcat(
+        //     //     newSubcat
+        //     // ))
+
+        //     let refreshedFormdata = {
+        //         ...this.state.formdata,
+        //             subcats: [
+        //                 ...this.state.formdata.subcats,
+        //                 newSubcat
+        //             ]
+        //     }
+
+        //     this.setState({
+        //         formdata: refreshedFormdata,
+        //         newSubcat: null
+                
+        //     })
+        // }
+    // }
+
+
+    deleteSubcat = (e, id, isNew) => {
+        this.props.dispatch(deleteSubcat(id));
+
+        this.setState({
+            subRemoved: true
+        })
+
+        setTimeout(() => {
+            this.props.history.push(`/admin/0`);
+        }, 2000)
+    }
 
     deleteCat = (e, id) => {
         this.props.dispatch(deleteCat(id));
 
         this.setState({
-            catDeleted: true
+            deleted: true
         })
 
         setTimeout(() => {
             // this.props.history.push(`/user/edit-item-sel/${this.props.items.newitem.itemId}`);
             this.props.history.push(`/admin/0`);
         }, 2000)
-    }
-
-
-    addField = () => {
-        let newFormdata = {
-            ...this.state.formdata,
-            allSubcats: [
-                ...this.state.formdata.allSubcats,
-                {
-                    title: '',
-                    description: '',
-                    parent_cat: this.props.chosenCatInfo._id,
-                    isNew: true
-                }
-            ]
-        }
-        this.setState({
-            formdata: newFormdata
-        }) 
+        
 
     }
 
-
-
-    deleteSubcat = (id) => {
-        const tempAllSubcats = this.state.formdata.allSubcats;
-        let removeIndex = this.state.formdata.allSubcats.map(subcat => subcat._id).indexOf(id);
-
-        tempAllSubcats[removeIndex] = {
-            ...tempAllSubcats[removeIndex],
-            isDeleted: true
-        }
-
-        // (removeIndex >= 0) && tempAllSubcats.splice(removeIndex, 1);
-
-        this.setState({
-            formdata: {
-                ...this.state.formdata,
-                allSubcats: tempAllSubcats
-            }
-        })
-    }
 
 
     submitForm = (e) => {
@@ -341,9 +368,7 @@ class AdminCat extends Component {
             
         ))
 
-
-        // handle modified subcats
-        this.state.formdata.allSubcats.map( (subcat) =>{
+        this.state.formdata.subcats.map( (subcat) =>{
             if (subcat.isModified) {
                 // console.log(subcat)
                 this.props.dispatch(updateSubcat(
@@ -352,21 +377,15 @@ class AdminCat extends Component {
             }
         })
 
-        // handle new subcats
-        this.state.formdata.allSubcats.map( (subcat) =>{
-            if (subcat.isNew) {
-                this.props.dispatch(addSubcat(
-                    subcat
-                ))
-            }
-        })
+        
+        if (this.state.formdata.newSubcat.title) {
+            const newSubcat = this.state.formdata.newSubcat;
+            // console.log(newSubcat);
+            this.props.dispatch(addSubcat(
+                newSubcat
+            ))
+        }
 
-        // handle deleted subcats
-        this.state.formdata.allSubcats.map( (subcat) =>{
-            if (subcat.isDeleted) {
-                this.props.dispatch(deleteSubcat(subcat._id))
-            }
-        })
 
         this.onClickHandler();
 
@@ -375,7 +394,7 @@ class AdminCat extends Component {
         })
 
         setTimeout(() => {
-            this.props.history.push(`/admin/${this.props.index}`);
+            this.props.history.push(`/admin/0`);
         }, 2000)
         
     }
@@ -388,8 +407,7 @@ class AdminCat extends Component {
 
     render() {
 
-        console.log(this.state)
-
+        // console.log(this.props)
         return (
             <div className="admin">
                 { this.props.chosenCatInfo ? 
@@ -407,7 +425,7 @@ class AdminCat extends Component {
                                             type="text"
                                             placeholder={this.props.chosenCatInfo.title}
                                             defaultValue={this.props.chosenCatInfo.title} 
-                                            onChange={(event) => this.handleCatInput(event, 'cat_title')}
+                                            onChange={(event) => this.handleInput(event, 'cat', 'cat_title')}
                                         />
 
 
@@ -426,7 +444,7 @@ class AdminCat extends Component {
                                             type="text"
                                             placeholder="Enter category description"
                                             defaultValue={this.props.chosenCatInfo.description} 
-                                            onChange={(event) => this.handleCatInput(event, 'cat', 'cat_description')}
+                                            onChange={(event) => this.handleInput(event, 'cat', 'cat_description')}
                                             rows={6}
                                         />
                                     </td>
@@ -453,16 +471,16 @@ class AdminCat extends Component {
                                 </tr>
 
 
-                                { this.state.formdata.allSubcats.length ?
-                                    this.state.formdata.allSubcats.map( (subcat, i) => (
-                                        (subcat.parent_cat == this.props.chosenCatInfo._id) && !subcat.isDeleted ? 
+                                { this.state.formdata.subcats.length ?
+                                    this.state.formdata.subcats.map( (subcat, i) => (
+                                        subcat.parent_cat == this.props.chosenCatInfo._id ? 
                                             <tr key={i}>
                                                 <td>
                                                     <input
                                                         type="text"
-                                                        placeholder='Title'
+                                                        placeholder={subcat.title}
                                                         defaultValue={subcat.title} 
-                                                        onChange={(event) => this.handleSubCatInput(event, 'title', i)}
+                                                        onChange={(event) => this.handleInput(event, 'subcat', 'title', subcat._id)}
                                                     />
                                                 </td>
 
@@ -471,37 +489,59 @@ class AdminCat extends Component {
                                                         type="text"
                                                         placeholder="Description"
                                                         defaultValue={subcat.description} 
-                                                        onChange={(event) => this.handleSubCatInput(event, 'description', i)}
+                                                        onChange={(event) => this.handleInput(event, 'subcat', 'description', subcat._id)}
                                                     />
                                                 </td>
 
                                                 <td>
+                                                    {/* <button 
+                                                        type="button" 
+                                                        onClick={(e) => { if (window.confirm('Are you sure you want to remove this subcategory?')) this.deleteSubcat(e, subcat._id) } }
+                                                        className="remove">Remove</button> */}
 
-                                                <div className="tooltip" onClick={(e) => { if (window.confirm('Are you sure you want to remove this subcategory?')) this.deleteSubcat(subcat._id) } }>
-                                                    <i className="fa fa-times-circle"></i>
-                                                    <span className="tooltiptext">Remove</span>
-                                                </div>
+                                                    <div  className="tooltip" onClick={(e) => { if (window.confirm('Are you sure you want to remove this subcategory?')) this.deleteSubcat(e, subcat._id) } }>
+                                                        <i className="fa fa-times-circle"></i>
+                                                        <span className="tooltiptext">Remove</span>
+                                                    </div>
+
+                                                    
+                                                    
 
                                                 </td>
                                             </tr>
                                         : null 
                                     ) )    
                                 : null }
-                                <tr>
+
+                                <tr >
                                     <td>
-                                        <div className="index_add_rem" onClick={this.addField}>+</div>
+
+                                        <input
+                                            type="text"
+                                            placeholder="Add new subcategory"
+                                            defaultValue={null} 
+                                            onChange={(event) => this.handleInput(event, 'add_subcat', 'subcat_title')}
+                                        />
+                                    </td>
+
+                                    <td>
+                                        <input
+                                            type="text"
+                                            placeholder="Description"
+                                            defaultValue={null} 
+                                            onChange={(event) => this.handleInput(event, 'add_subcat', 'subcat_desc')}
+                                        />
                                     </td>
                                 </tr>
+                                
 
-
-
-                                {/* {this.state.subRemoved ?
+                                {this.state.subRemoved ?
                                     <tr className="spacer">
                                         <td colSpan="2" className="message center">
                                             Subcategory removed!
                                         </td>
                                     </tr>
-                                : <tr className="spacer"></tr>} */}
+                                : <tr className="spacer"></tr>}
 
                                 
 
@@ -509,7 +549,7 @@ class AdminCat extends Component {
                                     <td colSpan="2">
                                         <button type="button" 
                                             className="delete" 
-                                            onClick={(e) => { if (window.confirm('Are you sure you wish to delete this category?')) this.deleteCat(this.props.chosenCatInfo._id) } }
+                                            onClick={(e) => { if (window.confirm('Are you sure you wish to delete this category?')) this.deleteCat(e, this.props.chosenCatInfo._id) } }
                                         >
                                             Delete Category
                                         </button>
@@ -540,7 +580,7 @@ class AdminCat extends Component {
 
                         
 
-                        {this.state.catDeleted ?
+                        {this.state.deleted ?
                             <p className="message">Category deleted!</p>
                         : null}
 

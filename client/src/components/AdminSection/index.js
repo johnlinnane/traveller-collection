@@ -16,7 +16,9 @@ class Admin extends React.Component  {
 
     state = {
         tabIndexTop: 0,
-        tabIndexSide: 0
+        tabIndexSide: parseInt(this.props.match.params.tab)
+   
+
     }
 
     componentDidMount() {
@@ -24,9 +26,11 @@ class Admin extends React.Component  {
         this.props.dispatch(getAllCats());
         this.props.dispatch(getAllSubCats());
     }
+
+   
     
     setTabIndex = (index) => {
-        console.log(index);
+        // console.log(index);
         this.setState({
             tabIndexSide: index
         })
@@ -35,7 +39,6 @@ class Admin extends React.Component  {
 
     render() {
 
-        // console.log(this.props)
 
         return (
             <div className="main_view admin_view">
@@ -81,7 +84,7 @@ class Admin extends React.Component  {
                                 this.props.cats.map( (cat, i) => (
                                     <TabPanel key={i}>
 
-                                        <AdminCat chosenCatInfo={cat} index={i} setTabIndex={this.getTabIndex}/>
+                                        <AdminCat chosenCatInfo={cat} index={i} getTabIndex={this.setTabIndex}/>
                                     </TabPanel>
                                 ))
                             : null }

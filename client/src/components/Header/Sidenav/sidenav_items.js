@@ -83,7 +83,7 @@ const SidenavItems = ({user}) => {
         {   type:'navItem',
             icon:'file-text-o',
             text:'Admin',
-            link:'/admin',
+            link:'/admin/0',
             restricted:true
         },
         {   type:'navItem',

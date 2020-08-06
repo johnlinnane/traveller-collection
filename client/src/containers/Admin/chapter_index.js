@@ -243,8 +243,10 @@ class ChapterIndex extends PureComponent {
         <div>
             <div className="index_add_cont">
                 <div className="index_add_rem" onClick={this.addField}>+</div>
-                <div className="index_add_rem" onClick={this.removeField}>-</div>
-                <span>Add/Remove Fields</span>
+                
+
+                <div className="index_add_rem" onClick={() => {if (window.confirm('This will delete the Sub-Category.')) this.removeField()}}>-</div>
+                <span>Add/Remove</span>
             </div>
 
             <button type="submit" className="half_width_l" onClick={this.onSubmit}>Save and Return</button>

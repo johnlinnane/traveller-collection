@@ -4,8 +4,8 @@ const config = {
     default:{
       
       
-        //IP_ADDRESS: 'localhost'
-         IP_ADDRESS: '64.227.34.134'
+        IP_ADDRESS: 'localhost'
+        // IP_ADDRESS: '64.227.34.134'
     }
 }
   
