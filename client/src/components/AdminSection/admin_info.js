@@ -14,7 +14,7 @@ class AdminInfo extends Component {
         formdata: {
             sections: []
         },
-        selectedFile: null,
+        selectedFiles: [],
         imgUrls: []
         
     }
@@ -30,8 +30,6 @@ class AdminInfo extends Component {
             const infotext = this.props.infotext;
 
             if (infotext.sections && infotext.sections.length) {
-                console.log(infotext.sections.length);
-
 
                 let tempSections = [];
                 let tempImgUrls = [];
@@ -42,7 +40,7 @@ class AdminInfo extends Component {
                         paragraph: section.paragraph
                     }
 
-                    tempImgUrls[i] = `/media/info/${i+1}.jpg`;
+                    tempImgUrls[i] = `/media/info/${i}.jpg`;
                 } )
 
                 this.setState({
@@ -67,9 +65,14 @@ class AdminInfo extends Component {
 
         var files = event.target.files;
 
-        if (this.maxSelectFile(event) && this.checkMimeType(event) && this.checkMimeType(event)) {  
+        // console.log(files);
+
+        if (this.maxSelectFile(event) && this.checkMimeType(event)) {  
+            let tempSelectedFiles = this.state.selectedFiles;
+            tempSelectedFiles[i] = files[0];
+
             this.setState({
-                selectedFile: files
+                selectedFiles: tempSelectedFiles
             })
         }
 
@@ -83,18 +86,14 @@ class AdminInfo extends Component {
 
 
 
-    onClickHandler = (number) => {
+    onClickHandler = (i) => {
         const data = new FormData() 
         
-        if (this.state.selectedFile) {
-            for(var x = 0; x<this.state.selectedFile.length; x++) {
-                data.append('file', this.state.selectedFile[x])
-            }
+        if (this.state.selectedFiles && this.state.selectedFiles.length) {
 
-            // HOST-SELECT
-            // axios.post(`http://localhost:8000/upload-info/${number}`, data, {
-            // axios.post(`http://64.227.34.134:8000/upload-info/${number}`, data, { 
-            axios.post(`http://${config.IP_ADDRESS}:8000/upload-info/${number}`, data, {
+            data.append('file', this.state.selectedFiles[i])
+
+            axios.post(`http://${config.IP_ADDRESS}:8000/upload-info/${i}`, data, {
                 
                 // receive two parameter endpoint url ,form data 
                 onUploadProgress: ProgressEvent => {
@@ -226,6 +225,12 @@ class AdminInfo extends Component {
             this.state.formdata
         ))
 
+        if (this.state.selectedFiles && this.state.selectedFiles.length) {
+            this.state.selectedFiles.map( (file, i) => {
+                this.onClickHandler(i)
+            })
+        }
+        
    
         this.setState({
             saved: true
@@ -283,9 +288,8 @@ class AdminInfo extends Component {
                     
                     <img src={this.state.imgUrls[i]} onError={this.addDefaultImg}/>
                     <div className="form_element">
-                        <input type="file" className="form-control" name="file" onChange={(event) => this.onChangeHandler(event, i)}/>
-                        <br />
-                        <button type="button" className="btn btn-success btn-block" onClick={ () => {this.onClickHandler(i+1)} }>Upload</button> 
+                        <input type="file" className="form-control" name="file" accept="image/*" onChange={(event) => this.onChangeHandler(event, i)}/>
+                        {/* <button type="button" className="btn btn-success btn-block" onClick={ () => {this.onClickHandler(i)} }>Upload</button>  */}
                     </div>
                 </td>
             </tr>
@@ -310,44 +314,35 @@ class AdminInfo extends Component {
 
     render() {
 
-        console.log(this.state)
-
-
+        console.log(this.state.selectedFiles);
 
         return (
-
-
-
             <div className="admin">
                 <div className="admin_info">
 
                     <h1>Edit Info Page</h1>
-
-                    <h2>[Image Upload Temporary Disabled!]</h2>
 
                     <form onSubmit={this.submitForm}>
                         <table className="info_table_section" >
                             <tbody>
 
 
-                            {this.state.formdata.sections ?
-                                this.renderRows()
-                            : null }
+                                {this.state.formdata.sections ?
+                                    this.renderRows()
+                                : null }
 
 
-                            <tr>
-                                <td>
-                                    <button type="submit">Save Changes</button>
-                                </td>
+                                <tr>
+                                    <td>
+                                        <button type="submit">Save Changes</button>
+                                    </td>
 
-                                <td>
-                                    <button type="button" onClick={this.cancel}>Cancel</button>
-                                </td>
-                                
-                            </tr>                  
+                                    <td>
+                                        <button type="button" onClick={this.cancel}>Cancel</button>
+                                    </td>
+                                </tr>                  
 
-
-                        </tbody>
+                            </tbody>
                         </table>
                     </form>
 

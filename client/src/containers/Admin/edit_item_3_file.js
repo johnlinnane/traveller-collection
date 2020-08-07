@@ -152,9 +152,6 @@ class EditItemFile extends PureComponent {
                 data.append('file', this.state.selectedFile[x])
             }
 
-            // HOST-SELECT
-            // axios.post(`http://localhost:8000/upload/${this.state.formdata._id}`, data, { 
-            // axios.post(`http://64.227.34.134:8000/upload/${this.state.formdata._id}`, data, { 
             axios.post(`http://${config.IP_ADDRESS}:8000/upload/${this.state.formdata._id}`, data, {     
             
                 // receive two parameter endpoint url ,form data 
@@ -169,7 +166,7 @@ class EditItemFile extends PureComponent {
                 // console.log(res.statusText);
                 console.log(res);
                 toast.success('upload success')
-                alert('Files uploaded successfully')
+                alert('File(s) uploaded successfully')
             })
             .catch(err => { 
                 toast.error('upload fail')

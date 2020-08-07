@@ -140,9 +140,6 @@ class CatEdit extends PureComponent {
                 data.append('file', this.state.selectedFile[x])
             }
 
-            // HOST-SELECT
-            // axios.post(`http://localhost:8000/upload-cat/${this.props.match.params.id}`, data, { 
-            // axios.post(`http://64.227.34.134:8000/upload-cat/${this.props.match.params.id}`, data, { 
             axios.post(`http://${config.IP_ADDRESS}:8000/upload-cat/${this.props.match.params.id}`, data, { 
                 
                 // receive two parameter endpoint url ,form data 
@@ -157,7 +154,7 @@ class CatEdit extends PureComponent {
                 // console.log(res.statusText);
                 console.log(res);
                 toast.success('upload success')
-                alert('Files uploaded successfully')
+                alert('File(s) uploaded successfully')
             })
             .catch(err => { 
                 toast.error('upload fail')
@@ -272,7 +269,7 @@ class CatEdit extends PureComponent {
                                     <h3>{this.state.catInfo.title}</h3>
                                     <img src={`../media/cover_img_cat/${this.state.catInfo._id}.jpg`}/>
                                     <br/>
-                                    <input type="file" className="form-control" name="file" onChange={(e) => this.onChangeHandler(this.state.catInfo._id, e)} />
+                                    <input type="file" className="form-control" name="file" accept="image/*" onChange={(e) => this.onChangeHandler(this.state.catInfo._id, e)} />
                                     
                                 </div>
                         : null}

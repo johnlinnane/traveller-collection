@@ -74,9 +74,6 @@ class AdminIntro extends Component {
                 data.append('file', this.state.selectedFile[x])
             }
             
-            // HOST-SELECT
-            // axios.post(`http://localhost:8000/upload-intro-img`, data, { 
-            // axios.post(`http://64.227.34.134:8000/upload-intro-img`, data, { 
             axios.post(`http://${config.IP_ADDRESS}:8000/upload-intro-img`, data, { 
                 
                 // receive two parameter endpoint url ,form data 
@@ -91,7 +88,7 @@ class AdminIntro extends Component {
                 // console.log(res.statusText);
                 console.log(res);
                 toast.success('upload success')
-                alert('Files uploaded successfully')
+                alert('File(s) uploaded successfully')
             })
             .catch(err => { 
                 toast.error('upload fail')
@@ -297,7 +294,7 @@ class AdminIntro extends Component {
                                 <tr>
                                     <td>
                                         <div className="form_element">
-                                            <input type="file" className="form-control intro_input" multiple name="file" onChange={this.onImgChange}/>
+                                            <input type="file" className="form-control intro_input" multiple accept="image/*" name="file" onChange={this.onImgChange}/>
                                             {/* <button type="button" className="btn btn-success btn-block" onClick={this.onClickHandler}>Upload</button>  */}
                                         </div>
                                     </td>

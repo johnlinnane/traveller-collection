@@ -116,9 +116,6 @@ class AdminCat extends Component {
                 data.append('file', this.state.selectedFile[x])
             }
 
-            // HOST-SELECT
-            // axios.post(`http://localhost:8000/upload-cat/${this.props.chosenCatInfo._id}`, data, { 
-            // axios.post(`http://64.227.34.134:8000/upload-cat/${this.props.chosenCatInfo._id}`, data, { 
             axios.post(`http://${config.IP_ADDRESS}:8000/upload-cat/${this.props.chosenCatInfo._id}`, data, { 
                 // receive two parameter endpoint url ,form data 
                 onUploadProgress: ProgressEvent => {
@@ -132,7 +129,7 @@ class AdminCat extends Component {
                 // console.log(res.statusText);
                 console.log(res);
                 toast.success('upload success')
-                alert('Files uploaded successfully')
+                alert('File uploaded successfully')
             })
             .catch(err => { 
                 toast.error('upload fail')
@@ -439,7 +436,7 @@ class AdminCat extends Component {
                                     </td>
                                     <td>
                                         <div className="form_element">
-                                            <input type="file" className="form-control" multiple name="file" onChange={this.onImgChange}/>
+                                            <input type="file" className="form-control" multiple name="file" accept="image/*" onChange={this.onImgChange}/>
                                             <br />
                                             {/* <button type="button" className="btn btn-success btn-block" onClick={this.onClickHandler}>Upload</button>  */}
                                         </div>
