@@ -14,7 +14,9 @@ class AdminInfo extends Component {
         formdata: {
             sections: []
         },
+        selectedFile: null,
         imgUrls: []
+        
     }
 
     componentDidMount() {
@@ -321,6 +323,7 @@ class AdminInfo extends Component {
 
                     <h1>Edit Info Page</h1>
 
+                    <h2>[Image Upload Temporary Disabled!]</h2>
 
                     <form onSubmit={this.submitForm}>
                         <table className="info_table_section" >

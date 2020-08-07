@@ -233,7 +233,6 @@ class AdminIntro extends Component {
 
                     <h1>Edit Intro Page</h1>
 
-
                     <form onSubmit={this.submitForm}>
                         <table>
                             <tbody>
@@ -296,27 +295,20 @@ class AdminIntro extends Component {
 
 
                                 <tr>
-                                    
                                     <td>
                                         <div className="form_element">
                                             <input type="file" className="form-control intro_input" multiple name="file" onChange={this.onImgChange}/>
-                                            {/* <br />
-                                            <button type="button" className="btn btn-success btn-block" onClick={this.onClickHandler}>Upload</button>  */}
+                                            {/* <button type="button" className="btn btn-success btn-block" onClick={this.onClickHandler}>Upload</button>  */}
                                         </div>
                                     </td>
                                 </tr>
 
                                 <tr className="intro_buttons">
-                                    {/* <td colSpan="2"> */}
                                     <td>
                                         <button type="submit">Save Changes</button>
-                                    
                                         <button type="button" onClick={this.cancel}>Cancel</button>
                                     </td>
-                                    
                                 </tr>  
-
-
 
                             </tbody>
                         </table>
