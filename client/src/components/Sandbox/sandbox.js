@@ -1,30 +1,36 @@
 import React from 'react';
 
+import axios from 'axios';
+
+const fs = require('browserify-fs');
  
 class Sandbox extends React.Component {
 
 
-    state = {
-        file: null
-    }
-
-    handleChange(event) {
-        this.setState({
-            file: URL.createObjectURL(event.target.files[0])
-        })
-    }
+    
 
     render() {
 
         
 
+        const send = () => {
+
+            let fileData =  {
+                section: 'uploads',
+                id: null,
+                fileName: 'thumb'
+            };
+
+            axios.post(`http://localhost:3001/delete-file`, fileData  );
+            
+        }
 
         return (
       
 
             <div>
-                <input type="file" onChange={(e) => this.handleChange(e)}/>
-                <img src={this.state.file}/>
+                <button type="button" onClick={() => send()}>Send</button>
+
             </div>
         )
     }

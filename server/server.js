@@ -9,6 +9,7 @@ const app = express();
 // file upload
 const cors = require('cors');
 const multer = require('multer');
+const fs = require('fs')
 
 
 
@@ -633,7 +634,6 @@ app.delete('/api/delete-subcat', (req, res) => {
 //  ************ FILE STUFF !!! ********************************************
 
 
-
 //create multer instance, for file saving
 let storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -663,6 +663,41 @@ app.post('/upload', function(req, res) {
         return res.status(200).send(req.file)
     })
 });
+
+
+
+// delete file
+
+app.post('/delete-file', function(req, res) {
+
+
+    let query = '../client/public/media';
+
+
+
+
+    if (req.body.section) {
+        query += `/${req.body.section}`;
+    }
+
+    if (req.body.id) {
+        query += `/${req.body.id}`;
+    }
+
+    if (req.body.fileName) {
+        query += `/${req.body.fileName}`;
+    }
+
+    console.log(query)
+
+    fs.unlink(query, function (err) {
+        if (err) throw err;
+        console.log('File deleted!');
+    })
+});
+
+
+
 
 
 //  ******************* FOR HEROKU *************************************

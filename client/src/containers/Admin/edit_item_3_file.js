@@ -64,7 +64,8 @@ class EditItemFile extends PureComponent {
                 label: "Video (MP4)"
             },
         ],
-        selectedType: 'jpg'
+        selectedType: 'jpg',
+        imgSrc: `/media/items/${this.props.match.params.id}/original/0.jpg`
 
     }
 
@@ -79,45 +80,52 @@ class EditItemFile extends PureComponent {
     }
 
 
-   
+    componentDidUpdate(prevProps, prevState) {
 
+        if (this.props != prevProps) {
+            let tempFormdata = this.state.formdata;
 
-    static getDerivedStateFromProps(nextProps, prevState) {
+            if (this.props.items.item ) {
 
-        let formdata = prevState.formdata;
-        if (nextProps.items.item ) {
+                let item = this.props.items.item;
+    
+                tempFormdata = {
+                    ...this.state.formdata,
+                    _id:item._id,
+                    title:item.title,  //
+                    creator:item.creator,  //
+                    description:item.description,  //
+                    pages:item.pages,  //
+                    source:item.source,   //
+    
+                    subject: item.subject,
+                    date_created: item.date_created,
+                    contributor: item.contributor,
+                    item_format: item.item_format,
+                    materials: item.materials,
+                    physical_dimensions: item.physical_dimensions,
+                    editor: item.editor,
+                    publisher: item.publisher,
+                    further_info: item.further_info,
+                    language: item.language,
+                    reference: item.reference,
+                    rights: item.rights,
+                    file_format: item.file_format,
+                    subcategory_ref: item.subcategory_ref
+                }
 
-            let item = nextProps.items.item;
+                this.setState({
+                    formdata: tempFormdata,
+                    imgSrc: `/media/items/${this.state.formdata._id}/original/0.jpg`
 
-            formdata = {
-                ...formdata,
-                _id:item._id,
-                title:item.title,  //
-                creator:item.creator,  //
-                description:item.description,  //
-                pages:item.pages,  //
-                source:item.source,   //
-
-                subject: item.subject,
-                date_created: item.date_created,
-                contributor: item.contributor,
-                item_format: item.item_format,
-                materials: item.materials,
-                physical_dimensions: item.physical_dimensions,
-                editor: item.editor,
-                publisher: item.publisher,
-                further_info: item.further_info,
-                language: item.language,
-                reference: item.reference,
-                rights: item.rights,
-                file_format: item.file_format,
-                subcategory_ref: item.subcategory_ref
+                })
             }
-        }
-        return {
-            formdata: formdata
+
+            
         }
     }
+
+
 
 
     // *************** UPLOAD LOGIC ********************
@@ -130,6 +138,16 @@ class EditItemFile extends PureComponent {
         if (this.maxSelectFile(event) && this.checkMimeType(event) && this.checkMimeType(event)) {  
             this.setState({
                 selectedFile: files
+            })
+        }
+
+        if (true) {
+            let tempImgSrc = URL.createObjectURL(event.target.files[0]);
+
+            console.log(tempImgSrc);
+
+            this.setState({
+                imgSrc: tempImgSrc
             })
         }
     }
@@ -172,7 +190,10 @@ class EditItemFile extends PureComponent {
                 toast.error('upload fail')
             })
         }
-        this.redirectUser(`/items/${this.props.items.item._id}`)
+
+        setTimeout(() => {
+            this.props.history.push(`/items/${this.state.formdata._id}`)
+        }, 1000)
 
 
     }
@@ -252,18 +273,8 @@ class EditItemFile extends PureComponent {
         }  
     } 
 
-    redirectUser = (url) => {
-        setTimeout(() => {
-            this.props.history.push(url)
-        }, 1000)
-    }
+    
 
-    // addDefaultImg = (ev) => {
-    //     const newImg = '/media/default/default.jpg';
-    //     if (ev.target.src !== newImg) {
-    //         ev.target.src = newImg
-    //     }  
-    // } 
 
     render() {
         console.log(this.state);
@@ -281,7 +292,7 @@ class EditItemFile extends PureComponent {
                             <div className="container">
 
                                 <div className="img_back">
-                                    <img src={`/media/items/${this.state.formdata._id}/original/0.jpg`} alt="item main image" className="edit_main_img" onError={this.addDefaultImg} />
+                                    <img src={this.state.imgSrc} alt="item main image" className="edit_main_img" onError={this.addDefaultImg} />
                                 </div>
                                 
                                 <div className="centered edit_img_text"><h2>{this.state.formdata.title}</h2></div>
@@ -290,13 +301,19 @@ class EditItemFile extends PureComponent {
                             </div>
                         </Link>
                     </div>
-                    <h2>Upload Files</h2>
+                    <h2>Upload Media File(s)</h2>
 
-                    {/* <img src={`/media/items/${this.props.match.params.id}/sq_thumbnail/0.jpg`} alt="Item" onError={this.addDefaultImg}/> */}
 
 
                     <div className="form_element">
-                        <input type="file" className="form-control" multiple name="file" onChange={this.onChangeHandler}/>
+                        {this.state.selectedType == 'jpg' ?
+                            <input type="file" className="form-control" multiple name="file" accept="image/*" onChange={this.onChangeHandler}/>
+                        : this.state.selectedType == 'mp4' ? 
+                            <input type="file" className="form-control" multiple name="file" accept="video/*" onChange={this.onChangeHandler}/> 
+                        : this.state.selectedType == 'pdf' ? 
+                            <input type="file" className="form-control" multiple name="file" accept="application/pdf" onChange={this.onChangeHandler}/> 
+                        : <input type="file" className="form-control" multiple name="file" onChange={this.onChangeHandler}/>
+                        }
 
                         <p>Select File Type:</p>
 
@@ -315,7 +332,7 @@ class EditItemFile extends PureComponent {
                         />
 
                         <div className="center">
-                            <button type="button" className="btn btn-success btn-block edit_page_3_finish" onClick={this.onClickHandler}>Upload Files and Finish</button> 
+                            <button type="button" className="btn btn-success btn-block edit_page_3_finish" onClick={this.onClickHandler}>Upload File(s) and Finish</button> 
                         </div>
                     </div>
 
