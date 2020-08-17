@@ -15,13 +15,20 @@ class Sandbox extends React.Component {
 
         const send = () => {
 
-            let fileData =  {
-                section: 'uploads',
-                id: null,
-                fileName: 'thumb'
+            // let fileData =  {
+            //     section: 'uploads',
+            //     id: null,
+            //     fileName: 'thumb'
+            // };
+
+            // axios.post(`http://localhost:3001/delete-file`, fileData  );
+
+            let itemPath = {
+                path: '/uploads/abc123def456'
             };
 
-            axios.post(`http://localhost:3001/delete-file`, fileData  );
+            axios.post(`http://localhost:3001/delete-dir`, itemPath  );
+
             
         }
 

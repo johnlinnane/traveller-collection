@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
-// import axios from 'axios';
+import axios from 'axios';
 // import Select from 'react-select';
 // import CreatableSelect from 'react-select/creatable';
 
@@ -205,8 +205,40 @@ class EditItem extends PureComponent {
         })
     }
 
+
+    deleteAllMedia = () => {
+        let fileData =  {
+            section: 'items',
+            id: this.state.formdata._id,
+            fileType: null,
+            fileName: null,
+            deleteAll: true
+        };
+
+        // axios.post(`http://localhost:3001/delete-dir`, fileData  )
+        //     .then(res => { // then print response status
+        //         console.log(res);
+        //         alert('Media deleted successfully')
+        //     })
+        //     .catch(err => { 
+        //         alert('Media delete fail')
+        //     });
+
+         axios.post(`http://localhost:3001/delete-dir`, fileData  )
+            .then(res => { // then print response status
+                console.log(res);
+                alert('Media deleted successfully')
+            })
+            .catch(err => { 
+                alert('Media delete fail')
+            });
+
+        
+    }
+
     deletePost = () => {
         this.props.dispatch(deleteItem(this.state.formdata._id));
+        this.deleteAllMedia();
         this.props.history.push('/user/all-items');
     }
 
@@ -486,7 +518,7 @@ class EditItem extends PureComponent {
                             <button 
                                 type="button" 
                                 className="delete"
-                                onClick={(e) => { if (window.confirm('Are you sure you wish to delete this item?')) this.deletePost(e) } }
+                                onClick={(e) => { if (window.confirm('Are you sure you wish to permanently delete this item?')) this.deletePost(e) } }
                             >
                                 Delete item
                             </button>

@@ -140,7 +140,8 @@ class CatEdit extends PureComponent {
                 data.append('file', this.state.selectedFile[x])
             }
 
-            axios.post(`http://${config.IP_ADDRESS}:8000/upload-cat/${this.props.match.params.id}`, data, { 
+            axios.post(`http://${config.IP_ADDRESS}:3001/upload-cat/${this.props.match.params.id}`, data, { 
+            // axios.post(`http://${config.IP_ADDRESS}:8000/upload-cat/${this.props.match.params.id}`, data, { 
                 
                 // receive two parameter endpoint url ,form data 
                 onUploadProgress: ProgressEvent => {

@@ -170,7 +170,8 @@ class EditItemFile extends PureComponent {
                 data.append('file', this.state.selectedFile[x])
             }
 
-            axios.post(`http://${config.IP_ADDRESS}:8000/upload/${this.state.formdata._id}`, data, {     
+            // axios.post(`http://${config.IP_ADDRESS}:8000/upload/${this.state.formdata._id}`, data, {     
+            axios.post(`http://${config.IP_ADDRESS}:3001/upload/${this.state.formdata._id}`, data, {     
             
                 // receive two parameter endpoint url ,form data 
                 onUploadProgress: ProgressEvent => {
@@ -183,7 +184,6 @@ class EditItemFile extends PureComponent {
                 // console.log(res.config.data.id);
                 // console.log(res.statusText);
                 console.log(res);
-                toast.success('upload success')
                 alert('File(s) uploaded successfully')
             })
             .catch(err => { 
@@ -258,6 +258,30 @@ class EditItemFile extends PureComponent {
 
     // ****************************************************
 
+    deleteAllMedia = () => {
+        let fileData =  {
+            section: 'items',
+            id: this.state.formdata._id,
+            fileType: null,
+            fileName: null,
+            deleteAll: true
+        };
+
+        axios.post(`http://localhost:3001/delete-dir`, fileData  )
+            // .then(res => { // then print response status
+            //     console.log(res);
+            //     toast.success('Media deleted successfully')
+            //     alert('Media deleted successfully')
+            // })
+            // .catch(err => { 
+            //     toast.error('Media delete fail')
+            //     alert('Media delete fail')
+            // });
+
+        this.setState({
+            imgSrc: '/media/default/default.jpg'
+        })
+    }
 
 
     handleFileType = (newValue) => {
@@ -330,6 +354,10 @@ class EditItemFile extends PureComponent {
                             options={this.state.fileTypes}
                             onChange={this.handleFileType}
                         />
+
+                        <div className="center">
+                            <button type="button" className="btn btn-success btn-block edit_page_3_finish delete" onClick={(e) => { if (window.confirm('Are you sure you wish to delete all media (images, pdfs, videos)?')) this.deleteAllMedia() }}>Delete All Media Files</button> 
+                        </div>
 
                         <div className="center">
                             <button type="button" className="btn btn-success btn-block edit_page_3_finish" onClick={this.onClickHandler}>Upload File(s) and Finish</button> 

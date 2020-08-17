@@ -116,7 +116,8 @@ class AdminCat extends Component {
                 data.append('file', this.state.selectedFile[x])
             }
 
-            axios.post(`http://${config.IP_ADDRESS}:8000/upload-cat/${this.props.chosenCatInfo._id}`, data, { 
+            axios.post(`http://${config.IP_ADDRESS}:3001/upload-cat/${this.props.chosenCatInfo._id}`, data, { 
+            // axios.post(`http://${config.IP_ADDRESS}:8000/upload-cat/${this.props.chosenCatInfo._id}`, data, { 
                 // receive two parameter endpoint url ,form data 
                 onUploadProgress: ProgressEvent => {
                     this.setState({

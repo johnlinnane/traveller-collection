@@ -93,7 +93,8 @@ class AdminInfo extends Component {
 
             data.append('file', this.state.selectedFiles[i])
 
-            axios.post(`http://${config.IP_ADDRESS}:8000/upload-info/${i}`, data, {
+            axios.post(`http://${config.IP_ADDRESS}:3001/upload-info/${i}`, data, {
+            // axios.post(`http://${config.IP_ADDRESS}:8000/upload-info/${i}`, data, {
                 
                 // receive two parameter endpoint url ,form data 
                 onUploadProgress: ProgressEvent => {
