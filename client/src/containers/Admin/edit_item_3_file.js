@@ -7,7 +7,7 @@ import {Progress} from 'reactstrap';
 import Select from 'react-select';
 
 
-import { getItemById, deleteItem, updateItem } from '../../actions';
+import { getItemById, getPendItemById, updateItem, updatePendItem } from '../../actions';
 
 const config = require('../../config_client').get(process.env.NODE_ENV);
 
@@ -70,14 +70,18 @@ class EditItemFile extends PureComponent {
     }
 
     componentDidMount() {
-        this.props.dispatch(getItemById(this.props.match.params.id))
+        if (this.props.user.login.isAuth) {
+            this.props.dispatch(getItemById(this.props.match.params.id))
+        } else {
+            this.props.dispatch(getPendItemById(this.props.match.params.id))
+        }
     }
 
 
-    deletePost = () => {
-        this.props.dispatch(deleteItem(this.state.formdata._id));
-        this.props.history.push('/user/all-items');
-    }
+    // deletePost = () => {
+    //     this.props.dispatch(deleteItem(this.state.formdata._id));
+    //     this.props.history.push('/user/all-items');
+    // }
 
 
     componentDidUpdate(prevProps, prevState) {
@@ -156,12 +160,21 @@ class EditItemFile extends PureComponent {
 
     onClickHandler = () => {
 
-        this.props.dispatch(updateItem(
-            { 
-                _id: this.state.formdata._id,
-                file_format: this.state.selectedType
-            }
-        ))
+        if (this.props.user.login.isAuth) {
+            this.props.dispatch(updateItem(
+                { 
+                    _id: this.state.formdata._id,
+                    file_format: this.state.selectedType
+                }
+            ))
+        } else {
+            this.props.dispatch(updatePendItem(
+                { 
+                    _id: this.state.formdata._id,
+                    file_format: this.state.selectedType
+                }
+            ))
+        }
 
         const data = new FormData() 
         
@@ -355,9 +368,11 @@ class EditItemFile extends PureComponent {
                             onChange={this.handleFileType}
                         />
 
-                        <div className="center">
-                            <button type="button" className="btn btn-success btn-block edit_page_3_finish delete" onClick={(e) => { if (window.confirm('Are you sure you wish to delete all media (images, pdfs, videos)?')) this.deleteAllMedia() }}>Delete All Media Files</button> 
-                        </div>
+                        { this.props.user.login.isAuth ?
+                            <div className="center">
+                                <button type="button" className="btn btn-success btn-block edit_page_3_finish delete" onClick={(e) => { if (window.confirm('Are you sure you wish to delete all media (images, pdfs, videos)?')) this.deleteAllMedia() }}>Delete All Media Files</button> 
+                            </div>
+                        : null }
 
                         <div className="center">
                             <button type="button" className="btn btn-success btn-block edit_page_3_finish" onClick={this.onClickHandler}>Upload File(s) and Finish</button> 

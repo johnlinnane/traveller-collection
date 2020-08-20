@@ -9,7 +9,7 @@ import CreatableSelect from 'react-select/creatable';
 
 
 
-import { getItemById, updateItem, clearItem, deleteItem } from '../../actions';
+import { getItemById, getPendItemById, updateItem, updatePendItem, clearItem } from '../../actions';
 import { getAllColls, getAllCats, getAllSubCats  } from '../../actions';
 
 
@@ -42,7 +42,11 @@ class EditItemSel extends PureComponent {
 
 
     componentDidMount() {
-        this.props.dispatch(getItemById(this.props.match.params.id))
+        if (this.props.user.login.isAuth) {
+            this.props.dispatch(getItemById(this.props.match.params.id))
+        } else {
+            this.props.dispatch(getPendItemById(this.props.match.params.id))
+        }
         this.props.dispatch(getAllColls())
         this.props.dispatch(getAllCats());
         this.props.dispatch(getAllSubCats());
@@ -199,10 +203,10 @@ class EditItemSel extends PureComponent {
     }
 
 
-    deletePost = () => {
-        this.props.dispatch(deleteItem(this.state.formdata._id));
-        this.props.history.push('/user/all-items');
-    }
+    // deletePost = () => {
+    //     this.props.dispatch(deleteItem(this.state.formdata._id));
+    //     this.props.history.push('/user/all-items');
+    // }
 
     addDefaultImg = (ev) => {
         const newImg = '/media/default/default.jpg';
@@ -341,11 +345,15 @@ class EditItemSel extends PureComponent {
 
     onSubmit = (e) => {
         e.preventDefault();
-
-        this.props.dispatch(updateItem(
-            { ...this.state.dataToUpdate }
-        ))
-
+        if (this.props.user.login.isAuth) {
+            this.props.dispatch(updateItem(
+                { ...this.state.dataToUpdate }
+            ))
+        } else {
+            this.props.dispatch(updatePendItem(
+                { ...this.state.dataToUpdate }
+            ))
+        }
         
 
 

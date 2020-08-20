@@ -32,12 +32,6 @@ const SidenavItems = ({user}) => {
             restricted:false,
             exclude:true
         },
-        // {   type:'navItem',
-        //     icon:'file-text-o',
-        //     text:'My Reviews',
-        //     link:'/user/user-reviews',
-        //     restricted:true
-        // },
         {   type:'navItem',
             icon:'file-text-o',
             text:'Edit My Items',
@@ -54,7 +48,13 @@ const SidenavItems = ({user}) => {
             icon:'file-text-o',
             text:'Add Item',
             link:'/user/add_item',
-            restricted:true
+            restricted:false
+        },
+        {   type:'navItem',
+            icon:'file-text-o',
+            text:'Pending Items',
+            link:'/pending-items',
+            restricted:false
         },
         {   type:'navItem',
             icon:'file-text-o',

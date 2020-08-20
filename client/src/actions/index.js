@@ -127,6 +127,21 @@ export function getAllItems() {
 }
 
 
+//////////////////
+export function getAllPendItems() {
+    const request = axios.get(`/api/allPendItems`)
+                        .then(response => {
+                                return response.data
+                            }
+                        );
+    return {
+        type:'GET_ALL_PEND_ITEMS',
+        payload:request
+    }
+}
+
+
+
 
 
 export function getItems(
@@ -214,6 +229,21 @@ export function addItem(item) {
 
     return {
         type: 'ADD_ITEM',
+        payload:request
+    }
+}
+
+
+
+export function addPendingItem(item) {
+    console.log('action triggered');
+    console.log(item);
+    const request = axios.post('/api/item-pending', item)
+                        .then(response => response.data);
+    
+
+    return {
+        type: 'ADD_PEND_ITEM',
         payload:request
     }
 }
@@ -388,6 +418,17 @@ export function getItemById(id) {
     }
 }
 
+////////////////////////
+export function getPendItemById(id) {
+    const request = axios.get(`/api/getPendItemById?id=${id}`)
+                        .then(response => response.data);
+
+    return {
+        type:'GET_PEND_ITEM',
+        payload:request
+    }
+}
+
 
 export function updateItem(data) {
     console.log('updateItem called');
@@ -400,11 +441,33 @@ export function updateItem(data) {
     }
 }
 
+/////////////////////
+export function updatePendItem(data) {
+    console.log('updatePendItem called');
+    const request = axios.post(`/api/item_pend_update`, data)
+                        .then(response => response.data);
+    console.log(data);
+    return {
+        type:'UPDATE_PEND_ITEM',
+        payload:request
+    }
+}
+
 export function deleteItem(id) {
     const request = axios.delete(`/api/delete_item?id=${id}`)
                         .then(response => response.data)
     return {
         type:'DELETE_ITEM',
+        payload:request
+    }
+}
+
+////////////////////
+export function deletePendItem(id) {
+    const request = axios.delete(`/api/del_pend_item?id=${id}`)
+                        .then(response => response.data)
+    return {
+        type:'DEL_PEND_ITEM',
         payload:request
     }
 }

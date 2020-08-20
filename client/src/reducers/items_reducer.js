@@ -12,8 +12,20 @@ export default function(state={}, action) {
                 ...state,
                 item:action.payload
             };
+
+        case 'GET_PEND_ITEM':
+            return {
+                ...state,
+                item:action.payload
+            };
         
         case 'GET_ALL_ITEMS':
+            return {
+                ...state,
+                items:action.payload
+            };
+
+        case 'GET_ALL_PEND_ITEMS':
             return {
                 ...state,
                 items:action.payload
@@ -40,6 +52,12 @@ export default function(state={}, action) {
                 newitem:action.payload
             };
 
+        case 'ADD_PEND_ITEM':
+            return {
+                ...state,
+                newitem:action.payload
+            };
+
         case 'CLEAR_NEWITEM':
             return {
                 ...state,
@@ -53,7 +71,20 @@ export default function(state={}, action) {
                 item:action.payload.doc
             }
 
+        case 'UPDATE_PEND_ITEM':
+            return {
+                ...state,
+                updateItem:action.payload.success,  // for update message
+                item:action.payload.doc
+            }
+
         case 'DELETE_ITEM':
+            return {
+                ...state,
+                postDeleted:action.payload
+            }
+
+        case 'DEL_PEND_ITEM':
             return {
                 ...state,
                 postDeleted:action.payload

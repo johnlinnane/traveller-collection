@@ -15,7 +15,7 @@ import { Document, Page, pdfjs } from 'react-pdf';
 
 
 // import { getBookWithReviewer, clearBookWithReviewer } from '../../actions'; // OLD !
-import { getItemWithContributor, clearItemWithContributor, getAllCats, getAllSubCats, getNextItem, getPrevItem } from '../../actions';
+import { getItemWithContributor, clearItemWithContributor, getPendItemById, getAllCats, getAllSubCats, getNextItem, getPrevItem } from '../../actions';
 import NavigationBar from '../../widgetsUI/navigation';
 // import Image from '../../widgetsUI/Slider/slider';
 import ItemImageSlider from '../../widgetsUI/Slider/item_img_slider';
@@ -39,22 +39,38 @@ class ItemView extends Component {
         pdfScale: 1,
 
         showMap: false,
-        mapZoom: 12
+        mapZoom: 12,
+
+        isPending: false
     }
 
     
-    // componentWillMount() {
     componentDidMount() {
+        
+        this.props.dispatch(getPendItemById(this.props.match.params.id));
+        
+        
         this.props.dispatch(getAllCats());
         this.props.dispatch(getAllSubCats());
-        this.props.dispatch(getItemWithContributor(this.props.match.params.id));
         this.props.dispatch(getNextItem(this.props.match.params.id));
         this.props.dispatch(getPrevItem(this.props.match.params.id));
-        
-
-
     }
 
+    componentDidUpdate(prevProps, prevState) {
+        if (this.props != prevProps) {
+            if (this.props.items) {
+                if (this.props.items.item ) {
+                    if (this.props.items.item.ownerId && this.props.items.item.ownerId === 'guest'){
+                        this.setState({
+                            isPending: true
+                        })
+                    } 
+                } else {
+                    this.props.dispatch(getItemWithContributor(this.props.match.params.id));
+                }
+            } 
+        }
+    }
 
     
 
@@ -332,7 +348,7 @@ class ItemView extends Component {
 
 
         
-
+        // console.log(this.props.user)
 
 
         // console.log(items);
@@ -409,7 +425,11 @@ class ItemView extends Component {
                                 { items.contributor && items.contributor.name && items.contributor.lastname ?
                                     <span>Submitted by: {items.contributor.name} {items.contributor.lastname} - </span>
                                 : null }
-                                <Link to={`/user/edit-item/${this.props.match.params.id}`}>Edit</Link>
+
+                                
+                                {this.props.user.login.isAuth ?
+                                    <Link to={`/user/edit-item/${this.props.match.params.id}`}>Edit</Link>
+                                : null }
                             </span>
                         </div>
                     </div>
@@ -501,37 +521,39 @@ class ItemView extends Component {
                                 </Link>
                     : null }
 
-                    <div className="item_box">
-                        <div className="left">
-                            {this.props.previtem ?
-                                <Link to={`/items/${this.props.previtem._id}`}>
-                                    <div>
-                                        <span className="white_txt">Previous Item</span>
-                                    </div>
-                                    <div className="no_overflow">
-                                        <span>{this.props.previtem.title}</span>
-                                    </div>
-                                </Link>
-                            : null }
-                        </div>
+                    {!this.state.isPending ?
+                        <div className="item_box">
+                            <div className="left">
+                                {this.props.previtem ?
+                                    <Link to={`/items/${this.props.previtem._id}`}>
+                                        <div>
+                                            <span className="white_txt">Previous Item</span>
+                                        </div>
+                                        <div className="no_overflow">
+                                            <span>{this.props.previtem.title}</span>
+                                        </div>
+                                    </Link>
+                                : null }
+                            </div>
 
 
 
-                        
-                        <div className="right">
-                            {this.props.nextitem ?
-                                <Link to={`/items/${this.props.nextitem._id}`}>
-                                    <div>
-                                        <span className="white_txt">Next Item</span>
-                                    </div>
-                                    <div>
-                                        <span>{this.props.nextitem.title}</span>
-                                    </div>
-                                </Link>
-                            : null }
-                        </div>
+                            
+                            <div className="right">
+                                {this.props.nextitem ?
+                                    <Link to={`/items/${this.props.nextitem._id}`}>
+                                        <div>
+                                            <span className="white_txt">Next Item</span>
+                                        </div>
+                                        <div>
+                                            <span>{this.props.nextitem.title}</span>
+                                        </div>
+                                    </Link>
+                                : null }
+                            </div>
 
-                    </div> 
+                        </div> 
+                    : null }
 
 
                 </div> 
@@ -543,7 +565,7 @@ class ItemView extends Component {
     render() {
 
         // console.log(this.state.pageNumber);
-        console.log(this.props)
+        console.log(this.state)
 
 
         let items = this.props.items;

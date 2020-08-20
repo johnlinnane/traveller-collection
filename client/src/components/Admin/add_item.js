@@ -10,7 +10,7 @@ import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
 import 'react-toastify/dist/ReactToastify.css';
 
 
-import { addItem, clearNewItem } from '../../actions';
+import { addItem, addPendingItem, clearNewItem } from '../../actions';
 // import {getAllColls, getAllCats, getAllSubCats, updateItem  } from '../../actions';
 // import moment from 'moment-js';
 
@@ -125,10 +125,24 @@ class AddItem extends Component {
         // console.log(this.state.formdata);
 
         // dispatch an action, adding updated  formdata + the user id from the redux store
-        this.props.dispatch(addItem({
+
+        if (this.props.user.login.isAuth) {
+            this.props.dispatch(addItem({
+                    ...this.state.formdata,
+                    ownerId:this.props.user.login.id
+            }));
+
+            
+        } else {
+            console.log('done!');
+            this.props.dispatch(addPendingItem({
+                
                 ...this.state.formdata,
-                ownerId:this.props.user.login.id
-        }));
+                ownerId:'guest'
+            }))
+            
+        }
+
         this.setState({
             saved: true
         })
@@ -136,6 +150,8 @@ class AddItem extends Component {
         setTimeout(() => {
             this.props.history.push(`/user/edit-item-sel/${this.props.items.newitem.itemId}`);
         }, 2000)
+
+        
     }
 
 

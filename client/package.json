@@ -35,8 +35,7 @@
     "reactstrap": "^8.4.1",
     "redux": "^3.7.2",
     "redux-promise": "^0.5.3",
-    "redux-thunk": "^2.2.0",
-    "sharp": "^0.25.4"
+    "redux-thunk": "^2.2.0"
   },
   "scripts": {
     "start": "react-scripts start",

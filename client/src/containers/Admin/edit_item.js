@@ -215,16 +215,7 @@ class EditItem extends PureComponent {
             deleteAll: true
         };
 
-        // axios.post(`http://localhost:3001/delete-dir`, fileData  )
-        //     .then(res => { // then print response status
-        //         console.log(res);
-        //         alert('Media deleted successfully')
-        //     })
-        //     .catch(err => { 
-        //         alert('Media delete fail')
-        //     });
-
-         axios.post(`http://localhost:3001/delete-dir`, fileData  )
+        axios.post(`http://localhost:3001/delete-dir`, fileData  )
             .then(res => { // then print response status
                 console.log(res);
                 alert('Media deleted successfully')
@@ -236,7 +227,7 @@ class EditItem extends PureComponent {
         
     }
 
-    deletePost = () => {
+    deleteThisItem = () => {
         this.props.dispatch(deleteItem(this.state.formdata._id));
         this.deleteAllMedia();
         this.props.history.push('/user/all-items');
@@ -518,7 +509,7 @@ class EditItem extends PureComponent {
                             <button 
                                 type="button" 
                                 className="delete"
-                                onClick={(e) => { if (window.confirm('Are you sure you wish to permanently delete this item?')) this.deletePost(e) } }
+                                onClick={(e) => { if (window.confirm('Are you sure you wish to permanently delete this item?')) this.deleteThisItem(e) } }
                             >
                                 Delete item
                             </button>

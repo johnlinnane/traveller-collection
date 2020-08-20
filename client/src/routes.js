@@ -26,6 +26,8 @@ import EditItemFile from './containers/Admin/edit_item_3_file';
 import ChapterIndex from './containers/Admin/chapter_index';
 
 import ItemView from './components/Items/item_view';
+import PendingItemsView from './components/Items/pending_items_view';
+
 
 import CatList from './components/Categories/cats_list';
 import CatView from './components/Categories/cat_view';
@@ -62,43 +64,36 @@ const Routes = () => {
                 <Route path="/login" exact component={Auth(Login, false)}/>
                 <Route path="/user/logout" exact component={Auth(Logout, true)}/>
                 <Route path="/user" exact component={Auth(User, true)}/>
-                {/* <Route path="/user/add" exact component={Auth(AddReview, true)}/> */}
-                <Route path="/user/add_item" exact component={Auth(AddItem, true)}/>
-            
-
                 <Route path="/user/register" exact component={Auth(Register, true)}/>
-                {/* <Route path="/user/edit-post/:id" exact component={Auth(EditReview, true)}/> */}
-                <Route path="/user/edit-item/:id" exact component={Auth(EditItem, true)}/>
-                <Route path="/user/edit-item-sel/:id" exact component={Auth(EditItemSel, true)}/>
-                <Route path="/user/edit-item-file/:id" exact component={Auth(EditItemFile, true)}/>
 
-                {/* <Route path="/books/:id" exact component={Auth(BookView, null)}/>    */}
-                <Route path="/items/:id" exact component={Auth(ItemView, null)}/>
-                {/* <Route path="/user/user-reviews" exact component={Auth(UserPosts, true)}/> */}
                 <Route path="/user/user-items" exact component={Auth(UserItems, true)}/>
                 <Route path="/user/all-items" exact component={Auth(AllItems, true)}/>
-                
 
-                <Route path="/search" exact component={Auth(Search, true)}/>
-                <Route path="/collections" exact component={Auth(CollList, true)}/>
-                <Route path="/categories" exact component={Auth(CatList, true)}/>
-                <Route path="/cat-edit/:id" exact component={Auth(CatEdit, true)}/>
-
-                <Route path="/collection/:id" exact component={Auth(Collection, true)}/>
-                <Route path="/category/:id" exact component={Auth(CatView, true)}/>
-                <Route path="/subcategory/:id" exact component={Auth(SubcatView, true)}/>
-                <Route path="/info" exact component={Auth(Info, true)}/>
-
-                <Route path="/admin/:tab" exact component={Auth(Admin, true)}/>
+                <Route path="/user/add_item" exact component={Auth(AddItem, null)}/>
+                <Route path="/user/edit-item/:id" exact component={Auth(EditItem, true)}/>
+                <Route path="/user/edit-item-sel/:id" exact component={Auth(EditItemSel, null)}/>
+                <Route path="/user/edit-item-file/:id" exact component={Auth(EditItemFile, null)}/>
                 <Route path="/chapter-index/:id" exact component={Auth(ChapterIndex, true)}/>
 
-                <Route path="/map" exact component={Auth(MainMap, true)}/>
+                <Route path="/items/:id" exact component={Auth(ItemView, null)}/>
+                <Route path="/categories" exact component={Auth(CatList, null)}/>
+                <Route path="/category/:id" exact component={Auth(CatView, null)}/>
+                <Route path="/subcategory/:id" exact component={Auth(SubcatView, null)}/>
+                <Route path="/pending-items" exact component={Auth(PendingItemsView, true)}/>
+
+                <Route path="/collections" exact component={Auth(CollList, null)}/>
+                <Route path="/collection/:id" exact component={Auth(Collection, null)}/>
+
+                <Route path="/admin/:tab" exact component={Auth(Admin, true)}/>
+                <Route path="/cat-edit/:id" exact component={Auth(CatEdit, true)}/>
+
+                
+                <Route path="/info" exact component={Auth(Info, null)}/>
+                <Route path="/search" exact component={Auth(Search, null)}/>
+                <Route path="/map" exact component={Auth(MainMap, null)}/>
 
                 <Route path="/sandbox" exact component={Auth(Sandbox, true)}/>
                 
-
-
-
             </Switch>
         </Layout>
         

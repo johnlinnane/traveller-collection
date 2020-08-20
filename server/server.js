@@ -30,7 +30,8 @@ mongoose.connect(config.DATABASE);
 // bring in mongo model
 const { User } = require('./models/user');
 // const { Book } = require('./models/book');
-const { Item } = require('./models/item');
+const { Item, PendingItem } = require('./models/item');
+
 const { Collection } = require('./models/collection');
 const { Cat } = require('./models/cat');
 const { SubCat } = require('./models/subcat');
@@ -99,6 +100,15 @@ app.get('/api/getItemById', (req,res) => {
 })
 
 
+//////// * * * * * * * * * * * * * * * * * * * * getPendItemById
+app.get('/api/getPendItemById', (req,res) => {
+    let id = req.query.id;
+    PendingItem.findById(id, (err, doc) => {
+        if(err) return res.status(400).send(err);
+        res.send(doc);
+    })
+})
+
 // * * * * * * * * * * * * * * * * * * * * searchItem
 app.get('/api/searchItem', (req,res) => {
     let queryKey = req.query.key;
@@ -119,6 +129,16 @@ app.get('/api/searchItem', (req,res) => {
 app.get('/api/allItems', (req, res) => {
     // empty object returns all
     Item.find({}, (err, items) => {
+        if(err) return res.status(400).send(err);
+        res.status(200).send(items);
+    })
+})
+
+
+/////////////////// get all pend items
+app.get('/api/allPendItems', (req, res) => {
+    // empty object returns all
+    PendingItem.find({}, (err, items) => {
         if(err) return res.status(400).send(err);
         res.status(200).send(items);
     })
@@ -437,6 +457,23 @@ app.post('/api/item', (req, res) => {
 })
 
 
+
+//////////// * * * * * * * * * * * post pending item
+app.post('/api/item-pending', (req, res) => {
+    const pendingItem = new PendingItem( req.body );             // req is the data you post
+    console.log(req.body);
+
+    pendingItem.save( (err, doc) =>{                      // saves the new document
+        console.log(doc);
+        if(err) return res.status(400).send(doc);
+        res.status(200).json({
+            post:true,
+            itemId:doc._id                       // gets the id from the post
+        })
+      })
+})
+
+
 // register user
 app.post('/api/register', (req, res) => {
     // create new user document (user)
@@ -538,6 +575,19 @@ app.post('/api/item_update', (req, res) => {
 })
 
 
+///////////////// * * * * * * * * * * update pending item
+app.post('/api/item_pend_update', (req, res) => {
+    // new:true allows upsert
+    PendingItem.findByIdAndUpdate(req.body._id, req.body, {new:true}, (err, doc) => {
+        if(err) return res.status(400).send(err);
+        res.json({
+            success:true,
+            doc
+        });
+    })
+})
+
+
 
 // * * * * * * * * * * * * * * * * * * * * update cat
 app.post('/api/cat-update', (req, res) => {
@@ -612,6 +662,18 @@ app.delete('/api/delete_item', (req, res) => {
     let id = req.query.id;
 
     Item.findByIdAndRemove(id, (err, doc) => {
+        if(err) return res.status(400).send(err);
+        res.json(true);
+    })
+})
+
+
+
+/////////////////// * * * * * * * * * * * * * * * * * * * *  delete item
+app.delete('/api/del_pend_item', (req, res) => {
+    let id = req.query.id;
+
+    PendingItem.findByIdAndRemove(id, (err, doc) => {
         if(err) return res.status(400).send(err);
         res.json(true);
     })
@@ -1053,8 +1115,8 @@ if(process.env.NODE_ENV === 'production') {
 }
 
 
-//  ********************************************************
 
+//  ********************************************************
 
 
 // run express app
