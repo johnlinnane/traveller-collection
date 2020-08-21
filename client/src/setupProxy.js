@@ -1,4 +1,4 @@
-const config = require('../../config_client').get(process.env.NODE_ENV);
+const config = require('./config_client').get(process.env.NODE_ENV);
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
     
