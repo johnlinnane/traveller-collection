@@ -24,10 +24,6 @@ class CatList extends Component {
 
     }
 
-    // renderCatItem = (catId) => {
-        
-    // }
-
     navInfo = {
         catTitle: null,
         catId: null,
@@ -40,46 +36,26 @@ class CatList extends Component {
     render() {
         let cats = this.props.cats;
 
-        let catsMap = null;
-
-        if (cats && cats.length) {
-            catsMap = cats.map( (cat, i) => {
-                // console.log(item);
-                return (
-                    <Link key={cat._id} to={`/category/${cat._id}`}>
-                        <CatItem cat={cat}/>
-                    </Link>
-
-                )
-            })
-        }
-
-        // console.log(cats);
-        // let cats = this.props.cats;
-
         return (
             <div>
                 <NavigationBar navinfo={this.navInfo}/>
                 <div className="main_view">
                     
                     {/* <div className="cat_list"> */}
-                    <div>
-                        <h2>Pending Items</h2>
-                        {catsMap}
+                    <div className="cat_items_view">
+                        <h2>Categories</h2>
+
+                        { cats && cats.length ?
+                            cats.map( (cat, i) => (
+                                <Link key={cat._id} to={`/category/${cat._id}`}>
+                                    <CatItem cat={cat}/>
+                                </Link>
+                        
+                            ))
+                        : null }
                     </div>
                 </div>
             </div>
-
-            // cats ?
-            //     cats.map( (cat, i) => (
-            //             <Link key={cat._id} to={`/category/${cat.cat_id}`}>
-            //                 <h2>{cat.title}</h2><br/>
-            //                 {/* {renderCatItem(cat.cat_id)} */}
-            //                 <CatItem catId={cat.cat_id} catInfo={this.props.cats}/>
-            //             </Link>
-            //     ))
-            // : null
-
 
             
         );
