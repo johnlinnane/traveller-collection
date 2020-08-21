@@ -25,9 +25,12 @@ let index = 0;
 
 // connect to mongo
 mongoose.Promise = global.Promise;
-// mongoose.connect(config.DATABASE);
-mongoose.connect('mongodb://localhost:27017/collTest');
 
+mongoose.connect(config.DATABASE)
+    .catch(error => console.log(error));
+
+
+// mongoose.connect(config.DATABASE);
 
 // bring in mongo model
 const { User } = require('./models/user');
