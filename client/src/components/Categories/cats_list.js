@@ -42,7 +42,7 @@ class CatList extends Component {
 
         let catsMap = null;
 
-        if (cats) {
+        if (cats && cats.length) {
             catsMap = cats.map( (cat, i) => {
                 // console.log(item);
                 return (
