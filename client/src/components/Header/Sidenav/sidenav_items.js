@@ -54,7 +54,7 @@ const SidenavItems = ({user}) => {
             icon:'file-text-o',
             text:'Pending Items',
             link:'/pending-items',
-            restricted:false
+            restricted:true
         },
         {   type:'navItem',
             icon:'file-text-o',
