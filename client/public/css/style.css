@@ -1138,21 +1138,22 @@ header .navItem span {
     clear: both;
 }
 
-/* .cat_list {
+.cat_list {
     text-align: center;
     
-} */
+}
 
-/* .cat_list img {
+.cat_list img {
     width: 50%;
     /* opacity: 0.2; */
     filter: brightness(50%) saturate(140%);
     
-} */
+}
 
 /* .img_back {
     background-color: black;
-    width: 50%
+    width: 50%;
+    
 } */
 
 .container {
@@ -1342,6 +1343,7 @@ header .navItem span {
 
 .edit_img_text {
     width: 40%;
+    
 }
 
 .edit_img_text h2 {
