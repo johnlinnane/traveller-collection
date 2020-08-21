@@ -280,7 +280,7 @@ class EditItemFile extends PureComponent {
             deleteAll: true
         };
 
-        axios.post(`http://localhost:3001/delete-dir`, fileData  )
+        axios.post(`http://${config.IP_ADDRESS}:3001/delete-dir`, fileData  )
             // .then(res => { // then print response status
             //     console.log(res);
             //     toast.success('Media deleted successfully')
