@@ -550,6 +550,76 @@ app.post('/api/add-subcat', (req, res) => {
 })
 
 
+//////////////////////
+app.get('/api/accept-item', (req, res) => {
+    let id = req.query.id;
+    console.log(id);
+
+    PendingItem.findOne({ _id: id }, function(err, pendItem) {
+        let data = { 
+            _id: mongoose.Types.ObjectId(),
+            ownerId: pendItem.ownerId || '',
+            accepted: true,
+            location: pendItem.location || '',
+            file_format: pendItem.file_format || '',
+            rights: pendItem.rights || '',
+            reference: pendItem.reference || '',
+            language: pendItem.language || '',
+            further_info: pendItem.further_info || '',
+            publisher: pendItem.publisher || '',
+            editor: pendItem.editor || '',
+            pages: pendItem.pages || '',
+            physical_dimensions: pendItem.physical_dimensions || '',
+            materials: pendItem.materials || '',
+            item_format: pendItem.item_format || '',
+            contributor: pendItem.contributor || '',
+            date_created: pendItem.date_created || '',
+            source: pendItem.source || '',
+            description: pendItem.description || '',
+            subject: pendItem.subject || '',
+            creator: pendItem.creator || '',
+            title: pendItem.title || '',
+            // pdf_page_index: pendItem.pdf_page_index || null,
+            // geo: pendItem.pdf_page_index || null,
+            // image: pendItem.pdf_page_index || null,
+            // external_link: pendItem.external_link || null,
+            // subcategory_ref: pendItem.subcategory_ref || null,
+            // category_ref: pendItem.category_ref || null,
+            // tags: pendItem.tags || null
+        }
+
+        let newItem = new Item(data);
+
+        pendItem.remove()
+        newItem.save( (err, doc) =>{
+            if(err) return res.status(400).send(doc);
+            res.status(200).json({
+                swapped:true,
+                itemId:doc._id
+            })
+        })
+    
+    })
+
+
+})
+
+
+
+app.post('/api/item', (req, res) => {
+    const item = new Item( req.body );             // req is the data you post
+
+    item.save( (err, doc) =>{                      // saves the new document
+        // console.log(doc._id);
+        if(err) return res.status(400).send(doc);
+        res.status(200).json({
+            post:true,
+            itemId:doc._id                       // gets the id from the post
+        })
+      })
+})
+
+
 
 // ****************************************************************
 // **************************** UPDATE ****************************

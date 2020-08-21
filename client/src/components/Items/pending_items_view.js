@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 
-import { getAllPendItems, deletePendItem,  } from '../../actions';
+import { getAllPendItems, deletePendItem, acceptItem, addItem } from '../../actions';
 
 
 import PendingItemCard from './pending_item_card'
@@ -14,7 +14,7 @@ import PendingItemCard from './pending_item_card'
 class PendingItemsView extends Component {
 
     state = {
-        items: []
+        items: null
     }
 
 
@@ -54,19 +54,19 @@ class PendingItemsView extends Component {
     }
 
 
-    acceptItem = (id) => {
-        console.log('Item ' + id + ' accepted!')
+    handleChoice = (id, choice) => {
 
-        // move item to items database
+        if (choice == 'accept') {
+            this.props.dispatch(acceptItem(id))
+            console.log('Item ' + id + ' accepted!')
+            // move item to items database    
+        }
 
-    }
-
-    rejectItem = (id) => {
-        
-
-        deletePendItem(id);
-        this.deleteAllMedia(id);
-        // console.log('Item ' + id + ' rejected!')
+        if (choice == 'reject') {
+            deletePendItem(id);
+            this.deleteAllMedia(id);
+            console.log('Item ' + id + ' rejected!')
+        }
 
         let tempItems = this.state.items
         var index = tempItems.findIndex(p => p._id == id)
@@ -78,30 +78,28 @@ class PendingItemsView extends Component {
         this.setState({
             items: tempItems
         })
+
     }
+
+
 
     render() {
 
         console.log(this.state.items)
 
-        var index = this.state.items.findIndex(p => p.title == "Blue")
-
-
-
-        console.log(index);
 
 
         return (
             <div className="main_view">
                 <div className="p_items_view">
-                    <h2>Pending Items</h2>
+                    <h2>Categories</h2>
 
-                    {this.state.items ?
+                    {this.state.items && this.state.items.length ?
                         this.state.items.map( (item, i) => (
-                            <PendingItemCard key={i} item={item} acceptItemPass={this.acceptItem} rejectItemPass={this.rejectItem} />
+                            <PendingItemCard key={i} item={item} handleChoicePass={this.handleChoice} />
                         ))
                 
-                    : null}
+                    : <p>There are no pending items.</p>}
                 </div>
 
                 

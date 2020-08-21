@@ -1138,17 +1138,17 @@ header .navItem span {
     clear: both;
 }
 
-.cat_list {
+/* .cat_list {
     text-align: center;
     
-}
+} */
 
-.cat_list img {
+/* .cat_list img {
     width: 50%;
     /* opacity: 0.2; */
     filter: brightness(50%) saturate(140%);
     
-}
+} */
 
 /* .img_back {
     background-color: black;
@@ -1264,6 +1264,47 @@ header .navItem span {
     width: 30%;
     /* margin: 0px; */
 }
+
+
+
+.cat_items_view {
+    text-align: center;
+}
+
+.cat_item_card {
+    height: 20vh;
+    background-color: #e1e1e1;
+    padding: 15px;
+    border-radius: 15px;
+    margin: 15px;
+    text-align: left;
+    display: inline-block;
+    width: 100%;
+}
+
+.cat_item_img {
+    height: 100%;
+    display: inline-block;
+}
+
+.cat_item_img img {
+    height: 100%;
+    width: auto;
+    border-radius: 5%;
+}
+
+.cat_item_text {
+    display: inline-block;
+    width: 50%;
+    padding: 10px 30px;
+    vertical-align: top;
+}
+
+
+
+
+
+
 /*=============================
             EDIT
 ===============================*/

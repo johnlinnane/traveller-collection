@@ -128,6 +128,12 @@ export default function(state={}, action) {
                 items:action.payload
             }
 
+        case 'ACCEPT_ITEM':
+            return {
+                ...state
+                // item:action.payload
+            }
+
 
 
        

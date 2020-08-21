@@ -62,8 +62,9 @@ class CatList extends Component {
                 <NavigationBar navinfo={this.navInfo}/>
                 <div className="main_view">
                     
-                    <div className="cat_list">
-                        
+                    {/* <div className="cat_list"> */}
+                    <div>
+                        <h2>Pending Items</h2>
                         {catsMap}
                     </div>
                 </div>

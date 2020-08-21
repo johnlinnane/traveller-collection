@@ -20,8 +20,7 @@ const itemSchema = mongoose.Schema({
     ],
     contributor: String,
     ownerId: {
-        type:String,
-        required:true
+        type:String
     },
 
     collection_id: Number,
@@ -107,7 +106,7 @@ const itemSchema = mongoose.Schema({
         }
     ]
 
-},{timestamps:true});
+},{timestamps:true, strict: false});
 
 
 const Item = mongoose.model('Item', itemSchema);

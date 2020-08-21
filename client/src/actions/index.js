@@ -44,6 +44,34 @@ export function clearItem() {
 
 
 
+///////// * * * * * * * * * ACCEPT PENDING ITEM * * * * * * 
+
+// export function acceptItem() {
+//     console.log('HIT')
+//     const request = axios.post(`/api/accept-item`)
+//                         .then(response => response.data);
+
+//     return {
+//         type:'ACCEPT_ITEM',
+//         payload:request
+
+//     }
+// }
+
+export function acceptItem(id) {
+
+    // console.log(id);
+
+    const request = axios.get(`/api/accept-item?id=${id}`)
+                        .then(response => response.data);
+    
+
+    return {
+        type: 'ACCEPT_ITEM',
+        payload:request
+    }
+}
+
 // ******************** USER ACTIONS ********************
 
 export function loginUser({email, password}) {
@@ -223,6 +251,9 @@ export function clearItemWithContributor() {
 
 // item arg is json data
 export function addItem(item) {
+
+    console.log(item);
+
     const request = axios.post('/api/item', item)
                         .then(response => response.data);
     
