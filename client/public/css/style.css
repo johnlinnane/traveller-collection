@@ -1289,8 +1289,10 @@ header .navItem span {
 
 .cat_item_img img {
     height: 100%;
-    width: auto;
+    width: 200px;
     border-radius: 5%;
+    /* overflow: hidden; */
+    object-fit: cover;
 }
 
 .cat_item_text {
