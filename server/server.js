@@ -418,7 +418,6 @@ app.get('/api/getIntroText', (req,res) => {
 //  ******************** get info text
 
 app.get('/api/getInfoText', (req,res) => {
-    console.log('get info text called')
     Info.findOne({}, {}, { sort: { '_id':1 } }, (err, doc) => {
         if(err) return res.status(400).send(err);
         res.send(doc);
@@ -999,64 +998,68 @@ app.post('/get-number-files', function(req, res) {
 
 app.post(
     '/upload/:id', 
-    // function(req, res) {
-        multer({
-            storage: multer.diskStorage({
-                destination: function (req, file, cb) {
-                    itemId = req.params.id;
-                    var dest = `../client/public/media/items/${itemId}/original`;
-                    mkdirp.sync(dest);
-                    cb(null, dest)
-                },
-                filename: function (req, file, cb) {
-                    let extArray = file.mimetype.split("/");
-                    let extension = extArray[extArray.length - 1];
-                    let ext = 'jpg';
+    function(req, res) {
+    console.log('upload api called')
+    }
+    // multer({
+        //     storage: multer.diskStorage({
+        //         destination: function (req, file, cb) {
+        //             itemId = req.params.id;
+        //             var dest = `../client/public/media/items/${itemId}/original`;
+        //             mkdirp.sync(dest);
+        //             cb(null, dest)
+        //         },
+        //         filename: function (req, file, cb) {
+        //             let extArray = file.mimetype.split("/");
+        //             let extension = extArray[extArray.length - 1];
+        //             let ext = 'jpg';
 
-                    switch(extension) {
-                        case 'jpeg':
-                          ext = 'jpg'
-                          break;
-                        case 'png':
-                            ext = 'jpg'
-                            break;
-                        default:
-                          ext = extension
-                      }
+        //             switch(extension) {
+        //                 case 'jpeg':
+        //                   ext = 'jpg'
+        //                   break;
+        //                 case 'png':
+        //                     ext = 'jpg'
+        //                     break;
+        //                 default:
+        //                   ext = extension
+        //               }
 
 
-                    cb(null, `${index}.${ext}` );
-                    index++;
-                }
-            })
-        })
-        // .single('file'), function(req, res, next) {
-        .array('file')
-        , function(req, res, next) {
-            itemId = req.params.id;
-            // sharp.cache({files: 0});
+        //             cb(null, `${index}.${ext}` );
+        //             index++;
+        //         }
+        //     })
+        // })
+        // // .single('file'), function(req, res, next) {
+        // .array('file')
+        // , function(req, res, next) {
+        //     itemId = req.params.id;
+        //     // sharp.cache({files: 0});
 
-            console.log(req.files[0].path);
+        //     console.log(req.files[0].path);
 
-            let width = 500;
-            let height = 500;
-            var dest = `../client/public/media/items/${itemId}/sq_thumbnail`;
-            mkdirp.sync(dest);
+        //     let width = 500;
+        //     let height = 500;
+        //     var dest = `../client/public/media/items/${itemId}/sq_thumbnail`;
+        //     mkdirp.sync(dest);
 
-            sharp(req.files[0].path)
-                .resize(width, height)
-                .toFile(`${dest}/0.jpg`, function(err) {
-                    if(!err) {
-                        console.log('sharp worked');
-                        res.write("File uploaded successfully.");
-                        res.end();
-                    } else {
-                        console.log(err);
-                    }
-                })
-            index = 0;
-        }
+        //     sharp(req.files[0].path)
+        //         .resize(width, height)
+        //         .toFile(`${dest}/0.jpg`, function(err) {
+        //             if(!err) {
+        //                 console.log('sharp worked');
+        //                 res.write("File uploaded successfully.");
+        //                 res.end();
+        //             } else {
+        //                 console.log(err);
+        //             }
+        //         })
+        //     index = 0;
+        // }
     
+
+
 )
 
 
