@@ -805,6 +805,15 @@ header .navItem span {
 
 }
 
+
+.shareIcons {
+    margin: 20px 20px 20px 0px;
+}
+
+.shareIcon {
+    margin: 0px 5px;
+}
+
 /* PDF CHAPTER INDEX TABLE */
 
 

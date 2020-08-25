@@ -5,6 +5,9 @@ import Slick from 'react-slick';   // uses cdn css
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
 import FontAwesome from 'react-fontawesome';
 
+import { EmailShareButton, FacebookShareButton, WhatsappShareButton } from "react-share";
+import { EmailIcon, FacebookIcon, WhatsappIcon } from "react-share";
+
 
 
 
@@ -20,6 +23,8 @@ import NavigationBar from '../../widgetsUI/navigation';
 // import Image from '../../widgetsUI/Slider/slider';
 import ItemImageSlider from '../../widgetsUI/Slider/item_img_slider';
 
+
+const config = require('./../../config_client').get(process.env.NODE_ENV);
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -374,9 +379,7 @@ class ItemView extends Component {
                                 </video>
                         : null }
 
-                        {/* {items.item.file_format === 'pdf' ?
-                            <PDFViewer document={{ url: '/media/items/5eb4417bf2ff151113f3e178/original/0.pdf' }} scale={0.5} scaleStep={0.05} />
-                        : null } */}
+                   
 
                         {items.item.file_format === 'pdf' ?
                             this.renderPDF()
@@ -507,6 +510,11 @@ class ItemView extends Component {
   
                     </div> 
 
+
+
+                    
+
+
                     {items.item && items.item.external_link && items.item.external_link[0].url ?
                                 <Link to={items.item.external_link[0].url}  target="_blank">
                                     <div className="link_wrapper">
@@ -520,6 +528,36 @@ class ItemView extends Component {
                                     </div>
                                 </Link>
                     : null }
+
+
+
+                                        
+                    <div className="shareIcons">
+                        <FacebookShareButton
+                            url={`http://${config.IP_ADDRESS}:3000/items/${this.props.items.item._id}`}
+                            className="shareIcon"
+                            >
+                            <FacebookIcon logoFillColor="white" size={32} round={true}/>
+                        </FacebookShareButton>
+
+
+                        <WhatsappShareButton
+                            url={`http://${config.IP_ADDRESS}:3000/items/${this.props.items.item._id}`}
+                            className="shareIcon"
+                            >
+                            <WhatsappIcon logoFillColor="white" size={32} round={true}/>
+                        </WhatsappShareButton>
+
+                        <EmailShareButton
+                            url={`http://${config.IP_ADDRESS}:3000/items/${this.props.items.item._id}`}
+                            className="shareIcon"
+                            >
+                            <EmailIcon logoFillColor="white" size={32} round={true}/>
+                        </EmailShareButton>
+                    </div>
+
+
+
 
                     {!this.state.isPending ?
                         <div className="item_box">
