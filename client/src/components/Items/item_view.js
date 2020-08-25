@@ -65,6 +65,7 @@ class ItemView extends Component {
         if (this.props != prevProps) {
             if (this.props.items) {
                 if (this.props.items.item ) {
+                    document.title = this.props.items.item.title;
                     if (this.props.items.item.ownerId && this.props.items.item.ownerId === 'guest'){
                         this.setState({
                             isPending: true
@@ -536,6 +537,7 @@ class ItemView extends Component {
                         <FacebookShareButton
                             url={`http://${config.IP_ADDRESS}:3000/items/${this.props.items.item._id}`}
                             className="shareIcon"
+                            quote={this.props.items.item.title}
                             >
                             <FacebookIcon logoFillColor="white" size={32} round={true}/>
                         </FacebookShareButton>
@@ -544,6 +546,7 @@ class ItemView extends Component {
                         <WhatsappShareButton
                             url={`http://${config.IP_ADDRESS}:3000/items/${this.props.items.item._id}`}
                             className="shareIcon"
+                            title={this.props.items.item.title}
                             >
                             <WhatsappIcon logoFillColor="white" size={32} round={true}/>
                         </WhatsappShareButton>
@@ -551,6 +554,7 @@ class ItemView extends Component {
                         <EmailShareButton
                             url={`http://${config.IP_ADDRESS}:3000/items/${this.props.items.item._id}`}
                             className="shareIcon"
+                            subject={this.props.items.item.title}
                             >
                             <EmailIcon logoFillColor="white" size={32} round={true}/>
                         </EmailShareButton>
