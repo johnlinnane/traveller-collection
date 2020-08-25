@@ -40,6 +40,7 @@ class CatView  extends Component {
 
 
 
+
     componentDidUpdate(prevProps, prevState) {
         if (this.props.subcats !== prevProps.subcats) {
 
@@ -58,12 +59,16 @@ class CatView  extends Component {
         }
 
         if (this.props.catinfo ) {
+            document.title = `${this.props.catinfo.title} - Traveller Collection`
            
             this.navInfo.catTitle = this.props.catinfo.title;
             this.navInfo.catId = this.props.catinfo._id;
                 
             
         }
+    }
+    componentWillUnmount() {
+        document.title = `Traveller Collection`
     }
 
 

@@ -42,6 +42,7 @@ class EditItemSel extends PureComponent {
 
 
     componentDidMount() {
+        document.title = "Edit Item - Traveller Collection"
         if (this.props.user.login.isAuth) {
             this.props.dispatch(getItemById(this.props.match.params.id))
         } else {
@@ -55,7 +56,9 @@ class EditItemSel extends PureComponent {
 
     componentWillUnmount() {
         this.props.dispatch(clearItem())
+        document.title = `Traveller Collection`
     }
+
 
 
     componentDidUpdate(prevProps, prevState) {

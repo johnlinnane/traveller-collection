@@ -22,6 +22,14 @@ class Login extends Component {
         this.setState({password:event.target.value})
     }
 
+    componentDidMount() {
+        document.title = "Login - Traveller Collection"
+    }
+    
+    componentWillUnmount() {
+        document.title = `Traveller Collection`
+    }
+
     // componentWillReceiveProps(nextProps) {
     //     if(nextProps.user.login.isAuth) {
     //         this.props.history.push('/user')

@@ -51,24 +51,28 @@ class EditItem extends PureComponent {
                 latitude: null,
                 longitude: null
             },
-            location: ''
+            location: '',
+            shareDisabled: false
         },
         initMap: {
             initLat: 53.342609,
             initLong: -7.603976,
             initZoom: 6.5
         },
-        saved: false
+        saved: false,
+        
     }
 
 
     componentDidMount() {
         this.props.dispatch(getItemById(this.props.match.params.id))
+        document.title = "Edit Item - Traveller Collection"
     }
 
 
     componentWillUnmount() {
         this.props.dispatch(clearItem())
+        document.title = `Traveller Collection`
     }
 
     // baseline export before adding new stuff
@@ -107,7 +111,8 @@ class EditItem extends PureComponent {
                 file_format: item.file_format,
                 category_ref: item.category_ref,
                 subcategory_ref: item.subcategory_ref,
-                location: item.location
+                location: item.location,
+                shareDisabled: item.shareDisabled
             }
 
             let newLatLng = this.state.initMap;
@@ -207,6 +212,17 @@ class EditItem extends PureComponent {
         })
     }
 
+    handleSwitch() {
+        // console.log('switch switched')
+        this.setState({
+            formdata: {
+                ...this.state.formdata,
+                shareDisabled: !this.state.formdata.shareDisabled
+            }
+            
+        })
+        console.log(this.state.formdata.shareDisabled)
+    }
 
     deleteAllMedia = () => {
         let fileData =  {
@@ -498,6 +514,25 @@ class EditItem extends PureComponent {
                     {this.createTextInput(formdata.reference,'reference', "Reference code", "Ref")}
 
 
+                    <tr>
+                        <td className="label">
+                            Allow sharing
+                        </td>
+                        <td>
+                            <div className="form_element share_toggle">
+                                <input 
+                                    type="checkbox" 
+                                    // className="share_toggle"
+                                    checked={!this.state.formdata.shareDisabled} 
+                                    onChange={(event) => this.handleSwitch(event)}
+                                />
+                                
+                            </div>
+                        </td>
+                    </tr>
+
+          
+
                     <tr><td></td><td></td></tr>
                     <tr><td colSpan="2"><hr /></td></tr>
                     <tr><td></td><td></td></tr>
@@ -541,6 +576,8 @@ class EditItem extends PureComponent {
 
     render() {
         let items = this.props.items;
+
+        console.log(this.state.formdata)
 
         return (
             <div className="main_view">

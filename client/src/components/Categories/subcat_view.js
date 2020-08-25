@@ -40,9 +40,10 @@ class SubcatView  extends Component {
 
     componentDidUpdate(prevProps, prevState) {
 
-
+        
         if (prevProps !== this.props) {
             if (this.props.subcat ) {
+                document.title = `${this.props.subcat.title} - Traveller Collection`
                 this.props.dispatch(getCatById(this.props.subcat.parent_cat))
             }
 
@@ -53,6 +54,9 @@ class SubcatView  extends Component {
                 this.navInfo.subCatId = this.props.subcat._id;
             }
         }
+    }
+    componentWillUnmount() {
+        document.title = `Traveller Collection`
     }
 
 

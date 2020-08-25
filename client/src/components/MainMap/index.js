@@ -18,7 +18,12 @@ class MainMap extends Component {
     }
 
     componentDidMount() {
+        document.title = `Map - Traveller Collection`
         this.props.dispatch(getItemsWithCoords());
+    }
+
+    componentWillUnmount() {
+        document.title = `Traveller Collection`
     }
 
     render() {
@@ -57,26 +62,28 @@ class MainMap extends Component {
                     {this.props.items.items && this.props.items.items.length ?
                         <div>
                             {this.props.items.items.map( (item, i) => (
-                                <Marker 
-                                    position={[item.geo.latitude, item.geo.longitude]} 
-                                    key={i}
-                                >
-                                    
-                                        <Popup>
-                                            <Link to={`/items/${item._id}`} target="_blank">
-                                                <span><b>{item.title}</b></span>
-                                                <br/>
-                                                {item.address ?
-                                                    <div>
-                                                        <span>{item.address}</span><br/>
-                                                        <br/>
-                                                    </div>
-                                                : null}
-                                                <span>{item.geo.latitude}, {item.geo.longitude}</span><br/>
-                                            </Link>
-                                        </Popup>
-                                    
-                                </Marker>
+                                item.geo && item.geo.latitude && item.geo.longitude ?
+                                    <Marker 
+                                        position={[item.geo.latitude, item.geo.longitude]} 
+                                        key={i}
+                                    >
+                                        
+                                            <Popup>
+                                                <Link to={`/items/${item._id}`} target="_blank">
+                                                    <span><b>{item.title}</b></span>
+                                                    <br/>
+                                                    {item.address ?
+                                                        <div>
+                                                            <span>{item.address}</span><br/>
+                                                            <br/>
+                                                        </div>
+                                                    : null}
+                                                    <span>{item.geo.latitude}, {item.geo.longitude}</span><br/>
+                                                </Link>
+                                            </Popup>
+                                        
+                                    </Marker>
+                                : null
                             ) )}     
                         </div>
                     : null}

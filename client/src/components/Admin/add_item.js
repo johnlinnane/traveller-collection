@@ -59,6 +59,9 @@ class AddItem extends Component {
         saved: false
     }
 
+    componentDidMount() {
+        document.title = "Add Item - Traveller Collection"
+    }
 
     // clear success message 
     componentWillUnmount() {

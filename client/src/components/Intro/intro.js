@@ -10,6 +10,11 @@ class Intro extends Component  {
 
     componentDidMount() {
         this.props.dispatch(getIntroText());
+        document.title = "Traveller Collection"
+    }
+
+    componentWillUnmount() {
+        document.title = `Traveller Collection`
     }
 
     addDefaultImg = (ev) => {

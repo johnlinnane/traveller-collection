@@ -17,8 +17,13 @@ class Search extends Component {
     }
 
     componentDidMount() {
+        document.title = `Search - Traveller Collection`
         this.props.dispatch(getAllItems());
 
+    }
+    
+    componentWillUnmount() {
+        document.title = `Traveller Collection`
     }
 
     getKeyword = (event) => {

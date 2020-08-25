@@ -104,7 +104,9 @@ const itemSchema = mongoose.Schema({
             heading: String,
             description: String
         }
-    ]
+    ],
+
+    shareDisabled: Boolean
 
 },{timestamps:true, strict: false});
 

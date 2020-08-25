@@ -1400,6 +1400,18 @@ input[type="number"] {
    -moz-appearance: textfield;
 }
 
+ .share_toggle {
+     width: 20px;
+ }
+
+ .share_toggle input {
+     margin-bottom: 15px;
+ }
+
+
+
+ 
+
 
 /*=============================
             SEARCH

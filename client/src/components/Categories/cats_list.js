@@ -18,10 +18,14 @@ class CatList extends Component {
 
 
     componentDidMount() {
+        document.title = "Categories - Traveller Collection"
         this.props.dispatch(getAllCats());
         // this.props.dispatch(getItemsByCat(this.props.catInfo.cat_id));
         // this.props.dispatch(getItemsWithCat(this.props.catInfo.cat_id));
 
+    }
+    componentWillUnmount() {
+        document.title = `Traveller Collection`
     }
 
     navInfo = {

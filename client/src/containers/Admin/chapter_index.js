@@ -40,10 +40,14 @@ class ChapterIndex extends PureComponent {
 
 
     componentDidMount() {
+        document.title = "Chapter Index - Traveller Collection"
         this.props.dispatch(getItemById(this.props.match.params.id))
  
     }
-
+    
+    componentWillUnmount() {
+        document.title = `Traveller Collection`
+    }
 
 
 

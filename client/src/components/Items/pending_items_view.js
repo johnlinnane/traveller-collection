@@ -20,7 +20,13 @@ class PendingItemsView extends Component {
 
 
     componentDidMount() {
+        document.title = `Pending Items - Traveller Collection`
         this.props.dispatch(getAllPendItems())
+        
+    }
+
+    componentWillUnmount() {
+        document.title = `Traveller Collection`
     }
 
     componentDidUpdate(prevProps, prevState) {

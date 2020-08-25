@@ -51,7 +51,6 @@ class ItemView extends Component {
 
     
     componentDidMount() {
-        
         this.props.dispatch(getPendItemById(this.props.match.params.id));
         
         
@@ -65,7 +64,7 @@ class ItemView extends Component {
         if (this.props != prevProps) {
             if (this.props.items) {
                 if (this.props.items.item ) {
-                    document.title = this.props.items.item.title;
+                    document.title = `${this.props.items.item.title}`
                     if (this.props.items.item.ownerId && this.props.items.item.ownerId === 'guest'){
                         this.setState({
                             isPending: true
@@ -82,7 +81,9 @@ class ItemView extends Component {
 
     componentWillUnmount() {
         this.props.dispatch(clearItemWithContributor());
+        document.title = `Traveller Collection`
     }
+    
 
 
     navInfo = {
@@ -532,33 +533,36 @@ class ItemView extends Component {
 
 
 
-                                        
-                    <div className="shareIcons">
-                        <FacebookShareButton
-                            url={`http://${config.IP_ADDRESS}:3000/items/${this.props.items.item._id}`}
-                            className="shareIcon"
-                            quote={this.props.items.item.title}
-                            >
-                            <FacebookIcon logoFillColor="white" size={32} round={true}/>
-                        </FacebookShareButton>
+                    {items.item.shareDisabled ?
+                        null
+                        :               
+                        <div className="shareIcons">
+                            <FacebookShareButton
+                                url={`http://${config.IP_ADDRESS}:3000/items/${this.props.items.item._id}`}
+                                className="shareIcon"
+                                quote={this.props.items.item.title}
+                                >
+                                <FacebookIcon logoFillColor="white" size={32} round={true}/>
+                            </FacebookShareButton>
 
 
-                        <WhatsappShareButton
-                            url={`http://${config.IP_ADDRESS}:3000/items/${this.props.items.item._id}`}
-                            className="shareIcon"
-                            title={this.props.items.item.title}
-                            >
-                            <WhatsappIcon logoFillColor="white" size={32} round={true}/>
-                        </WhatsappShareButton>
+                            <WhatsappShareButton
+                                url={`http://${config.IP_ADDRESS}:3000/items/${this.props.items.item._id}`}
+                                className="shareIcon"
+                                title={this.props.items.item.title}
+                                >
+                                <WhatsappIcon logoFillColor="white" size={32} round={true}/>
+                            </WhatsappShareButton>
 
-                        <EmailShareButton
-                            url={`http://${config.IP_ADDRESS}:3000/items/${this.props.items.item._id}`}
-                            className="shareIcon"
-                            subject={this.props.items.item.title}
-                            >
-                            <EmailIcon logoFillColor="white" size={32} round={true}/>
-                        </EmailShareButton>
-                    </div>
+                            <EmailShareButton
+                                url={`http://${config.IP_ADDRESS}:3000/items/${this.props.items.item._id}`}
+                                className="shareIcon"
+                                subject={this.props.items.item.title}
+                                >
+                                <EmailIcon logoFillColor="white" size={32} round={true}/>
+                            </EmailShareButton>
+                        </div>
+                    }
 
 
 
@@ -611,7 +615,7 @@ class ItemView extends Component {
 
 
         let items = this.props.items;
-        // console.log(items.item);
+        console.log(items.item);
 
         if (items.item && items.item.category_ref ) {
             {this.getCatName(items.item.category_ref)}

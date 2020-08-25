@@ -70,11 +70,16 @@ class EditItemFile extends PureComponent {
     }
 
     componentDidMount() {
+        document.title = "Edit Item - Traveller Collection"
         if (this.props.user.login.isAuth) {
             this.props.dispatch(getItemById(this.props.match.params.id))
         } else {
             this.props.dispatch(getPendItemById(this.props.match.params.id))
         }
+    }
+
+    componentWillUnmount() {
+        document.title = `Traveller Collection`
     }
 
 
