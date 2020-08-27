@@ -1107,6 +1107,46 @@ app.post(
 });
 
 
+// *********************** SUBCATEGORY IMAGE ************************
+
+
+app.post(
+    '/upload-subcat/:id',
+    function(req, res) {
+        
+        let subCatId = req.params.id;
+        console.log(req.file);
+        let index = 0;
+     
+        multer({ storage: multer.diskStorage({
+            destination: function (req, file, cb) {
+
+                var dest = `../client/public/media/cover_img_subcat`;
+                // var dest = `../client/public/media/upload_test`;
+                // fs.mkdirSync(dest, { recursive: true })
+                mkdirp.sync(dest);
+                cb(null, dest)
+                
+            },
+            filename: function (req, file, cb) {
+                // cb(null, Date.now() + '-' +file.originalname )
+                cb(null, `${subCatId}.jpg` );
+                index++;
+            }
+        }) }).array('file')(req, res, function (err) {
+            
+            if (err instanceof multer.MulterError) {
+                return res.status(500).json(err)
+            } else if (err) {
+                return res.status(500).json(err)
+            }
+
+        return res.status(200).send(req.file)
+    })
+
+});
+
+
 // *********************** INTRO IMAGE ************************
 
 app.post(

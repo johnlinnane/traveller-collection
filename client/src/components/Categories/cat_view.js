@@ -73,24 +73,30 @@ class CatView  extends Component {
 
 
     renderImage = (subCat) => {
-        if (this.props.catitems && this.props.catitems.length) {
-            
-            const firstItem = this.props.catitems.find( item => item.subcategory_ref == subCat._id);
-            
-            if (firstItem) {
-                console.log(firstItem);    
-                return (
-                    <img src={`/media/items/${firstItem._id}/sq_thumbnail/0.jpg`} 
-                        alt={firstItem.title} 
-                        onError={this.addDefaultImg} 
-                        className="subcat_list_img"/>
-                )
-            } else {
-                return <img src={`/media/default/default.jpg`} alt="default item image" className="subcat_list_img"/>
-            }
-        } else {
-            return <img src={`/media/default/default.jpg`} alt="default item image" className="subcat_list_img"/>
-        }
+        // if (this.props.catitems && this.props.catitems.length) {
+        //     const firstItem = this.props.catitems.find( item => item.subcategory_ref == subCat._id);
+        //     if (firstItem) {
+        //         console.log(firstItem);    
+        //         return (
+        //             <img src={`/media/items/${firstItem._id}/sq_thumbnail/0.jpg`} 
+        //                 alt={firstItem.title} 
+        //                 onError={this.addDefaultImg} 
+        //                 className="subcat_list_img"/>
+        //         )
+        //     } else {
+        //         return <img src={`/media/default/default.jpg`} alt="default item image" className="subcat_list_img"/>
+        //     }
+        // } else {
+        //     return <img src={`/media/default/default.jpg`} alt="default item image" className="subcat_list_img"/>
+        // }
+        
+        return (
+            <img src={`/media/cover_img_subcat/${subCat._id}.jpg`} 
+                alt={subCat.title} 
+                onError={this.addDefaultImg} 
+                className="subcat_list_img"
+            />
+        )
     }
 
 
