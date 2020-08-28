@@ -1197,6 +1197,21 @@ header .navItem span {
 .item_list_figure {
 }
 
+
+.item_list_add {
+    cursor: pointer;
+}
+.item_list_add_text {
+    color: #000 !important;
+}
+
+.item_list_add img {
+    
+    height: 100px;
+    display: block;
+    margin: 0 auto !important;
+}
+
  /* grid stuff */
 
 .cat_grid_row {

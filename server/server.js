@@ -816,76 +816,12 @@ let upload = multer({ storage: storage }).array('file')
 app.post('/delete-file', function(req, res) {
     let query = '../client/public/media';
 
+    let fullPath = query + req.body.path
 
-    const getSubfoldersInFolder = (dir) => {
-        let folders = [];
-        fs.readdir(dir, {withFileTypes: true}, (err, files) => {
-            files.map( file => {
-                let string = path.resolve(dir, file.name)
-                if (fs.lstatSync(string).isDirectory()) {
-                    folders.push(string)
-                
-                }
-            
-            })
-        });
-        return folders;
-    }
-
-
-
-    console.log(getSubfoldersInFolder(query))
-
-    // const deleteFilesInFolder = (dir) => {
-    //     fs.readdir(dir, {withFileTypes: true}, (err, files) => {
-    //         files.map( file => {
-    //             let string = path.resolve(dir, file.name);
-    //             if (fs.lstatSync(string).isFile()) {
-    //                 fs.unlinkSync(string, function (err) {
-    //                     if (err) throw err;
-    //                     console.log('File deleted!' + file.name);
-    //                 });
-    //             }
-
-    //         })
-    //     })
-
-    // }
-
-    if (req.body.deleteAll && req.body.id) {
-
-        let url = path.resolve(query, 'items', req.body.id)
-        // path.resolve(query, 'items', req.body.id)
-
-        // console.log(url)
-
-
-
-        // deleteFilesInFolder(url + '/fullsize');
-        // deleteFilesInFolder(url + '/original');
-        // deleteFilesInFolder(url + '/sq_thumbnail');
-        // deleteFilesInFolder(url + '/thumbnail');
-
-        
-
-    } 
-    // else {
-
-    //     if (req.body.section) {
-    //         query += `/${req.body.section}`;
-    //     }
-    //     if (req.body.id) {
-    //         query += `/${req.body.id}`;
-    //     }
-    //     if (req.body.fileName) {
-    //         query += `/${req.body.fileName}`;
-    //     }
-
-    //     // fs.unlink(query, function (err) {
-    //     //     if (err) throw err;
-    //     //     console.log('File deleted!');
-    //     // })
-    // }
+    fs.unlink(fullPath, function (err) {
+        if (err) throw err;
+        console.log('File deleted!');
+    })
 });
 
 
@@ -998,65 +934,63 @@ app.post('/get-number-files', function(req, res) {
 
 app.post(
     '/upload/:id', 
-    function(req, res) {
-    console.log('upload api called')
-    }
-    // multer({
-        //     storage: multer.diskStorage({
-        //         destination: function (req, file, cb) {
-        //             itemId = req.params.id;
-        //             var dest = `../client/public/media/items/${itemId}/original`;
-        //             mkdirp.sync(dest);
-        //             cb(null, dest)
-        //         },
-        //         filename: function (req, file, cb) {
-        //             let extArray = file.mimetype.split("/");
-        //             let extension = extArray[extArray.length - 1];
-        //             let ext = 'jpg';
 
-        //             switch(extension) {
-        //                 case 'jpeg':
-        //                   ext = 'jpg'
-        //                   break;
-        //                 case 'png':
-        //                     ext = 'jpg'
-        //                     break;
-        //                 default:
-        //                   ext = extension
-        //               }
+    multer({
+            storage: multer.diskStorage({
+                destination: function (req, file, cb) {
+                    itemId = req.params.id;
+                    var dest = `../client/public/media/items/${itemId}/original`;
+                    mkdirp.sync(dest);
+                    cb(null, dest)
+                },
+                filename: function (req, file, cb) {
+                    let extArray = file.mimetype.split("/");
+                    let extension = extArray[extArray.length - 1];
+                    let ext = 'jpg';
+
+                    switch(extension) {
+                        case 'jpeg':
+                          ext = 'jpg'
+                          break;
+                        case 'png':
+                            ext = 'jpg'
+                            break;
+                        default:
+                          ext = extension
+                      }
 
 
-        //             cb(null, `${index}.${ext}` );
-        //             index++;
-        //         }
-        //     })
-        // })
-        // // .single('file'), function(req, res, next) {
-        // .array('file')
-        // , function(req, res, next) {
-        //     itemId = req.params.id;
-        //     // sharp.cache({files: 0});
+                    cb(null, `${index}.${ext}` );
+                    index++;
+                }
+            })
+        })
+        // .single('file'), function(req, res, next) {
+        .array('file')
+        , function(req, res, next) {
+            itemId = req.params.id;
+            // sharp.cache({files: 0});
 
-        //     console.log(req.files[0].path);
+            console.log(req.files[0].path);
 
-        //     let width = 500;
-        //     let height = 500;
-        //     var dest = `../client/public/media/items/${itemId}/sq_thumbnail`;
-        //     mkdirp.sync(dest);
+            let width = 500;
+            let height = 500;
+            var dest = `../client/public/media/items/${itemId}/sq_thumbnail`;
+            mkdirp.sync(dest);
 
-        //     sharp(req.files[0].path)
-        //         .resize(width, height)
-        //         .toFile(`${dest}/0.jpg`, function(err) {
-        //             if(!err) {
-        //                 console.log('sharp worked');
-        //                 res.write("File uploaded successfully.");
-        //                 res.end();
-        //             } else {
-        //                 console.log(err);
-        //             }
-        //         })
-        //     index = 0;
-        // }
+            sharp(req.files[0].path)
+                .resize(width, height)
+                .toFile(`${dest}/0.jpg`, function(err) {
+                    if(!err) {
+                        console.log('sharp worked');
+                        res.write("File uploaded successfully.");
+                        res.end();
+                    } else {
+                        console.log(err);
+                    }
+                })
+            index = 0;
+        }
     
 
 

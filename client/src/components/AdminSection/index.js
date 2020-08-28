@@ -6,9 +6,11 @@ import 'react-tabs/style/react-tabs.css';
  
 import { getAllColls, getAllCats, getAllSubCats  } from '../../actions';
 import AdminCat from './admin_cat';
+import AdminSubCat from './admin_subcat';
 import AdminIntro from './admin_intro';
 import AdminInfo from './admin_info';
 import AdminAddCat from './admin_add_cat';
+import AdminAddSubCat from './admin_add_subcat';
 
 
 class Admin extends React.Component  {
@@ -49,6 +51,7 @@ class Admin extends React.Component  {
 
                     <TabList>
                         <Tab>Categories</Tab>
+                        <Tab>Sub-Categories</Tab>
                         <Tab>Info Page</Tab>
                         <Tab>Intro Page</Tab>
                         {/* <Tab disabled>Extra</Tab> */}
@@ -97,6 +100,45 @@ class Admin extends React.Component  {
 
                     </TabPanel>
 
+
+                    {/******** SUB CATEGORIES ***********/}
+
+                    <TabPanel>
+                        
+                        <h2>Sub-Categories</h2> 
+                        
+
+                        {/******** SIDE TABS ***********/}
+
+                        <Tabs className="vert_tab" 
+                            selectedIndex={this.state.tabIndexSide} 
+                            onSelect={tabIndexSide => this.setState({ tabIndexSide })}
+                        >
+                            {this.props.subcats ?
+                                <TabList className="vert_tab_list">
+                                    {this.props.subcats.map( (subcats, i) => (
+                                        <Tab key={i}>{subcats.title}</Tab>
+                                    ))}
+                                    <Tab  className="add_cat_tab">Add Sub-Category</Tab>
+                                </TabList>
+                            : null }
+
+
+                            { this.props.subcats ?
+                                this.props.subcats.map( (subcat, i) => (
+                                    <TabPanel key={i}>
+
+                                        <AdminSubCat chosenSubCatInfo={subcat} index={i} getTabIndex={this.setTabIndex}/>
+                                    </TabPanel>
+                                ))
+                            : null }
+
+                            <TabPanel>
+                                <AdminAddSubCat />
+                            </TabPanel>
+
+                        </Tabs>
+                    </TabPanel>
 
 
                     {/******** INFO ***********/}

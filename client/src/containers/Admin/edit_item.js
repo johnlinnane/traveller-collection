@@ -117,7 +117,7 @@ class EditItem extends PureComponent {
 
             let newLatLng = this.state.initMap;
 
-            if (item.external_link) {
+            if (item.external_link && item.external_link.length) {
                 if (item.external_link[0].url || item.external_link[0].text) {
                     newFormdata = {
                         ...newFormdata,

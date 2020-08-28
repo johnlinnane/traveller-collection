@@ -3,32 +3,58 @@ import { connect } from 'react-redux';
 import { withRouter } from "react-router-dom";
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
+import Select from 'react-select';
+import CreatableSelect from 'react-select/creatable';
 
 
-import { addCat } from '../../actions';
+
+
+import { getAllCats } from '../../actions';
+import { addSubcat } from '../../actions';
 
 var mongoose = require('mongoose');
+
 const config = require('../../config_client').get(process.env.NODE_ENV);
 
 
-class AdminAddCat extends Component {
+class AdminAddSubCat extends Component {
 
     state = {
-        catdata: {
+        subcatdata: {
             _id: mongoose.Types.ObjectId().toHexString(),
             title: '',
-            description: ''
+            description: '',
+            parent_cat: ''
         },
         saved: false,
+        allCatsConverted: [],
+        convertedCatsLoaded: false,
         imgSrc: '/media/default/default.jpg'
     }
 
     componentDidMount() {
-        // this.props.dispatch(blahBlah());
+        this.props.dispatch(getAllCats());
     }
 
 
     componentDidUpdate(prevProps, prevState) {
+        if (this.props != prevProps) {
+
+            if (this.props.cats && this.props.cats.length) {
+                let tempAllCatsConverted = [];
+                this.props.cats.map( cat => {
+                    tempAllCatsConverted.push({
+                        value: cat._id,
+                        label: cat.title
+                    })
+                })
+
+                this.setState({
+                    allCatsConverted: tempAllCatsConverted,
+                    convertedCatsLoaded: true
+                })
+            }
+        }
     }
 
 
@@ -47,32 +73,50 @@ class AdminAddCat extends Component {
 
     handleInput = (event, field, i) => {
 
-        const newCatdata = {
-            ...this.state.catdata
+        const newSubcatdata = {
+            ...this.state.subcatdata
         }
 
         if (field === 'title') {
-            newCatdata.title = event.target.value;
+            newSubcatdata.title = event.target.value;
 
         } 
         
         if (field === 'description') {
-            newCatdata.description = event.target.value;
+            newSubcatdata.description = event.target.value;
         } 
 
         // copy it back to state
         this.setState({
-            catdata: newCatdata,
+            subcatdata: newSubcatdata,
         })
         console.log(this.state);
     }
 
-    addDefaultImg = (ev) => {
-        const newImg = '/media/default/default.jpg';
-        if (ev.target.src !== newImg) {
-            ev.target.src = newImg
-        }  
+
+    handleCatChange = (newValue) => {
+        console.log(newValue)
+
+
+        // let tempFormdata = {
+        //     ...this.state.formdata,
+        //     subCat: {
+        //         ...this.state.formdata.subCat,
+        //         parent_cat: newValue.value
+        //     }
+
+        // }
+
+        let tempSubcatdata = this.state.subcatdata;
+        tempSubcatdata.parent_cat = newValue.value
+    
+
+        this.setState({
+            subcatdata: tempSubcatdata
+        })
     }
+
+
 
     // *************** UPLOAD LOGIC ********************
 
@@ -98,7 +142,7 @@ class AdminAddCat extends Component {
             for(var x = 0; x<this.state.selectedFile.length; x++) {
                 data.append('file', this.state.selectedFile[x])
             }
-            axios.post(`http://${config.IP_ADDRESS}:3001/upload-cat/${this.state.catdata._id}`, data, { 
+            axios.post(`http://${config.IP_ADDRESS}:3001/upload-subcat/${this.state.subcatdata._id}`, data, { 
                 onUploadProgress: ProgressEvent => {
                     this.setState({
                         loaded: (ProgressEvent.loaded / ProgressEvent.total*100)
@@ -185,14 +229,16 @@ class AdminAddCat extends Component {
 
 
 
+
     submitForm = (e) => {
         e.preventDefault();
         // console.log(this.state.formdata);
 
         // dispatch an action, adding updated  formdata + the user id from the redux store
-        this.props.dispatch(addCat({
-                ...this.state.catdata,
+        this.props.dispatch(addSubcat({
+                ...this.state.subcatdata,
         }));
+
 
         this.onClickHandler();
 
@@ -208,7 +254,7 @@ class AdminAddCat extends Component {
 
 
     render() {
-        // console.log(this.state)
+        console.log(this.state.convertedCatsLoaded)
 
         return (
             <div className="admin">
@@ -225,7 +271,7 @@ class AdminAddCat extends Component {
                                         <input
                                             type="text"
                                             placeholder={"Enter title"}
-                                            defaultValue={this.state.catdata.title} 
+                                            defaultValue={this.state.subcatdata.title} 
                                             onChange={(event) => this.handleInput(event, 'title')}
                                         />
 
@@ -244,7 +290,7 @@ class AdminAddCat extends Component {
                                         <textarea
                                             type="text"
                                             placeholder="Enter category description"
-                                            defaultValue={this.state.catdata.description} 
+                                            defaultValue={this.state.subcatdata.description} 
                                             onChange={(event) => this.handleInput(event, 'description')}
                                             rows={6}
                                         />
@@ -267,7 +313,31 @@ class AdminAddCat extends Component {
 
                              */}
 
-<tr>
+                            <tr>
+                                    <td>
+                                        <h3>Parent Category</h3>
+                                    </td>
+                                    {this.state.convertedCatsLoaded ?
+                                            <td>
+                                                <Select
+                                                    // key={`cat_${this.props.items.item._id}`}
+                                                    // defaultValue={null}
+                                                    // isMulti
+                                                    // name="colors"
+                                                    options={this.state.allCatsConverted}
+                                                    // className="basic-multi-select"
+                                                    className="basic-single"
+                                                    classNamePrefix="select"
+                                                    onChange={this.handleCatChange}
+                                                />
+
+
+
+                                            </td>
+                                    : null}
+                                </tr>
+
+                                <tr>
                                     <td>
                                         <img 
                                             className="change_cat_img" 
@@ -282,6 +352,8 @@ class AdminAddCat extends Component {
                                         </div>
                                     </td>
                                 </tr>
+
+
                                 <tr className="spacer"></tr>
 
                                 
@@ -308,7 +380,7 @@ class AdminAddCat extends Component {
                         </form>
 
                         {this.state.saved ?
-                            <p className="message">Sucessfully added new category!</p>
+                            <p className="message">Sucessfully added new subcategory!</p>
                         : null}
                         
                     </div>
@@ -322,10 +394,10 @@ function mapStateToProps(state) {
     // console.log(state);
 
     return {
-        // xxx: state.xxx.xxxx
+        cats:state.cats.cats
         
     }
 }
 
 
-export default withRouter(connect(mapStateToProps)(AdminAddCat));
+export default withRouter(connect(mapStateToProps)(AdminAddSubCat));
