@@ -103,14 +103,23 @@ class SubcatView  extends Component {
 
 
 
-
+    renderAddItem = () => (
+        <figure 
+            className="item_list_add item_list_figure"
+            onClick={() => { if (window.confirm('Would you like to add an item to this section?')) this.addClick() }}
+        >
+            <img src={`/media/icons/add_item_icon.png`} 
+                alt="Add an item to this sub-category" 
+                onError={this.addDefaultImg} />
+            <figcaption className="item_list_add_text">Add Item</figcaption>
+        </figure>
+    )
 
 
 
     renderItems = () => {
         return(
-            <div className="cat_grid_row">
-                <div className="cat_grid_column">
+                <div>
                     { this.props.subcatitems.map( (item, i) => (
                         <div key={i}>
                             <Link to={`/items/${item._id}`} key={i}>
@@ -125,18 +134,10 @@ class SubcatView  extends Component {
                         </div>
                     ))}
                     
-                        <figure 
-                            className="item_list_add item_list_figure"
-                            onClick={() => { if (window.confirm('Would you like to add an item to this section?')) this.addClick() }}
-                        >
-                            <img src={`/media/icons/add_item_icon.png`} 
-                                alt="Add an item to this sub-category" 
-                                onError={this.addDefaultImg} />
-                            <figcaption className="item_list_add_text">Add Item</figcaption>
-                        </figure>
-                    
+                    {this.renderAddItem()}
                 </div>
-            </div>
+                    
+        
         )
     }
 
@@ -164,11 +165,20 @@ class SubcatView  extends Component {
                         : null}
 
                         <hr />
-
-                        { this.props.subcatitems && this.props.subcatitems.length ?
-                            this.renderItems()
+                        <div className="cat_grid_row">
+                            <div className="cat_grid_column">
+                                { this.props.subcatitems && this.props.subcatitems.length ?
+                                    this.renderItems()
                             
-                        : <p className="center">There are no items in this section.</p> }
+                                : 
+                                <div>
+                                    <p className="center">There are no items in this section.</p>
+                                    
+                                    {this.renderAddItem()}
+                                </div>
+                                }
+                            </div>
+                        </div>                        
                     </div>
                 </div>
             </div>
