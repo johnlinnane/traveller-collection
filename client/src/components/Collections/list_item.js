@@ -56,7 +56,7 @@ const CollListItem = (props) => {
                     <div className="img_back">
                         <img src={`/media/cover_img_coll/${props.item.id}.jpg`} alt="category cover" onError={addDefaultImg} />
                     </div>
-                    <div class="centered"><h1>{props.item.title}</h1></div>
+                    <div className="centered"><h1>{props.item.title}</h1></div>
 
                     
                 </div>

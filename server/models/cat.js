@@ -12,7 +12,7 @@ const cateogrySchema = mongoose.Schema({
     //     sub_id: Number,
     //     title: String
     // }],
-
+    catIsHidden: Boolean
 
 }, {timestamps:true} );
 

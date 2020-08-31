@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
 
 import { getSubcat, getItemsBySubcat, getCatById } from '../../actions';
 import { addItem } from '../../actions';
@@ -14,17 +15,23 @@ class SubcatView  extends Component {
    
 
     state = {
-       newItemId: null,
-     
-       navInfo: {
+        newItemId: null,
+        
+        navInfo: {
             catTitle: null,
             catId: null,
             subCatTitle: null,
             subCatId: null,
             type: 'Categories'
-        }
+        },
+        catDispatched: false,
+
+        initLat: 53.342609,
+        initLong: -7.603976,
+        initZoom: 8,
+        showMap: false
+  
     }
-    
     
 
 
@@ -48,9 +55,12 @@ class SubcatView  extends Component {
 
         
         if (prevProps !== this.props) {
-            if (this.props.subcat ) {
+            if (this.props.subcat && !this.state.catDispatched) {
                 document.title = `${this.props.subcat.title} - Traveller Collection`
                 this.props.dispatch(getCatById(this.props.subcat.parent_cat))
+                this.setState({
+                    catDispatched: true
+                })
             }
 
             if (this.props.catinfo && this.props.subcat) {
@@ -63,14 +73,25 @@ class SubcatView  extends Component {
                     subCatId: this.props.subcat._id
                 }
 
-                // this.state.navInfo.catTitle = this.props.catinfo.title;
-                // this.state.navInfo.catId = this.props.catinfo._id;
-                // this.state.navInfo.subCatTitle = this.props.subcat.title;
-                // this.state.navInfo.subCatId = this.props.subcat._id;
-
                 this.setState({
                     navInfo: tempNavInfo
                 })
+            }
+           
+            if (this.props.subcatitems !== prevProps.subcatitems) {
+                if (this.props.subcatitems && this.props.subcatitems.length) {
+                    let hasMapCount = 0;
+                    this.props.subcatitems.forEach( (item, i) => {
+                        if (item.geo && item.geo.latitude && item.geo.longitude) {
+                            hasMapCount++;
+                        }
+                    } )
+                    if (hasMapCount) {
+                        this.setState({
+                            showMap: true
+                        })
+                    }
+                }
             }
         }
     }
@@ -141,10 +162,52 @@ class SubcatView  extends Component {
         )
     }
 
+    renderMap = () => (
+        <div>
+            <Map 
+                className="main_map"
+                center={[this.state.initLat, this.state.initLong]} 
+                zoom={this.state.initZoom} 
+                // style={{ height: this.state.showMap ? '350px' : '0px'}}
+            >
+                <TileLayer
+                    attribution='&copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
 
+
+                {this.props.subcatitems && this.props.subcatitems.length ?
+                    this.props.subcatitems.map( (item, i) => (
+                        item.geo && item.geo.latitude && item.geo.longitude ?
+                            <Marker 
+                                position={[item.geo.latitude, item.geo.longitude]} 
+                                key={i}
+                            >   
+                                <Popup>
+                                    <Link to={`/items/${item._id}`} target="_blank">
+                                        <span><b>{item.title}</b></span>
+                                        <br/>
+                                        {item.address ?
+                                            <div>
+                                                <span>{item.address}</span><br/>
+                                                <br/>
+                                            </div>
+                                        : null}
+                                        <span>{item.geo.latitude}, {item.geo.longitude}</span><br/>
+                                    </Link>
+                                </Popup>
+                            </Marker>
+                        : null
+                    ))
+                : null }
+
+
+
+            </Map>
+        </div>
+    )
 
     render() {
-        // console.log(this.props);
 
 
         
@@ -178,7 +241,14 @@ class SubcatView  extends Component {
                                 </div>
                                 }
                             </div>
-                        </div>                        
+                        </div>     
+
+                        {this.state.showMap ?
+                            this.renderMap()
+                        : null }
+                        
+
+
                     </div>
                 </div>
             </div>

@@ -58,9 +58,9 @@ const SidenavItems = ({user}) => {
         },
         {   type:'navItem',
             icon:'file-text-o',
-            text:'Browse Collections',
+            text:'(Browse Collections)',
             link:'/collections',
-            restricted:false
+            restricted:true
         },
         {   type:'navItem',
             icon:'file-text-o',

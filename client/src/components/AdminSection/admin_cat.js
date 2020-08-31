@@ -19,10 +19,10 @@ class AdminCat extends Component {
     state = {
         formdata: {
             cat: {
-                _id: this.props.chosenCatInfo._id || null,
-                title: this.props.chosenCatInfo.title || null,
-                description: this.props.chosenCatInfo.description || null
-
+                _id: null,
+                title: null,
+                description: null,
+                catIsHidden: false
             },
             // theseSubcats: [],
             // allSubcats: [],
@@ -55,6 +55,26 @@ class AdminCat extends Component {
     componentDidUpdate(prevProps) {
     
         if (this.props != prevProps) {
+
+            if(this.props.chosenCatInfo ) {
+                let tempFormdata = {
+                    cat: {
+                        ...this.state.formdata.cat,
+                        _id: this.props.chosenCatInfo._id,
+                        title: this.props.chosenCatInfo.title,
+                        description: this.props.chosenCatInfo.description,
+                        catIsHidden: this.props.chosenCatInfo.catIsHidden || false
+        
+                    }
+                }
+
+                this.setState({
+                    formdata: tempFormdata
+                })
+
+            }
+
+
             // if (this.props.subcats && this.props.subcats.length) {
             //     if (this.props.subcats != prevProps.subcats) {
 
@@ -335,6 +355,22 @@ class AdminCat extends Component {
     }
 
 
+    handleHidden() {
+        // console.log('switch switched')
+        this.setState({
+            formdata: {
+                ...this.state.formdata,
+                cat: {
+                    ...this.state.formdata.cat,
+                    catIsHidden: !this.state.formdata.cat.catIsHidden
+
+                }
+                
+            }
+            
+        })
+        console.log('cat is hidden: ' + this.state.formdata.cat.catIsHidden)
+    }
 
     addDefaultImg = (ev) => {
         const newImg = '/media/default/default.jpg';
@@ -488,7 +524,7 @@ class AdminCat extends Component {
 
     render() {
 
-        console.log(this.state)
+        console.log(this.state.formdata.cat.catIsHidden)
 
         return (
             <div className="admin">
@@ -559,7 +595,22 @@ class AdminCat extends Component {
                                 </tr>
                                
 
-                               
+                                <tr>
+                                    <td className="label">
+                                        Hide this category.
+                                    </td>
+                                    <td>
+                                        <div className="form_element share_toggle">
+                                            <input 
+                                                type="checkbox" 
+                                                // className="share_toggle"
+                                                checked={this.state.formdata.cat.catIsHidden} 
+                                                onChange={(event) => this.handleHidden(event)}
+                                            />
+                                            
+                                        </div>
+                                    </td>
+                                </tr>
 
 
                                 <tr>
