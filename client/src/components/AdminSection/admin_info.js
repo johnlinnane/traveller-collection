@@ -6,16 +6,20 @@ import { withRouter } from "react-router-dom";
 
 import { getInfoText, updateInfoText } from '../../actions';
 
+const mongoose = require('mongoose');
 const config = require('../../config_client').get(process.env.NODE_ENV);
 
 class AdminInfo extends Component {
 
     state= {
         formdata: {
-            sections: []
+            sections: [],
+            iconsCaption: ''
         },
         selectedFiles: [],
-        imgUrls: []
+        imgUrls: [],
+        iconImgSrc: '/media/info/icons.jpg',
+        selectedIconImg: ''
         
     }
 
@@ -32,22 +36,32 @@ class AdminInfo extends Component {
             if (infotext.sections && infotext.sections.length) {
 
                 let tempSections = [];
+                let tempIconsCaption = infotext.iconsCaption || this.state.formdata.tempIconsCaption;
                 let tempImgUrls = [];
+                let tempKey = '';
 
                 infotext.sections.map( (section, i) => {
                     tempSections[i] = {
                         heading: section.heading,
-                        paragraph: section.paragraph
+                        paragraph: section.paragraph,
+                        item_id: section.item_id,
                     }
+
+                    tempKey = tempKey + section.heading;
 
                     tempImgUrls[i] = `/media/info/${i}.jpg`;
                 } )
 
+
+
                 this.setState({
                     formdata: {
-                        sections: tempSections
+                        ...this.state.formdata,
+                        sections: tempSections,
+                        iconsCaption: tempIconsCaption
                     },
-                    imgUrls: tempImgUrls
+                    imgUrls: tempImgUrls,
+                    key: tempKey
                 })
             }
         }
@@ -60,28 +74,46 @@ class AdminInfo extends Component {
 
     // *************** UPLOAD LOGIC ********************
 
-    onChangeHandler = (event, i) => {
+    onChangeHandler = (event, i, name) => {
 
 
         var files = event.target.files;
 
         // console.log(files);
+        if (i) {
+            if (this.maxSelectFile(event) && this.checkMimeType(event)) {  
+                let tempSelectedFiles = this.state.selectedFiles;
+                tempSelectedFiles[i] = files[0];
 
-        if (this.maxSelectFile(event) && this.checkMimeType(event)) {  
-            let tempSelectedFiles = this.state.selectedFiles;
-            tempSelectedFiles[i] = files[0];
+                this.setState({
+                    selectedFiles: tempSelectedFiles
+                })
+            }
+
+            let tempImgSrc = this.state.imgUrls;
+            tempImgSrc[i] = URL.createObjectURL(event.target.files[0]);
 
             this.setState({
-                selectedFiles: tempSelectedFiles
+                imgSrc: tempImgSrc
             })
         }
+        if (name) {
+            if (this.maxSelectFile(event) && this.checkMimeType(event)) {  
+                let tempSelectedIconImg = this.state.selectedIconImg;
+                tempSelectedIconImg = files[0];
 
-        let tempImgSrc = this.state.imgUrls;
-        tempImgSrc[i] = URL.createObjectURL(event.target.files[0]);
+                this.setState({
+                    selectedIconImg: tempSelectedIconImg
+                })
+            }
 
-        this.setState({
-            imgSrc: tempImgSrc
-        })
+            let tempIconImgSrc = this.state.iconImgSrc;
+            tempIconImgSrc = URL.createObjectURL(event.target.files[0]);
+
+            this.setState({
+                iconImgSrc: tempIconImgSrc
+            })
+        }
     }
 
 
@@ -118,6 +150,38 @@ class AdminInfo extends Component {
 
 
     }
+
+
+    uploadIconsImg = (name) => {
+        const data = new FormData() 
+        
+        if (this.state.selectedIconImg) {
+
+            data.append('file', this.state.selectedIconImg)
+
+            axios.post(`http://${config.IP_ADDRESS}:3001/upload-info/${name}`, data, {
+                
+                // receive two parameter endpoint url ,form data 
+                onUploadProgress: ProgressEvent => {
+                    this.setState({
+                        loaded: (ProgressEvent.loaded / ProgressEvent.total*100)
+                    })
+                }
+            })
+            .then(res => { // then print response status
+                // console.log(res.config.data.id);
+                // console.log(res.statusText);
+                console.log(res);
+                toast.success('upload success')
+                alert('Files uploaded successfully')
+            })
+            .catch(err => { 
+                toast.error('upload fail')
+            })
+        }
+    }
+
+
 
     maxSelectFile=(event)=>{
 
@@ -210,11 +274,55 @@ class AdminInfo extends Component {
             newFormdata.sections[i].paragraph = event.target.value
         }
 
+        if (field === 'icons') {
+            newFormdata.iconsCaption = event.target.value
+        }
+
+
         this.setState({
-            formdata: newFormdata
+            formdata: {
+                ...this.state.formdata,
+                ...newFormdata
+            }
         })
     }
 
+    addSection = () => {
+        this.setState({
+            formdata: {
+                ...this.state.formdata,
+                sections: [
+                    ...this.state.formdata.sections,
+                    {
+                        heading: '',
+                        paragraph: '',
+                        item_id: mongoose.Types.ObjectId().toHexString()
+                    }
+                ]
+            }
+        })
+    }
+
+    removeSection = (index) => {
+
+        console.log('remove section: ' + this.state.formdata.sections[index].heading)
+
+        let tempSections = this.state.formdata.sections;
+        tempSections.splice(index, 1);
+
+        // console.log(tempSections)
+
+        this.setState({
+            formdata: {
+                ...this.state.formdata,
+                sections: tempSections
+            }
+        })
+
+
+
+
+    }
 
 
     submitForm = (e) => {
@@ -231,6 +339,10 @@ class AdminInfo extends Component {
                 this.onClickHandler(i)
             })
         }
+
+        if (this.state.selectedIconImg) {
+            this.uploadIconsImg('icons')
+        }
         
    
         this.setState({
@@ -246,76 +358,115 @@ class AdminInfo extends Component {
 
 
     renderRows = () => (
+        
+
         this.state.formdata.sections.map( (section, i) => (
 
 
 
-        <React.Fragment key={i}>
+            <React.Fragment key={section.item_id}>
 
-            <tr>
-                <td>
-                    Paragraph {i+1} Heading
-                </td>
+                <tr>
+                    <td>
+                        Paragraph {i+1} Heading
+                    </td>
 
-                <td>
-                    <input
-                        type="text"
-                        placeholder={`Paragraph ${i+1} Heading`}
-                        defaultValue={section.heading} 
-                        onChange={(event) => this.handleInput(event, i, 'heading')}
-                    />
-                </td>
-            </tr>
+                    <td>
+                        <input
+                            key={`heading${i}`}
+                            type="text"
+                            placeholder={`Paragraph ${i+1} Heading`}
+                            defaultValue={section.heading} 
+                            onChange={(event) => this.handleInput(event, i, 'heading')}
+                        />
+                    </td>
+                </tr>
 
-            
-            <tr>
-                <td>
-                    Paragraph {i + 1} Body
-                </td>
-                <td>
-                    <textarea
-                        type="text"
-                        placeholder={`Paragraph ${i+1} Content`}
-                        defaultValue={section.paragraph} 
-                        onChange={(event) => this.handleInput(event, i, 'paragraph')}
-                        rows={6}
-                    />
-                </td>
-            </tr>
+                
+                <tr>
+                    <td>
+                        Paragraph {i + 1} Body
+                    </td>
+                    <td>
+                        <textarea
+                            key={`para${i}`}
+                            type="text"
+                            placeholder={`Paragraph ${i+1} Content`}
+                            defaultValue={section.paragraph} 
+                            onChange={(event) => this.handleInput(event, i, 'paragraph')}
+                            rows={6}
+                        />
+                    </td>
+                </tr>
 
-            <tr>
-                <td>Paragraph {i + 1} Image</td>
-                <td>
+                <tr>
+                    <td>Paragraph {i + 1} Image</td>
+                    <td>
+                        
+                        <img src={this.state.imgUrls[i]} onError={this.addDefaultImg}/>
+                        <div className="form_element">
+                            <input type="file" className="form-control" name="file" accept="image/*" onChange={(event) => this.onChangeHandler(event, i)}/>
+                            {/* <button type="button" className="btn btn-success btn-block" onClick={ () => {this.onClickHandler(i)} }>Upload</button>  */}
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td></td>
+                    <td>
+                        <button 
+                            type="button" 
+                            className="btn btn-success btn-block edit_page_3_finish delete" 
+                            onClick={() => { this.removeSection(i) }}
+                        >
+                            Remove Section
+                        </button> 
+                    </td>
                     
-                    <img src={this.state.imgUrls[i]} onError={this.addDefaultImg}/>
-                    <div className="form_element">
-                        <input type="file" className="form-control" name="file" accept="image/*" onChange={(event) => this.onChangeHandler(event, i)}/>
-                        {/* <button type="button" className="btn btn-success btn-block" onClick={ () => {this.onClickHandler(i)} }>Upload</button>  */}
-                    </div>
-                </td>
-            </tr>
+                </tr>
 
-            <tr>
-                <td colSpan="2"><hr/></td>
-            </tr>
+                <tr>
+                    <td colSpan="2"><hr/></td>
+                </tr>
 
-        </React.Fragment>
-
-
-
-
-
-
-
-
-
+            </React.Fragment>
         ))
     )
 
 
-    render() {
+    renderIcons = () => (
+        <React.Fragment>
+            <tr>
+                <td>
+                    Icons caption
+                </td>
+                <td>
+                    <input
+                        type="text"
+                        placeholder="Caption for icons"
+                        defaultValue={this.state.formdata.iconsCaption} 
+                        onChange={(event) => this.handleInput(event, null, 'icons')}
+                    />
+                </td>
+            </tr>
 
-        console.log(this.state.selectedFiles);
+
+            <tr>
+                <td>Icons Image</td>
+                <td>
+                    <img src={this.state.iconImgSrc} onError={this.addDefaultImg}/>
+                    <div className="form_element">
+                        <input type="file" className="form-control" name="file" accept="image/*" onChange={(event) => this.onChangeHandler(event, null, 'icons')}/>
+                        {/* <button type="button" className="btn btn-success btn-block" onClick={ () => {this.onClickHandler(i)} }>Upload</button>  */}
+                    </div>
+                </td>
+            </tr>
+        </React.Fragment>
+    )
+
+
+    render() {
+        console.log(this.state)
 
         return (
             <div className="admin">
@@ -332,6 +483,20 @@ class AdminInfo extends Component {
                                     this.renderRows()
                                 : null }
 
+                                {this.renderIcons()}
+
+
+                                <tr>
+                                    <td>
+                                        <button 
+                                            type="button" 
+                                            className="btn btn-success btn-block edit_page_3_finish delete" 
+                                            onClick={(e) => { this.addSection() }}
+                                        >
+                                            Add Section
+                                        </button> 
+                                    </td>
+                                </tr>
 
                                 <tr>
                                     <td>

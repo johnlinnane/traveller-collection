@@ -6,10 +6,12 @@ const infoSchema = mongoose.Schema({
 
     sections : [
         {
+            item_id : String,
             heading : String,
             paragraph : String
          }
-    ]
+    ],
+    iconsCaption: String
 
 }, {timestamps:true} );
 

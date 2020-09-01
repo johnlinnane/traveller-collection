@@ -6,7 +6,7 @@ import { getInfoText } from '../../actions';
 
 
 class Info extends Component {
-    
+
     componentDidMount() {
         this.props.dispatch(getInfoText());
     }
@@ -17,12 +17,6 @@ class Info extends Component {
 
         const text = this.props.text;
 
-
-        // const headings = [text.heading_1, text.heading_2, text.heading_3, text.heading_4]
-        // const paragraphs = [text.paragraph_1, text.paragraph_2, text.paragraph_3, text.paragraph_4]
-
-
-           
 
 
         return (
@@ -55,10 +49,30 @@ class Info extends Component {
                         </div>
                     ) )
                 : null }
+                
+                <hr />
+
+                {text.iconsCaption ?
+                    this.renderIcons(text)
+                : null }
+
             </div>
 
         )
     }
+
+    renderIcons = (text) => (
+        <div>
+            <div className="info_heading">
+                <h3>{text.iconsCaption}</h3>
+            </div>
+
+            <img src={`/media/info/icons.jpg`} 
+                alt="Item" 
+                onError={i => i.target.style.display='none'}/
+            >
+        </div>
+    )
 
       
 
@@ -73,8 +87,12 @@ class Info extends Component {
                 <div className="info_page">
                     {this.props.text ?
                         this.renderInfo()
-                    
+                        
                     :null }
+                   
+
+                    
+
                 </div>
             </div>
         );
