@@ -48,7 +48,7 @@ class EditItemFile extends PureComponent {
                 address: ''
             }
         },
-        selectedFile: null,
+        selectedFiles: null,
         loaded: 0,
         fileTypes: [
             {
@@ -146,7 +146,7 @@ class EditItemFile extends PureComponent {
 
         if (this.maxSelectFile(event) && this.checkMimeType(event) && this.checkMimeType(event)) {  
             this.setState({
-                selectedFile: files
+                selectedFiles: files
             })
         }
 
@@ -183,9 +183,9 @@ class EditItemFile extends PureComponent {
 
         const data = new FormData() 
         
-        if (this.state.selectedFile) {
-            for(var x = 0; x<this.state.selectedFile.length; x++) {
-                data.append('file', this.state.selectedFile[x])
+        if (this.state.selectedFiles) {
+            for(var x = 0; x<this.state.selectedFiles.length; x++) {
+                data.append('file', this.state.selectedFiles[x])
             }
 
             // axios.post(`http://${config.IP_ADDRESS}:8000/upload/${this.state.formdata._id}`, data, {     
@@ -349,12 +349,12 @@ class EditItemFile extends PureComponent {
 
                     <div className="form_element">
                         {this.state.selectedType == 'jpg' ?
-                            <input type="file" className="form-control" multiple name="file" accept="image/*" onChange={this.onChangeHandler}/>
+                            <input type="file" className="form-control" multiple name="file" accept="image/*" onChange={(event) => {this.onChangeHandler(event)}}/>
                         : this.state.selectedType == 'mp4' ? 
-                            <input type="file" className="form-control" multiple name="file" accept="video/*" onChange={this.onChangeHandler}/> 
+                            <input type="file" className="form-control" multiple name="file" accept="video/*" onChange={(event) => {this.onChangeHandler(event)}}/> 
                         : this.state.selectedType == 'pdf' ? 
-                            <input type="file" className="form-control" multiple name="file" accept="application/pdf" onChange={this.onChangeHandler}/> 
-                        : <input type="file" className="form-control" multiple name="file" onChange={this.onChangeHandler}/>
+                            <input type="file" className="form-control" multiple name="file" accept="application/pdf" onChange={(event) => {this.onChangeHandler(event)}}/> 
+                        : <input type="file" className="form-control" multiple name="file" onChange={(event) => {this.onChangeHandler(event)}}/>
                         }
 
                         <p>Select File Type:</p>

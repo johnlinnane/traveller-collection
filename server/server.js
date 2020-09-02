@@ -949,8 +949,7 @@ app.post(
             storage: multer.diskStorage({
                 destination: function (req, file, cb) {
                     itemId = req.params.id;
-                    // var dest = `../client/public/media/items/${itemId}/original`;
-                    var dest = `./test-upload`;
+                    var dest = `../client/public/media/items/${itemId}/original`;
                     mkdirp.sync(dest);
                     cb(null, dest)
                 },
