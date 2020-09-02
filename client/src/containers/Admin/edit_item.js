@@ -11,7 +11,7 @@ import axios from 'axios';
 // import 'react-toastify/dist/ReactToastify.css';
 
 
-import { getItemById, updateItem, clearItem, deleteItem } from '../../actions';
+import { getItemById, updateItem, clearItem, deleteItem, getParentPdf } from '../../actions';
 // import { getAllColls, getAllCats, getAllSubCats  } from '../../actions';
 
 const config = require('../../config_client').get(process.env.NODE_ENV);
@@ -52,6 +52,14 @@ class EditItem extends PureComponent {
                 longitude: null
             },
             location: '',
+
+            is_pdf_chapter: null,
+            pdf_item_pages: {
+                start: null,
+                end: null
+            },
+            pdf_item_parent_id: '',
+
             shareDisabled: false
         },
         initMap: {
@@ -60,6 +68,7 @@ class EditItem extends PureComponent {
             initZoom: 6.5
         },
         saved: false,
+        getParentCalled: false
         
     }
 
@@ -112,6 +121,11 @@ class EditItem extends PureComponent {
                 category_ref: item.category_ref,
                 subcategory_ref: item.subcategory_ref,
                 location: item.location,
+
+                is_pdf_chapter: item.is_pdf_chapter,
+                pdf_item_parent_id: item.pdf_item_parent_id,
+
+
                 shareDisabled: item.shareDisabled
             }
 
@@ -153,12 +167,34 @@ class EditItem extends PureComponent {
                     initZoom: 6.5
                 }
             }
+
+            if (item.pdf_item_pages) {
+                newFormdata = {
+                    ...newFormdata,
+                    pdf_item_pages: {
+                        start: item.pdf_item_pages.start || this.state.formdata.pdf_item_pages.start,
+                        end: item.pdf_item_pages.end || this.state.formdata.pdf_item_pages.end
+                    }
+                }
+            }
+
+
+
             
             this.setState({
                 formdata: newFormdata,
                 initMap: newLatLng
             })
             
+            if (this.props.items.item.is_pdf_chapter ) {
+                    
+                if (!this.state.getParentCalled) {
+                    this.props.dispatch(getParentPdf(this.props.items.item.pdf_item_parent_id))
+                }
+                this.setState({
+                    getParentCalled: true
+                })
+            }
         }
 
     }
@@ -179,6 +215,11 @@ class EditItem extends PureComponent {
             newFormdata.geo[name] = event.target.value;
             if (event.target.value === '') {
                 newFormdata.geo[name] = '';
+            }
+        } else if (level === 'pdf_item_pages') {
+            newFormdata.pdf_item_pages[name] = event.target.value;
+            if (event.target.value === '') {
+                newFormdata.pdf_item_pages[name] = '';
             }
         } else {
             newFormdata[name] = event.target.value;
@@ -380,24 +421,90 @@ class EditItem extends PureComponent {
                     </tr>
 
 
-                    <tr>
-                        <td></td>
-                        <td>
-                            <Link to={`/chapter-index/${this.state.formdata._id}`} target="_blank" >
-                                <button type="button" className="half_width_l">Add Chapter Index (PDF)</button>
-                            </Link>
-                        </td>
-                    </tr>
+                    
 
                     {this.createTextInput(formdata.source,'source', "Sources of information about the item", "Source")}
                     {this.createTextInput(formdata.date_created,'date_created', "Date item was created", "Date")}
-                        
+                    
+                    {formdata.is_pdf_chapter ? 
+                        <React.Fragment>
+                            <tr><td></td><td></td></tr>
+                            <tr><td colSpan="2"><hr /></td></tr>
+                            <tr><td></td><td></td></tr>
+
+
+                            <tr>
+                                <td>
+                                    Parent Item
+                                </td>
+                                <td>
+                                    <Link to={`/items/${formdata.pdf_item_parent_id}`} target="_blank" >
+                                        
+                                            {this.props.parentpdf ?
+                                            <u>{this.props.parentpdf.title}</u>
+                                            : 
+                                            <u>Link</u>
+                                            }
+                                            
+                                    </Link>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td className="label">
+                                    PDF Page Start
+                                </td>
+                                <td>
+                                    <div className="form_element">
+                                        <input
+                                            type="number"
+                                            placeholder="Start page from parent item's PDF"
+                                            defaultValue={formdata.pdf_item_pages.start} 
+                                            onChange={(event) => this.handleInput(event, 'start', 'pdf_item_pages')}
+                                            // className="input_latlng"
+                                        />
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td className="label">
+                                    PDF Page End
+                                </td>
+                                <td>
+                                    <div className="form_element">
+                                        <input
+                                            type="number"
+                                            placeholder="End page from parent item's PDF"
+                                            defaultValue={formdata.pdf_item_pages.end} 
+                                            onChange={(event) => this.handleInput(event, 'end', 'pdf_item_pages')}
+                                            // className="input_latlng"
+                                        />
+                                    </div>
+                                </td>
+                            </tr>
+
+
+                        </React.Fragment>
+                    :
+                        <tr>
+                            <td></td>
+                            <td>
+                                <Link to={`/chapter-index/${this.state.formdata._id}`} target="_blank" >
+                                    <button type="button" className="half_width_l">Add Chapter Index (PDF)</button>
+                                </Link>
+                            </td>
+                        </tr>
+                    }
+
+
+
 
                     <tr><td></td><td></td></tr>
                     <tr><td colSpan="2"><hr /></td></tr>
                     <tr><td></td><td></td></tr>
 
-                    
+                    <tr></tr>
                     {this.createTextInput(formdata.location,'location', "The item's general location ie. Cashel", "Location")}
                     {this.createTextInput(formdata.geo.address,'address', "Where is the item currently located", "Exact Address", 'geo')}
 
@@ -577,7 +684,7 @@ class EditItem extends PureComponent {
     render() {
         let items = this.props.items;
 
-        console.log(this.state.formdata)
+        console.log(this.props)
 
         return (
             <div className="main_view">
@@ -607,7 +714,8 @@ class EditItem extends PureComponent {
 
 function mapStateToProps(state) {
     return {
-        items:state.items
+        items:state.items,
+        parentpdf: state.items.parentpdf
     }
 }
 

@@ -114,6 +114,16 @@ app.get('/api/getPendItemById', (req,res) => {
     })
 })
 
+// * * * * * * * * * * * * * * * * * * * * getParentPdf
+app.get('/api/getParentPdf', (req,res) => {
+    let id = req.query.id;
+    Item.findById(id, (err, doc) => {
+        if(err) return res.status(400).send(err);
+        res.send(doc);
+    })
+})
+
+
 // * * * * * * * * * * * * * * * * * * * * searchItem
 app.get('/api/searchItem', (req,res) => {
     let queryKey = req.query.key;
@@ -939,7 +949,8 @@ app.post(
             storage: multer.diskStorage({
                 destination: function (req, file, cb) {
                     itemId = req.params.id;
-                    var dest = `../client/public/media/items/${itemId}/original`;
+                    // var dest = `../client/public/media/items/${itemId}/original`;
+                    var dest = `./test-upload`;
                     mkdirp.sync(dest);
                     cb(null, dest)
                 },

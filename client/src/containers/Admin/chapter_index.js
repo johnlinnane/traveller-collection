@@ -8,10 +8,9 @@ import CreatableSelect from 'react-select/creatable';
 
 
 
+import { getItemById, updateItem, addItem, clearItem, deleteItem } from '../../actions';
 
-import { getItemById, updateItem, clearItem, deleteItem } from '../../actions';
-
-
+const mongoose = require('mongoose');
 
 class ChapterIndex extends PureComponent {
 
@@ -154,6 +153,39 @@ class ChapterIndex extends PureComponent {
         })
     }
 
+
+    createItem = (i) => {
+
+        const chapterItemId = mongoose.Types.ObjectId().toHexString()
+
+        // this.setState({
+        //     newItemId: chapterItemId
+        // })
+        
+
+        let chapterItem = {
+            _id: chapterItemId,
+            title: this.state.formdata.pdf_page_index[i].heading,
+            description: this.state.formdata.pdf_page_index[i].description,
+            is_pdf_chapter: true,
+            pdf_item_pages: {
+                start: this.state.formdata.pdf_page_index[i].page,
+                end: null
+            },
+            pdf_item_parent_id: this.props.items.item._id,
+            subcategory_ref : this.props.items.item.subcategory_ref,
+            category_ref: this.props.items.item.category_ref
+        }
+        
+        this.props.dispatch(addItem(chapterItem))
+        
+        setTimeout(() => {
+            this.props.history.push(`/user/edit-item/${chapterItem._id}`)
+        }, 1000)
+
+    }
+
+
     onSubmit = (e) => {
         e.preventDefault();
 
@@ -208,6 +240,17 @@ class ChapterIndex extends PureComponent {
                                         defaultValue={chapt.description}
                                         onChange={(event) => this.handleInput(event, 'description', i)}
                                     />
+
+                                </td>
+
+                                <td>
+                                    <button 
+                                        type="button" 
+                                        className="index_create_item" 
+                                        onClick={() => { if (window.confirm('This will make this chapter into its own separate item.')) this.createItem(i) } }
+                                    >
+                                        Create Item
+                                    </button>
 
                                 </td>
 
@@ -270,12 +313,11 @@ class ChapterIndex extends PureComponent {
     )
 
     render() {
-        console.log('rendered');
 
         let items = this.props.items;
 
         // console.log(this.state);
-        console.log(this.state);
+        console.log(this.props);
 
         // this.refineSubcatList();
 

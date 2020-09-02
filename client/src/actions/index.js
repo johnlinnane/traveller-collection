@@ -449,6 +449,18 @@ export function getItemById(id) {
     }
 }
 
+
+export function getParentPdf(id) {
+    const request = axios.get(`/api/getParentPdf?id=${id}`)
+                        .then(response => response.data);
+
+    return {
+        type:'GET_PARENT_PDF',
+        payload:request
+    }
+}
+
+
 ////////////////////////
 export function getPendItemById(id) {
     const request = axios.get(`/api/getPendItemById?id=${id}`)

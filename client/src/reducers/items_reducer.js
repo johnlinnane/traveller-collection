@@ -18,6 +18,12 @@ export default function(state={}, action) {
                 ...state,
                 item:action.payload
             };
+
+        case 'GET_PARENT_PDF':
+            return {
+                ...state,
+                parentpdf:action.payload
+            };
         
         case 'GET_ALL_ITEMS':
             return {

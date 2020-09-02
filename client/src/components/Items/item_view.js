@@ -18,7 +18,7 @@ import { Document, Page, pdfjs } from 'react-pdf';
 
 
 // import { getBookWithReviewer, clearBookWithReviewer } from '../../actions'; // OLD !
-import { getItemWithContributor, clearItemWithContributor, getPendItemById, getAllCats, getAllSubCats, getNextItem, getPrevItem } from '../../actions';
+import { getItemWithContributor, clearItemWithContributor, getPendItemById, getAllCats, getAllSubCats, getNextItem, getPrevItem, getParentPdf } from '../../actions';
 import NavigationBar from '../../widgetsUI/navigation';
 // import Image from '../../widgetsUI/Slider/slider';
 import ItemImageSlider from '../../widgetsUI/Slider/item_img_slider';
@@ -35,18 +35,20 @@ class ItemView extends Component {
 
     state = {
         pdfError: false,
-        numPages: null,
-        setNumPages: null,
-        pageNumber: 1,
-        setPageNumber: 1,
+        numPages: null,     // total number of pages??
+        setNumPages: null,  // not used
+        pageNumber: 1,      // page currently displayed
+        setPageNumber: 1,   // not used
 
-        pdfPageNumber: 0,
+        pdfPageNumber: 0,   // not used
         pdfScale: 1,
 
         showMap: false,
         mapZoom: 12,
 
-        isPending: false
+        isPending: false,
+
+        getParentCalled: false
     }
 
     
@@ -70,9 +72,24 @@ class ItemView extends Component {
                             isPending: true
                         })
                     } 
+                    if (this.props.items.item.is_pdf_chapter && this.props.items.item.pdf_item_pages && this.props.items.item.pdf_item_pages.start) {
+                    
+                        if (!this.state.getParentCalled) {
+                            this.props.dispatch(getParentPdf(this.props.items.item.pdf_item_parent_id))
+                        }
+    
+                        this.setState({
+                            pageNumber: parseInt(this.props.items.item.pdf_item_pages.start),
+                            getParentCalled: true
+                        })
+                        
+                    
+                    }
                 } else {
                     this.props.dispatch(getItemWithContributor(this.props.match.params.id));
                 }
+
+                
             } 
         }
     }
@@ -209,7 +226,9 @@ class ItemView extends Component {
 
         const onDocumentLoadSuccess = ({ numPages }) => {
             this.setState({ numPages });
-            this.setState({ pageNumber: 1 });
+            if (!this.props.items.item.is_pdf_chapter === true) {
+                this.setState({ pageNumber: 1 });
+            }
         }
         
         const changePage = (offset) => {
@@ -243,15 +262,17 @@ class ItemView extends Component {
             })
         }
 
-
-        
+        let pdfId = this.props.match.params.id;
+        if (this.props.items.item.is_pdf_chapter === true) {
+            pdfId = this.props.items.item.pdf_item_parent_id;
+        }
 
         // ***************************************
         return (
             <div className="pdf_wrapper">
                 <div className="pdf">
                     <Document
-                        file={`/media/items/${this.props.match.params.id}/original/0.pdf`}
+                        file={`/media/items/${pdfId}/original/0.pdf`}
                         onLoadSuccess={onDocumentLoadSuccess}
                         // onLoadError={this.setState({ pdfError: true })}
                         
@@ -383,7 +404,7 @@ class ItemView extends Component {
 
                    
 
-                        {items.item.file_format === 'pdf' ?
+                        {(items.item.file_format === 'pdf') || (items.item.is_pdf_chapter === true) ?
                             this.renderPDF()
                         : null }
 
@@ -460,6 +481,18 @@ class ItemView extends Component {
                         {items.item && items.item.geo ?
                             this.renderField('Address', items.item.geo.address)
                         : null }
+
+
+                        {this.props.items.item.pdf_item_parent_id && this.props.parentpdf ?
+                            <div className="item_field link_blue">
+                                <p><b>Source Document Item</b></p>
+                                <Link to={`/items/${this.props.parentpdf._id}`} target="_blank">
+
+                                    <span>{this.props.parentpdf.title}</span>
+                                </Link>
+                            </div>
+                            
+                        : null}
 
 
                         {this.props.items && this.props.items.item.geo.latitude && this.props.items.item.geo.longitude ? 
@@ -611,11 +644,10 @@ class ItemView extends Component {
     render() {
 
         // console.log(this.state.pageNumber);
-        console.log(this.state)
+        console.log(this.props)
 
 
         let items = this.props.items;
-        console.log(items.item);
 
         if (items.item && items.item.category_ref ) {
             {this.getCatName(items.item.category_ref)}
@@ -647,7 +679,8 @@ function mapStateToProps(state) {
         cats: state.cats.cats,
         subcats: state.cats.subcats,
         nextitem: state.items.nextitem,
-        previtem: state.items.previtem
+        previtem: state.items.previtem,
+        parentpdf: state.items.parentpdf
 
     }
 }

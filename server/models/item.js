@@ -105,6 +105,12 @@ const itemSchema = mongoose.Schema({
             description: String
         }
     ],
+    is_pdf_chapter: Boolean,
+    pdf_item_pages: {
+        start: Number,
+        end: Number
+    },
+    pdf_item_parent_id: String,
 
     shareDisabled: Boolean
 
