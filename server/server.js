@@ -944,11 +944,11 @@ app.post('/get-number-files', function(req, res) {
 
 app.post(
     '/upload/:id', 
-
     multer({
             storage: multer.diskStorage({
                 destination: function (req, file, cb) {
                     itemId = req.params.id;
+                    console.log('ITEM ID: ' + itemId);
                     var dest = `../client/public/media/items/${itemId}/original`;
                     mkdirp.sync(dest);
                     cb(null, dest)

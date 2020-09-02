@@ -188,7 +188,6 @@ class EditItemFile extends PureComponent {
                 data.append('file', this.state.selectedFiles[x])
             }
 
-            // axios.post(`http://${config.IP_ADDRESS}:8000/upload/${this.state.formdata._id}`, data, {     
             axios.post(`http://${config.IP_ADDRESS}:3001/upload/${this.state.formdata._id}`, data, {     
             
                 // receive two parameter endpoint url ,form data 
@@ -319,7 +318,7 @@ class EditItemFile extends PureComponent {
 
 
     render() {
-        console.log(this.state);
+        console.log(this.state.formdata._id);
         let items = this.props.items;
 
 
@@ -375,7 +374,13 @@ class EditItemFile extends PureComponent {
 
                         { this.props.user.login.isAuth ?
                             <div className="center">
-                                <button type="button" className="btn btn-success btn-block edit_page_3_finish delete" onClick={(e) => { if (window.confirm('Are you sure you wish to delete all media (images, pdfs, videos)?')) this.deleteAllMedia() }}>Delete All Media Files</button> 
+                                <button 
+                                    type="button" 
+                                    className="btn btn-success btn-block edit_page_3_finish delete" 
+                                    onClick={(e) => { if (window.confirm('Are you sure you wish to delete all media (images, pdfs, videos)?')) this.deleteAllMedia() }}
+                                >
+                                    Delete All Media Files
+                                </button> 
                             </div>
                         : null }
 
