@@ -852,15 +852,19 @@ header .navItem span {
 }
 
 .index_page {
-    width: 7vw;
+    width: 10%;
 }
 
 .index_heading {
-    width: 15vw
+    /* width: 40%; */
 }
 
 .index_desc {
-    width: 20vw
+    /* width: 40%; */
+}
+
+.index_child {
+    width: 10%
 }
 
 

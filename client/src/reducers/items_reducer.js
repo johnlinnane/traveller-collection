@@ -36,6 +36,12 @@ export default function(state={}, action) {
                 ...state,
                 items:action.payload
             };
+        
+        case 'DELETE_CHAPT':
+            return {
+                ...state,
+                chaptDeleted:action.payload
+            };
 
 
         case 'GET_ITEM_W_CONTRIBUTOR':

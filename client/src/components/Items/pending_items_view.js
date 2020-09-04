@@ -54,7 +54,7 @@ class PendingItemsView extends Component {
                 console.log('Media deleted successfully')
             })
             .catch(err => { 
-                console.log('Media delete fail')
+                console.log('No media deleted')
             });
 
         

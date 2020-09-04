@@ -483,6 +483,40 @@ export function updateItem(data) {
     }
 }
 
+
+
+export function deleteChapter(parentId, title) {
+    const request = axios.get(`/api/getItemById?id=${parentId}`)
+
+    return (dispatch) => {
+        request.then(({data}) => {
+
+            data.pdf_page_index.map( (chapt, i) => {
+
+                if (chapt.heading === title && chapt.has_child === true) {
+                    data.pdf_page_index[i].has_child = false;
+                    data.pdf_page_index[i].child_id = null
+                }
+            })
+
+            console.log(data)
+            const request = axios.post(`/api/item_update`, data)
+                            .then(response => response.data);
+
+                            return {
+                                type:'DELETE_CHAPT',
+                                payload:request
+                            }
+
+        })
+    }
+
+}
+
+
+
+
+
 /////////////////////
 export function updatePendItem(data) {
     console.log('updatePendItem called');

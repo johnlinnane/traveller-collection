@@ -11,7 +11,7 @@ import axios from 'axios';
 // import 'react-toastify/dist/ReactToastify.css';
 
 
-import { getItemById, updateItem, clearItem, deleteItem, getParentPdf } from '../../actions';
+import { getItemById, updateItem, clearItem, deleteItem, getParentPdf, deleteChapter } from '../../actions';
 // import { getAllColls, getAllCats, getAllSubCats  } from '../../actions';
 
 const config = require('../../config_client').get(process.env.NODE_ENV);
@@ -280,14 +280,17 @@ class EditItem extends PureComponent {
                 alert('Media deleted successfully')
             })
             .catch(err => { 
-                alert('Media delete fail')
+                alert('No media deleted')
             });
 
         
     }
 
     deleteThisItem = () => {
-        this.props.dispatch(deleteItem(this.state.formdata._id));
+        this.props.dispatch(deleteItem(this.state.formdata._id)); 
+        if (this.state.formdata.is_pdf_chapter === true) {
+            this.props.dispatch(deleteChapter(this.state.formdata.pdf_item_parent_id, this.state.formdata.title))
+        }
         this.deleteAllMedia();
         this.props.history.push('/user/all-items');
     }

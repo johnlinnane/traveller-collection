@@ -195,6 +195,21 @@ class ChapterIndex extends PureComponent {
             formdata: newFormdata
         })
 
+        let temp_has_chapter_children = false;
+
+        this.state.formdata.pdf_page_index.map(chapt => {
+            if (chapt.has_child) {
+                temp_has_chapter_children = true;
+            }
+        })
+
+        this.setState({
+            formdata: {
+                ...this.state.formdata,
+                has_chapter_children: temp_has_chapter_children
+            }
+        })
+
         console.log(this.state.formdata)
         this.props.dispatch(updateItem(
             { ...this.state.formdata }
@@ -258,6 +273,10 @@ class ChapterIndex extends PureComponent {
 
     onSubmit = (e) => {
         e.preventDefault();
+
+
+
+
 
         this.props.dispatch(updateItem(
             { ...this.state.formdata }

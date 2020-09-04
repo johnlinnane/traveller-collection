@@ -354,6 +354,13 @@ class ItemView extends Component {
                             <div className="index_col index_top index_desc">
                                 Description
                             </div>
+
+                            {this.props.items.item.has_chapter_children ?
+                                <div className="index_col index_top index_child">
+                                    View Item
+                                </div>
+                            :
+                            null }
                             {this.props.items.item.pdf_page_index.map( (chapt, i) => (
                                 <div key={i} className="index_row" onClick={() => this.goToIndex(chapt.page)}>
                                     <div className="index_col index_page">
@@ -365,6 +372,16 @@ class ItemView extends Component {
                                     <div className="index_col index_desc">
                                         {chapt.description}
                                     </div>
+                                    {this.props.items.item.has_chapter_children ?
+                                        <div className="index_col index_child">
+                                            {chapt.has_child ? 
+                                                <Link to={`/items/${chapt.child_id}`} target='_blank'>
+                                                    View Item
+                                                </Link>
+                                            :
+                                            <span>-</span> }
+                                        </div>
+                                    : null }
                                 </div>
                         
                         ))}
