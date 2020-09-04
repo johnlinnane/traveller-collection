@@ -102,14 +102,26 @@ const itemSchema = mongoose.Schema({
         {
             page: Number,
             heading: String,
-            description: String
+            description: String,
+            has_child: { type: Boolean, default: false },
+            child_id: String
         }
     ],
+    
+    has_chapter_children: Boolean,
+    // pdf_chapter_children : [
+    //     {
+    //         child_id: String,
+    //         page: Number
+    //     }
+    // ],
+
     is_pdf_chapter: Boolean,
     pdf_item_pages: {
         start: Number,
         end: Number
     },
+
     pdf_item_parent_id: String,
 
     shareDisabled: Boolean

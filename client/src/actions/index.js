@@ -58,11 +58,11 @@ export function clearItem() {
 //     }
 // }
 
-export function acceptItem(id) {
+export function acceptItem(itemId, userId) {
 
-    // console.log(id);
+    console.log('user ID: ' + userId);
 
-    const request = axios.get(`/api/accept-item?id=${id}`)
+    const request = axios.get(`/api/accept-item?itemid=${itemId}&userid=${userId}`)
                         .then(response => response.data);
     
 
@@ -223,7 +223,6 @@ export function getItemWithContributor(id) {
                 
                     let response = {
                         item, 
-                        // reviewer:data
                         contributor:data
                     }
 

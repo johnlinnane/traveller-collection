@@ -61,22 +61,22 @@ class PendingItemsView extends Component {
     }
 
 
-    handleChoice = (id, choice) => {
+    handleChoice = (itemId, choice) => {
 
         if (choice == 'accept') {
-            this.props.dispatch(acceptItem(id))
-            console.log('Item ' + id + ' accepted!')
+            this.props.dispatch(acceptItem(itemId, this.props.user.login.id))
+            console.log('Item ' + itemId + ' accepted! by ' + this.props.user.login.id)
             // move item to items database    
         }
 
         if (choice == 'reject') {
-            deletePendItem(id);
-            this.deleteAllMedia(id);
-            console.log('Item ' + id + ' rejected!')
+            this.props.dispatch(deletePendItem(itemId));
+            this.deleteAllMedia(itemId);
+            console.log('Item ' + itemId + ' rejected!')
         }
 
         let tempItems = this.state.items
-        var index = tempItems.findIndex(p => p._id == id)
+        var index = tempItems.findIndex(p => p._id == itemId)
 
         if (index > -1) {
             tempItems.splice(index, 1);
@@ -92,7 +92,7 @@ class PendingItemsView extends Component {
 
     render() {
 
-        console.log(this.state.items)
+        console.log(this.props)
 
 
 

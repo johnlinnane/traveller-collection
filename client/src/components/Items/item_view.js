@@ -48,48 +48,55 @@ class ItemView extends Component {
 
         isPending: false,
 
-        getParentCalled: false
+        getParentCalled: false,
+        getItemWithCCalled: false,
+        getPendItemCalled: false
     }
 
     
     componentDidMount() {
-        this.props.dispatch(getPendItemById(this.props.match.params.id));
-        
-        
+        // 
+        if (!this.state.getItemWithCCalled) {
+            this.props.dispatch(getItemWithContributor(this.props.match.params.id));
+            this.setState({
+                getItemWithCCalled: true
+            })
+        }
         this.props.dispatch(getAllCats());
         this.props.dispatch(getAllSubCats());
         this.props.dispatch(getNextItem(this.props.match.params.id));
         this.props.dispatch(getPrevItem(this.props.match.params.id));
     }
 
+
     componentDidUpdate(prevProps, prevState) {
         if (this.props != prevProps) {
             if (this.props.items) {
                 if (this.props.items.item ) {
-                    document.title = `${this.props.items.item.title}`
-                    if (this.props.items.item.ownerId && this.props.items.item.ownerId === 'guest'){
-                        this.setState({
-                            isPending: true
-                        })
-                    } 
-                    if (this.props.items.item.is_pdf_chapter && this.props.items.item.pdf_item_pages && this.props.items.item.pdf_item_pages.start) {
+                    const item = this.props.items.item;
+
+                    document.title = `${item.title}`
+
+                    if (item.is_pdf_chapter && item.pdf_item_pages && item.pdf_item_pages.start) {
                     
                         if (!this.state.getParentCalled) {
-                            this.props.dispatch(getParentPdf(this.props.items.item.pdf_item_parent_id))
+                            this.props.dispatch(getParentPdf(item.pdf_item_parent_id))
                         }
     
                         this.setState({
-                            pageNumber: parseInt(this.props.items.item.pdf_item_pages.start),
+                            pageNumber: parseInt(item.pdf_item_pages.start),
                             getParentCalled: true
                         })
-                        
-                    
                     }
-                } else {
-                    this.props.dispatch(getItemWithContributor(this.props.match.params.id));
-                }
-
+                } 
                 
+                if (this.props.items.itemReceived && !this.props.items.item.title && this.state.getItemWithCCalled && !this.state.getPendItemCalled) {
+                    this.props.dispatch(getPendItemById(this.props.match.params.id));
+                    this.setState({
+                        getPendItemCalled: true,
+                        isPending: true
+                    })
+                }
             } 
         }
     }
@@ -426,7 +433,7 @@ class ItemView extends Component {
                             </div>
                         : null}
 
-                        { items.item && items.item.number_files > 1 && items.item.file_format !== 'mp4' && items.item.file_format !== 'pdf' ?
+                        { items.item.number_files > 1 && items.item.file_format !== 'mp4' && items.item.file_format !== 'pdf' ?
                             this.renderSlider(items)
                         : null}
 
@@ -446,6 +453,7 @@ class ItemView extends Component {
                             <span dangerouslySetInnerHTML={{__html:  ref}}></span>
                         </div> */}
                         
+
                         <div className="item_reviewer ">
                             <span className="item_field">
                                 { items.contributor && items.contributor.name && items.contributor.lastname ?
@@ -453,7 +461,7 @@ class ItemView extends Component {
                                 : null }
 
                                 
-                                {this.props.user.login.isAuth ?
+                                {this.props.user.login.isAuth && !this.state.isPending === true ?
                                     <Link to={`/user/edit-item/${this.props.match.params.id}`}>Edit</Link>
                                 : null }
                             </span>
@@ -478,12 +486,12 @@ class ItemView extends Component {
                         
                         
 
-                        {items.item && items.item.geo ?
+                        {items.item.geo && items.item.geo.address ?
                             this.renderField('Address', items.item.geo.address)
                         : null }
 
 
-                        {this.props.items.item.pdf_item_parent_id && this.props.parentpdf ?
+                        {items.item.pdf_item_parent_id && this.props.parentpdf ?
                             <div className="item_field link_blue">
                                 <p><b>Source Document Item</b></p>
                                 <Link to={`/items/${this.props.parentpdf._id}`} target="_blank">
@@ -495,7 +503,7 @@ class ItemView extends Component {
                         : null}
 
 
-                        {this.props.items && this.props.items.item.geo.latitude && this.props.items.item.geo.longitude ? 
+                        {items.item.geo && items.item.geo.latitude && items.item.geo.longitude ? 
                             <div>
                                 <div className="item_map_heading" onClick={() => this.setState({showMap: !this.state.showMap})}>
                                     <p>
@@ -508,7 +516,7 @@ class ItemView extends Component {
                                 {this.state.showMap ?
                                     <Map 
                                         className="item_map"
-                                        center={[this.props.items.item.geo.latitude, this.props.items.item.geo.longitude]} 
+                                        center={[items.item.geo.latitude, items.item.geo.longitude]} 
                                         zoom={this.state.mapZoom} 
                                         style={{ height: this.state.showMap ? '350px' : '0px'}}
                                     >
@@ -518,15 +526,15 @@ class ItemView extends Component {
                                         />
 
                                         <Marker 
-                                            position={[this.props.items.item.geo.latitude, this.props.items.item.geo.longitude]} 
+                                            position={[items.item.geo.latitude, items.item.geo.longitude]} 
                                             // key={incident['incident_number']} 
                                         >
                                             <Popup>
-                                                <span><b>{this.props.items.item.title}</b></span>
+                                                <span><b>{items.item.title}</b></span>
                                                 <br/>
-                                                <span>{this.props.items.item.geo.address}</span><br/>
+                                                <span>{items.item.geo.address}</span><br/>
                                                 <br/>
-                                                <span>{this.props.items.item.geo.latitude}, {this.props.items.item.geo.longitude}</span><br/>
+                                                <span>{items.item.geo.latitude}, {items.item.geo.longitude}</span><br/>
                                             </Popup>
                                         </Marker>
                                     </Map>
@@ -558,6 +566,7 @@ class ItemView extends Component {
                                         </div>
 
                                         <div className="link_text">
+                                            <b>External Link:</b><br />
                                             {items.item.external_link[0].text}
                                         </div>
                                     </div>
@@ -571,28 +580,28 @@ class ItemView extends Component {
                         :               
                         <div className="shareIcons">
                             <FacebookShareButton
-                                url={`http://${config.IP_ADDRESS}:3000/items/${this.props.items.item._id}`}
+                                url={`http://${config.IP_ADDRESS}:3000/items/${items.item._id}`}
                                 className="shareIcon"
-                                quote={this.props.items.item.title}
+                                quote={items.item.title}
                                 >
-                                <FacebookIcon logoFillColor="white" size={32} round={true}/>
+                                <FacebookIcon size={32} round={true}/>
                             </FacebookShareButton>
 
 
                             <WhatsappShareButton
-                                url={`http://${config.IP_ADDRESS}:3000/items/${this.props.items.item._id}`}
+                                url={`http://${config.IP_ADDRESS}:3000/items/${items.item._id}`}
                                 className="shareIcon"
-                                title={this.props.items.item.title}
+                                title={items.item.title}
                                 >
-                                <WhatsappIcon logoFillColor="white" size={32} round={true}/>
+                                <WhatsappIcon size={32} round={true}/>
                             </WhatsappShareButton>
 
                             <EmailShareButton
-                                url={`http://${config.IP_ADDRESS}:3000/items/${this.props.items.item._id}`}
+                                url={`http://${config.IP_ADDRESS}:3000/items/${items.item._id}`}
                                 className="shareIcon"
-                                subject={this.props.items.item.title}
+                                subject={items.item.title}
                                 >
-                                <EmailIcon logoFillColor="white" size={32} round={true}/>
+                                <EmailIcon size={32} round={true}/>
                             </EmailShareButton>
                         </div>
                     }
@@ -643,9 +652,7 @@ class ItemView extends Component {
 
     render() {
 
-        // console.log(this.state.pageNumber);
-        console.log(this.props)
-
+        // console.log(this.props)
 
         let items = this.props.items;
 

@@ -42,7 +42,8 @@ export default function(state={}, action) {
             return {
                 ...state,
                 item:action.payload.item,
-                contributor:action.payload.contributor
+                contributor:action.payload.contributor,
+                itemReceived: true
             };
         
         case 'CLEAR_ITEM_W_CONTRIBUTOR': 

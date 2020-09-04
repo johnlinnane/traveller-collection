@@ -19,7 +19,7 @@ class ChapterIndex extends PureComponent {
         formdata: {
             _id: this.props.match.params.id,
             pdf_page_index: []
-
+            
         },
        
         saved: false,
@@ -41,8 +41,10 @@ class ChapterIndex extends PureComponent {
     componentDidMount() {
         document.title = "Chapter Index - Traveller Collection"
         this.props.dispatch(getItemById(this.props.match.params.id))
+        
  
     }
+
     
     componentWillUnmount() {
         document.title = `Traveller Collection`
@@ -54,16 +56,30 @@ class ChapterIndex extends PureComponent {
     componentDidUpdate(prevProps, prevState) {
 
         if (this.props !== prevProps) {
-            if (this.props.items.item.pdf_page_index) {
-                
-                let newFormdata = {
-                    ...this.state.formdata,
-                    pdf_page_index: this.props.items.item.pdf_page_index
+            if (this.props.items.item) {
+                if(this.props.items.item !== prevProps.items.item) {
+
+                    let tempFormdata = {
+                        ...this.state.formdata,
+                        ...this.props.items.item
+                    }
+
+                    this.setState({
+                        formdata: tempFormdata
+                    })
                 }
 
-                this.setState({
-                    formdata: newFormdata
-                })  
+                // if (this.props.items.item.pdf_page_index) {
+                
+                //     let newFormdata = {
+                //         ...this.state.formdata,
+                //         pdf_page_index: this.props.items.item.pdf_page_index
+                //     }
+
+                //     this.setState({
+                //         formdata: newFormdata
+                //     })  
+                // }
             }
             
               
@@ -158,10 +174,31 @@ class ChapterIndex extends PureComponent {
 
         const chapterItemId = mongoose.Types.ObjectId().toHexString()
 
-        // this.setState({
-        //     newItemId: chapterItemId
-        // })
-        
+        // let pdf_chapter_children = this.state.formdata.pdf_chapter_children;
+        let temp_pdf_page_index = this.state.formdata.pdf_page_index;
+
+        temp_pdf_page_index[i] = {
+            ...this.state.formdata.pdf_page_index[i],
+            has_child: true,
+            child_id: chapterItemId
+        }
+
+
+
+        let newFormdata = {
+            ...this.state.formdata,
+            pdf_page_index: temp_pdf_page_index
+            
+        }
+
+        this.setState({
+            formdata: newFormdata
+        })
+
+        console.log(this.state.formdata)
+        this.props.dispatch(updateItem(
+            { ...this.state.formdata }
+        ))
 
         let chapterItem = {
             _id: chapterItemId,
@@ -174,14 +211,47 @@ class ChapterIndex extends PureComponent {
             },
             pdf_item_parent_id: this.props.items.item._id,
             subcategory_ref : this.props.items.item.subcategory_ref,
-            category_ref: this.props.items.item.category_ref
+            category_ref: this.props.items.item.category_ref,
+
+            creator: '',
+            subject: '',
+            description: '',
+            source: '',
+            date_created: '',
+            
+            contributor: '',
+            item_format: '',
+            materials: '',
+            physical_dimensions: '',
+            pages: '',        
+            editor: '',
+            publisher: '',
+            further_info: '',
+            language: '',
+            reference: '',
+            rights: '',
+            file_format: '',
+            external_link: [
+                {
+                    url: '',
+                    text: ''
+                }
+            ],
+            geo: {
+                address: '',
+                latitude: null,
+                longitude: null
+            },
+            location: ''
+
+
         }
         
         this.props.dispatch(addItem(chapterItem))
         
-        setTimeout(() => {
-            this.props.history.push(`/user/edit-item/${chapterItem._id}`)
-        }, 1000)
+        // setTimeout(() => {
+        //     this.props.history.push(`/user/edit-item/${chapterItem._id}`)
+        // }, 1000)
 
     }
 
@@ -242,17 +312,31 @@ class ChapterIndex extends PureComponent {
                                     />
 
                                 </td>
+                                { chapt.has_child ?
+                                    <td>
+                                        <Link to={`/items/${chapt.child_id}`} target='_blank'>
+                                            <button 
+                                                type="button" 
+                                                className="index_create_item" 
+                                            >
+                                                View Item
+                                            </button>
+                                        </Link>
+                                    </td>
+                                :
+                                    <td>
+                                        <button 
+                                            type="button" 
+                                            className="index_create_item" 
+                                            onClick={() => { if (window.confirm('This will make this chapter into its own separate item.')) this.createItem(i) } }
+                                        >
+                                            Create Item
+                                        </button>
 
-                                <td>
-                                    <button 
-                                        type="button" 
-                                        className="index_create_item" 
-                                        onClick={() => { if (window.confirm('This will make this chapter into its own separate item.')) this.createItem(i) } }
-                                    >
-                                        Create Item
-                                    </button>
+                                    </td>
+                                }
 
-                                </td>
+
 
                             </tr>
 
@@ -316,8 +400,8 @@ class ChapterIndex extends PureComponent {
 
         let items = this.props.items;
 
-        // console.log(this.state);
-        console.log(this.props);
+        // console.log(this.props);
+        console.log(this.state.formdata);
 
         // this.refineSubcatList();
 

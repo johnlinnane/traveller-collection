@@ -566,44 +566,22 @@ app.post('/api/add-subcat', (req, res) => {
 
 //////////////////////
 app.get('/api/accept-item', (req, res) => {
-    let id = req.query.id;
-    console.log(id);
+    let itemid = req.query.itemid;
+    let userid = req.query.userid;
 
-    PendingItem.findOne({ _id: id }, function(err, pendItem) {
+    let newId = mongoose.Types.ObjectId();
+
+    const itemsPath = '../client/public/media/items/';
+
+    PendingItem.findOne({ _id: itemid }, function(err, pendItem) {
         let data = { 
-            _id: mongoose.Types.ObjectId(),
-            ownerId: pendItem.ownerId || '',
+            ...pendItem._doc,
+            _id: newId,
+            ownerId: userid,
             accepted: true,
-            location: pendItem.location || '',
-            file_format: pendItem.file_format || '',
-            rights: pendItem.rights || '',
-            reference: pendItem.reference || '',
-            language: pendItem.language || '',
-            further_info: pendItem.further_info || '',
-            publisher: pendItem.publisher || '',
-            editor: pendItem.editor || '',
-            pages: pendItem.pages || '',
-            physical_dimensions: pendItem.physical_dimensions || '',
-            materials: pendItem.materials || '',
-            item_format: pendItem.item_format || '',
-            contributor: pendItem.contributor || '',
-            date_created: pendItem.date_created || '',
-            source: pendItem.source || '',
-            description: pendItem.description || '',
-            subject: pendItem.subject || '',
-            creator: pendItem.creator || '',
-            title: pendItem.title || '',
-            // pdf_page_index: pendItem.pdf_page_index || null,
-            // geo: pendItem.pdf_page_index || null,
-            // image: pendItem.pdf_page_index || null,
-            // external_link: pendItem.external_link || null,
-            // subcategory_ref: pendItem.subcategory_ref || null,
-            // category_ref: pendItem.category_ref || null,
-            // tags: pendItem.tags || null
         }
 
         let newItem = new Item(data);
-
         pendItem.remove()
         newItem.save( (err, doc) =>{
             if(err) return res.status(400).send(doc);
@@ -615,6 +593,22 @@ app.get('/api/accept-item', (req, res) => {
     
     })
 
+
+    if (fs.existsSync(`${itemsPath}${itemid}`)) {
+
+        fs.renameSync(`${itemsPath}${itemid}`, `${itemsPath}${newId}`, (err) => {
+            if (err) {
+              throw err;
+            }
+            fs.statSync(`${itemsPath}${newId}`, (error, stats) => {
+              if (error) {
+                throw error;
+              }
+              console.log(`stats: ${JSON.stringify(stats)}`);
+            });
+          });
+
+    }
 
 })
 

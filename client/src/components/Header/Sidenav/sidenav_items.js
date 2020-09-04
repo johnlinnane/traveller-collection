@@ -26,13 +26,6 @@ const SidenavItems = ({user}) => {
             restricted:true
         },
         {   type:'navItem',
-            icon:'fa fa-sign-in',
-            text:'Login',
-            link:'/login',
-            restricted:false,
-            exclude:true
-        },
-        {   type:'navItem',
             icon:'file-text-o',
             text:'Edit My Items',
             link:'/user/user-items',
@@ -91,6 +84,13 @@ const SidenavItems = ({user}) => {
             text:'Info',
             link:'/info',
             restricted:false
+        },
+        {   type:'navItem',
+            icon:'fa fa-sign-in',
+            text:'Login',
+            link:'/login',
+            restricted:false,
+            exclude:true
         },
         {   type:'navItem',
             icon:'fa fa-sign-out',

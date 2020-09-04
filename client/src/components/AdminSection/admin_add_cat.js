@@ -23,13 +23,9 @@ class AdminAddCat extends Component {
         imgSrc: '/media/default/default.jpg'
     }
 
-    componentDidMount() {
-        // this.props.dispatch(blahBlah());
-    }
 
 
-    componentDidUpdate(prevProps, prevState) {
-    }
+    
 
 
 

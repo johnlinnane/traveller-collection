@@ -684,7 +684,7 @@ class EditItem extends PureComponent {
     render() {
         let items = this.props.items;
 
-        console.log(this.props)
+        console.log(this.state)
 
         return (
             <div className="main_view">
