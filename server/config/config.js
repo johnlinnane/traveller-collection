@@ -10,14 +10,14 @@ const config = {
 
   production:{
     SECRET: 'SUPERSECRETPASSWORD123',
-    DATABASE: 'mongodb://localhost:27017/collTest',
+    DATABASE: 'mongodb://localhost:27017/tCollection',
     // IP_ADDRESS: 'localhost',
     IP_ADDRESS: '64.227.34.134'
   },
 
   default:{
     SECRET: 'SUPERSECRETPASSWORD123',
-    DATABASE: 'mongodb://localhost:27017/collTest',
+    DATABASE: 'mongodb://localhost:27017/tCollection',
     IP_ADDRESS: 'localhost',
     // IP_ADDRESS: '64.227.34.134'
   }

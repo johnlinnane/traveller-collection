@@ -1430,7 +1430,31 @@ input[type="number"] {
  }
 
 
+.edit_3_card {
+    background-color: #cacaca;
+    display: inline-block;
+    text-align: left;
+    margin: 5px;
+    border-radius: 15px;
+    width: 85%;
+}
 
+
+.edit_3_card_left {
+    display: inline-block;
+    width: 25%;
+    height: 25vh;
+}
+
+.edit_3_card_right {
+    display: inline-block;
+}
+
+.edit_3_card img {
+    border-radius: 5%;
+    margin: 15px;
+    object-fit: cover;
+}
  
 
 

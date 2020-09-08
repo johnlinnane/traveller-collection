@@ -46,8 +46,7 @@ class EditItemFile extends PureComponent {
             },
             geo: {
                 address: ''
-            },
-            number_files: null
+            }
         },
 
 
@@ -135,8 +134,7 @@ class EditItemFile extends PureComponent {
                     reference: item.reference,
                     rights: item.rights,
                     file_format: item.file_format,
-                    subcategory_ref: item.subcategory_ref,
-                    number_files: item.number_files
+                    subcategory_ref: item.subcategory_ref
                 }
 
                 this.setState({
@@ -202,17 +200,15 @@ class EditItemFile extends PureComponent {
             })
         }
 
-        let tempImgSrc = URL.createObjectURL(event.target.files[0]);
+        if (true) {
+            let tempImgSrc = URL.createObjectURL(event.target.files[0]);
 
-        console.log(tempImgSrc);
+            console.log(tempImgSrc);
 
-        this.setState({
-            imgSrc: tempImgSrc,
-            formdata: {
-                ...this.state.formdata,
-                number_files: parseInt(this.state.formdata.number_files) + 1
-            }
-        })
+            this.setState({
+                imgSrc: tempImgSrc
+            })
+        }
     }
 
 
@@ -354,34 +350,6 @@ class EditItemFile extends PureComponent {
         })
     }
 
-    deleteImage = (i) => {
-        console.log('image ' + i)
-
-        // delete image
-        
-        let data = {
-            path: `/media/items/${this.state.formdata._id}/sq_thumbnail/${i}.jpg`
-        };
-        
-        // axios.post(`http://${config.IP_ADDRESS}:3001/delete-file`, data  )
-
-        let data2 = {
-            path: `/media/items/${this.state.formdata._id}/original/${i}.jpg`
-        };
-        // axios.post(`http://${config.IP_ADDRESS}:3001/delete-file`, data2  )
-
-
-        // update db
-
-        this.setState({
-            formdata: {
-                ...this.state.formdata,
-                number_files: parseInt(this.state.formdata.number_files) - 1
-            }
-        })
-        
-
-    }
 
     handleFileType = (newValue) => {
         this.setState({
@@ -424,79 +392,50 @@ class EditItemFile extends PureComponent {
                             </div>
                         </Link>
                     </div>
-
-                    <h2>Upload Media File(s)</h2>
-
-                    {this.state.existingImages ?
-                        <div>
-                                {this.state.existingImages.map( (img, i) => (
-                                    <div key={`card${i}`} className="edit_3_card">
-
-                                        <div className="edit_3_card_left">
-                                            <img src={img} alt="item main image" className="edit_main_img" onError={this.addDefaultImg} />
-                                        </div>
-                                        <div className="edit_3_card_right">
-                                            <button 
-                                                type="button" 
-                                                className="btn btn-success btn-block edit_page_3_finish delete" 
-                                                onClick={(e) => { if (window.confirm('Delete this image?')) this.deleteImage(i) }}
-                                            >
-                                                Delete Image
-                                            </button>
-                                        </div>
-                                        
-                                    </div>
-                                ))}
-                            
-                            
-                                <div className="edit_3_card">
-                                    <div className="edit_3_card_left">
-                                        <img src="/media/default/default.jpg" alt="item main image" className="edit_main_img" onError={this.addDefaultImg} />
-                                    </div>
-
-                                
-
-                                    <div className="edit_3_card_right">
-                                        <div>
-                                            Add a file
-                                        </div>
-
-                                        {this.state.selectedType == 'jpg' ?
-                                            <input type="file" className="form-control" multiple name="file" accept="image/*" onChange={(event) => {this.onChangeHandler(event)}}/>
-                                        : this.state.selectedType == 'mp4' ? 
-                                            <input type="file" className="form-control" multiple name="file" accept="video/*" onChange={(event) => {this.onChangeHandler(event)}}/> 
-                                        : this.state.selectedType == 'pdf' ? 
-                                            <input type="file" className="form-control" multiple name="file" accept="application/pdf" onChange={(event) => {this.onChangeHandler(event)}}/> 
-                                        : <input type="file" className="form-control" multiple name="file" onChange={(event) => {this.onChangeHandler(event)}}/>
-                                        }
-
-                                        <p>Select File Type:</p>
-
-                                        <Select
-                                            className="basic-single"
-                                            classNamePrefix="select"
-                                            defaultValue={this.state.fileTypes[0]}
-                                            // isDisabled={isDisabled}
-                                            // isLoading={isLoading}
-                                            // isClearable={isClearable}
-                                            // isRtl={isRtl}
-                                            // isSearchable={isSearchable}
-                                            name="color"
-                                            options={this.state.fileTypes}
-                                            onChange={this.handleFileType}
-                                        />
+                    
+                        {this.state.existingImages ?
+                            this.state.existingImages.map( (img, i) => (
+                                <div key={`card${i}`}className="edit_3_card">
+                                    <img src={img} alt="item main image" className="edit_main_img" onError={this.addDefaultImg} />
+                                    <div className="edit_3_card_text">
+                                        <div>CHOOSE FILES: No Files Chosen</div>
+                                        <div>Select File Type</div>
+                                        <div>Delete File</div>
                                     </div>
                                 </div>
-                            </div>
-                    : null }    
+                            ))    
+                        : null }
 
 
-           
+                    <h2>Upload Media File(s)</h2>
 
 
 
                     <div className="form_element">
-                 
+                        {this.state.selectedType == 'jpg' ?
+                            <input type="file" className="form-control" multiple name="file" accept="image/*" onChange={(event) => {this.onChangeHandler(event)}}/>
+                        : this.state.selectedType == 'mp4' ? 
+                            <input type="file" className="form-control" multiple name="file" accept="video/*" onChange={(event) => {this.onChangeHandler(event)}}/> 
+                        : this.state.selectedType == 'pdf' ? 
+                            <input type="file" className="form-control" multiple name="file" accept="application/pdf" onChange={(event) => {this.onChangeHandler(event)}}/> 
+                        : <input type="file" className="form-control" multiple name="file" onChange={(event) => {this.onChangeHandler(event)}}/>
+                        }
+
+                        <p>Select File Type:</p>
+
+                        <Select
+                            className="basic-single"
+                            classNamePrefix="select"
+                            defaultValue={this.state.fileTypes[0]}
+                            // isDisabled={isDisabled}
+                            // isLoading={isLoading}
+                            // isClearable={isClearable}
+                            // isRtl={isRtl}
+                            // isSearchable={isSearchable}
+                            name="color"
+                            options={this.state.fileTypes}
+                            onChange={this.handleFileType}
+                        />
 
                         { this.props.user.login.isAuth ?
                             <div className="center">
@@ -505,7 +444,7 @@ class EditItemFile extends PureComponent {
                                     className="btn btn-success btn-block edit_page_3_finish delete" 
                                     onClick={(e) => { if (window.confirm('Are you sure you wish to delete all media (images, pdfs, videos)?')) this.deleteAllMedia() }}
                                 >
-                                    Delete All Media Files for this Item
+                                    Delete All Media Files
                                 </button> 
                             </div>
                         : null }
