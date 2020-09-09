@@ -7,7 +7,7 @@ import {Progress} from 'reactstrap';
 import Select from 'react-select';
 
 
-import { getItemById, getPendItemById, updateItem, updatePendItem } from '../../actions';
+import { getItemById, getPendItemById, updateItem, updatePendItem, getFilesFolder } from '../../actions';
 
 const config = require('../../config_client').get(process.env.NODE_ENV);
 
@@ -51,7 +51,7 @@ class EditItemFile extends PureComponent {
         },
 
 
-        existingImages: [],
+        itemFiles: [],
 
 
         selectedFiles: null,
@@ -71,7 +71,7 @@ class EditItemFile extends PureComponent {
             },
         ],
         selectedType: 'jpg',
-        imgSrc: `/media/items/${this.props.match.params.id}/original/0.jpg`
+        imgSrc: [`/media/items/${this.props.match.params.id}/original/0.jpg`]
 
     }
 
@@ -90,6 +90,9 @@ class EditItemFile extends PureComponent {
             this.props.dispatch(getPendItemById(this.props.match.params.id))
         }
 
+
+        this.props.dispatch(getFilesFolder({folder: `/items/${this.props.match.params.id}/original`}))
+
     }
 
     componentWillUnmount() {
@@ -104,7 +107,6 @@ class EditItemFile extends PureComponent {
 
 
     componentDidUpdate(prevProps, prevState) {
-        let tempExistingImages = [];
 
         if (this.props != prevProps) {
             let tempFormdata = this.state.formdata;
@@ -141,29 +143,43 @@ class EditItemFile extends PureComponent {
 
                 this.setState({
                     formdata: tempFormdata,
-                    imgSrc: `/media/items/${this.state.formdata._id}/original/0.jpg`
+                    imgSrc: [`/media/items/${this.state.formdata._id}/original/0.jpg`]
 
                 })
+
+                // console.log(item);
+                if (this.props.items.files && this.props.items.files.length) {
+                    console.log(item.files)
+                    let tempItemFiles = [];
+                    this.props.items.files.forEach( item => {
+                        tempItemFiles.push(item.name)
+                    })
+                    this.setState({
+                        itemFiles: tempItemFiles
+                    })
+                }
+
+                // if (item.number_files) {
+                
+                //     for (let i = 0; i < item.number_files; i++) {
+                //         const path = `/media/items/${this.state.formdata._id}/sq_thumbnail/`;
+                //         // this.checkImage(`${path}${i}.jpg`, 
+                //         // () => { 
+                //             tempExistingImages.push(
+                //                 `${path}${i}.jpg`
+                //             ) 
+                //         // }, 
+                //         // () => { console.log(`image ${i} does not exist`) } );
+                //     }
+                //     this.setState({
+                //         itemFiles: tempExistingImages,
+                //     })
+                // }
             }
 
             
 
-            if (this.props.items.item.number_files) {
-                
-                for (let i = 0; i < this.props.items.item.number_files; i++) {
-                    const path = `/media/items/${this.state.formdata._id}/sq_thumbnail/`;
-                    // this.checkImage(`${path}${i}.jpg`, 
-                    // () => { 
-                        tempExistingImages.push(
-                            `${path}${i}.jpg`
-                        ) 
-                    // }, 
-                    // () => { console.log(`image ${i} does not exist`) } );
-                }
-                this.setState({
-                    existingImages: tempExistingImages,
-                })
-            }
+           
 
             
 
@@ -201,10 +217,24 @@ class EditItemFile extends PureComponent {
                 selectedFiles: files
             })
         }
+        
+       
+        // let tempImgSrc = URL.createObjectURL(event.target.files[0]);
 
-        let tempImgSrc = URL.createObjectURL(event.target.files[0]);
+        let tempImgSrc = []
 
-        console.log(tempImgSrc);
+        Array.from(files).forEach(file => { 
+            tempImgSrc.push(URL.createObjectURL(file)) 
+        });
+
+        console.log(tempImgSrc)
+        
+        
+        // event.target.files.forEach( (file, i) => {
+        //     tempImgSrc.push(file)
+        // } )
+        
+
 
         this.setState({
             imgSrc: tempImgSrc,
@@ -355,30 +385,40 @@ class EditItemFile extends PureComponent {
     }
 
     deleteImage = (i) => {
-        console.log('image ' + i)
+        console.log(this.state.itemFiles[i])
 
         // delete image
         
+
+ 
         let data = {
-            path: `/media/items/${this.state.formdata._id}/sq_thumbnail/${i}.jpg`
+            path: `/items/${this.state.formdata._id}/original/${this.state.itemFiles[i]}`
         };
+
         
-        // axios.post(`http://${config.IP_ADDRESS}:3001/delete-file`, data  )
+        
+        axios.post(`http://${config.IP_ADDRESS}:3001/delete-file`, data  )
+
 
         let data2 = {
-            path: `/media/items/${this.state.formdata._id}/original/${i}.jpg`
+            path: `/items/${this.state.formdata._id}/sq_thumbnail/${this.state.itemFiles[i]}`
         };
+        
         // axios.post(`http://${config.IP_ADDRESS}:3001/delete-file`, data2  )
 
 
         // update db
 
+        let tempItemFiles = this.state.itemFiles;
+        
+        tempItemFiles.splice(i, 1);
+
+        console.log(tempItemFiles);
+
         this.setState({
-            formdata: {
-                ...this.state.formdata,
-                number_files: parseInt(this.state.formdata.number_files) - 1
-            }
+            itemFiles: tempItemFiles
         })
+
         
 
     }
@@ -400,7 +440,7 @@ class EditItemFile extends PureComponent {
 
 
     render() {
-        console.log(this.state);
+        console.log(this.props);
         let items = this.props.items;
 
 
@@ -413,10 +453,11 @@ class EditItemFile extends PureComponent {
                         <Link to={`/items/${this.state.formdata._id}`} target="_blank" >
 
                             <div className="container">
-
-                                <div className="img_back">
-                                    <img src={this.state.imgSrc} alt="item main image" className="edit_main_img" onError={this.addDefaultImg} />
-                                </div>
+                                {this.state.itemFiles && this.state.itemFiles.length ?
+                                    <div className="img_back">
+                                        <img src={`/media/items/${this.state.formdata._id}/original/${this.state.itemFiles[0]}`} alt="item main image" className="edit_main_img" onError={this.addDefaultImg} />
+                                    </div>
+                                : null }
                                 
                                 <div className="centered edit_img_text"><h2>{this.state.formdata.title}</h2></div>
                                 
@@ -426,14 +467,15 @@ class EditItemFile extends PureComponent {
                     </div>
 
                     <h2>Upload Media File(s)</h2>
+                    <p>Under Maintenance !</p>
 
-                    {this.state.existingImages ?
+                    {this.state.itemFiles ?
                         <div>
-                                {this.state.existingImages.map( (img, i) => (
+                                {this.state.itemFiles.map( (img, i) => (
                                     <div key={`card${i}`} className="edit_3_card">
 
                                         <div className="edit_3_card_left">
-                                            <img src={img} alt="item main image" className="edit_main_img" onError={this.addDefaultImg} />
+                                            <img src={`/media/items/${this.state.formdata._id}/original/${img}`} alt="item main image" className="edit_main_img" onError={this.addDefaultImg} />
                                         </div>
                                         <div className="edit_3_card_right">
                                             <button 
@@ -462,12 +504,12 @@ class EditItemFile extends PureComponent {
                                         </div>
 
                                         {this.state.selectedType == 'jpg' ?
-                                            <input type="file" className="form-control" multiple name="file" accept="image/*" onChange={(event) => {this.onChangeHandler(event)}}/>
+                                            <input type="file" className="form-control"  name="file" accept="image/*" onChange={(event) => {this.onChangeHandler(event)}}/>
                                         : this.state.selectedType == 'mp4' ? 
-                                            <input type="file" className="form-control" multiple name="file" accept="video/*" onChange={(event) => {this.onChangeHandler(event)}}/> 
+                                            <input type="file" className="form-control"  name="file" accept="video/*" onChange={(event) => {this.onChangeHandler(event)}}/> 
                                         : this.state.selectedType == 'pdf' ? 
-                                            <input type="file" className="form-control" multiple name="file" accept="application/pdf" onChange={(event) => {this.onChangeHandler(event)}}/> 
-                                        : <input type="file" className="form-control" multiple name="file" onChange={(event) => {this.onChangeHandler(event)}}/>
+                                            <input type="file" className="form-control"  name="file" accept="application/pdf" onChange={(event) => {this.onChangeHandler(event)}}/> 
+                                        : <input type="file" className="form-control"  name="file" onChange={(event) => {this.onChangeHandler(event)}}/>
                                         }
 
                                         <p>Select File Type:</p>
@@ -540,8 +582,10 @@ class EditItemFile extends PureComponent {
 }
 
 function mapStateToProps(state) {
+    console.log(state)
     return {
-        items:state.items
+        items: state.items,
+        files: state.items.files
     }
 }
 

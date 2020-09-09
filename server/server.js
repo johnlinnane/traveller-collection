@@ -829,6 +829,28 @@ app.post('/delete-file', function(req, res) {
 });
 
 
+// get files in folder
+
+app.post('/api/get-files-folder', (req, res) => {
+    
+    console.log(req.body.folder)
+    
+    let query = '../client/public/media';
+
+    let fullPath = query + req.body.folder
+
+    fs.readdir(fullPath, {withFileTypes: true}, (err, files) => {
+        if (err) throw err;
+        // res.status(200).json({ files:files })
+        if (files.length && files[0].name === '.DS_Store') {
+            files.shift()
+        }
+        
+        res.send(files)
+        console.log(files)
+    })
+});
+
 
 // remove directory recursively
 app.post('/delete-dir', function(req, res) {
@@ -969,20 +991,24 @@ app.post(
                 }
             })
         })
-        // .single('file'), function(req, res, next) {
-        .array('file')
-        , function(req, res, next) {
+        
+       
+
+        .single('file'), function(req, res, next) {
+        // .array('file'), function(req, res, next) {  // generates req.files array
             itemId = req.params.id;
             // sharp.cache({files: 0});
 
-            console.log(req.files[0].path);
+            console.log(req)
+
+            console.log(req.file.path);
 
             let width = 500;
             let height = 500;
             var dest = `../client/public/media/items/${itemId}/sq_thumbnail`;
             mkdirp.sync(dest);
 
-            sharp(req.files[0].path)
+            sharp(req.file.path)
                 .resize(width, height)
                 .toFile(`${dest}/0.jpg`, function(err) {
                     if(!err) {

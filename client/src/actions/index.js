@@ -549,6 +549,16 @@ export function deletePendItem(id) {
 }
 
 
+export function getFilesFolder(data) {
+    console.log('getFilesFolder called');
+    const request = axios.post(`/api/get-files-folder`, data)
+                        .then(response => response.data);
+    return {
+        type:'GET_FILES_FOLDER',
+        payload:request
+    }
+}
+
 
 
 // ******************** COLLECTIONS ACTIONS ********************

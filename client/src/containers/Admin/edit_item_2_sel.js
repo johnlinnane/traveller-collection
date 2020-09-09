@@ -35,7 +35,10 @@ class EditItemSel extends PureComponent {
         catList: null,
         subcatList: [],
         subcatsInitialised: false,
-        saved: false
+        saved: false,
+
+        tagsDisabled: true,
+        collsDisabled: true
        
 
     }
@@ -496,46 +499,53 @@ class EditItemSel extends PureComponent {
                        
                         <table>
                         <tbody>
-               
-                            <tr>
-                                <td>
-                                    Tags
-                                </td>
-                                <td>
-                                    <div className="form_element select">
-                                        <CreatableSelect
-                                            defaultValue={this.state.tagsConverted}
-                                            isMulti
-                                            onChange={this.handleInputTags}
-                                            options={this.state.tagsConverted}
-                                        />
-                                    </div>
-                                </td>
-                            </tr>
+                            
+                            {this.state.tagsDisabled === true ?
+                                null
+                            :
+                                <tr>
+                                    <td>
+                                        Tags
+                                    </td>
+                                    <td>
+                                        <div className="form_element select">
+                                            <CreatableSelect
+                                                defaultValue={this.state.tagsConverted}
+                                                isMulti
+                                                onChange={this.handleInputTags}
+                                                options={this.state.tagsConverted}
+                                            />
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
                           
-
-                            <tr>
-                                <td>
-                                    Collection
-                                </td>
-                                <td>
-                                    <div className="form_element select">
-                                        <Select
-                                            className="basic-single"
-                                            classNamePrefix="select"
-                                            defaultValue={this.state.collConverted}
-                                            isDisabled={false}
-                                            isLoading={false}
-                                            isClearable={true}
-                                            isRtl={false}
-                                            isSearchable={true}
-                                            name="color"
-                                            options={this.state.collList}
-                                            onChange={this.handleInputColl}
-                                        />
-                                    </div>
-                                </td>
-                            </tr>
+                            {this.state.collsDisabled === true ?
+                                null
+                            :
+                                <tr>
+                                    <td>
+                                        Collection
+                                    </td>
+                                    <td>
+                                        <div className="form_element select">
+                                            <Select
+                                                className="basic-single"
+                                                classNamePrefix="select"
+                                                defaultValue={this.state.collConverted}
+                                                isDisabled={false}
+                                                isLoading={false}
+                                                isClearable={true}
+                                                isRtl={false}
+                                                isSearchable={true}
+                                                name="color"
+                                                options={this.state.collList}
+                                                onChange={this.handleInputColl}
+                                            />
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
 
 
                             <tr>

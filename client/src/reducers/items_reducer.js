@@ -147,6 +147,12 @@ export default function(state={}, action) {
                 // item:action.payload
             }
 
+        case 'GET_FILES_FOLDER':
+            return {
+                ...state,
+                files:action.payload
+            }
+
 
 
        
