@@ -965,7 +965,7 @@ app.post(
                 destination: function (req, file, cb) {
                     itemId = req.params.id;
                     console.log('ITEM ID: ' + itemId);
-                    var dest = `../client/public/media/items/${itemId}/original`;
+                    // var dest = `../client/public/media/items/${itemId}/original`;
                     mkdirp.sync(dest);
                     cb(null, dest)
                 },
@@ -984,16 +984,11 @@ app.post(
                         default:
                           ext = extension
                       }
-
-
                     cb(null, `${index}.${ext}` );
                     index++;
                 }
             })
         })
-        
-       
-
         .single('file'), function(req, res, next) {
         // .array('file'), function(req, res, next) {  // generates req.files array
             itemId = req.params.id;
@@ -1021,10 +1016,164 @@ app.post(
                 })
             index = 0;
         }
-    
-
-
 )
+
+
+
+let fieldData = [];
+app.post(
+    '/upload-fields/:id/:num', 
+    (req, res, next) => {
+
+            for (let i = 0; i < parseInt(req.params.num); i++) {
+                fieldData.push({
+                    name: `file_${i}`,
+                    maxCount: 1
+                })
+                dataDone = true
+            }
+            next();
+        
+    },
+    multer({
+            storage: multer.diskStorage({
+                destination: function (req, file, cb) {
+                    itemId = req.params.id;
+                    console.log('ITEM ID: ' + itemId);
+                    var dest = `../client/public/media/items/${itemId}/original`;
+                    mkdirp.sync(dest);
+                    cb(null, dest)
+                },
+                filename: function (req, file, cb) {
+                    let extArray = file.mimetype.split("/");
+                    let extension = extArray[extArray.length - 1];
+                    let ext = 'jpg';
+                    let newId = mongoose.Types.ObjectId();
+
+                    switch(extension) {
+                        case 'jpeg':
+                          ext = 'jpg'
+                          break;
+                        case 'png':
+                            ext = 'jpg'
+                            break;
+                        default:
+                          ext = extension
+                      }
+                    cb(null, `${newId}.${ext}` );
+                    // index++;
+                }
+            })
+        })
+        .fields(fieldData), function(req, res, next) {
+            // itemId = req.params.id;
+            // // sharp.cache({files: 0});
+
+
+            console.log(req.files);
+
+            // let width = 500;
+            // let height = 500;
+            // var dest = `../client/public/media/items/${itemId}/sq_thumbnail`;
+            // mkdirp.sync(dest);
+
+            // sharp(req.file.path)
+            //     .resize(width, height)
+            //     .toFile(`${dest}/0.jpg`, function(err) {
+            //         if(!err) {
+            //             console.log('sharp worked');
+            //             res.write("File uploaded successfully.");
+            //             res.end();
+            //         } else {
+            //             console.log(err);
+            //         }
+            //     })
+            // index = 0;
+
+            fieldData = [];
+        }
+)
+
+
+
+// app.post(
+//     '/upload-fields/:id', 
+//     multer({ dest: '../client/public/media/items/XXXXXX' })
+//     .fields([{ name: 'avatar', maxCount: 1 }, { name: 'gallery', maxCount: 1 }]), function (req, res, next) {
+//   // req.files is an object (String -> Array) where fieldname is the key, and the value is array of files
+  
+//     console.log(req.body)
+
+//   // e.g.
+//   //  req.files['avatar'][0] -> File
+//   //  req.files['gallery'] -> Array
+//   //
+//   // req.body will contain the text fields, if there were any
+// })
+
+
+
+// app.post(
+//     '/upload-fields/:id', 
+//     multer({
+//             storage: multer.diskStorage({
+//                 destination: function (req, file, cb) {
+//                     itemId = req.params.id;
+//                     console.log('ITEM ID: ' + itemId);
+//                     var dest = `../client/public/media/items/${itemId}/original`;
+//                     mkdirp.sync(dest);
+//                     cb(null, dest)
+//                 },
+//                 filename: function (req, file, cb) {
+//                     let extArray = file.mimetype.split("/");
+//                     let extension = extArray[extArray.length - 1];
+//                     let ext = 'jpg';
+
+//                     switch(extension) {
+//                         case 'jpeg':
+//                           ext = 'jpg'
+//                           break;
+//                         case 'png':
+//                             ext = 'jpg'
+//                             break;
+//                         default:
+//                           ext = extension
+//                       }
+
+
+//                     cb(null, `${index}.${ext}` );
+//                     index++;
+//                 }
+//             })
+//         })
+//         // .single('file'), function(req, res, next) {
+//         .array('files'), function(req, res, next) {  // generates req.files array
+//             itemId = req.params.id;
+//             // sharp.cache({files: 0});
+
+//             console.log(req)
+
+//             console.log(req.files.path);
+
+//             let width = 500;
+//             let height = 500;
+//             var dest = `../client/public/media/items/${itemId}/sq_thumbnail`;
+//             mkdirp.sync(dest);
+
+//             sharp(req.files.path)
+//                 .resize(width, height)
+//                 .toFile(`${dest}/0.jpg`, function(err) {
+//                     if(!err) {
+//                         console.log('sharp worked');
+//                         res.write("File uploaded successfully.");
+//                         res.end();
+//                     } else {
+//                         console.log(err);
+//                     }
+//                 })
+//             index = 0;
+//         }
+// )
 
 
 
