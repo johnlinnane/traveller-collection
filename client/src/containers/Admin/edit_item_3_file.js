@@ -153,7 +153,6 @@ class EditItemFile extends PureComponent {
 
                 // console.log(item);
                 if (this.props.items.files && this.props.items.files.length) {
-                    console.log(item.files)
                     let tempItemFiles = [];
                     this.props.items.files.forEach( item => {
                         tempItemFiles.push(item.name)
@@ -208,7 +207,9 @@ class EditItemFile extends PureComponent {
                 // newFilesAdded: true
             })
         }
-        document.getElementById("file_input").value = "";
+        if (this.state.selectedFilesNum === this.state.selectedFiles.length) {
+            document.getElementById("file_input").value = "";
+        }
 
         console.log(this.state)
     }
@@ -428,7 +429,7 @@ class EditItemFile extends PureComponent {
 
 
     render() {
-        console.log(this.state);
+        console.log(this.state.selectedFiles);
         let items = this.props.items;
 
 
