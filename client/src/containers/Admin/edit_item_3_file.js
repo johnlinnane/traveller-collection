@@ -317,7 +317,7 @@ class EditItemFile extends PureComponent {
             })
 
         let updateState = () => {
-            let tempItemFiles = this.state.itemFiles;
+            let tempItemFiles = [...this.state.itemFiles];
             tempItemFiles.splice(i, 1);
             console.log(tempItemFiles);
             this.setState({
