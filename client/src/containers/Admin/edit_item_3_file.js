@@ -56,8 +56,6 @@ class EditItemFile extends PureComponent {
         selectedFilesImg: [],
         selectedFilesNum: 0,
 
-        // newFiles: ['/media/default/default.jpg'],
-
         loaded: 0,
         fileTypes: [
             {
@@ -85,10 +83,7 @@ class EditItemFile extends PureComponent {
         } else {
             this.props.dispatch(getPendItemById(this.props.match.params.id))
         }
-
-
         this.props.dispatch(getFilesFolder({folder: `/items/${this.props.match.params.id}/original`}))
-        
     }
 
     componentWillUnmount() {
@@ -97,8 +92,6 @@ class EditItemFile extends PureComponent {
 
 
     componentDidUpdate(prevProps, prevState) {
-
-       
 
         if (this.props != prevProps) {
             let tempFormdata = this.state.formdata;
@@ -149,20 +142,8 @@ class EditItemFile extends PureComponent {
                         itemFiles: tempItemFiles
                     })
                 }
-
             }
-
-            
-
-           
-
-            
-
-            
-
-            
         }
-
     }
 
 
@@ -172,25 +153,11 @@ class EditItemFile extends PureComponent {
 
     onChangeHandler = (event) => {
 
-
         const file = event.target.files;
-
-        console.log('FILE: ', file[0].size)
-
-
-        
         let tempSelectedFiles = this.state.selectedFiles;
         tempSelectedFiles.push(file)
-    
-
-
         let tempSelectedFilesImg = this.state.selectedFilesImg;
         tempSelectedFilesImg.push(URL.createObjectURL(file[0]));
-
-
-        console.log('tempSelectedFiles: ', tempSelectedFiles);
-        console.log('tempSelectedFilesImg: ', tempSelectedFilesImg);
-        
 
         if (this.maxSelectFile(event) && this.checkMimeType(event) && this.checkMimeType(event)) {  
             this.setState({
@@ -199,7 +166,6 @@ class EditItemFile extends PureComponent {
                 selectedFilesImg: tempSelectedFilesImg
             })
         }
-
         console.log(this.state)
     }
 
@@ -231,10 +197,7 @@ class EditItemFile extends PureComponent {
                 data.append(`file_${i}`, this.state.selectedFiles[i][0]);
             }
 
-            // axios.post(`http://${config.IP_ADDRESS}:3001/upload/${this.state.formdata._id}`, data, {     
             axios.post(`http://${config.IP_ADDRESS}:3001/upload-fields/${this.state.formdata._id}/${this.state.selectedFiles.length}`, data, {     
-            
-                // receive two parameter endpoint url ,form data 
                 onUploadProgress: ProgressEvent => {
                     this.setState({
                         loaded: (ProgressEvent.loaded / ProgressEvent.total*100)
@@ -260,19 +223,14 @@ class EditItemFile extends PureComponent {
     }
 
     maxSelectFile=(event)=>{
-
-        // console.log(event);
-
         let files = event.target.files // create file object
             if (files.length > 6) { 
                const msg = 'Only 6 images can be uploaded at a time'
                event.target.value = null // discard selected file
                console.log(msg)
-              return false;
-     
+                return false;
           }
         return true;
-     
     }
 
     checkMimeType=(event)=>{
@@ -314,7 +272,6 @@ class EditItemFile extends PureComponent {
             event.target.value = null
         }
         return true;
-   
     }    
 
     // ****************************************************
@@ -329,7 +286,7 @@ class EditItemFile extends PureComponent {
         };
 
         axios.post(`http://${config.IP_ADDRESS}:3001/delete-dir`, fileData  )
-            .then(res => { // then print response status
+            .then(res => { 
                 console.log(res);
                 toast.success('Media deleted successfully')
                 alert('Media deleted successfully')
@@ -357,7 +314,6 @@ class EditItemFile extends PureComponent {
             .then(function (res) {
                 console.log(res.data);
                 updateState();
-                
             })
 
         let updateState = () => {
@@ -372,12 +328,7 @@ class EditItemFile extends PureComponent {
         let data2 = {
             path: `/items/${this.state.formdata._id}/sq_thumbnail/${this.state.itemFiles[i]}`
         };
-        
         // axios.post(`http://${config.IP_ADDRESS}:3001/delete-file`, data2  )
-
-
-        
-
     }
 
 
@@ -390,14 +341,12 @@ class EditItemFile extends PureComponent {
         let tempSelectedFilesImg = this.state.selectedFilesImg;
         tempSelectedFilesImg.splice(i, 1);
 
-
         this.setState({
             selectedFiles: tempSelectedFiles,
             selectedFilesImg: tempSelectedFilesImg,
             selectedFilesNum: this.state.selectedFilesNum - 1
         })
     }
-
 
 
     handleFileType = (newValue) => {
@@ -407,7 +356,6 @@ class EditItemFile extends PureComponent {
     }
 
 
-
     addDefaultImg = (ev) => {
         const newImg = '/media/default/default.jpg';
         if (ev.target.src !== newImg) {
@@ -415,13 +363,11 @@ class EditItemFile extends PureComponent {
         }  
     } 
 
-    
 
 
     render() {
         console.log(this.state.selectedFiles);
         let items = this.props.items;
-
 
         return (
             
@@ -453,7 +399,6 @@ class EditItemFile extends PureComponent {
 
                             {this.state.itemFiles.map( (img, i) => (
                                 <div key={`card${i}`} className="edit_3_card">
-
                                     <div className="edit_3_card_left">
                                         <img src={`/media/items/${this.state.formdata._id}/original/${img}`} alt="item main image"  onError={this.addDefaultImg} />
                                     </div>
@@ -466,7 +411,6 @@ class EditItemFile extends PureComponent {
                                             Delete Image
                                         </button>
                                     </div>
-                                    
                                 </div>
                             ))}
                             
@@ -487,27 +431,20 @@ class EditItemFile extends PureComponent {
                                                 Cancel
                                             </button>
                                         </div>
-                                        
                                     </div>
                                 ))
                             : null }
 
-                            {/* { this.state.selectedFilesImg.map( (input, i) => ( */}
                                 <div 
-                                    // key={`inputdiv${i}`}
                                     className="edit_3_card"
                                 >
                                     <div className="edit_3_card_left">
                                         <img src={this.state.imgSrc} alt="item main image" className="edit_main_img" onError={this.addDefaultImg} />
                                     </div>
 
-                                
-
                                     <div className="edit_3_card_right">
                                         
                                         <label className="edit_3_label">
-                                            
-                                            
                                             {this.state.selectedType == 'jpg' ?
                                                 <input 
                                                     id="file_input"
@@ -559,22 +496,13 @@ class EditItemFile extends PureComponent {
                                             options={this.state.fileTypes}
                                             onChange={this.handleFileType}
                                         />
-                                        {/* {i < this.state.newFiles.length - 1  ? */}
-                                            
-                                        {/* : null } */}
                                     </div>
                                 </div>
-                            {/* ))} */}
                         </div>
                     : null }    
 
 
-                                        
-
-
-
                     <div className="form_element">
-                 
 
                         { this.props.user.login.isAuth ?
                             <div className="center">
