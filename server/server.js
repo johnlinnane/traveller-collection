@@ -1025,6 +1025,8 @@ app.post(
     '/upload-fields/:id/:num', 
     (req, res, next) => {
 
+            console.log('PARAMS: ', req.params.id, req.params.num)
+
             for (let i = 0; i < parseInt(req.params.num); i++) {
                 fieldData.push({
                     name: `file_${i}`,

@@ -1448,14 +1448,40 @@ input[type="number"] {
 
 .edit_3_card_right {
     display: inline-block;
+    vertical-align: top;
+    margin: 30px
+}
+
+.edit_3_card_right cancel {
+    display: inline-block;
 }
 
 .edit_3_card img {
     border-radius: 5%;
     margin: 15px;
     object-fit: cover;
+    width: 100%;
 }
  
+.edit_3_label input {
+    display: none;
+}
+
+.edit_3_label div {
+    cursor: pointer;
+    border:1px solid #CCC;
+    background:rgb(134, 190, 223);
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.edit_3_label div:hover {
+    cursor: pointer;
+    border:1px solid #CCC;
+    background:rgb(231, 127, 127);
+    
+
+}
 
 
 /*=============================
