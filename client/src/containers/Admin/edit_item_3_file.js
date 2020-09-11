@@ -354,7 +354,20 @@ class EditItemFile extends PureComponent {
         };
         
         axios.post(`http://${config.IP_ADDRESS}:3001/delete-file`, data  )
+            .then(function (res) {
+                console.log(res.data);
+                updateState();
+                
+            })
 
+        let updateState = () => {
+            let tempItemFiles = this.state.itemFiles;
+            tempItemFiles.splice(i, 1);
+            console.log(tempItemFiles);
+            this.setState({
+                itemFiles: tempItemFiles
+            })
+        }
 
         let data2 = {
             path: `/items/${this.state.formdata._id}/sq_thumbnail/${this.state.itemFiles[i]}`
@@ -363,12 +376,7 @@ class EditItemFile extends PureComponent {
         // axios.post(`http://${config.IP_ADDRESS}:3001/delete-file`, data2  )
 
 
-        let tempItemFiles = this.state.itemFiles;
-        tempItemFiles.splice(i, 1);
-        console.log(tempItemFiles);
-        this.setState({
-            itemFiles: tempItemFiles
-        })
+        
 
     }
 

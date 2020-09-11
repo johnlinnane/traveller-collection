@@ -824,7 +824,7 @@ app.post('/delete-file', function(req, res) {
 
     fs.unlink(fullPath, function (err) {
         if (err) throw err;
-        console.log('File deleted!');
+        res.send('File deleted!');
     })
 });
 
@@ -840,9 +840,10 @@ app.post('/api/get-files-folder', (req, res) => {
     let fullPath = query + req.body.folder
 
     fs.readdir(fullPath, {withFileTypes: true}, (err, files) => {
-        if (err) throw err;
+        if (err) {
+            console.log('error finding files in folder')
         // res.status(200).json({ files:files })
-        if (files.length && files[0].name === '.DS_Store') {
+        } else if (files.length && files[0].name === '.DS_Store') {
             files.shift()
         }
         

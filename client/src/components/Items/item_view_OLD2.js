@@ -12,12 +12,18 @@ import { EmailIcon, FacebookIcon, WhatsappIcon } from "react-share";
 
 
 import { Document, Page, pdfjs } from 'react-pdf';
+// import PDFViewer from 'pdf-viewer-reactjs'
 
 
 
 
+// import { getBookWithReviewer, clearBookWithReviewer } from '../../actions'; // OLD !
 import { getItemWithContributor, clearItemWithContributor, getPendItemById, getAllCats, getAllSubCats, getNextItem, getPrevItem, getParentPdf, getFilesFolder } from '../../actions';
 import NavigationBar from '../../widgetsUI/navigation';
+// import Image from '../../widgetsUI/Slider/slider';
+// import ItemImageSlider from '../../widgetsUI/Slider/item_img_slider';
+// import item from '../../../../server/models/item';
+// import item from '../../../../server/models/item';
 
 
 const config = require('./../../config_client').get(process.env.NODE_ENV);
@@ -29,14 +35,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 
 class ItemView extends Component {
 
-
-
     state = {
-
-        itemdata: {
-            _id: this.props.match.params.id
-        },
-
         pdfError: false,
         numPages: null,     // total number of pages??
         setNumPages: null,  // not used
@@ -76,29 +75,13 @@ class ItemView extends Component {
     }
 
 
-
-
     componentDidUpdate(prevProps, prevState) {
         if (this.props != prevProps) {
             if (this.props.items) {
                 if (this.props.items.item ) {
                     const item = this.props.items.item;
 
-                    if (prevProps.items.item !== item) {
-                        this.setState({
-                            itemdata: item
-                        })
-                    }
-
                     document.title = `${item.title}`
-
-                    if (item.category_ref ) {
-                        {this.getCatName(item.category_ref)}
-                    }
-
-                    if (item.subcategory_ref ) {
-                        {this.getSubCatName(item.subcategory_ref)}
-                    }
 
                     if (item.is_pdf_chapter && item.pdf_item_pages && item.pdf_item_pages.start) {
                     
@@ -113,7 +96,7 @@ class ItemView extends Component {
                     }
 
                     
-                    if (this.props.items.files) {
+                    if (this.props.items.files && this.props.items.files.length) {
                         let tempItemFiles = [];
                         this.props.items.files.forEach( item => {
                             tempItemFiles.push(item.name)
@@ -135,10 +118,7 @@ class ItemView extends Component {
         }
     }
 
-
-
-
-
+    
 
     componentWillUnmount() {
         this.props.dispatch(clearItemWithContributor());
@@ -154,8 +134,7 @@ class ItemView extends Component {
         subCatId: null,
         type: 'Categories'
     }
-
-
+  
     addDefaultImg = (ev) => {
         const newImg = '/media/default/default.jpg';
         if (ev.target.src !== newImg) {
@@ -193,6 +172,11 @@ class ItemView extends Component {
         }
     }
 
+
+    nextItem = () => {
+
+    }
+
     goToIndex = (pageNum) => {
         this.setState({
             pageNumber: parseInt(pageNum)
@@ -215,7 +199,7 @@ class ItemView extends Component {
 
 
 
-
+           
 
     renderSlider = (files) => {
 
@@ -237,7 +221,7 @@ class ItemView extends Component {
                 <div key={i} className={"featured_item"}> 
                     <div className={"featured_image"} 
                          style={{
-                            background: `url(/media/items/${this.props.match.params.id}/original/${files[i]})`
+                            background: `url(/media/items/${this.props.match.params.id}/original/${files[i].name})`
                             // <img src={`/media/items/${items.item._id}/original/0.jpg`} alt="Item" onError={this.addDefaultImg}/>
                          }}
                     >
@@ -251,10 +235,6 @@ class ItemView extends Component {
 
     }
 
-
-
-
-    // ****************************************** RENDER PDF ******************************************
 
     renderPDF = () => {
         // ************* PDF STUFF *************
@@ -368,13 +348,8 @@ class ItemView extends Component {
                     
                 </div>
 
-                {/* <br />
-                    <input 
-                        readOnly 
-                        value={this.state.pdfPageNumber} 
-                        onChange={(e) => {this.handlePageChange(e)}} 
-                        ref={(input)=> this.myinput = input}
-                    /> */}
+                {/* <br /> */}
+                {/* <input readOnly value={this.state.pdfPageNumber} onChange={(e) => {this.handlePageChange(e)}} ref={(input)=> this.myinput = input}/> */}
 
                 { this.props.items.item.pdf_page_index && this.props.items.item.pdf_page_index.length ?
                     <div className="index_container">
@@ -429,22 +404,19 @@ class ItemView extends Component {
         )
     }
 
-    // *********************************** RENDER ITEM **************************************************************
 
-
-
-
-    renderItem = (itemdata, itemFiles) => {
+    renderItem = (items) => {
 
 
         
+        // console.log(this.props.user)
 
 
-        console.log(itemFiles);
-
-        return ( 
+        console.log(items);
+        return ( items.item ?
 
             <div>
+                {/* <ItemImageSlider /> */}
 
                 
 
@@ -453,57 +425,56 @@ class ItemView extends Component {
 
                     <div className="item_header">
 
-                        <h1>{itemdata.title}</h1>
+                        <h1>{items.item.title}</h1>
 
+                        {/* /////////////////////// SHOW VIDEO /////////////////////// */}
 
-                        {itemFiles && itemFiles.length ?
-                            <div>
-                            {/* /////////////////////// SHOW VIDEO /////////////////////// */}
+                        {items.item.file_format == 'mp4' ?
                             
+                                <video className="video" controls name="media">
+                                    <source src={`/media/items/${items.item._id}/original/0.mp4`} type="video/mp4"/>
+                                </video>
+                        : null }
 
-                            {/* {itemdata.file_format == 'mp4' ? */}
-                            {itemFiles.some(x => x.includes(".mp4")) ?
-                                
-                                    <video className="video" controls name="media">
-                                        <source src={`/media/items/${itemdata._id}/original/${itemFiles[0]}`} type="video/mp4"/>
-                                    </video>
-                            : null }
+                        {/* /////////////////////// SHOW PDF /////////////////////// */}
 
-                            {/* /////////////////////// SHOW PDF /////////////////////// */}
+                        {(items.item.file_format === 'pdf') || (items.item.is_pdf_chapter === true) ?
+                            this.renderPDF()
+                        : null }
 
-                            {(itemdata.file_format === 'pdf') || (itemdata.is_pdf_chapter === true) ?
-                                this.renderPDF()
-                            : null }
+                        
+                        {/* /////////////////////// SHOW SINGLE IMAGE /////////////////////// */}
 
-                            {itemFiles.some(x => x.includes(".jpg")) ?
-                                
-                                itemFiles.length === 1 ?
-                                
-                                    /////////////////////// SHOW SINGLE IMAGE ///////////////////////
+                        {items.files && items.files.length ?
+                            
+                            items.files.some(x => x.includes(".jpg")) ?
+                                items.files.length === 1 ?
                                     <div>
-                                        {/* { itemdata.number_files == null || itemdata.number_files < 2 ? */}
+                                        {/* { items.item.number_files == null || items.item.number_files < 2 ? */}
                                             <div className="item_img">
-                                                <img src={`/media/items/${itemdata._id}/original/${itemFiles[0]}`} 
+                                                <img src={`/media/items/${items.item._id}/original/${items.files[0].name}`} 
                                                 className="item_main_img"
                                                 alt="Item" 
                                                 onError={i => i.target.style.display='none'}/>
                                             </div>
                                         {/* : null } */}
                                     </div>
-                                
-                                    ///////////////////////// SHOW MULTIPLE IMAGES ///////////////////////
-                                    : this.renderSlider(itemFiles) 
-                                
-                            : null}
-                            </div>
+                                : null 
+                            : null
                         : null }
+
+                        {/* /////////////////////// SHOW MULTIPLE IMAGES /////////////////////// */}
+
+                        {items.files && items.files.length ?
+                            this.renderSlider(items.files)
+                        : null}
 
 
                         <br />
 
                         
-                        {itemdata.creator ?
-                            <div className="item_field item_creator item_review"><p><b>Creator </b></p><h5>{itemdata.creator}</h5></div>
+                        {items.item.creator ?
+                            <div className="item_field item_creator item_review"><p><b>Creator </b></p><h5>{items.item.creator}</h5></div>
                         : null }
 
 
@@ -517,8 +488,8 @@ class ItemView extends Component {
 
                         <div className="item_reviewer ">
                             <span className="item_field">
-                                { itemdata.contributor && itemdata.contributor.name && itemdata.contributor.lastname ?
-                                    <span>Submitted by: {itemdata.contributor.name} {itemdata.contributor.lastname} - </span>
+                                { items.contributor && items.contributor.name && items.contributor.lastname ?
+                                    <span>Submitted by: {items.contributor.name} {items.contributor.lastname} - </span>
                                 : null }
 
                                 
@@ -532,27 +503,27 @@ class ItemView extends Component {
 
                     <div className="item_review item_body">
 
-                        {this.renderField('Subject', itemdata.subject)}
-                        {this.renderField('Description', itemdata.description)}
-                        {this.renderField('Source', itemdata.source)}
-                        {this.renderField('Date Created', itemdata.date_created)}
-                        {this.renderField('Contributor', itemdata.contributor)}
-                        {this.renderField('Item Format', itemdata.item_format)}
-                        {this.renderField('Materials', itemdata.materials)}
-                        {this.renderField('Physical Dimensions', itemdata.physical_dimensions)}
-                        {this.renderField('Pages', itemdata.pages)}
-                        {this.renderField('Editor', itemdata.editor)}
-                        {this.renderField('Publisher', itemdata.publisher)}
-                        {this.renderField('Further Info', itemdata.further_info)}
+                        {this.renderField('Subject', items.item.subject)}
+                        {this.renderField('Description', items.item.description)}
+                        {this.renderField('Source', items.item.source)}
+                        {this.renderField('Date Created', items.item.date_created)}
+                        {this.renderField('Contributor', items.item.contributor)}
+                        {this.renderField('Item Format', items.item.item_format)}
+                        {this.renderField('Materials', items.item.materials)}
+                        {this.renderField('Physical Dimensions', items.item.physical_dimensions)}
+                        {this.renderField('Pages', items.item.pages)}
+                        {this.renderField('Editor', items.item.editor)}
+                        {this.renderField('Publisher', items.item.publisher)}
+                        {this.renderField('Further Info', items.item.further_info)}
                         
                         
 
-                        {itemdata.geo && itemdata.geo.address ?
-                            this.renderField('Address', itemdata.geo.address)
+                        {items.item.geo && items.item.geo.address ?
+                            this.renderField('Address', items.item.geo.address)
                         : null }
 
 
-                        {itemdata.pdf_item_parent_id && this.props.parentpdf ?
+                        {items.item.pdf_item_parent_id && this.props.parentpdf ?
                             <div className="item_field link_blue">
                                 <p><b>Source Document Item</b></p>
                                 <Link to={`/items/${this.props.parentpdf._id}`} target="_blank">
@@ -564,7 +535,7 @@ class ItemView extends Component {
                         : null}
 
 
-                        {itemdata.geo && itemdata.geo.latitude && itemdata.geo.longitude ? 
+                        {items.item.geo && items.item.geo.latitude && items.item.geo.longitude ? 
                             <div>
                                 <div className="item_map_heading" onClick={() => this.setState({showMap: !this.state.showMap})}>
                                     <p>
@@ -577,7 +548,7 @@ class ItemView extends Component {
                                 {this.state.showMap ?
                                     <Map 
                                         className="item_map"
-                                        center={[itemdata.geo.latitude, itemdata.geo.longitude]} 
+                                        center={[items.item.geo.latitude, items.item.geo.longitude]} 
                                         zoom={this.state.mapZoom} 
                                         style={{ height: this.state.showMap ? '350px' : '0px'}}
                                     >
@@ -587,15 +558,15 @@ class ItemView extends Component {
                                         />
 
                                         <Marker 
-                                            position={[itemdata.geo.latitude, itemdata.geo.longitude]} 
+                                            position={[items.item.geo.latitude, items.item.geo.longitude]} 
                                             // key={incident['incident_number']} 
                                         >
                                             <Popup>
-                                                <span><b>{itemdata.title}</b></span>
+                                                <span><b>{items.item.title}</b></span>
                                                 <br/>
-                                                <span>{itemdata.geo.address}</span><br/>
+                                                <span>{items.item.geo.address}</span><br/>
                                                 <br/>
-                                                <span>{itemdata.geo.latitude}, {itemdata.geo.longitude}</span><br/>
+                                                <span>{items.item.geo.latitude}, {items.item.geo.longitude}</span><br/>
                                             </Popup>
                                         </Marker>
                                     </Map>
@@ -619,8 +590,8 @@ class ItemView extends Component {
                     
 
 
-                    {itemdata.external_link && itemdata.external_link[0].url ?
-                                <Link to={itemdata.external_link[0].url}  target="_blank">
+                    {items.item && items.item.external_link && items.item.external_link[0].url ?
+                                <Link to={items.item.external_link[0].url}  target="_blank">
                                     <div className="link_wrapper">
                                         <div className="link_img">
                                             <img src='/media/icons/ext_link.png' className="ext_link"/>
@@ -628,7 +599,7 @@ class ItemView extends Component {
 
                                         <div className="link_text">
                                             <b>External Link:</b><br />
-                                            {itemdata.external_link[0].text}
+                                            {items.item.external_link[0].text}
                                         </div>
                                     </div>
                                 </Link>
@@ -636,31 +607,31 @@ class ItemView extends Component {
 
 
 
-                    {itemdata.shareDisabled ?
+                    {items.item.shareDisabled ?
                         null
                         :               
                         <div className="shareIcons">
                             <FacebookShareButton
-                                url={`http://${config.IP_ADDRESS}:3000/items/${itemdata._id}`}
+                                url={`http://${config.IP_ADDRESS}:3000/items/${items.item._id}`}
                                 className="shareIcon"
-                                quote={itemdata.title}
+                                quote={items.item.title}
                                 >
                                 <FacebookIcon size={32} round={true}/>
                             </FacebookShareButton>
 
 
                             <WhatsappShareButton
-                                url={`http://${config.IP_ADDRESS}:3000/items/${itemdata._id}`}
+                                url={`http://${config.IP_ADDRESS}:3000/items/${items.item._id}`}
                                 className="shareIcon"
-                                title={itemdata.title}
+                                title={items.item.title}
                                 >
                                 <WhatsappIcon size={32} round={true}/>
                             </WhatsappShareButton>
 
                             <EmailShareButton
-                                url={`http://${config.IP_ADDRESS}:3000/items/${itemdata._id}`}
+                                url={`http://${config.IP_ADDRESS}:3000/items/${items.item._id}`}
                                 className="shareIcon"
-                                subject={itemdata.title}
+                                subject={items.item.title}
                                 >
                                 <EmailIcon size={32} round={true}/>
                             </EmailShareButton>
@@ -707,26 +678,24 @@ class ItemView extends Component {
 
                 </div> 
             </div> 
-        )
+        : null )
     }
-
-    // *************************************************************************************************************
 
 
     render() {
 
-        console.log(this.state)
+        console.log(this.props)
 
         let items = this.props.items;
 
-        // if (items.item && items.item.category_ref ) {
-        //     {this.getCatName(items.item.category_ref)}
-        // }
+        if (items.item && items.item.category_ref ) {
+            {this.getCatName(items.item.category_ref)}
+        }
 
-        // if (items.item && items.item.subcategory_ref ) {
-        //     // console.log(items.item);
-        //     {this.getSubCatName(items.item.subcategory_ref)}
-        // }
+        if (items.item && items.item.subcategory_ref ) {
+            // console.log(items.item);
+            {this.getSubCatName(items.item.subcategory_ref)}
+        }
 
         return (
             
@@ -736,15 +705,14 @@ class ItemView extends Component {
                 : null }
 
                 <div className="main_view">
-                    {this.state.itemdata && this.state.itemFiles.length ?
-                        this.renderItem(this.state.itemdata, this.state.itemFiles)
-                    : this.renderItem(this.state.itemdata, []) }
+                    {this.state.itemFiles && this.state.itemFiles.length ?
+                        this.renderItem(this.state.itemFiles)
+                    : null }
                     {/* this.renderItem(items) */}
                 </div>
             </div>
         );
     }
-
 }
 
 function mapStateToProps(state) {
@@ -755,6 +723,7 @@ function mapStateToProps(state) {
         nextitem: state.items.nextitem,
         previtem: state.items.previtem,
         parentpdf: state.items.parentpdf
+        // files: state.items.files
 
     }
 }
