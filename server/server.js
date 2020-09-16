@@ -781,38 +781,16 @@ app.delete('/api/delete-subcat', (req, res) => {
 
 
 
-//  ************ FILE STUFF !!! ********************************************
+//  ************************************************************
+//  ************ FS ********************************************
+//  ************************************************************
 
 
-//create multer instance, for file saving
-let storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-    cb(null, 'public/media/uploads')
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + '-' +file.originalname )
-  }
-})
-
-// var upload = multer({ storage: storage }).single('file');
-let upload = multer({ storage: storage }).array('file')
-
-
-
-
-// // post file
-// app.post('/upload', function(req, res) {
-//         // console.log(req);
-     
-//         upload(req, res, function (err) {
-//               if (err instanceof multer.MulterError) {
-//                   return res.status(500).json(err)
-//               } else if (err) {
-//                   return res.status(500).json(err)
-//               }
-//         return res.status(200).send(req.file)
-//     })
-// });
+const isDirEmpty = (dirname) => {
+    return fs.promises.readdir(dirname).then(files => {
+        return files.length === 0;
+    });
+}
 
 
 
@@ -949,10 +927,23 @@ app.post('/get-number-files', function(req, res) {
 
 
 
-
 // ****************************************************************
 //  **************************** FILE-SERVER ***************************
 // ****************************************************************
+
+
+//create multer instance, for file saving
+let storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+    cb(null, 'public/media/uploads')
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + '-' +file.originalname )
+  }
+})
+
+// var upload = multer({ storage: storage }).single('file');
+// let upload = multer({ storage: storage }).array('file')
 
 
 
@@ -1026,7 +1017,7 @@ app.post(
     '/upload-fields/:id/:num', 
     (req, res, next) => {
 
-            console.log('PARAMS: ', req.params.id, req.params.num)
+            // console.log('PARAMS: ', req.params.id, req.params.num)
 
             for (let i = 0; i < parseInt(req.params.num); i++) {
                 fieldData.push({
@@ -1035,14 +1026,16 @@ app.post(
                 })
                 dataDone = true
             }
+            
             next();
         
     },
     multer({
             storage: multer.diskStorage({
                 destination: function (req, file, cb) {
+                    // console.log('MULTER REQ: ', req)
                     itemId = req.params.id;
-                    console.log('ITEM ID: ' + itemId);
+                    // console.log('ITEM ID: ' + itemId);
                     var dest = `../client/public/media/items/${itemId}/original`;
                     mkdirp.sync(dest);
                     cb(null, dest)
@@ -1052,7 +1045,7 @@ app.post(
                     let extension = extArray[extArray.length - 1];
                     let ext = 'jpg';
                     let newId = mongoose.Types.ObjectId();
-
+                    // res.locals.testVar = `../client/public/media/items/${itemId}/original/${newId}.jpg`;
                     switch(extension) {
                         case 'jpeg':
                           ext = 'jpg'
@@ -1068,30 +1061,53 @@ app.post(
                 }
             })
         })
-        .fields(fieldData), function(req, res, next) {
-            // itemId = req.params.id;
-            // // sharp.cache({files: 0});
+        .fields(fieldData), (req, res, next) => {
+            console.log('THIRD ARG REQ.FILES: ', req.files.file_0[0].path)
+            // console.log(res.locals.testVar);
+            itemId = req.params.id;
+            // sharp.cache({files: 0});
+            let dirname = `../client/public/media/items/${itemId}/original`;
+
+            fs.readdir(dirname, function(err, files) {
+                files = files.filter(item => !(/(^|\/)\.[^\/\.]/g).test(item));
+
+                console.log('FILES: ' + files)
+                if (err) {
+                   console.error(err);
+                } else {
+                   if (files.length === 1) {
+                       console.log('this is the first file to be uploaded. item id is' + itemId)
+
+                        let width = 500;
+                        let height = 500;
+                        var dest = `../client/public/media/items/${itemId}/sq_thumbnail`;
+                        mkdirp.sync(dest);
+
+                        // sharp(req.file.path)
+                        sharp(req.files.file_0[0].path)
+                        
+                            .resize(width, height)
+                            .toFile(`${dest}/0.jpg`, function(err) {
+                                if(!err) {
+                                    console.log('sharp success');
+                                    res.write("Sq thumbnail uploaded successfully.");
+                                    res.end();
+                                } else {
+                                    console.log(err);
+                                }
+                            })
+                        index = 0;
 
 
-            console.log(req.files);
+                   } else {
+                       console.log(`directory has ${files.length} files`)
+                   }
+                }
+            });
 
-            // let width = 500;
-            // let height = 500;
-            // var dest = `../client/public/media/items/${itemId}/sq_thumbnail`;
-            // mkdirp.sync(dest);
+            // console.log(req.files);
 
-            // sharp(req.file.path)
-            //     .resize(width, height)
-            //     .toFile(`${dest}/0.jpg`, function(err) {
-            //         if(!err) {
-            //             console.log('sharp worked');
-            //             res.write("File uploaded successfully.");
-            //             res.end();
-            //         } else {
-            //             console.log(err);
-            //         }
-            //     })
-            // index = 0;
+            
 
             fieldData = [];
         }

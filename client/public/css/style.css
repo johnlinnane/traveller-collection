@@ -1165,11 +1165,11 @@ header .navItem span {
     
 }
 
-/* .img_back {
-    background-color: black;
+.img_back img {
+    /* background-color: black; */
     width: 50%;
     
-} */
+}
 
 .container {
     position: relative;

@@ -53,7 +53,7 @@ class ItemView extends Component {
 
         getParentCalled: false,
         getItemWithCCalled: false,
-        getPendItemCalled: false,
+        // getPendItemCalled: false,
 
         itemFiles: []
     }
@@ -113,7 +113,7 @@ class ItemView extends Component {
                     }
 
                     
-                    if (this.props.items.files) {
+                    if (this.props.items.files && this.props.items.files.length) {
                         let tempItemFiles = [];
                         this.props.items.files.forEach( item => {
                             tempItemFiles.push(item.name)
@@ -124,10 +124,12 @@ class ItemView extends Component {
                     }
                 } 
                 
-                if (this.props.items.itemReceived && !this.props.items.item.title && this.state.getItemWithCCalled && !this.state.getPendItemCalled) {
+                // if (this.props.items.itemReceived && !this.props.items.item.ownerId === 'guest' && !this.props.items.item.title && this.state.getItemWithCCalled && !this.state.getPendItemCalled) {
+                if (this.props.items.itemReceived && !this.props.items.item) {
+                    console.log('DISPATCHED')
                     this.props.dispatch(getPendItemById(this.props.match.params.id));
                     this.setState({
-                        getPendItemCalled: true,
+                        // getPendItemCalled: true,
                         isPending: true
                     })
                 }
@@ -440,7 +442,7 @@ class ItemView extends Component {
         
 
 
-        console.log(itemFiles);
+        // console.log(itemFiles);
 
         return ( 
 
@@ -715,7 +717,7 @@ class ItemView extends Component {
 
     render() {
 
-        console.log(this.state)
+        console.log(this.props)
 
         let items = this.props.items;
 
