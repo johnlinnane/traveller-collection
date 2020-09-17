@@ -104,6 +104,7 @@ class ItemView extends Component {
                     
                         if (!this.state.getParentCalled) {
                             this.props.dispatch(getParentPdf(item.pdf_item_parent_id))
+                            this.props.dispatch(getFilesFolder({folder: `/items/${item.pdf_item_parent_id}/original`}))
                         }
     
                         this.setState({
@@ -309,8 +310,9 @@ class ItemView extends Component {
         return (
             <div className="pdf_wrapper">
                 <div className="pdf">
+                    
                     <Document
-                        file={`/media/items/${pdfId}/original/0.pdf`}
+                        file={`/media/items/${pdfId}/original/${this.state.itemFiles[0]}`}
                         onLoadSuccess={onDocumentLoadSuccess}
                         // onLoadError={this.setState({ pdfError: true })}
                         
@@ -473,9 +475,11 @@ class ItemView extends Component {
 
                             {/* /////////////////////// SHOW PDF /////////////////////// */}
 
-                            {(itemdata.file_format === 'pdf') || (itemdata.is_pdf_chapter === true) ?
+                            {/* {(itemdata.file_format === 'pdf') || (itemdata.is_pdf_chapter === true) ? */}
+                            { ( itemFiles.some(x => x.includes(".pdf")) ) || (itemdata.is_pdf_chapter === true) ? 
                                 this.renderPDF()
                             : null }
+
 
                             {itemFiles.some(x => x.includes(".jpg")) ?
                                 
@@ -717,7 +721,7 @@ class ItemView extends Component {
 
     render() {
 
-        console.log(this.props)
+        console.log(this.state)
 
         let items = this.props.items;
 
