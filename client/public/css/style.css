@@ -1,18 +1,21 @@
+/*
+4F646B cutty sark (dark grey)
+69CDEE sky blue
+ADDCEB Regent St Blue* (darker)
+2F5C6B casal (dark turquoise)
+88ACB8 nepal (turquoise)
 
-// 4F646B cutty sark (dark grey)
-// 69CDEE sky blue
-// ADDCEB Regent St Blue* (darker)
-// 2F5C6B casal (dark turquoise)
-// 88ACB8 nepal (turquoise)
-
-// EBC5CF vanilla ice (light pink)
+EBC5CF vanilla ice (light pink)
+*/
 
 body {
-    margin:0;
-    padding:0;
+    padding: 0;
+    margin: 0;
     font-family: 'Roboto', sans-serif;
     background-color: #ffffff;
 }
+
+
 
 a {
     text-decoration: none;
