@@ -406,7 +406,6 @@ class EditItemFile extends PureComponent {
                     </div>
 
                     <h2>Upload Media File(s)</h2>
-                    <p>Under Maintenance !</p>
 
                     {this.state.itemFiles.length ?
                         <div>
