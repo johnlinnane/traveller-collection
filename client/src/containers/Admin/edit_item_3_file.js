@@ -72,7 +72,9 @@ class EditItemFile extends PureComponent {
             },
         ],
         selectedType: 'jpg',
-        imgSrc: '/media/default/default.jpg'
+        imgSrc: '/media/default/default.jpg',
+
+        inputKey: Math.random().toString(36)
 
     }
 
@@ -154,19 +156,31 @@ class EditItemFile extends PureComponent {
     onChangeHandler = (event) => {
 
         const file = event.target.files;
+        console.log('.FILES: ', event.target.files);
+
         let tempSelectedFiles = this.state.selectedFiles;
         tempSelectedFiles.push(file)
+
         let tempSelectedFilesImg = this.state.selectedFilesImg;
-        tempSelectedFilesImg.push(URL.createObjectURL(file[0]));
+        if (file[0] && file[0].type && JSON.stringify(file[0].type).includes('pdf') ) {
+            tempSelectedFilesImg.push('/media/icons/pdf.png');
+        } else {
+            tempSelectedFilesImg.push(URL.createObjectURL(file[0]));
+        }
+
+
+        
 
         if (this.maxSelectFile(event) && this.checkMimeType(event) && this.checkMimeType(event)) {  
             this.setState({
                 selectedFilesNum: this.state.selectedFilesNum + 1,
                 selectedFiles: tempSelectedFiles,
-                selectedFilesImg: tempSelectedFilesImg
+                selectedFilesImg: tempSelectedFilesImg,
+                inputKey: Math.random().toString(36)
+            
             })
         }
-        console.log(this.state)
+        // console.log(this.state)
     }
 
 
@@ -299,6 +313,10 @@ class EditItemFile extends PureComponent {
         this.setState({
             imgSrc: '/media/default/default.jpg'
         })
+
+        setTimeout(() => {
+            this.props.history.push(`/user/edit-item-file/${this.state.formdata._id}`)
+        }, 1000)
     }
 
 
@@ -364,6 +382,7 @@ class EditItemFile extends PureComponent {
 
     render() {
         console.log(this.state);
+        console.log('selectedFilesImg', this.state.selectedFilesImg.length, 'selectedFilesNum', this.state.selectedFilesNum)
         let items = this.props.items;
 
         return (
@@ -447,6 +466,7 @@ class EditItemFile extends PureComponent {
                                 {this.state.selectedType == 'jpg' ?
                                     <input 
                                         id="file_input"
+                                        key={this.state.inputKey}
                                         type="file" 
                                         className="form-control"  
                                         accept="image/*" 
@@ -455,6 +475,7 @@ class EditItemFile extends PureComponent {
                                 : this.state.selectedType == 'mp4' ? 
                                     <input 
                                         id="file_input"
+                                        key={this.state.inputKey}
                                         type="file" 
                                         className="form-control"  
                                         accept="video/*" 
@@ -463,6 +484,7 @@ class EditItemFile extends PureComponent {
                                 : this.state.selectedType == 'pdf' ? 
                                     <input 
                                         id="file_input"
+                                        key={this.state.inputKey}
                                         type="file" 
                                         className="form-control"  
                                         accept="application/pdf" 
@@ -470,12 +492,13 @@ class EditItemFile extends PureComponent {
                                     /> 
                                 : <input 
                                     id="file_input"
+                                    key={this.state.inputKey}
                                     type="file" 
                                     className="form-control"  
                                     onChange={(event) => {this.onChangeHandler(event)}}/>
                                 }
 
-                                <div>
+                                <div className="edit_page_3_button">
                                     Add File
                                 </div>
                             </label>

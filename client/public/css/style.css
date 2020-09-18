@@ -1403,6 +1403,10 @@ header .navItem span {
     width: 60% !important;
 }
 
+.edit_page_3_button {
+    width: 100%;
+}
+
 .edit_map {
     width: 75%; 
     height: 300px;
