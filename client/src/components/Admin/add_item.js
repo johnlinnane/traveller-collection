@@ -37,7 +37,6 @@ class AddItem extends Component {
             language: '',
             reference: '',
             rights: '',
-            file_format: '',
             external_link: [
                 {
                     url: '',

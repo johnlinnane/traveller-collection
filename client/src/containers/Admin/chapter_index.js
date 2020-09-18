@@ -245,7 +245,6 @@ class ChapterIndex extends PureComponent {
             language: '',
             reference: '',
             rights: '',
-            file_format: '',
             external_link: [
                 {
                     url: '',

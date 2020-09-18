@@ -39,7 +39,7 @@ class EditItem extends PureComponent {
             language: '',
             reference: '',
             rights: '',
-            file_format: '',
+            // file_format: '',
             external_link: [
                 {
                     url: '',
@@ -117,7 +117,7 @@ class EditItem extends PureComponent {
                 language: item.language,
                 reference: item.reference,
                 rights: item.rights,
-                file_format: item.file_format,
+                // file_format: item.file_format,
                 category_ref: item.category_ref,
                 subcategory_ref: item.subcategory_ref,
                 location: item.location,

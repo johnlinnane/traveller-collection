@@ -123,7 +123,7 @@ class EditItemFile extends PureComponent {
                     language: item.language,
                     reference: item.reference,
                     rights: item.rights,
-                    file_format: item.file_format,
+                    // file_format: item.file_format,
                     subcategory_ref: item.subcategory_ref,
                     number_files: item.number_files
                 }
@@ -190,15 +190,15 @@ class EditItemFile extends PureComponent {
         if (this.props.user.login.isAuth) {
             this.props.dispatch(updateItem(
                 { 
-                    _id: this.state.formdata._id,
-                    file_format: this.state.selectedType
+                    _id: this.state.formdata._id
+                    // file_format: this.state.selectedType
                 }
             ))
         } else {
             this.props.dispatch(updatePendItem(
                 { 
-                    _id: this.state.formdata._id,
-                    file_format: this.state.selectedType
+                    _id: this.state.formdata._id
+                    // file_format: this.state.selectedType
                 }
             ))
         }
@@ -419,9 +419,9 @@ class EditItemFile extends PureComponent {
                                         <button 
                                             type="button" 
                                             className="btn btn-success btn-block  delete" 
-                                            onClick={(e) => { if (window.confirm('Delete this image?')) this.deleteImage(i) }}
+                                            onClick={(e) => { if (window.confirm('Delete this file?')) this.deleteImage(i) }}
                                         >
-                                            Delete Image
+                                            Delete File
                                         </button>
                                     </div>
                                 </div>

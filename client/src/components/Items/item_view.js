@@ -55,7 +55,10 @@ class ItemView extends Component {
         getItemWithCCalled: false,
         // getPendItemCalled: false,
 
-        itemFiles: []
+        itemFiles: [],
+        imgFiles: [],
+        pdfFiles: [],
+        vidFiles: []
     }
 
     
@@ -116,11 +119,26 @@ class ItemView extends Component {
                     
                     if (this.props.items.files && this.props.items.files.length) {
                         let tempItemFiles = [];
+                        let tempImgFiles = [];
+                        let tempPdfFiles = [];
+                        let tempVidFiles = [];
+
                         this.props.items.files.forEach( item => {
                             tempItemFiles.push(item.name)
+
+                            if (item.name.includes(".jpg")) {
+                                tempImgFiles.push(item.name)
+                            } else if (item.name.includes(".pdf")) {
+                                tempPdfFiles.push(item.name)
+                            } else if (item.name.includes(".mp4")) {
+                                tempVidFiles.push(item.name)
+                            }
                         })
                         this.setState({
-                            itemFiles: tempItemFiles
+                            itemFiles: tempItemFiles,
+                            imgFiles: tempImgFiles, 
+                            pdfFiles: tempPdfFiles, 
+                            vidFiles: tempVidFiles 
                         })
                     }
                 } 
@@ -312,7 +330,7 @@ class ItemView extends Component {
                 <div className="pdf">
                     
                     <Document
-                        file={`/media/items/${pdfId}/original/${this.state.itemFiles[0]}`}
+                        file={`/media/items/${pdfId}/original/${this.state.pdfFiles[0]}`}
                         onLoadSuccess={onDocumentLoadSuccess}
                         // onLoadError={this.setState({ pdfError: true })}
                         
@@ -438,7 +456,7 @@ class ItemView extends Component {
 
 
 
-    renderItem = (itemdata, itemFiles) => {
+    renderItem = (itemdata, itemFiles, imgFiles, pdfFiles, vidFiles) => {
 
 
         
@@ -462,45 +480,48 @@ class ItemView extends Component {
 
                         {itemFiles && itemFiles.length ?
                             <div>
-                            {/* /////////////////////// SHOW VIDEO /////////////////////// */}
-                            
+                           
 
-                            {/* {itemdata.file_format == 'mp4' ? */}
-                            {itemFiles.some(x => x.includes(".mp4")) ?
                                 
+
+
+                                {imgFiles && imgFiles.length ?
+                                    
+                                    imgFiles.length === 1 ?
+                                    
+                                        /////////////////////// SHOW SINGLE IMAGE ///////////////////////
+                                        <div>
+                                            {/* { itemdata.number_files == null || itemdata.number_files < 2 ? */}
+                                                <div className="item_img">
+                                                    <img src={`/media/items/${itemdata._id}/original/${itemFiles[0]}`} 
+                                                    className="item_main_img"
+                                                    alt="Item" 
+                                                    onError={i => i.target.style.display='none'}/>
+                                                </div>
+                                            {/* : null } */}
+                                        </div>
+                                    
+                                        ///////////////////////// SHOW MULTIPLE IMAGES ///////////////////////
+                                        : this.renderSlider(imgFiles) 
+                                    
+                                : null}
+
+                                {/* /////////////////////// SHOW PDF /////////////////////// */}
+
+                                { ( pdfFiles.length ) || (itemdata.is_pdf_chapter === true) ? 
+                                    this.renderPDF()
+                                : null }
+
+                                {/* /////////////////////// SHOW VIDEO /////////////////////// */}
+                                
+
+                                {vidFiles && vidFiles.length ?
+                                    
                                     <video className="video" controls name="media">
-                                        <source src={`/media/items/${itemdata._id}/original/${itemFiles[0]}`} type="video/mp4"/>
+                                        <source src={`/media/items/${itemdata._id}/original/${vidFiles[0]}`} type="video/mp4"/>
                                     </video>
                             : null }
 
-                            {/* /////////////////////// SHOW PDF /////////////////////// */}
-
-                            {/* {(itemdata.file_format === 'pdf') || (itemdata.is_pdf_chapter === true) ? */}
-                            { ( itemFiles.some(x => x.includes(".pdf")) ) || (itemdata.is_pdf_chapter === true) ? 
-                                this.renderPDF()
-                            : null }
-
-
-                            {itemFiles.some(x => x.includes(".jpg")) ?
-                                
-                                itemFiles.length === 1 ?
-                                
-                                    /////////////////////// SHOW SINGLE IMAGE ///////////////////////
-                                    <div>
-                                        {/* { itemdata.number_files == null || itemdata.number_files < 2 ? */}
-                                            <div className="item_img">
-                                                <img src={`/media/items/${itemdata._id}/original/${itemFiles[0]}`} 
-                                                className="item_main_img"
-                                                alt="Item" 
-                                                onError={i => i.target.style.display='none'}/>
-                                            </div>
-                                        {/* : null } */}
-                                    </div>
-                                
-                                    ///////////////////////// SHOW MULTIPLE IMAGES ///////////////////////
-                                    : this.renderSlider(itemFiles) 
-                                
-                            : null}
                             </div>
                         : null }
 
@@ -743,8 +764,8 @@ class ItemView extends Component {
 
                 <div className="main_view">
                     {this.state.itemdata && this.state.itemFiles.length ?
-                        this.renderItem(this.state.itemdata, this.state.itemFiles)
-                    : this.renderItem(this.state.itemdata, []) }
+                        this.renderItem(this.state.itemdata, this.state.itemFiles, this.state.imgFiles, this.state.pdfFiles, this.state.vidFiles)
+                    : this.renderItem(this.state.itemdata, [], [], [], []) }
                     {/* this.renderItem(items) */}
                 </div>
             </div>

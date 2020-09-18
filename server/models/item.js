@@ -58,7 +58,7 @@ const itemSchema = mongoose.Schema({
         }
     ],
 
-    file_format: String,
+    // file_format: String,
     date_added: String,
     date_modified: String,
     number_files: Number,
