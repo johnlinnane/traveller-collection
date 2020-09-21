@@ -742,7 +742,7 @@ class ItemView extends Component {
 
     render() {
 
-        console.log(this.state)
+        console.log(this.props)
 
         let items = this.props.items;
 

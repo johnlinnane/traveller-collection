@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import BookItem from '../widgetsUI/book_item';
+import ItemItem from '../widgetsUI/item_item';
 import { getItems } from '../actions';
 import NewsSlider from '../widgetsUI/Slider/slider';
 
@@ -17,7 +17,7 @@ class HomeContainer extends Component {
     renderItems = (items) => (
         items.list && items.list.length ?    // list is an array of previously called items!
             items.list.map( (item, i) => (
-                <BookItem {...item} key={item._id}/>
+                <ItemItem {...item} key={item._id}/>
             ))
         : null
     )

@@ -242,8 +242,14 @@ export function clearItemWithContributor() {
     return {
         type:'CLEAR_ITEM_W_REVIEWER',
         payload:{
-            item:{},
-            reviewer:{}
+            // item:{},
+            // reviewer:{},
+            items: null,
+            cats: null,
+            subcats: null,
+            nextitem: null,
+            previtem: null,
+            parentpdf: null
         }
     }
 }
