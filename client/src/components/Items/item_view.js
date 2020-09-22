@@ -29,7 +29,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 
 class ItemView extends Component {
 
-
+    
 
     state = {
 
@@ -63,7 +63,9 @@ class ItemView extends Component {
 
     
     componentDidMount() {
-        // 
+        
+
+
         if (!this.state.getItemWithCCalled) {
             this.props.dispatch(getItemWithContributor(this.props.match.params.id));
             this.setState({
@@ -82,6 +84,16 @@ class ItemView extends Component {
 
 
     componentDidUpdate(prevProps, prevState) {
+
+        if (this.props.match.params.id != prevProps.match.params.id && !this.state.stateCleared) {
+            // this.componentWillUnmount();
+            console.log('PARAMMMM IDDDD CHANGED')
+            this.setState({
+                itemFiles: [],
+                stateCleared: true
+            })
+        }
+
         if (this.props != prevProps) {
             if (this.props.items) {
                 if (this.props.items.item ) {
@@ -742,7 +754,8 @@ class ItemView extends Component {
 
     render() {
 
-        console.log(this.props)
+        console.log('PROPS: ', this.props)
+        console.log('STATE: ', this.state)
 
         let items = this.props.items;
 
