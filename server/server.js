@@ -811,11 +811,11 @@ app.post('/delete-file', function(req, res) {
 
 app.post('/api/get-files-folder', (req, res) => {
     
-    console.log(req.body.folder)
     
     let query = '../client/public/media';
 
     let fullPath = query + req.body.folder
+    console.log('FS.READDIR WITH FULLPATH:', fullPath)
 
     fs.readdir(fullPath, {withFileTypes: true}, (err, files) => {
         if (err) {
