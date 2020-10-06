@@ -1016,8 +1016,8 @@ let fieldData = [];
 app.post(
     '/upload-fields/:id/:num', 
     (req, res, next) => {
-
-            // console.log('PARAMS: ', req.params.id, req.params.num)
+            console.log('UPLOAD-FIELDS CALLED!')
+            console.log('PARAMS.ID: ', req.params.id, 'PARAMS.NUM: ', req.params.num)
 
             for (let i = 0; i < parseInt(req.params.num); i++) {
                 fieldData.push({
@@ -1033,9 +1033,9 @@ app.post(
     multer({
             storage: multer.diskStorage({
                 destination: function (req, file, cb) {
-                    // console.log('MULTER REQ: ', req)
+                    console.log('MULTER REQ: ', req)
                     itemId = req.params.id;
-                    // console.log('ITEM ID: ' + itemId);
+                    console.log('ITEM ID: ' + itemId);
                     var dest = `../client/public/media/items/${itemId}/original`;
                     mkdirp.sync(dest);
                     cb(null, dest)
@@ -1063,7 +1063,6 @@ app.post(
         })
         .fields(fieldData), (req, res, next) => {
             console.log('UPLOAD-FIELDS THIRD ARG REQ.FILES: ', req.files.file_0[0].path)
-            // console.log(res.locals.testVar);
             itemId = req.params.id;
             // sharp.cache({files: 0});
             let dirname = `../client/public/media/items/${itemId}/original`;
