@@ -1,1 +1,1 @@
-let myVar = 16;
+let myVar = 16;myVar++;
