@@ -52,9 +52,9 @@ class Intro extends Component  {
                             {/* <img src={`/media/intro/intro.jpg`} alt={"Item"} onError={addDefaultImg}/> */}
                     
                     </div>
-                    <div className="intro-items">
+                    {/* <div className="intro-items">
                         <p>Hello</p>
-                        </div>
+                        </div> */}
                 
                 </div>
         );
