@@ -27,7 +27,7 @@ let index = 0;
 mongoose.Promise = global.Promise;
 
 mongoose.connect(config.DATABASE)
-    .catch(error => console.log(error));
+    .catch(error => console.log('MONGOOSE CONNECT ERROR: ', error));
 
 
 // mongoose.connect(config.DATABASE);
@@ -303,7 +303,7 @@ app.get('/api/getItemByColl', (req, res) => {
 app.get('/api/getItemsByCat', (req, res) => {
 
     let value = req.query.value;
-    console.log(value);
+    console.log('GETITEMSBYCAT VALUE', value);
   
     Item.find({ category_ref:value }).exec( (err, docs) => {
         if(err) return res.status(400).send(err);
@@ -475,10 +475,10 @@ app.post('/api/item', (req, res) => {
 //////////// * * * * * * * * * * * post pending item
 app.post('/api/item-pending', (req, res) => {
     const pendingItem = new PendingItem( req.body );             // req is the data you post
-    console.log(req.body);
+    console.log('ITEM-PENDING REQ.BODY: ', req.body);
 
     pendingItem.save( (err, doc) =>{                      // saves the new document
-        console.log(doc);
+        console.log('PENDING ITEM BEING SAVED: ', doc);
         if(err) return res.status(400).send(doc);
         res.status(200).json({
             post:true,
@@ -604,7 +604,7 @@ app.get('/api/accept-item', (req, res) => {
               if (error) {
                 throw error;
               }
-              console.log(`stats: ${JSON.stringify(stats)}`);
+              console.log(`ACCEPT-ITEM RENAME STATS: ${JSON.stringify(stats)}`);
             });
           });
 
@@ -819,14 +819,14 @@ app.post('/api/get-files-folder', (req, res) => {
 
     fs.readdir(fullPath, {withFileTypes: true}, (err, files) => {
         if (err) {
-            console.log('error finding files in folder')
+            console.log('GET-FILES-FOLDER: error finding files in folder / no files in folder')
         // res.status(200).json({ files:files })
         } else if (files.length && files[0].name === '.DS_Store') {
             files.shift()
         }
         
         res.send(files)
-        console.log(files)
+        console.log('GET-FILES-FOLDER FILES', files)
     })
 });
 
@@ -841,13 +841,13 @@ app.post('/delete-dir', function(req, res) {
     let dir = path.resolve(baseUrl, section, id)
 
 
-    console.log(dir);
+    console.log('DIR TO BE DELETED', dir);
 
     const deleteDir = (dir, subDir) => {
         fs.rmdir(subDir, () => {
-            console.log('Deleted: ' + subDir);
+            console.log('SUBDIR BEING DELETED:', subDir);
             fs.rmdir(dir, () => {
-                console.log('Deleted: ' + dir);
+                console.log('DIR BEING DELTED: ', dir);
             })
         })
     }
@@ -861,13 +861,13 @@ app.post('/delete-dir', function(req, res) {
                     if (fs.lstatSync(string).isFile()) {
                         fs.unlink(string, function (err) {
                             if (err) throw err;
-                            console.log('File deleted!' + file.name);
+                            console.log('FILE DELETED: ', file.name);
                         })
                     }
 
                     if (fs.lstatSync(string).isDirectory()) {
                         let subDir = path.resolve(dir, file.name)
-                        console.log(subDir);
+                        console.log('SUBDIR TO BE DELETED: ', subDir);
 
                         fs.readdir(subDir, {withFileTypes: true}, (err, files) => {
                             files.forEach( file => {
@@ -875,7 +875,7 @@ app.post('/delete-dir', function(req, res) {
                                 if (fs.lstatSync(subFile).isFile()) {
                                     fs.unlink(subFile, function (err) {
                                         if (err) throw err;
-                                        console.log('File deleted!' + file.name);
+                                        console.log('SUB FILE DELETED: ', file.name);
                 
                                         deleteDir(dir, subDir);
 
@@ -908,7 +908,7 @@ app.post('/get-number-files', function(req, res) {
 
     let numFiles = 0;
 
-    console.log(dir);
+    console.log('GET FILES FROM DIR: ', dir);
 
 
 
@@ -956,7 +956,7 @@ app.post(
             storage: multer.diskStorage({
                 destination: function (req, file, cb) {
                     itemId = req.params.id;
-                    console.log('ITEM ID: ' + itemId);
+                    console.log('UPLOAD ITEM ID: ', itemId);
                     // var dest = `../client/public/media/items/${itemId}/original`;
                     mkdirp.sync(dest);
                     cb(null, dest)
@@ -986,9 +986,9 @@ app.post(
             itemId = req.params.id;
             // sharp.cache({files: 0});
 
-            console.log(req)
+            console.log('SHARP REQ:', req)
 
-            console.log(req.file.path);
+            console.log('SHARP REQ FILE ID:', req.file.path);
 
             let width = 500;
             let height = 500;
@@ -1003,7 +1003,7 @@ app.post(
                         res.write("File uploaded successfully.");
                         res.end();
                     } else {
-                        console.log(err);
+                        console.log('SHARP ERROR: ', err);
                     }
                 })
             index = 0;
@@ -1062,7 +1062,7 @@ app.post(
             })
         })
         .fields(fieldData), (req, res, next) => {
-            console.log('THIRD ARG REQ.FILES: ', req.files.file_0[0].path)
+            console.log('UPLOAD-FIELDS THIRD ARG REQ.FILES: ', req.files.file_0[0].path)
             // console.log(res.locals.testVar);
             itemId = req.params.id;
             // sharp.cache({files: 0});
@@ -1071,12 +1071,12 @@ app.post(
             fs.readdir(dirname, function(err, files) {
                 files = files.filter(item => !(/(^|\/)\.[^\/\.]/g).test(item));
 
-                console.log('FILES: ' + files)
+                console.log('UPLOAD-FIELDS FILES: ' + files)
                 if (err) {
                    console.error(err);
                 } else {
                    if (files.length === 1) {
-                       console.log('this is the first file to be uploaded. item id is' + itemId)
+                       console.log('UPLOAD-FIELDS: this is the first file to be uploaded. item id is' + itemId)
 
                         let width = 500;
                         let height = 500;
@@ -1089,18 +1089,18 @@ app.post(
                             .resize(width, height)
                             .toFile(`${dest}/0.jpg`, function(err) {
                                 if(!err) {
-                                    console.log('sharp success');
+                                    console.log('UPLOAD-FIELDS: sharp success');
                                     res.write("Sq thumbnail uploaded successfully.");
                                     res.end();
                                 } else {
-                                    console.log(err);
+                                    console.log('UPLOAD-FIELDS SHARP ERROR', err);
                                 }
                             })
                         index = 0;
 
 
                    } else {
-                       console.log(`directory has ${files.length} files`)
+                       console.log(`UPLOAD-FIELDS: directory has ${files.length} files`)
                    }
                 }
             });
@@ -1207,7 +1207,7 @@ app.post(
     function(req, res) {
         
         let catId = req.params.id;
-        console.log(req.file);
+        console.log('UPLOAD-CAT REQ.FILE: ', req.file);
         let index = 0;
      
         multer({ storage: multer.diskStorage({
@@ -1247,7 +1247,7 @@ app.post(
     function(req, res) {
         
         let subCatId = req.params.id;
-        console.log(req.file);
+        console.log('UPLOAD-SUBCAT REQ.FILE', req.file);
         let index = 0;
      
         multer({ storage: multer.diskStorage({
@@ -1285,7 +1285,7 @@ app.post(
     '/upload-intro-img',
     function(req, res) {
         
-        console.log(req.file);
+        console.log('UPLOAD-INTRO-IMG REQ.FILE', req.file);
 
      
         multer({ storage: multer.diskStorage({
@@ -1321,7 +1321,7 @@ app.post(
     function(req, res) {
         
         let number = req.params.number;
-        console.log(req.file);
+        console.log('UPLOAD-INFO REQ.FILE: ', req.file);
 
      
         multer({ storage: multer.diskStorage({
