@@ -9,7 +9,7 @@ import CreatableSelect from 'react-select/creatable';
 
 
 
-import { getItemById, getPendItemById, updateItem, updatePendItem, clearItem } from '../../actions';
+import { getItemById, getPendItemById, updateItem, updatePendItem, clearItem, getFilesFolder } from '../../actions';
 import { getAllColls, getAllCats, getAllSubCats  } from '../../actions';
 
 
@@ -54,6 +54,7 @@ class EditItemSel extends PureComponent {
         this.props.dispatch(getAllColls())
         this.props.dispatch(getAllCats());
         this.props.dispatch(getAllSubCats());
+        this.props.dispatch(getFilesFolder({folder: `/items/${this.props.match.params.id}/original`}));
     }
 
 
@@ -484,7 +485,13 @@ class EditItemSel extends PureComponent {
                                 <div className="container">
 
                                     <div className="img_back">
-                                        <img src={`/media/items/${this.state.dataToUpdate._id}/original/0.jpg`} alt="item main image" className="edit_main_img" onError={this.addDefaultImg} />
+
+                                        { this.props.items.files && this.props.items.files.length ?
+                                            <div>
+                                            <img src={`/media/items/${this.props.match.params.id}/original/${this.props.items.files[0].name}`} alt="item main image" className="edit_main_img" onError={this.addDefaultImg} />
+                                            </div>
+                                        : <img src={'/media/default/default.jpg'} /> }
+
                                     </div>
                                     {this.props.items && this.props.items.item ?
                                         <div className="centered edit_img_text"><h2>{this.props.items.item.title}</h2></div>

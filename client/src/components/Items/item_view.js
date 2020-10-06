@@ -87,9 +87,12 @@ class ItemView extends Component {
 
         if (this.props.match.params.id != prevProps.match.params.id && !this.state.stateCleared) {
             // this.componentWillUnmount();
-            console.log('PARAMMMM IDDDD CHANGED')
+            console.log('PARAM ID CHANGED **********************')
             this.setState({
                 itemFiles: [],
+                imgFiles: [],
+                pdfFiles: [],
+                vidFiles: [],
                 stateCleared: true
             })
         }

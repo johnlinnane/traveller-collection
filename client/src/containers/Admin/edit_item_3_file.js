@@ -413,7 +413,9 @@ class EditItemFile extends PureComponent {
                             {this.state.itemFiles.map( (img, i) => (
                                 <div key={`card${i}`} className="edit_3_card">
                                     <div className="edit_3_card_left">
-                                        <img src={`/media/items/${this.state.formdata._id}/original/${img}`} alt="item main image"  onError={this.addDefaultImg} />
+                                        { img.includes(`.pdf`) ?
+                                            <img src={'/media/icons/pdf.png'} alt="item main image"  onError={this.addDefaultImg} />
+                                        : <img src={`/media/items/${this.state.formdata._id}/original/${img}`} alt="item main image"  onError={this.addDefaultImg} /> }
                                     </div>
                                     <div className="edit_3_card_right">
                                         <button 

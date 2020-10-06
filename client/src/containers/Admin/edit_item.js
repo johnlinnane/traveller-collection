@@ -11,7 +11,7 @@ import axios from 'axios';
 // import 'react-toastify/dist/ReactToastify.css';
 
 
-import { getItemById, updateItem, clearItem, deleteItem, getParentPdf, deleteChapter } from '../../actions';
+import { getItemById, updateItem, clearItem, deleteItem, getParentPdf, deleteChapter, getFilesFolder } from '../../actions';
 // import { getAllColls, getAllCats, getAllSubCats  } from '../../actions';
 
 const config = require('../../config_client').get(process.env.NODE_ENV);
@@ -74,8 +74,9 @@ class EditItem extends PureComponent {
 
 
     componentDidMount() {
-        this.props.dispatch(getItemById(this.props.match.params.id))
-        document.title = "Edit Item - Traveller Collection"
+        this.props.dispatch(getItemById(this.props.match.params.id));
+        document.title = "Edit Item - Traveller Collection";
+        this.props.dispatch(getFilesFolder({folder: `/items/${this.props.match.params.id}/original`}));
     }
 
 
@@ -87,113 +88,116 @@ class EditItem extends PureComponent {
     // baseline export before adding new stuff
     componentDidUpdate(prevProps) {
         // console.log(prevProps);
-        let item = this.props.items.item;
-        // console.log(this.state.formdata);
-        // console.log(book);
 
-        // can create a updatedFormdata variable, but no need
-        if (this.props.items !== prevProps.items) {
+        if (this.props.items.item) {
+            let item = this.props.items.item;
+            // console.log(this.state.formdata);
+            // console.log(book);
 
-            let newFormdata = {
-                
-                ...this.state.formdata,
-                _id:item._id,
-                title:item.title,
-                creator:item.creator,
-                description:item.description,
-                pages:item.pages,
-                collection_id:item.collection_id,
-                source:item.source,
-                subject: item.subject,
-                date_created: item.date_created,
-                tags: item.tags,
-                contributor: item.contributor,
-                item_format: item.item_format,
-                materials: item.materials,
-                physical_dimensions: item.physical_dimensions,
-                editor: item.editor,
-                publisher: item.publisher,
-                further_info: item.further_info,
-                language: item.language,
-                reference: item.reference,
-                rights: item.rights,
-                // file_format: item.file_format,
-                category_ref: item.category_ref,
-                subcategory_ref: item.subcategory_ref,
-                location: item.location,
+            // can create a updatedFormdata variable, but no need
+            if (this.props.items !== prevProps.items) {
 
-                is_pdf_chapter: item.is_pdf_chapter,
-                pdf_item_parent_id: item.pdf_item_parent_id,
+                let newFormdata = {
+                    
+                    ...this.state.formdata,
+                    _id:item._id,
+                    title:item.title,
+                    creator:item.creator,
+                    description:item.description,
+                    pages:item.pages,
+                    collection_id:item.collection_id,
+                    source:item.source,
+                    subject: item.subject,
+                    date_created: item.date_created,
+                    tags: item.tags,
+                    contributor: item.contributor,
+                    item_format: item.item_format,
+                    materials: item.materials,
+                    physical_dimensions: item.physical_dimensions,
+                    editor: item.editor,
+                    publisher: item.publisher,
+                    further_info: item.further_info,
+                    language: item.language,
+                    reference: item.reference,
+                    rights: item.rights,
+                    // file_format: item.file_format,
+                    category_ref: item.category_ref,
+                    subcategory_ref: item.subcategory_ref,
+                    location: item.location,
+
+                    is_pdf_chapter: item.is_pdf_chapter,
+                    pdf_item_parent_id: item.pdf_item_parent_id,
 
 
-                shareDisabled: item.shareDisabled
-            }
-
-            let newLatLng = this.state.initMap;
-
-            if (item.external_link && item.external_link.length) {
-                if (item.external_link[0].url || item.external_link[0].text) {
-                    newFormdata = {
-                        ...newFormdata,
-                        external_link: [
-                            {
-                                url: item.external_link[0].url,
-                                text: item.external_link[0].text
-                            }
-                        ]
-                    }
+                    shareDisabled: item.shareDisabled
                 }
-            } 
+
+                let newLatLng = this.state.initMap;
+
+                if (item.external_link && item.external_link.length) {
+                    if (item.external_link[0].url || item.external_link[0].text) {
+                        newFormdata = {
+                            ...newFormdata,
+                            external_link: [
+                                {
+                                    url: item.external_link[0].url,
+                                    text: item.external_link[0].text
+                                }
+                            ]
+                        }
+                    }
+                } 
 
 
 
-            if (item.geo) {
-                if (item.geo.address || item.geo.latitude || item.geo.longitude ) {
-                    newFormdata = {
-                        ...newFormdata,
-                        geo: {
-                            address: item.geo.address,
-                            latitude: item.geo.latitude,
-                            longitude: item.geo.longitude
+                if (item.geo) {
+                    if (item.geo.address || item.geo.latitude || item.geo.longitude ) {
+                        newFormdata = {
+                            ...newFormdata,
+                            geo: {
+                                address: item.geo.address,
+                                latitude: item.geo.latitude,
+                                longitude: item.geo.longitude
+                            }
                         }
                     }
                 }
-            }
 
-            if (item.geo && item.geo.latitude && item.geo.longitude) {
-                newLatLng = {
-                    initLat: item.geo.latitude,
-                    initLong: item.geo.longitude,
-                    initZoom: 6.5
-                }
-            }
-
-            if (item.pdf_item_pages) {
-                newFormdata = {
-                    ...newFormdata,
-                    pdf_item_pages: {
-                        start: item.pdf_item_pages.start || this.state.formdata.pdf_item_pages.start,
-                        end: item.pdf_item_pages.end || this.state.formdata.pdf_item_pages.end
+                if (item.geo && item.geo.latitude && item.geo.longitude) {
+                    newLatLng = {
+                        initLat: item.geo.latitude,
+                        initLong: item.geo.longitude,
+                        initZoom: 6.5
                     }
                 }
-            }
 
-
-
-            
-            this.setState({
-                formdata: newFormdata,
-                initMap: newLatLng
-            })
-            
-            if (this.props.items.item.is_pdf_chapter ) {
-                    
-                if (!this.state.getParentCalled) {
-                    this.props.dispatch(getParentPdf(this.props.items.item.pdf_item_parent_id))
+                if (item.pdf_item_pages) {
+                    newFormdata = {
+                        ...newFormdata,
+                        pdf_item_pages: {
+                            start: item.pdf_item_pages.start || this.state.formdata.pdf_item_pages.start,
+                            end: item.pdf_item_pages.end || this.state.formdata.pdf_item_pages.end
+                        }
+                    }
                 }
+
+
+
+                
                 this.setState({
-                    getParentCalled: true
+                    formdata: newFormdata,
+                    initMap: newLatLng
                 })
+                
+                if (this.props.items.item.is_pdf_chapter ) {
+                        
+                    if (!this.state.getParentCalled) {
+                        this.props.dispatch(getParentPdf(this.props.items.item.pdf_item_parent_id))
+                    }
+                    this.setState({
+                        getParentCalled: true
+                    })
+                }
             }
         }
 
@@ -392,7 +396,15 @@ class EditItem extends PureComponent {
                     <Link to={`/items/${this.state.formdata._id}`} target="_blank" >
                         <div className="container">
                             <div className="img_back">
-                                <img src={`/media/items/${formdata._id}/original/0.jpg`} alt="item main image" className="edit_main_img" onError={this.addDefaultImg} />
+                                
+
+                                { this.props.items.files && this.props.items.files.length ?
+                                    <div>
+                                    <img src={`/media/items/${formdata._id}/original/${this.props.items.files[0].name}`} alt="item main image" className="edit_main_img" onError={this.addDefaultImg} />
+                                    </div>
+                                : <img src={'/media/default/default.jpg'} /> }
+                                
+
                             </div>
                             <div className="centered edit_img_text"><h2>{formdata.title}</h2></div>
                         </div>
@@ -687,7 +699,8 @@ class EditItem extends PureComponent {
     render() {
         let items = this.props.items;
 
-        console.log(this.state)
+        console.log('STATE', this.state);
+        console.log('PROPS', this.props);
 
         return (
             <div className="main_view">
