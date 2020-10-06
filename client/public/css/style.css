@@ -362,13 +362,13 @@ header .navItem span {
     width: 65%;
      padding-top: 50px; 
 } */
-#intro {
-  min-height: 450px;
+#intro-main {
+  min-height: 600px;
   color: #fff;
   text-align: center;
 }
 
-#intro .bg-image {
+#intro-main .bg-image {
   position: absolute;
   background: #333 url("/media/intro/intro.jpg");
   background-position: center;
@@ -381,18 +381,18 @@ header .navItem span {
   top: 0;
 }
 
-#intro h1 {
+#intro-main h1 {
   padding-top: 100px;
   padding-bottom: 0;
 }
 
-#intro .content-wrap,
-#intro-a .content-wrap {
+#intro-main .content-wrap,
+#intro-main-a .content-wrap {
   padding: 0 1.5em;
   text-shadow: black 0px 0px 10px;
 }
 
-#intro .btn {
+#intro-main .btn {
   display: inline-block;
   background: #333;
   color: #e6e6e6;
@@ -403,9 +403,13 @@ header .navItem span {
   text-shadow: none;
 }
 
-#intro .btn:hover {
+#intro-main .btn:hover {
   background: #eaeaea;
   color: #333;
+}
+
+.intro-items {
+  background-color: #333;
 }
 
 /*=============================
