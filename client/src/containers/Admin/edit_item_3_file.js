@@ -186,6 +186,7 @@ class EditItemFile extends PureComponent {
 
 
     onClickHandler = () => {
+        console.log('ONCLICKHANDLER TRIGGERED')
 
         if (this.props.user.login.isAuth) {
             this.props.dispatch(updateItem(

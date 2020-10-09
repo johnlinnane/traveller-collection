@@ -999,7 +999,7 @@ app.post(
                 .resize(width, height)
                 .toFile(`${dest}/0.jpg`, function(err) {
                     if(!err) {
-                        console.log('sharp worked');
+                        console.log('SHARP WORKED');
                         res.write("File uploaded successfully.");
                         res.end();
                     } else {
