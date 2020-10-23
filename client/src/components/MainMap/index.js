@@ -32,7 +32,6 @@ class MainMap extends Component {
 
 
         return (
-            <div>
                 <Map 
                     className="main_map"
                     center={[this.state.initLat, this.state.initLong]} 
@@ -94,7 +93,6 @@ class MainMap extends Component {
                 
 
 
-            </div>
         );
     }
 }

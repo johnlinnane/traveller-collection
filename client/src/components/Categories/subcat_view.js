@@ -140,7 +140,7 @@ class SubcatView  extends Component {
 
     renderItems = () => {
         return(
-                <div>
+                <div className="render_items">
                     { this.props.subcatitems.map( (item, i) => (
                         <div key={i}>
                             <Link to={`/items/${item._id}`} key={i}>
@@ -163,7 +163,6 @@ class SubcatView  extends Component {
     }
 
     renderMap = () => (
-        <div>
             <Map 
                 className="main_map"
                 center={[this.state.initLat, this.state.initLong]} 
@@ -204,7 +203,6 @@ class SubcatView  extends Component {
 
 
             </Map>
-        </div>
     )
 
     render() {
@@ -214,10 +212,9 @@ class SubcatView  extends Component {
 
     
         return (
-            <div>
+            <div className="subcat_view_component">
                 <NavigationBar navinfo={this.state.navInfo}/>
-                <div className="main_view">
-                    <div className="cat_view">
+                    <div className="main_view cat_view">
                         
                         { this.props.subcat && this.props.subcat.title ?
                             <h2 className="title">{this.props.subcat.title}</h2>
@@ -250,7 +247,6 @@ class SubcatView  extends Component {
 
 
                     </div>
-                </div>
             </div>
         )
     }

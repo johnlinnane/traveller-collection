@@ -5,12 +5,10 @@ import Header from '../components/Header/header'
 
 const Layout = (props) => {
     return (
-        <div>
+        <section className="layoutjs_wrapper">
             <Header />
-            <div>
-                {props.children}
-            </div>
-        </div>
+            {props.children}
+        </section>
     );
 };
 

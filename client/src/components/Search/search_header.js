@@ -13,21 +13,17 @@ const SearchHeader = (props) => {
 
 
     return (
-      // <header>
-      <div className="rl_container">
-      <div className="search_input">  
+        <div className="search_input rl_container">  
 
-        {/* <div className="logo">Search</div> */}
-        <input 
-          type="text" 
-          onChange={props.keywords}
-          placeholder={props.placeholder}
-          
-        />
-  
-      </div>
-      </div>
-      // </header>
+          {/* <div className="logo">Search</div> */}
+          <input 
+            type="text" 
+            onChange={props.keywords}
+            placeholder={props.placeholder}
+            
+          />
+    
+        </div>
     )
   
 }

@@ -481,7 +481,6 @@ class ItemView extends Component {
 
         return ( 
 
-            <div>
 
                 
 
@@ -748,7 +747,6 @@ class ItemView extends Component {
 
 
                 </div> 
-            </div> 
         )
     }
 
@@ -773,7 +771,7 @@ class ItemView extends Component {
 
         return (
             
-            <div>
+            <div className="item_view_component">
                 { this.navInfo.catTitle  ?
                     <NavigationBar navinfo={this.navInfo} title={items.item.title}/>    
                 : null }

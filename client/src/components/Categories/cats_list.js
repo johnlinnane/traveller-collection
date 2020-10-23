@@ -41,12 +41,12 @@ class CatList extends Component {
         let cats = this.props.cats;
 
         return (
-            <div>
+            <div className="cats_list_wrapper">
                 <NavigationBar navinfo={this.navInfo}/>
-                <div className="main_view">
+                {/* <div className="main_view"> */}
                     
                     {/* <div className="cat_list"> */}
-                    <div className="cat_items_view">
+                    <div className="main_view cat_items_view">
                         <h2>Categories</h2>
 
                         { cats && cats.length ?
@@ -60,7 +60,7 @@ class CatList extends Component {
                             ))
                         : null }
                     </div>
-                </div>
+                {/* </div> */}
             </div>
 
             

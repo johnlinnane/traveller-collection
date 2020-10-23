@@ -103,8 +103,8 @@ class CatView  extends Component {
     renderSubcats = () => {
         return (
            
-                    <div className="cat_grid_row">
-                        <div className="cat_grid_column">
+                    // <div className="cat_grid_row">
+                        <div className="cat_grid_row cat_grid_column">
 
                             {this.state.theseSubcats && this.state.theseSubcats.length ?
                                 
@@ -124,7 +124,7 @@ class CatView  extends Component {
 
 
                         </div>
-                    </div>
+                    // </div>
             
         )
     }
@@ -141,11 +141,10 @@ class CatView  extends Component {
         let catinfo = this.props.catinfo;
         
         return (
-            <div>
+            <div className="cat_view_component">
                 <NavigationBar navinfo={this.navInfo}/>
 
-                <div className="main_view">
-                    <div className="cat_view">
+                <div className="main_view cat_view">
 
                         
                         { catinfo ? 
@@ -158,7 +157,6 @@ class CatView  extends Component {
 
                         <hr />
                         {this.renderSubcats()}
-                    </div>
                 </div>
             </div>
         )
