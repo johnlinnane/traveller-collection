@@ -1637,7 +1637,7 @@ input[type=number] {
 /*=============================
             INFO
 ===============================*/
-.info_page img {
+.info_section img {
   width: 150px;
   float: left;
   padding-right: 25px;
@@ -1646,6 +1646,15 @@ input[type=number] {
 .info_section {
   float: left;
   padding-bottom: 30px;
+}
+
+.info_icons {
+  text-align: center;
+  padding-bottom: 30px;
+}
+
+.info_icons_img {
+  width: 70% !important;
 }
 
 /*=============================

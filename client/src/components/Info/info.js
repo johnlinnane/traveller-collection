@@ -21,7 +21,7 @@ class Info extends Component {
 
         return (
 
-            <div>
+            <div className="info_page">
                 {text && text.sections ?
                     text.sections.map( (section, i) => (
                         <div key={i} className="info_section">
@@ -32,12 +32,12 @@ class Info extends Component {
                             : null}
 
                             <div className="img_and_para">
-                                <div>
+                                {/* <div> */}
                                     <img src={`/media/info/${i+1}.jpg`} 
                                         alt="Item" 
                                         onError={i => i.target.style.display='none'}/
                                     >
-                                </div>
+                                {/* </div> */}
 
                                     { section.paragraph ?
                                         <div className="para">
@@ -62,12 +62,13 @@ class Info extends Component {
     }
 
     renderIcons = (text) => (
-        <div>
+        <div className="info_icons">
             <div className="info_heading">
                 <h3>{text.iconsCaption}</h3>
             </div>
-
+            
             <img src={`/media/info/icons.jpg`} 
+                className="info_icons_img"
                 alt="Item" 
                 onError={i => i.target.style.display='none'}/
             >
@@ -84,7 +85,7 @@ class Info extends Component {
         console.log(this.props)
         return (
             <div className="main_view">
-                <div className="info_page">
+                
                     {this.props.text ?
                         this.renderInfo()
                         
@@ -93,7 +94,7 @@ class Info extends Component {
 
                     
 
-                </div>
+                
             </div>
         );
     }

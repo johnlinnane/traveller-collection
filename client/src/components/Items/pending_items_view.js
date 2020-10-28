@@ -99,7 +99,7 @@ class PendingItemsView extends Component {
         return (
             <div className="main_view">
                 <div className="p_items_view">
-                    <h2>Categories</h2>
+                    <h2>Pending Items</h2>
 
                     {this.state.items && this.state.items.length ?
                         this.state.items.map( (item, i) => (
