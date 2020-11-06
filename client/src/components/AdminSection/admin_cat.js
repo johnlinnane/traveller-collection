@@ -529,7 +529,7 @@ class AdminCat extends Component {
         return (
             <div className="admin">
                 { this.props.chosenCatInfo ? 
-                    <div>
+                    <div className="admin_cat_component">
                         <form onSubmit={this.submitForm}>
                             <table>
                             <tbody>

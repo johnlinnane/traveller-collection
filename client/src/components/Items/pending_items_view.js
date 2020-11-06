@@ -97,8 +97,8 @@ class PendingItemsView extends Component {
 
 
         return (
-            <div className="main_view">
-                <div className="p_items_view">
+            <div className="main_view p_items_view">
+                {/* <div className="p_items_view"> */}
                     <h2>Pending Items</h2>
 
                     {this.state.items && this.state.items.length ?
@@ -107,7 +107,7 @@ class PendingItemsView extends Component {
                         ))
                 
                     : <p>There are no pending items.</p>}
-                </div>
+                {/* </div> */}
 
                 
             </div>
