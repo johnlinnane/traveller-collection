@@ -538,20 +538,14 @@ class AdminCat extends Component {
                                         <h3>Title</h3>
                                     </td>
                                     <td>
-
                                         <input
                                             type="text"
                                             placeholder={this.props.chosenCatInfo.title}
                                             defaultValue={this.props.chosenCatInfo.title} 
                                             onChange={(event) => this.handleCatInput(event, 'cat_title')}
                                         />
-
-
-
-
                                     </td>
                                 </tr>
-
 
                                 <tr>
                                     <td>
@@ -571,11 +565,17 @@ class AdminCat extends Component {
 
                                 <tr>
                                     <td>
-                                        <img className="change_cat_img" src={this.state.imgSrc} onError={this.addDefaultImg}/>
+                                        <h3>Category Image</h3>
                                     </td>
                                     <td>
+                                        <img className="change_cat_img" src={this.state.imgSrc} onError={this.addDefaultImg}/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>
                                         <div className="form_element">
-                                            <input type="file" className="form-control" multiple name="file" accept="image/*" onChange={this.onImgChange}/>
+                                            <input type="file" className="admin_cat_img_input form-control" multiple name="file" accept="image/*" onChange={this.onImgChange}/>
                                             <br />
                                             {/* <button type="button" className="btn btn-success btn-block" onClick={this.onClickHandler}>Upload</button>  */}
                                         </div>
@@ -583,10 +583,11 @@ class AdminCat extends Component {
                                 </tr>
                                 
                                 <tr>
+                                    <td></td>
                                     <td>
                                         <button 
                                             type="button" 
-                                            className="btn btn-success btn-block edit_page_3_finish delete" 
+                                            className="btn btn-success btn-block delete" 
                                             onClick={(e) => { if (window.confirm('Are you sure you wish to delete this image?')) this.deleteImage() }}
                                         >
                                             Delete Image
@@ -596,19 +597,20 @@ class AdminCat extends Component {
                                
 
                                 <tr>
-                                    <td className="label">
-                                        Hide this category.
+
+                                    <td>
+                                        <h3>Visibility</h3>
                                     </td>
                                     <td>
-                                        <div className="form_element share_toggle">
+                                        <div className="admin_cat_visibility">
                                             <input 
                                                 type="checkbox" 
-                                                // className="share_toggle"
                                                 checked={this.state.formdata.cat.catIsHidden} 
                                                 onChange={(event) => this.handleHidden(event)}
                                             />
-                                            
+                                            <span>Hide this category.</span>
                                         </div>
+                                        
                                     </td>
                                 </tr>
 

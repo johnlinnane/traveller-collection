@@ -1548,12 +1548,7 @@ input[type="number"] {
     padding: 40px 0px;
 }
 
-.change_cat_img {
-    width: 250px;
-    display: block;
-    /* padding: 15px; */
-    border-radius: 10px;
-}
+
 
 .vert_tab {
     display: flex;
@@ -1591,6 +1586,33 @@ input[type="number"] {
     margin-top: 20px;
 }
 
+.admin_view td {
+    vertical-align: top;
+}
+
+.admin_view td h3 {
+    margin-top: 0;
+}
+
+.admin_view td textarea {
+    margin-top: 0;
+}
+
+.admin_view td span {
+    margin-top: 4px;
+}
+
+
+
+
+.change_cat_img {
+    width: 250px;
+    display: block;
+    /* padding: 15px; */
+    border-radius: 10px;
+}
+
+
 
 .admin h2 {
     font-size: 33px;
@@ -1598,7 +1620,7 @@ input[type="number"] {
     color: #02bcd4;
 }
 
-.admin input {
+.admin .admin_cat_img_input {
     font-size: 15px;
     border-radius: 3px;
     border: 1px solid #ebebeb;
@@ -1647,6 +1669,8 @@ input[type="number"] {
     width: 85%;
 }
 
+
+
 .admin .conf_link {
     color: #8BC34A;
     font-weight: 600;
@@ -1685,7 +1709,7 @@ input[type="number"] {
 .admin .delete {
     background: #E91E63;
     width: 100%;
-    margin-top: 20px;
+    // margin-top: 20px;
 }
 
 .admin .spacer {
@@ -1750,20 +1774,35 @@ input[type="number"] {
 
 
 
-/******** INFO */
+/******** ADMIN: INFO */
 
 .admin_info {
     text-align: left;
 }
 
-.admin_info img {
-    width:250px
+.admin_info td {
+    width:50%
 }
 
-.info_table_section {
+.admin_info_table_section {
     width: 100%;
 }
 
+.admin_info_table_section input {
+    width: 100%;
+}
+
+.admin_info_table_section textarea {
+    width: 100%;
+}
+
+.admin_info_table_section img {
+    width: 100%;
+}
+
+.admin_info_table_section button {
+    width: 100%;
+}
 
 
 

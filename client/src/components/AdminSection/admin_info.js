@@ -416,7 +416,7 @@ class AdminInfo extends Component {
                     <td>
                         <button 
                             type="button" 
-                            className="btn btn-success btn-block edit_page_3_finish delete" 
+                            className="btn btn-success btn-block delete" 
                             onClick={() => { this.removeSection(i) }}
                         >
                             Remove Section
@@ -461,6 +461,10 @@ class AdminInfo extends Component {
                     </div>
                 </td>
             </tr>
+
+            <tr>
+                <td colSpan="2"><hr/></td>
+            </tr>
         </React.Fragment>
     )
 
@@ -469,13 +473,13 @@ class AdminInfo extends Component {
         console.log(this.state)
 
         return (
-            <div className="admin">
+            <div className="admin rl_container">
                 <div className="admin_info">
 
                     <h1>Edit Info Page</h1>
 
                     <form onSubmit={this.submitForm}>
-                        <table className="info_table_section" >
+                        <table className="admin_info_table_section" >
                             <tbody>
 
 
@@ -483,20 +487,32 @@ class AdminInfo extends Component {
                                     this.renderRows()
                                 : null }
 
-                                {this.renderIcons()}
-
+                                
+                                <tr><td></td><td></td></tr>
 
                                 <tr>
                                     <td>
+                                        Add Section
+                                    </td>
+                                    <td>
                                         <button 
                                             type="button" 
-                                            className="btn btn-success btn-block edit_page_3_finish delete" 
                                             onClick={(e) => { this.addSection() }}
                                         >
-                                            Add Section
+                                            Click here to add another section
                                         </button> 
                                     </td>
                                 </tr>
+                                
+                                <tr><td></td><td></td></tr>
+
+                                <tr>
+                                    <td colSpan="2"><hr/></td>
+                                </tr>
+
+                                {this.renderIcons()}
+
+                                
 
                                 <tr>
                                     <td>

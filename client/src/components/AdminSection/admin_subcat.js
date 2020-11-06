@@ -600,14 +600,14 @@ class AdminSubCat extends Component {
                 { this.props.chosenSubCatInfo ? 
                     <div>
                         <form onSubmit={this.submitForm}>
-                            <table>
+                            <table className="rl_container">
                             <tbody>
                                 
 
 
                                 <tr>
                                     <td>
-                                        Title
+                                        <h3>Title</h3>
                                     </td>
                                     <td>
                                         <input
@@ -622,10 +622,10 @@ class AdminSubCat extends Component {
 
                                 <tr>
                                     <td>
-                                        Description
+                                        <h3>Description</h3>
                                     </td>
                                     <td>
-                                        <input
+                                        <textarea
                                             type="text"
                                             placeholder="Description"
                                             defaultValue={this.props.chosenSubCatInfo.description} 
@@ -650,24 +650,42 @@ class AdminSubCat extends Component {
                                 </tr> */}
                                 <tr>
                                     <td>
+                                        <h3>Sub-Category Image</h3>
+                                    </td>
+                                    <td>
                                         <img 
                                             className="change_cat_img" 
                                             src={this.state.imgSrc} 
                                             onError={this.addDefaultImg}
                                         />
                                     </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
                                     <td>
                                         <div className="form_element">
-                                            <input type="file" className="form-control" multiple name="file" accept="image/*" onChange={this.onImgChange}/>
+                                            <input type="file" className="admin_cat_img_input form-control" multiple name="file" accept="image/*" onChange={this.onImgChange}/>
                                             <br />
                                         </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <button 
+                                            type="button" 
+                                            className="btn btn-success btn-block delete" 
+                                            onClick={(e) => { if (window.confirm('Are you sure you wish to delete this image?')) this.deleteImage() }}
+                                        >
+                                            Delete Image
+                                        </button> 
                                     </td>
                                 </tr>
 
 
                                 <tr>
                                     <td>
-                                        Parent Category
+                                        <h3>Parent Category</h3>
                                     </td>
                                     {this.state.selectedCatsLoaded ?
                                             <td>
@@ -760,17 +778,6 @@ class AdminSubCat extends Component {
 
 
 
-                                <tr>
-                                    <td>
-                                        <button 
-                                            type="button" 
-                                            className="btn btn-success btn-block edit_page_3_finish delete" 
-                                            onClick={(e) => { if (window.confirm('Are you sure you wish to delete this image?')) this.deleteImage() }}
-                                        >
-                                            Delete Image
-                                        </button> 
-                                    </td>
-                                </tr>
 
 
 
