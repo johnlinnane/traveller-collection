@@ -1152,12 +1152,11 @@ td, th {
 
 .item_list_add_text {
   color: #000 !important;
+  text-align: center;
 }
 
-.item_list_add img {
-  height: 100px;
-  display: block;
-  margin: 0 auto !important;
+#add_img {
+  filter: none;
 }
 
 /* grid stuff */

@@ -1231,22 +1231,18 @@ header .navItem span {
     border-radius: 15px;
 }
 
-.item_list_figure {
-}
-
 
 .item_list_add {
     cursor: pointer;
+    
 }
 .item_list_add_text {
     color: #000 !important;
+    text-align: center;
 }
 
-.item_list_add img {
-    
-    height: 100px;
-    display: block;
-    margin: 0 auto !important;
+#add_img {
+    filter: none;
 }
 
  /* grid stuff */
