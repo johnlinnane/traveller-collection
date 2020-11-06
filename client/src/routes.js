@@ -2,51 +2,53 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
 
+
+import Intro from './components/Intro/intro';
+import CatList from './components/Categories/cats_list';
+import CatView from './components/Categories/cat_view';
+import SubcatView from './components/Categories/subcat_view';
+import ItemView from './components/Items/item_view';
+import Search from './components/Search';
+import MainMap from './components/MainMap';
+import Info from './components/Info/info';
+import AddItem from './components/Admin/add_item';
+import Login from './containers/Admin/login';
+
+// CONTAINERS ETC.
 import Home from './components/Home/home'
 import Layout from './hoc/layout';
-import Login from './containers/Admin/login';
-import User from './components/Admin';
 import Auth from './hoc/auth';
 import Register from './containers/Admin/register';
 import Logout from './components/Admin/logout';
 
-import Search from './components/Search';
-import CollList from './components/Collections/list';
-import Collection from './components/Collections/collection';
-import AddItem from './components/Admin/add_item';
 
+// WHEN LOGGED IN
+import User from './components/Admin';
 import UserItems from './components/Admin/userItems';
+import AllItems from './components/Admin/all_items';
+import PendingItemsView from './components/Items/pending_items_view';
+
 import EditItem from './containers/Admin/edit_item';
 import EditItemSel from './containers/Admin/edit_item_2_sel';
 import EditItemFile from './containers/Admin/edit_item_3_file';
 import ChapterIndex from './containers/Admin/chapter_index';
 
-import ItemView from './components/Items/item_view';
-import PendingItemsView from './components/Items/pending_items_view';
-
-
-import CatList from './components/Categories/cats_list';
-import CatView from './components/Categories/cat_view';
-import SubcatView from './components/Categories/subcat_view';
-
-import AllItems from './components/Admin/all_items';
-import Info from './components/Info/info';
-import Intro from './components/Intro/intro';
-
+import Admin from './components/AdminSection';
 import CatEdit from './containers/Admin/cat_edit';
 
-import Admin from './components/AdminSection';
 
-
-import MainMap from './components/MainMap';
-
-
-
-
-
-
-
+// DEPRECATED & MISC
+import CollList from './components/Collections/list';
+import Collection from './components/Collections/collection';
 import Sandbox from './components/Sandbox/sandbox';
+
+
+
+
+
+
+
+
 
 
 
