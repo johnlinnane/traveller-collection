@@ -1026,6 +1026,7 @@ header .navItem span {
     display: block;
     /* overflow: hidden */
     min-height: 250px;
+    clear: left;
 }
 
 .search_item_img {
@@ -1036,7 +1037,7 @@ header .navItem span {
 
 .search_item_image {
     float:left;
-    margin: 15px;
+    margin-right: 15px;
     
 }
 
@@ -1805,11 +1806,20 @@ input[type="number"] {
             MAP
 ===============================*/
 
+.map_page_wrapper {
+
+}
+
+.map_header {
+    text-align: center;
+    margin-top: 40px; 
+}
+
 .main_map {
     width: 75%; 
     height: 750px;
     /* margin-bottom: 30px; */
     /* transition: height 2s;    */
-    
     margin: auto;
+    margin-top: 30px;
 }

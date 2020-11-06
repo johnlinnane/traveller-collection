@@ -40,13 +40,13 @@ const SidenavItems = ({user}) => {
         {   type:'navItem',
             icon:'file-text-o',
             text:'Add Item',
-            link:'/user/add_item',
+            link:'/add_item',
             restricted:false
         },
         {   type:'navItem',
             icon:'file-text-o',
             text:'Pending Items',
-            link:'/pending-items',
+            link:'/user/pending-items',
             restricted:true
         },
         {   type:'navItem',

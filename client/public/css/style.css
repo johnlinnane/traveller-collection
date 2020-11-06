@@ -961,6 +961,7 @@ td, th {
   display: block;
   /* overflow: hidden */
   min-height: 250px;
+  clear: left;
 }
 
 .search_item_img {
@@ -971,7 +972,7 @@ td, th {
 
 .search_item_image {
   float: left;
-  margin: 15px;
+  margin-right: 15px;
 }
 
 .search_item_info {
@@ -1642,12 +1643,18 @@ input[type=number] {
 /*=============================
             MAP
 ===============================*/
+.map_header {
+  text-align: center;
+  margin-top: 40px;
+}
+
 .main_map {
   width: 75%;
   height: 750px;
   /* margin-bottom: 30px; */
   /* transition: height 2s;    */
   margin: auto;
+  margin-top: 30px;
 }
 
 /*# sourceMappingURL=style.css.map */

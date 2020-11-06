@@ -6,15 +6,12 @@ import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
 import { getItemsWithCoords } from '../../actions';
 
 
-
 class MainMap extends Component {
 
     state = {
         initLat: 53.342609,
         initLong: -7.603976,
         initZoom: 8
-
-        
     }
 
     componentDidMount() {
@@ -30,8 +27,12 @@ class MainMap extends Component {
 
         console.log(this.props)
 
-
         return (
+            <div className="map_page_wrapper">
+                <div className="map_header">
+                    <span>Click on a point on the map to take you to the item.</span>
+                </div>
+
                 <Map 
                     className="main_map"
                     center={[this.state.initLat, this.state.initLong]} 
@@ -42,8 +43,6 @@ class MainMap extends Component {
                         attribution='&copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     />
-
-
 
                     {/* <Marker 
                         position={[this.state.initLat, this.state.initLong]} 
@@ -71,13 +70,12 @@ class MainMap extends Component {
                                                 <Link to={`/items/${item._id}`} target="_blank">
                                                     <span><b>{item.title}</b></span>
                                                     <br/>
-                                                    {item.address ?
+                                                    {item.geo.address ?
                                                         <div>
-                                                            <span>{item.address}</span><br/>
+                                                            <span>{item.geo.address}</span><br/>
                                                             <br/>
                                                         </div>
                                                     : null}
-                                                    <span>{item.geo.latitude}, {item.geo.longitude}</span><br/>
                                                 </Link>
                                             </Popup>
                                         
@@ -86,13 +84,8 @@ class MainMap extends Component {
                             ) )}     
                         </div>
                     : null}
-
-
                 </Map>
-
-                
-
-
+            </div>
         );
     }
 }

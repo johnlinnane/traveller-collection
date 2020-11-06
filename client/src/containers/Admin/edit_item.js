@@ -505,7 +505,7 @@ class EditItem extends PureComponent {
                         <tr>
                             <td></td>
                             <td>
-                                <Link to={`/chapter-index/${this.state.formdata._id}`} target="_blank" >
+                                <Link to={`/user/chapter-index/${this.state.formdata._id}`} target="_blank" >
                                     <button type="button" className="half_width_l">Add Chapter Index (PDF)</button>
                                 </Link>
                             </td>

@@ -141,7 +141,7 @@ class SubcatView  extends Component {
 
     renderItems = () => {
         return(
-                <div className="render_items">
+                <div className="subcat_render_items">
                     { this.props.subcatitems.map( (item, i) => (
                         <div key={i}>
                             <Link to={`/items/${item._id}`} key={i}>
