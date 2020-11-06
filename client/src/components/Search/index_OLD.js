@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux';
 
 import SearchHeader from './search_header';
-import NewsList from './news_list';
+import SearchList from './news_list';
 import { getAllItems } from '../../actions';
 
 
@@ -82,11 +82,11 @@ class Search extends Component {
                 <SearchHeader keywords={this.getKeyword} placeholder="Search..."/>
                 {/* <SearchHeader keywords={this.getKeywordCreator} placeholder="Creator..."/> */}
 
-                <NewsList news={this.state.filtered.length === 0 ? null : newsFiltered}>
+                <SearchList news={this.state.filtered.length === 0 ? null : newsFiltered}>
                     {/* <h3>
                         Items: 
                     </h3> */}
-                </NewsList>
+                </SearchList>
             </div>
 
         )

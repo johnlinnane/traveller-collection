@@ -266,12 +266,11 @@ class ItemView extends Component {
             // variableWidth: true
         }
 
-        var divs = [];
+        var slickDivs = [];
         files.forEach( (file, i) => {      
-        // for (var i = 0; i < files.length; i++) {
-            divs.push( 
-                <div key={i} className={"featured_item"}> 
-                    <div className={"featured_image"} 
+            slickDivs.push( 
+                <div key={i} className="featured_item"> 
+                    <div className="featured_image"
                          style={{
                             background: `url(/media/items/${this.props.match.params.id}/original/${files[i]})`
                             // <img src={`/media/items/${items.item._id}/original/0.jpg`} alt="Item" onError={this.addDefaultImg}/>
@@ -282,7 +281,7 @@ class ItemView extends Component {
             )
         })
         
-        return <Slick {...settings}>{divs}</Slick>;
+        return <Slick {...settings}>{slickDivs}</Slick>;
 
 
     }
@@ -473,280 +472,228 @@ class ItemView extends Component {
 
     renderItem = (itemdata, itemFiles, imgFiles, pdfFiles, vidFiles) => {
 
-
-        
-
-
-        // console.log(itemFiles);
-
         return ( 
+            <div className="item_container">
+                <div className="item_header">
+                    <h1>{itemdata.title}</h1>
+                    {itemFiles && itemFiles.length ?
+                        <div className="item_media">
+                            {imgFiles && imgFiles.length ?
+                                imgFiles.length === 1 ?
+                                    /////////////////////// SHOW SINGLE IMAGE ///////////////////////
+                                    <div>
+                                        {/* { itemdata.number_files == null || itemdata.number_files < 2 ? */}
+                                            <div className="item_img">
+                                                <img src={`/media/items/${itemdata._id}/original/${itemFiles[0]}`} 
+                                                className="item_main_img"
+                                                alt="Item" 
+                                                onError={i => i.target.style.display='none'}/>
+                                            </div>
+                                        {/* : null } */}
+                                    </div>
+                                    ///////////////////////// SHOW MULTIPLE IMAGES ///////////////////////
+                                    : this.renderSlider(imgFiles) 
+                            : null}
 
-
-                
-
-                <div className="item_container">
-                    
-
-                    <div className="item_header">
-
-                        <h1>{itemdata.title}</h1>
-
-
-                        {itemFiles && itemFiles.length ?
-                            <div>
-                           
-
-                                
-
-
-                                {imgFiles && imgFiles.length ?
-                                    
-                                    imgFiles.length === 1 ?
-                                    
-                                        /////////////////////// SHOW SINGLE IMAGE ///////////////////////
-                                        <div>
-                                            {/* { itemdata.number_files == null || itemdata.number_files < 2 ? */}
-                                                <div className="item_img">
-                                                    <img src={`/media/items/${itemdata._id}/original/${itemFiles[0]}`} 
-                                                    className="item_main_img"
-                                                    alt="Item" 
-                                                    onError={i => i.target.style.display='none'}/>
-                                                </div>
-                                            {/* : null } */}
-                                        </div>
-                                    
-                                        ///////////////////////// SHOW MULTIPLE IMAGES ///////////////////////
-                                        : this.renderSlider(imgFiles) 
-                                    
-                                : null}
-
-                                {/* /////////////////////// SHOW PDF /////////////////////// */}
-
-                                { ( pdfFiles.length ) || (itemdata.is_pdf_chapter === true) ? 
-                                    this.renderPDF()
-                                : null }
-
-                                {/* /////////////////////// SHOW VIDEO /////////////////////// */}
-                                
-
-                                {vidFiles && vidFiles.length ?
-                                    
-                                    <video className="video" controls name="media">
-                                        <source src={`/media/items/${itemdata._id}/original/${vidFiles[0]}`} type="video/mp4"/>
-                                    </video>
+                            {/* /////////////////////// SHOW PDF /////////////////////// */}
+                            { ( pdfFiles.length ) || (itemdata.is_pdf_chapter === true) ? 
+                                this.renderPDF()
                             : null }
 
-                            </div>
-                        : null }
-
-
-                        <br />
-
-                        
-                        {itemdata.creator ?
-                            <div className="item_field item_creator item_review"><p><b>Creator </b></p><h5>{itemdata.creator}</h5></div>
-                        : null }
-
-
-
-                        {/* <div className="item_field link_blue">
-                            <p><b>{text}</b></p>
-                            
-                            <span dangerouslySetInnerHTML={{__html:  ref}}></span>
-                        </div> */}
-                        
-
-                        <div className="item_reviewer ">
-                            <span className="item_field">
-                                { itemdata.contributor && itemdata.contributor.name && itemdata.contributor.lastname ?
-                                    <span>Submitted by: {itemdata.contributor.name} {itemdata.contributor.lastname} - </span>
-                                : null }
-
+                            {/* /////////////////////// SHOW VIDEO /////////////////////// */}
+                            {vidFiles && vidFiles.length ?
                                 
-                                {this.props.user.login.isAuth && !this.state.isPending === true ?
-                                    <Link to={`/user/edit-item/${this.props.match.params.id}`}>Edit</Link>
-                                : null }
-                            </span>
+                                <video className="video" controls name="media">
+                                    <source src={`/media/items/${itemdata._id}/original/${vidFiles[0]}`} type="video/mp4"/>
+                                </video>
+                            : null }
                         </div>
-                    </div>
-
-
-                    <div className="item_review item_body">
-
-                        {this.renderField('Subject', itemdata.subject)}
-                        {this.renderField('Description', itemdata.description)}
-                        {this.renderField('Source', itemdata.source)}
-                        {this.renderField('Date Created', itemdata.date_created)}
-                        {this.renderField('Contributor', itemdata.contributor)}
-                        {this.renderField('Item Format', itemdata.item_format)}
-                        {this.renderField('Materials', itemdata.materials)}
-                        {this.renderField('Physical Dimensions', itemdata.physical_dimensions)}
-                        {this.renderField('Pages', itemdata.pages)}
-                        {this.renderField('Editor', itemdata.editor)}
-                        {this.renderField('Publisher', itemdata.publisher)}
-                        {this.renderField('Further Info', itemdata.further_info)}
-                        
-                        
-
-                        {itemdata.geo && itemdata.geo.address ?
-                            this.renderField('Address', itemdata.geo.address)
-                        : null }
-
-
-                        {itemdata.pdf_item_parent_id && this.props.parentpdf ?
-                            <div className="item_field link_blue">
-                                <p><b>Source Document Item</b></p>
-                                <Link to={`/items/${this.props.parentpdf._id}`} target="_blank">
-
-                                    <span>{this.props.parentpdf.title}</span>
-                                </Link>
-                            </div>
-                            
-                        : null}
-
-
-                        {itemdata.geo && itemdata.geo.latitude && itemdata.geo.longitude ? 
-                            <div>
-                                <div className="item_map_heading" onClick={() => this.setState({showMap: !this.state.showMap})}>
-                                    <p>
-                                        <b>View on Map </b> 
-                                        {this.state.showMap ?
-                                            <i className="fa fa-angle-up"></i>
-                                        : <i className="fa fa-angle-down"></i>}
-                                    </p>
-                                </div>
-                                {this.state.showMap ?
-                                    <Map 
-                                        className="item_map"
-                                        center={[itemdata.geo.latitude, itemdata.geo.longitude]} 
-                                        zoom={this.state.mapZoom} 
-                                        style={{ height: this.state.showMap ? '350px' : '0px'}}
-                                    >
-                                        <TileLayer
-                                            attribution='&copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                                        />
-
-                                        <Marker 
-                                            position={[itemdata.geo.latitude, itemdata.geo.longitude]} 
-                                            // key={incident['incident_number']} 
-                                        >
-                                            <Popup>
-                                                <span><b>{itemdata.title}</b></span>
-                                                <br/>
-                                                <span>{itemdata.geo.address}</span><br/>
-                                                <br/>
-                                                <span>{itemdata.geo.latitude}, {itemdata.geo.longitude}</span><br/>
-                                            </Popup>
-                                        </Marker>
-                                    </Map>
-                                : null }
-                            </div>
-                        : null}
-
-
-
-                        
-
-                        
-
-
-                        
-  
-                    </div> 
-
+                    : null }
 
 
                     
+                    {itemdata.creator ?
+                        <div className="item_field item_creator item_review"><p><b>Creator </b></p><h5>{itemdata.creator}</h5></div>
+                    : null }
 
 
-                    {itemdata.external_link && itemdata.external_link[0].url ?
-                                <Link to={itemdata.external_link[0].url}  target="_blank">
-                                    <div className="link_wrapper">
-                                        <div className="link_img">
-                                            <img src='/media/icons/ext_link.png' className="ext_link"/>
-                                        </div>
 
-                                        <div className="link_text">
-                                            <b>External Link:</b><br />
-                                            {itemdata.external_link[0].text}
-                                        </div>
+                    {/* <div className="item_field link_blue">
+                        <p><b>{text}</b></p>
+                        
+                        <span dangerouslySetInnerHTML={{__html:  ref}}></span>
+                    </div> */}
+                    
+
+                    <div className="item_reviewer ">
+                        <span className="item_field">
+                            { itemdata.contributor && itemdata.contributor.name && itemdata.contributor.lastname ?
+                                <span>Submitted by: {itemdata.contributor.name} {itemdata.contributor.lastname} - </span>
+                            : null }
+                            
+                            {this.props.user.login.isAuth && !this.state.isPending === true ?
+                                <Link to={`/user/edit-item/${this.props.match.params.id}`}>Edit</Link>
+                            : null }
+                        </span>
+                    </div>
+                </div>
+
+
+                <div className="item_review item_body">
+
+                    {this.renderField('Subject', itemdata.subject)}
+                    {this.renderField('Description', itemdata.description)}
+                    {this.renderField('Source', itemdata.source)}
+                    {this.renderField('Date Created', itemdata.date_created)}
+                    {this.renderField('Contributor', itemdata.contributor)}
+                    {this.renderField('Item Format', itemdata.item_format)}
+                    {this.renderField('Materials', itemdata.materials)}
+                    {this.renderField('Physical Dimensions', itemdata.physical_dimensions)}
+                    {this.renderField('Pages', itemdata.pages)}
+                    {this.renderField('Editor', itemdata.editor)}
+                    {this.renderField('Publisher', itemdata.publisher)}
+                    {this.renderField('Further Info', itemdata.further_info)}
+                    
+                    
+
+                    {itemdata.geo && itemdata.geo.address ?
+                        this.renderField('Address', itemdata.geo.address)
+                    : null }
+
+
+                    {itemdata.pdf_item_parent_id && this.props.parentpdf ?
+                        <div className="item_field link_blue">
+                            <p><b>Source Document Item</b></p>
+                            <Link to={`/items/${this.props.parentpdf._id}`} target="_blank">
+                                <span>{this.props.parentpdf.title}</span>
+                            </Link>
+                        </div>
+                        
+                    : null}
+
+
+                    {itemdata.geo && itemdata.geo.latitude && itemdata.geo.longitude ? 
+                        <div>
+                            <div className="item_map_heading" onClick={() => this.setState({showMap: !this.state.showMap})}>
+                                <p>
+                                    <b>View on Map </b> 
+                                    {this.state.showMap ?
+                                        <i className="fa fa-angle-up"></i>
+                                    : <i className="fa fa-angle-down"></i>}
+                                </p>
+                            </div>
+                            {this.state.showMap ?
+                                <Map 
+                                    className="item_map"
+                                    center={[itemdata.geo.latitude, itemdata.geo.longitude]} 
+                                    zoom={this.state.mapZoom} 
+                                    style={{ height: this.state.showMap ? '350px' : '0px'}}
+                                >
+                                    <TileLayer
+                                        attribution='&copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                                    />
+
+                                    <Marker 
+                                        position={[itemdata.geo.latitude, itemdata.geo.longitude]} 
+                                        // key={incident['incident_number']} 
+                                    >
+                                        <Popup>
+                                            <span><b>{itemdata.title}</b></span>
+                                            <br/>
+                                            <span>{itemdata.geo.address}</span><br/>
+                                            <br/>
+                                            <span>{itemdata.geo.latitude}, {itemdata.geo.longitude}</span><br/>
+                                        </Popup>
+                                    </Marker>
+                                </Map>
+                            : null }
+                        </div>
+                    : null}
+                </div> 
+
+
+                {itemdata.external_link && itemdata.external_link[0].url ?
+                    <Link to={itemdata.external_link[0].url}  target="_blank">
+                        <div className="link_wrapper">
+                            <div className="link_img">
+                                <img src='/media/icons/ext_link.png' className="ext_link"/>
+                            </div>
+
+                            <div className="link_text">
+                                <b>External Link:</b><br />
+                                {itemdata.external_link[0].text}
+                            </div>
+                        </div>
+                    </Link>
+                : null }
+
+
+
+                {itemdata.shareDisabled ?
+                    null
+                    :               
+                    <div className="shareIcons">
+                        <FacebookShareButton
+                            url={`http://${config.IP_ADDRESS}:3000/items/${itemdata._id}`}
+                            className="shareIcon"
+                            quote={itemdata.title}
+                            >
+                            <FacebookIcon size={32} round={true}/>
+                        </FacebookShareButton>
+
+
+                        <WhatsappShareButton
+                            url={`http://${config.IP_ADDRESS}:3000/items/${itemdata._id}`}
+                            className="shareIcon"
+                            title={itemdata.title}
+                            >
+                            <WhatsappIcon size={32} round={true}/>
+                        </WhatsappShareButton>
+
+                        <EmailShareButton
+                            url={`http://${config.IP_ADDRESS}:3000/items/${itemdata._id}`}
+                            className="shareIcon"
+                            subject={itemdata.title}
+                            >
+                            <EmailIcon size={32} round={true}/>
+                        </EmailShareButton>
+                    </div>
+                }
+
+
+
+
+                {!this.state.isPending ?
+                    <div className="item_box">
+                        <div className="left">
+                            {this.props.previtem ?
+                                <Link to={`/items/${this.props.previtem._id}`}>
+                                    <div>
+                                        <span className="white_txt">Previous Item</span>
+                                    </div>
+                                    <div className="no_overflow">
+                                        <span>{this.props.previtem.title}</span>
                                     </div>
                                 </Link>
-                    : null }
-
-
-
-                    {itemdata.shareDisabled ?
-                        null
-                        :               
-                        <div className="shareIcons">
-                            <FacebookShareButton
-                                url={`http://${config.IP_ADDRESS}:3000/items/${itemdata._id}`}
-                                className="shareIcon"
-                                quote={itemdata.title}
-                                >
-                                <FacebookIcon size={32} round={true}/>
-                            </FacebookShareButton>
-
-
-                            <WhatsappShareButton
-                                url={`http://${config.IP_ADDRESS}:3000/items/${itemdata._id}`}
-                                className="shareIcon"
-                                title={itemdata.title}
-                                >
-                                <WhatsappIcon size={32} round={true}/>
-                            </WhatsappShareButton>
-
-                            <EmailShareButton
-                                url={`http://${config.IP_ADDRESS}:3000/items/${itemdata._id}`}
-                                className="shareIcon"
-                                subject={itemdata.title}
-                                >
-                                <EmailIcon size={32} round={true}/>
-                            </EmailShareButton>
+                            : null }
                         </div>
-                    }
 
-
-
-
-                    {!this.state.isPending ?
-                        <div className="item_box">
-                            <div className="left">
-                                {this.props.previtem ?
-                                    <Link to={`/items/${this.props.previtem._id}`}>
-                                        <div>
-                                            <span className="white_txt">Previous Item</span>
-                                        </div>
-                                        <div className="no_overflow">
-                                            <span>{this.props.previtem.title}</span>
-                                        </div>
-                                    </Link>
-                                : null }
-                            </div>
-
-
-
-                            
-                            <div className="right">
-                                {this.props.nextitem ?
-                                    <Link to={`/items/${this.props.nextitem._id}`}>
-                                        <div>
-                                            <span className="white_txt">Next Item</span>
-                                        </div>
-                                        <div>
-                                            <span>{this.props.nextitem.title}</span>
-                                        </div>
-                                    </Link>
-                                : null }
-                            </div>
-
-                        </div> 
-                    : null }
-
-
-                </div> 
+                        <div className="right">
+                            {this.props.nextitem ?
+                                <Link to={`/items/${this.props.nextitem._id}`}>
+                                    <div>
+                                        <span className="white_txt">Next Item</span>
+                                    </div>
+                                    <div>
+                                        <span>{this.props.nextitem.title}</span>
+                                    </div>
+                                </Link>
+                            : null }
+                        </div>
+                    </div> 
+                : null }
+            </div> 
         )
     }
 

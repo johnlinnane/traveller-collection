@@ -3,7 +3,7 @@ import {css} from 'glamor';
 import { Link } from 'react-router-dom';
 
 
-const NewsItem = ({item}) => {
+const SearchItem = ({item}) => {
   
   // let news_item = css({
   //   padding: '20px', 
@@ -48,9 +48,9 @@ const NewsItem = ({item}) => {
                   <h3>{item.title}</h3>
                   
                   { item.creator ?
-                      <div>
+                      <span>
                         <b>Creator: </b>{item.creator}
-                      </div>
+                      </span>
                   : null }
                   
               </div>
@@ -59,6 +59,6 @@ const NewsItem = ({item}) => {
     )
 }
 
-export default NewsItem;
+export default SearchItem;
 
 

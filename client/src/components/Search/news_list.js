@@ -1,8 +1,8 @@
 import React from 'react';
-import NewsItem from './news_list_item'
+import SearchItem from './news_list_item'
 
 // access the props from index.js
-const NewsList = (props) => {
+const SearchList = (props) => {
 
 
 
@@ -12,12 +12,12 @@ const NewsList = (props) => {
 
         const items = props.news.map( (item) => {
             return (
-                <NewsItem key={item._id} item={item} />
+                <SearchItem key={item._id} item={item} />
             )
         })
 
         return (
-          <div className="newslist_component">
+          <div className="SearchList_component">
             {props.children}  
             {items}
           </div>
@@ -29,4 +29,4 @@ const NewsList = (props) => {
     
 }
 
-export default NewsList;
+export default SearchList;
