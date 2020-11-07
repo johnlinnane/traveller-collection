@@ -1010,6 +1010,78 @@ app.post(
         }
 )
 
+////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
+
+
+// FIELDS UPLOAD
+
+// var upload = multer({ dest: '../client/public/media/fresh-multer-test' })
+var upload = multer({ 
+                storage: multer.diskStorage({
+                    destination: function (req, file, cb) {
+                        cb(null, '../client/public/media/fresh-multer-test')
+                    },
+                    filename: function (req, file, cb) {
+                        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+                        let extArray = file.mimetype.split("/");
+                        let extension = extArray[extArray.length - 1];
+                
+                        cb(null, `${req.params.filename}-${file.fieldname}-${uniqueSuffix}.${extension}`)
+                    }
+                }) 
+            })
+
+// var cpUpload = upload.fields([{ name: 'avatar1', maxCount: 1 }, { name: 'avatar2', maxCount: 8 }])
+
+app.post('/fresh-multer-test/:filename', 
+    (req, res, next) => {
+        // console.log('REQ: ', req)
+        console.log('HI');
+        res.locals.nameo = 'BONE';
+        
+        next()
+    },
+    upload.fields([{ name: 'avatar1', maxCount: 1 }, { name: 'avatar2', maxCount: 8 }])
+  // req.files is an object (String -> Array) where fieldname is the key, and the value is array of files
+  //
+  // e.g.
+  //  req.files['avatar'][0] -> File
+  //  req.files['gallery'] -> Array
+  //
+  // req.body will contain the text fields, if there were any
+)
+
+
+
+// SINGLE FILE UPLOAD
+
+// var upload = multer({ storage: storageTest })
+
+// var storageTest = multer.diskStorage({
+//     destination: function (req, file, cb) {
+//         cb(null, '../client/public/media/fresh-multer-test')
+//     },
+//     filename: function (req, file, cb) {
+//         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+//         let extArray = file.mimetype.split("/");
+//         let extension = extArray[extArray.length - 1];
+
+//         cb(null, `${req.params.filename}-${file.fieldname}-${uniqueSuffix}.${extension}`)
+//     }
+// })
+  
+
+
+// app.post('/fresh-multer-test/:filename', upload.single('avatar'), function (req, res, next) {
+//     console.log('REQ.FILE: ', req.file);
+//     console.log('REQ.BODY: ', req.body);
+// });
+
+////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
+
+
 
 
 let fieldData = [];
@@ -1058,6 +1130,7 @@ app.post(
                       }
                     cb(null, `${newId}.${ext}` );
                     // index++;
+                    
                 }
             })
         })
