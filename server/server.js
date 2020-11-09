@@ -50,6 +50,13 @@ const { fileURLToPath } = require('url');
 
 
 // set middleware
+
+// https://stackoverflow.com/questions/35931135/cannot-post-error-using-express
+// to stop cannot POST url message
+app.use(bodyParser.urlencoded({
+    extended: false
+ }));
+
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(cors())
