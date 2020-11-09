@@ -1034,7 +1034,7 @@ var upload = multer({
 
 // var cpUpload = upload.fields([{ name: 'avatar1', maxCount: 1 }, { name: 'avatar2', maxCount: 8 }])
 
-app.post('/fresh-multer-test/:filename', 
+app.post('/fresh-multer-test', 
     (req, res, next) => {
         // console.log('REQ: ', req)
         console.log('HI');
