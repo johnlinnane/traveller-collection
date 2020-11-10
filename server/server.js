@@ -1132,7 +1132,7 @@ var storageAaa = multer.diskStorage({
         let extension = extArray[extArray.length - 1];
 
         // cb(null, `${req.params.filename}-${file.fieldname}-${uniqueSuffix}.${extension}`)
-        cb(null, `output-file-name.jpg-${Date.now()}`)
+        cb(null, `output-file-name-${Date.now()}.jpg`)
     }
 })
 
