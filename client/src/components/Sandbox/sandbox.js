@@ -15,6 +15,8 @@ class Sandbox extends Component {
         selectedFilesImg: []
     }
 
+    fileInput = React.createRef();
+    
     onChangeHandler = (event) => {
         event.preventDefault()
 
@@ -31,26 +33,49 @@ class Sandbox extends Component {
             filesArray: tempFilesArray,
             selectedFilesImg: tempSelectedFilesImg
         })
-
+        
         
     }
 
+    removeFile = (i) => {
+
+        let tempFilesArray = this.state.filesArray;
+        tempFilesArray.splice(i, 1)
+
+        let tempSelectedFilesImg = this.state.selectedFilesImg;
+        tempSelectedFilesImg.splice(i, 1)
+
+        this.setState({
+            filesArray: tempFilesArray,
+            selectedFilesImg: tempSelectedFilesImg
+        })
+    }
 
 
     onClickHandler = () => {
 
         let data = new FormData() 
+        let fields = []
 
-        data.append('avatar', this.state.filesArray[0][0]);
-        data.append('avatar2', this.state.filesArray[1][0]);
-        data.append('someinfo', 'well hello there');
+        // data.append('someinfo', JSON.stringify(fields));
+        data.append('someinfo', 'bones');
+
+        this.state.filesArray.forEach( (file, i) => {
+            data.append(`file_${i}`, file[0]);    
+            fields.push({name: `file_${i}`, maxCount: 1});
+        })
+
+        
+
+        
+        
 
         
         for (var pair of data.entries()) {
             console.log(pair[0]+ ', ' + pair[1]); 
         }
         
-        axios.post(`http://${config.IP_ADDRESS}:3001/basic-evaa`, data)
+        axios.post(`http://${config.IP_ADDRESS}:3001/basic-evaa/2`, data)
             .then(res => console.log(res))
             .catch(err => { 
                 console.log(err)
@@ -60,7 +85,7 @@ class Sandbox extends Component {
     }
 
     render() {
-        console.log(this.state.filesArray)
+        console.log(this.state)
 
         return (
             <div>
@@ -70,15 +95,22 @@ class Sandbox extends Component {
                     <div key={`input${i}`}>
                         <p>FILENAME: {file[0].name}</p>
                         <img className="sandbox_img" src={this.state.selectedFilesImg[i]} />
+                        <button type="button" onClick={() => this.removeFile(i)}>Remove File</button> 
                         <br />
                     </div>
                 ))}
 
-
+                {this.state.filesArray.length == 0 ?
+                <input
+                    type="file" 
+                    value=''
+                    onChange={(event) => {this.onChangeHandler(event)}}
+                />
+                : 
                 <input
                     type="file" 
                     onChange={(event) => {this.onChangeHandler(event)}}
-                />
+                /> }
                 
 
                 

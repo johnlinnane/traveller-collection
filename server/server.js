@@ -1118,9 +1118,13 @@ app.post('/fresh-multer-test', uploadX.single('avatar'));
 
 
 
-// MOST BASIC MULTER
+// // MOST BASIC MULTER
 
 // var uploadaa = multer({ dest: '../client/public/media/fresh-multer-test' })
+
+
+
+
 
 var storageAaa = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -1138,17 +1142,116 @@ var storageAaa = multer.diskStorage({
 var uploadFieldAa = multer({ storage: storageAaa })
 // var uploadFieldAa = multer({ dest: '../client/public/media/fresh-multer-test' })
 
-var cpUploadAaa = uploadFieldAa.fields([{ name: 'avatar', maxCount: 1 }, { name: 'avatar2', maxCount: 1 }])
+// var cpUploadAaa = uploadFieldAa.fields([{ name: 'file_0', maxCount: 1 }, { name: 'file_1', maxCount: 1 }])
+// var cpUploadAaa = uploadFieldAa.fields(req.body.info)
 
-app.post('/basic-evaa', cpUploadAaa, (req, res, next) => {
-    // req.file is the `avatar` file
-    // req.body will hold the text fields, if there were any
-    // console.log('REQ: ', req)
-    console.log(req.body.someinfo)
-    res.send('File uploaded')
-})
+app.post('/basic-evaa/:numberfiles', 
+    (req, res, next) => {
+        console.log('first callback executed')
+        console.log('params: ', req.params.numberfiles);
+        var num = req.params.numberfiles;
+        var fields = [];
+        for (i = 0; i < num; i++) {
+            fields.push({
+                name: `file_${i}`,
+                maxCount: 1
+            })
+        }
+        
+        res.locals.myvar = fields;
+        next()
+    },
+    uploadFieldAa.fields([{ name: 'file_0', maxCount: 1 }, { name: 'file_1', maxCount: 1 }]), 
+    
+    (req, res, next) => {
+        console.log('MYVAR: ', res.locals.myvar)
+        console.log('third callback executed')
+        // req.file is the `avatar` file
+        // req.body will hold the text fields, if there were any
+        // console.log('REQ: ', req)
+        console.log('SOMEINFO: ', req.body.someinfo);
+        res.send('File uploaded');
+    }
+)
 
 
+
+// MOST BASIC MULTER REFACTORED ----------------
+
+// var uploadaa = multer({ dest: '../client/public/media/fresh-multer-test' })
+
+
+
+// var goMulter = (req, res) => {
+
+
+//     multer({ storage: multer.diskStorage({
+//         destination: function (req, file, cb) {
+//             cb(null, '../client/public/media/fresh-multer-test')
+//         },
+//         filename: function (req, file, cb) {
+//             let extArray = file.mimetype.split("/");
+//             let extension = extArray[extArray.length - 1];
+//             console.log(file.mimetype)
+//             // cb(null, `${req.params.filename}-${file.fieldname}-${uniqueSuffix}.${extension}`)
+//             cb(null, `output-file-name-${Date.now()}.${extension}`)
+//         }
+//     }) })
+//     .fields([{ name: 'file_0', maxCount: 1 }, { name: 'file_1', maxCount: 1 }])
+
+// }
+
+
+
+// var uploadFieldAa = multer({ dest: '../client/public/media/fresh-multer-test' })
+
+// var cpUploadAaa = uploadFieldAa.fields([{ name: 'file_0', maxCount: 1 }, { name: 'file_1', maxCount: 1 }])
+// var cpUploadAaa = uploadFieldAa.fields(req.body.info)
+
+// // ************
+
+// var theUpload = multer({ storage: multer.diskStorage({
+//     destination: function (req, file, cb) {
+//         cb(null, '../client/public/media/fresh-multer-test');
+        
+//     },
+//     filename: function (req, file, cb) {
+//         let extArray = file.mimetype.split("/");
+//         let extension = extArray[extArray.length - 1];
+//         console.log(file.fieldname)
+        
+//         // cb(null, `${req.params.filename}-${file.fieldname}-${uniqueSuffix}.${extension}`)
+//         cb(null, `output-file-name-${Date.now()}.${extension}`)
+//     }
+// }) })
+// .fields([{ name: 'file_0', maxCount: 1 }, { name: 'file_1', maxCount: 1 }])
+
+
+// app.post('/basic-evaa', (req, res, next) => {
+//     console.log('REQ.BODY: ', req.body);
+//     theUpload(req, res, function(err) {
+//         if (err instanceof multer.MulterError) {
+//             console.log(err)// A Multer error occurred when uploading.
+//         } else if (err) {
+//             console.log(err)// An unknown error occurred when uploading.
+//         }
+//         console.log('Multer successo') // Everything went fine.
+        
+//     })
+    
+//     next();
+    
+// }, function (req, res) {
+
+    
+//     console.log(req.file)
+//     // req.file is the `avatar` file
+//     // req.body will hold the text fields, if there were any
+//     // console.log('REQ: ', req)
+//     console.log('SOMEINFO: ', req.body.someinfo);
+//     res.send('File uploaded');
+    
+// })
 
 
 
