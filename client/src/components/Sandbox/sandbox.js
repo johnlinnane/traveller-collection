@@ -20,7 +20,7 @@ class Sandbox extends Component {
 
         let tempFilesArray = this.state.filesArray;
 
-        tempFilesArray.push(vent.target.files)
+        tempFilesArray.push(event.target.files)
 
         this.setState({
             filesArray: tempFilesArray
