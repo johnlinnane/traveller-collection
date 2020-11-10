@@ -11,38 +11,38 @@ class Sandbox extends Component {
 
 
     state = {
-        theFile: null
+        filesArray: []
     }
 
     onChangeHandler = (event) => {
         event.preventDefault()
+
+
+        let tempFilesArray = this.state.filesArray;
+
+        tempFilesArray.push(vent.target.files)
+
         this.setState({
-            theFile: event.target.files
+            filesArray: tempFilesArray
         })
     }
 
     onClickHandler = () => {
 
         let data = new FormData() 
-        data.append('avatar', this.state.theFile[0]);
+
+        data.append('avatar', this.state.filesArray[0][0]);
+        data.append('avatar2', this.state.filesArray[1][0]);
         data.append('someinfo', 'well hello there');
 
 
-        // axios.post(`http://${config.IP_ADDRESS}:3001/fresh-multer-test`, data)
-        
-        //     .then(res => { // then print response status
-        //         console.log(res);
-        //         alert('File(s) uploaded successfully')
-        //     })
-        //     .catch(err => { 
-        //         console.log(err)
-        //         console.error('upload fail')
-        //     })
-
-        
         
         axios.post(`http://${config.IP_ADDRESS}:3001/basic-evaa`, data)
             .then(res => console.log(res))
+            .catch(err => { 
+                console.log(err)
+                console.error('upload fail')
+            })
 
     }
 
@@ -51,8 +51,13 @@ class Sandbox extends Component {
 
         return (
             <div>
-                <p>{this.state.fileName}: Upload Fields Aaaaa</p>
+                <p>{this.state.fileName}: Upload Fields Aaaaa Array</p>
                     
+                    <input 
+                        type="file" 
+                        onChange={(event) => {this.onChangeHandler(event)}}
+                    />
+
                     <input 
                         type="file" 
                         onChange={(event) => {this.onChangeHandler(event)}}
