@@ -36,10 +36,6 @@ class Sandbox extends Component {
         data.append('someinfo', 'well hello there');
 
         
-        data.append('key1', 'value1');
-        data.append('key2', 'value2');
-
-        
         for (var pair of data.entries()) {
             console.log(pair[0]+ ', ' + pair[1]); 
         }
