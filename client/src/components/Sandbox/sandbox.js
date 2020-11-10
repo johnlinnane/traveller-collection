@@ -11,7 +11,8 @@ class Sandbox extends Component {
 
 
     state = {
-        filesArray: []
+        filesArray: [],
+        selectedFilesImg: []
     }
 
     onChangeHandler = (event) => {
@@ -19,13 +20,22 @@ class Sandbox extends Component {
 
 
         let tempFilesArray = this.state.filesArray;
-
         tempFilesArray.push(event.target.files)
 
+
+        let tempSelectedFilesImg = this.state.selectedFilesImg;
+        tempSelectedFilesImg.push(URL.createObjectURL(event.target.files[0]));
+
+
         this.setState({
-            filesArray: tempFilesArray
+            filesArray: tempFilesArray,
+            selectedFilesImg: tempSelectedFilesImg
         })
+
+        
     }
+
+
 
     onClickHandler = () => {
 
@@ -50,28 +60,34 @@ class Sandbox extends Component {
     }
 
     render() {
-
+        console.log(this.state.filesArray)
 
         return (
             <div>
                 <p>{this.state.fileName}: Upload Fields Aaaaa Array Inspect</p>
-                    
-                    <input 
-                        type="file" 
-                        onChange={(event) => {this.onChangeHandler(event)}}
-                    />
-
-                    <input 
-                        type="file" 
-                        onChange={(event) => {this.onChangeHandler(event)}}
-                    />
+                
+                {this.state.filesArray.map( (file, i) => (
+                    <div key={`input${i}`}>
+                        <p>FILENAME: {file[0].name}</p>
+                        <img className="sandbox_img" src={this.state.selectedFilesImg[i]} />
+                        <br />
+                    </div>
+                ))}
 
 
-                    <br/><br/>
+                <input
+                    type="file" 
+                    onChange={(event) => {this.onChangeHandler(event)}}
+                />
+                
 
-                    
-                    <button type="button" onClick={this.onClickHandler}>Save and Finish</button> 
-              
+                
+
+                <hr/><br/>
+
+                
+                <button type="button" onClick={this.onClickHandler}>Save and Finish</button> 
+            
 
             </div>
             
