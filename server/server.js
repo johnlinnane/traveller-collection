@@ -51,11 +51,11 @@ const { fileURLToPath } = require('url');
 
 // set middleware
 
-// https://stackoverflow.com/questions/35931135/cannot-post-error-using-express
-// to stop cannot POST url message
-app.use(bodyParser.urlencoded({
-    extended: false
- }));
+// // https://stackoverflow.com/questions/35931135/cannot-post-error-using-express
+// // to stop cannot POST url message
+// app.use(bodyParser.urlencoded({
+//     extended: false
+//  }));
 
 app.use(bodyParser.json());
 app.use(cookieParser());
@@ -1019,51 +1019,53 @@ app.post(
 
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
 
 
 // FIELDS UPLOAD
 
-// var upload = multer({ dest: '../client/public/media/fresh-multer-test' })
-var upload = multer({ 
-                storage: multer.diskStorage({
-                    destination: function (req, file, cb) {
-                        cb(null, '../client/public/media/fresh-multer-test')
-                    },
-                    filename: function (req, file, cb) {
-                        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
-                        let extArray = file.mimetype.split("/");
-                        let extension = extArray[extArray.length - 1];
+// // var upload = multer({ dest: '../client/public/media/fresh-multer-test' })
+// var upload = multer({ 
+//                 storage: multer.diskStorage({
+//                     destination: function (req, file, cb) {
+//                         cb(null, '../client/public/media/fresh-multer-test')
+//                     },
+//                     filename: function (req, file, cb) {
+//                         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+//                         let extArray = file.mimetype.split("/");
+//                         let extension = extArray[extArray.length - 1];
                 
-                        cb(null, `${req.params.filename}-${file.fieldname}-${uniqueSuffix}.${extension}`)
-                    }
-                }) 
-            })
+//                         cb(null, `${req.params.filename}-${file.fieldname}-${uniqueSuffix}.${extension}`)
+//                     }
+//                 }) 
+//             })
 
 // var cpUpload = upload.fields([{ name: 'avatar1', maxCount: 1 }, { name: 'avatar2', maxCount: 8 }])
 
-app.post('/fresh-multer-test', 
-    (req, res, next) => {
-        // console.log('REQ: ', req)
-        console.log('HI');
-        res.locals.nameo = 'BONE';
+// app.post('/fresh-multer-test', 
+//     (req, res, next) => {
+//         // console.log('REQ: ', req)
+//         console.log('HI');
+//         res.locals.nameo = 'BONE';
         
-        next()
-    },
-    upload.fields([{ name: 'avatar1', maxCount: 1 }, { name: 'avatar2', maxCount: 8 }])
-  // req.files is an object (String -> Array) where fieldname is the key, and the value is array of files
-  //
-  // e.g.
-  //  req.files['avatar'][0] -> File
-  //  req.files['gallery'] -> Array
-  //
-  // req.body will contain the text fields, if there were any
-)
+//         next()
+//     },
+//     upload.fields([{ name: 'avatar0', maxCount: 1 }, { name: 'avatar1', maxCount: 8 }])
+//   // req.files is an object (String -> Array) where fieldname is the key, and the value is array of files
+//   //
+//   // e.g.
+//   //  req.files['avatar'][0] -> File
+//   //  req.files['gallery'] -> Array
+//   //
+//   // req.body will contain the text fields, if there were any
+// )
 
 
 
-// SINGLE FILE UPLOAD
+// // SINGLE FILE UPLOAD
 
-// var upload = multer({ storage: storageTest })
+// var uploadX = multer({ storage: storageTest })
 
 // var storageTest = multer.diskStorage({
 //     destination: function (req, file, cb) {
@@ -1074,17 +1076,64 @@ app.post('/fresh-multer-test',
 //         let extArray = file.mimetype.split("/");
 //         let extension = extArray[extArray.length - 1];
 
-//         cb(null, `${req.params.filename}-${file.fieldname}-${uniqueSuffix}.${extension}`)
+//         // cb(null, `${req.params.filename}-${file.fieldname}-${uniqueSuffix}.${extension}`)
+//         cb(null, `NAME`)
 //     }
 // })
   
 
 
-// app.post('/fresh-multer-test/:filename', upload.single('avatar'), function (req, res, next) {
-//     console.log('REQ.FILE: ', req.file);
-//     console.log('REQ.BODY: ', req.body);
-// });
+// app.post('/fresh-multer-test', uploadX.single('avatar'));
 
+
+
+// // MOST BASIC FORMDATAAAAAA
+
+var storageTest = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, '../client/public/media/fresh-multer-test')
+    },
+    filename: function (req, file, cb) {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+        let extArray = file.mimetype.split("/");
+        let extension = extArray[extArray.length - 1];
+
+        // cb(null, `${req.params.filename}-${file.fieldname}-${uniqueSuffix}.${extension}`)
+        cb(null, `output-file-name.jpg-${Date.now()}`)
+    }
+})
+
+var uploadX = multer({ storage: storageTest })
+
+app.post('/fresh-multer-test', uploadX.single('avatar'));
+
+
+
+// // MOST BASIC THING EVAAAA
+
+// app.post('/basic-evaa', (req, res) => {
+//     console.log(req.body.myVar)
+//     res.send('Hello')
+// })
+
+
+
+// MOST BASIC MULTER
+
+var uploadaa = multer({ dest: '../client/public/media/fresh-multer-test' })
+
+
+
+app.post('/basic-evaa', uploadaa.single('avatar'), (req, res, next) => {
+    // req.file is the `avatar` file
+    // req.body will hold the text fields, if there were any
+    console.log(req.body.someinfo)
+    res.send('File uploaded')
+  })
+
+
+////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
 

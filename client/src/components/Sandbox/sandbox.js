@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
+import axios from 'axios';
 
 import { getItemById} from '../../actions';
 
@@ -11,13 +11,40 @@ class Sandbox extends Component {
 
 
     state = {
-        fileName: 'myFile'
+        theFile: null
     }
 
-    // componentDidMount() {
-    //     this.props.dispatch(getItemById(this.props.match.params.id))
-    // }
+    onChangeHandler = (event) => {
+        event.preventDefault()
+        this.setState({
+            theFile: event.target.files
+        })
+    }
 
+    onClickHandler = () => {
+
+        let data = new FormData() 
+        data.append('avatar', this.state.theFile[0]);
+        data.append('someinfo', 'well hello there');
+
+
+        // axios.post(`http://${config.IP_ADDRESS}:3001/fresh-multer-test`, data)
+        
+        //     .then(res => { // then print response status
+        //         console.log(res);
+        //         alert('File(s) uploaded successfully')
+        //     })
+        //     .catch(err => { 
+        //         console.log(err)
+        //         console.error('upload fail')
+        //     })
+
+        
+
+        axios.post(`http://${config.IP_ADDRESS}:3001/basic-evaa`, data)
+            .then(res => console.log(res))
+
+    }
 
     render() {
 
@@ -26,17 +53,16 @@ class Sandbox extends Component {
             <div>
                 <p>{this.state.fileName}</p>
 
-                {/* <form action={`http://${config.IP_ADDRESS}:3001/fresh-multer-test/${this.state.fileName}`} method="post" encType="multipart/form-data"> */}
-                <form action={`http://${config.IP_ADDRESS}:3001/fresh-multer-test`} method="post" encType="multipart/form-data">
-                    <input type="file" name="avatar1" />
+                    <input 
+                        type="file" 
+                        onChange={(event) => {this.onChangeHandler(event)}}
+                    />
 
-                    <input type="file" name="avatar2" />
 
                     <br/><br/>
 
-                    <input type="submit" value="Submit" />
-                </form>
-
+                    
+                    <button type="button" onClick={this.onClickHandler}>Save and Finish</button> 
               
 
             </div>
