@@ -40,7 +40,7 @@ class Sandbox extends Component {
         //     })
 
         
-
+        console.log(config.IP_ADDRESS)
         axios.post(`http://${config.IP_ADDRESS}:3001/basic-evaa`, data)
             .then(res => console.log(res))
 
