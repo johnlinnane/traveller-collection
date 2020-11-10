@@ -35,14 +35,21 @@ class Sandbox extends Component {
         data.append('avatar2', this.state.filesArray[1][0]);
         data.append('someinfo', 'well hello there');
 
+        
+        data.append('key1', 'value1');
+        data.append('key2', 'value2');
 
         
-        axios.post(`http://${config.IP_ADDRESS}:3001/basic-evaa`, data)
-            .then(res => console.log(res))
-            .catch(err => { 
-                console.log(err)
-                console.error('upload fail')
-            })
+        for (var pair of data.entries()) {
+            console.log(pair[0]+ ', ' + pair[1]); 
+        }
+        
+        // axios.post(`http://${config.IP_ADDRESS}:3001/basic-evaa`, data)
+        //     .then(res => console.log(res))
+        //     .catch(err => { 
+        //         console.log(err)
+        //         console.error('upload fail')
+        //     })
 
     }
 
@@ -51,7 +58,7 @@ class Sandbox extends Component {
 
         return (
             <div>
-                <p>{this.state.fileName}: Upload Fields Aaaaa Array</p>
+                <p>{this.state.fileName}: Upload Fields Aaaaa Array Inspect</p>
                     
                     <input 
                         type="file" 
