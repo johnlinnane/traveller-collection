@@ -40,12 +40,12 @@ class Sandbox extends Component {
             console.log(pair[0]+ ', ' + pair[1]); 
         }
         
-        // axios.post(`http://${config.IP_ADDRESS}:3001/basic-evaa`, data)
-        //     .then(res => console.log(res))
-        //     .catch(err => { 
-        //         console.log(err)
-        //         console.error('upload fail')
-        //     })
+        axios.post(`http://${config.IP_ADDRESS}:3001/basic-evaa`, data)
+            .then(res => console.log(res))
+            .catch(err => { 
+                console.log(err)
+                console.error('upload fail')
+            })
 
     }
 

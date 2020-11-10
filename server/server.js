@@ -1144,10 +1144,10 @@ var cpUploadAaa = uploadFieldAa.fields([{ name: 'avatar', maxCount: 1 }, { name:
 app.post('/basic-evaa', cpUploadAaa, (req, res, next) => {
     // req.file is the `avatar` file
     // req.body will hold the text fields, if there were any
+    console.log('REQ: ', req)
     console.log(req.body.someinfo)
     res.send('File uploaded')
 })
-    .catch(err => console.log(err))
 
 
 
