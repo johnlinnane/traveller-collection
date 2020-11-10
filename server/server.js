@@ -1087,7 +1087,7 @@ app.post(
 
 
 
-// // MOST BASIC FORMDATAAAAAA
+// // MOST BASIC FORMDATA
 
 var storageTest = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -1120,9 +1120,23 @@ app.post('/fresh-multer-test', uploadX.single('avatar'));
 
 // MOST BASIC MULTER
 
-var uploadaa = multer({ dest: '../client/public/media/fresh-multer-test' })
+// var uploadaa = multer({ dest: '../client/public/media/fresh-multer-test' })
 
+var storageAaa = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, '../client/public/media/fresh-multer-test')
+    },
+    filename: function (req, file, cb) {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+        let extArray = file.mimetype.split("/");
+        let extension = extArray[extArray.length - 1];
 
+        // cb(null, `${req.params.filename}-${file.fieldname}-${uniqueSuffix}.${extension}`)
+        cb(null, `output-file-name.jpg-${Date.now()}`)
+    }
+})
+
+var uploadaa = multer({ storage: storageAaa })
 
 app.post('/basic-evaa', uploadaa.single('avatar'), (req, res, next) => {
     // req.file is the `avatar` file
