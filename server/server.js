@@ -1127,12 +1127,11 @@ var storageAaa = multer.diskStorage({
         cb(null, '../client/public/media/fresh-multer-test')
     },
     filename: function (req, file, cb) {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
         let extArray = file.mimetype.split("/");
         let extension = extArray[extArray.length - 1];
-
+        console.log(file.mimetype)
         // cb(null, `${req.params.filename}-${file.fieldname}-${uniqueSuffix}.${extension}`)
-        cb(null, `output-file-name-${Date.now()}.jpg`)
+        cb(null, `output-file-name-${Date.now()}.${extension}`)
     }
 })
 
@@ -1144,7 +1143,7 @@ var cpUploadAaa = uploadFieldAa.fields([{ name: 'avatar', maxCount: 1 }, { name:
 app.post('/basic-evaa', cpUploadAaa, (req, res, next) => {
     // req.file is the `avatar` file
     // req.body will hold the text fields, if there were any
-    console.log('REQ: ', req)
+    // console.log('REQ: ', req)
     console.log(req.body.someinfo)
     res.send('File uploaded')
 })
