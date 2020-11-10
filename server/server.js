@@ -1136,14 +1136,18 @@ var storageAaa = multer.diskStorage({
     }
 })
 
-var uploadaa = multer({ storage: storageAaa })
+var uploadFieldAa = multer({ storage: storageAaa })
 
-app.post('/basic-evaa', uploadaa.single('avatar'), (req, res, next) => {
+var cpUploadAaa = uploadFieldAa.fields([{ name: 'avatar', maxCount: 1 }, { name: 'avatar', maxCount: 8 }])
+
+app.post('/basic-evaa', cpUploadAaa, (req, res, next) => {
     // req.file is the `avatar` file
     // req.body will hold the text fields, if there were any
     console.log(req.body.someinfo)
     res.send('File uploaded')
   })
+
+
 
 
 ////////////////////////////////////////////////////////////////////////

@@ -51,8 +51,8 @@ class Sandbox extends Component {
 
         return (
             <div>
-                <p>{this.state.fileName}</p>
-
+                <p>{this.state.fileName}: Upload Fields Aaaaa</p>
+                    
                     <input 
                         type="file" 
                         onChange={(event) => {this.onChangeHandler(event)}}
