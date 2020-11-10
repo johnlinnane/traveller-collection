@@ -1136,7 +1136,8 @@ var storageAaa = multer.diskStorage({
     }
 })
 
-var uploadFieldAa = multer({ storage: storageAaa })
+// var uploadFieldAa = multer({ storage: storageAaa })
+var uploadFieldAa = multer({ dest: '../client/public/media/fresh-multer-test' })
 
 var cpUploadAaa = uploadFieldAa.fields([{ name: 'avatar', maxCount: 1 }, { name: 'avatar2', maxCount: 8 }])
 
