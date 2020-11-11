@@ -1279,7 +1279,8 @@ var storageArray = multer.diskStorage({
         console.log(file.mimetype)
         console.log('REQ.FILES: ', req.files)
         console.log('FILE: ', file)
-        cb(null, `output-file-name-${Date.now()}.${extension}`)
+        let uniqueId = mongoose.Types.ObjectId();
+        cb(null, `file-${uniqueId}.${extension}`)
     }
 })
 
