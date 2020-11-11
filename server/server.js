@@ -1278,6 +1278,7 @@ var storageArray = multer.diskStorage({
         let extension = extArray[extArray.length - 1];
         console.log(file.mimetype)
         console.log('REQ.FILES: ', req.files)
+        console.log('FILE: ', file)
         cb(null, `output-file-name-${Date.now()}.${extension}`)
     }
 })
@@ -1291,7 +1292,7 @@ app.post('/multer-test-array',
         next()
     },
     uploadArray.array('files'), 
-    
+
     (req, res, next) => {
         
         console.log('SOMEINFO: ', req.body.someinfo);
