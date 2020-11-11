@@ -1283,15 +1283,26 @@ var storageArray = multer.diskStorage({
     }
 })
 
-let uploadArray = multer({ storage: storageArray })
+let uploadArray = multer({ storage: storageArray }).array('files');
 
 
 app.post('/multer-test-array', 
-    (req, res, next) => {
-        console.log('first callback')
-        next()
-    },
-    uploadArray.array('files'), 
+    // (req, res, next) => {
+    //     console.log('first callback')
+    //     next()
+    // },
+    function (req, res, next) {
+        uploadArray(req, res, function (err) {
+            if (err instanceof multer.MulterError) {
+                console.log(err) // A Multer error occurred when uploading.
+            } else if (err) {
+                console.log(err) // An unknown error occurred when uploading.
+            }
+    
+            // Everything went fine.
+        })
+        next();
+    }, 
 
     (req, res, next) => {
         
