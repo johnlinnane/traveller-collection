@@ -206,53 +206,33 @@ class EditItemFile extends PureComponent {
 
         const data = new FormData() 
         
-        // if (this.state.selectedFiles.length) {
-        //     for (let i = 0; i < this.state.selectedFiles.length; i++) {
-        //         // data.append('file', this.state.selectedFiles[i])
-        //         data.append(`file_${i}`, this.state.selectedFiles[i][0]);
-        //     }
-
-        //     axios.post(`http://${config.IP_ADDRESS}:3001/upload-fields/${this.state.formdata._id}/${this.state.selectedFiles.length}`, data, {     
-        //         onUploadProgress: ProgressEvent => {
-        //             this.setState({
-        //                 loaded: (ProgressEvent.loaded / ProgressEvent.total*100)
-        //             })
-        //         }
-        //     })
-        //     .then(res => { // then print response status
-        //         // console.log(res.config.data.id);
-        //         // console.log(res.statusText);
-        //         console.log(res);
-        //         alert('File(s) uploaded successfully')
-        //     })
-        //     .catch(err => { 
-        //         console.log(err)
-        //     })
-        // }
-
         if (this.state.selectedFiles.length) {
-            let formdata = new FormData() 
+            for (let i = 0; i < this.state.selectedFiles.length; i++) {
+                // data.append('file', this.state.selectedFiles[i])
+                data.append(`file_${i}`, this.state.selectedFiles[i][0]);
+            }
 
-            this.state.selectedFiles.forEach( (file, i) => {
-                formdata.append('files', file[0]);  
+            axios.post(`http://${config.IP_ADDRESS}:3001/upload-fields/${this.state.formdata._id}/${this.state.selectedFiles.length}`, data, {     
+                onUploadProgress: ProgressEvent => {
+                    this.setState({
+                        loaded: (ProgressEvent.loaded / ProgressEvent.total*100)
+                    })
+                }
             })
-
-            axios.post(`http://${config.IP_ADDRESS}:3001/upload-array/${this.state.formdata._id}`, formdata)
-                .then(res => { // then print response status
-                    console.log(res);
-                    alert('File(s) uploaded successfully')
-                })
-                .catch(err => { 
-                    console.error('UPLOAD ERROR: ', err)
-                })
+            .then(res => { // then print response status
+                // console.log(res.config.data.id);
+                // console.log(res.statusText);
+                console.log(res);
+                alert('File(s) uploaded successfully')
+            })
+            .catch(err => { 
+                console.log(err)
+            })
         }
 
-
-
-
-        // setTimeout(() => {
-        //     this.props.history.push(`/items/${this.state.formdata._id}`)
-        // }, 1000)
+        setTimeout(() => {
+            this.props.history.push(`/items/${this.state.formdata._id}`)
+        }, 1000)
 
 
     }

@@ -1053,7 +1053,7 @@ var storageArray = multer.diskStorage({
 let uploadArray = multer({ storage: storageArray }).array('files');
 
 
-app.post('/upload-array/:id', 
+app.post('/multer-test-array/:id', 
     (req, res, next) => {
         console.log('first callback')
         next()
