@@ -1074,13 +1074,13 @@ app.post('/multer-test-array/:id',
         sharp(req.files[0].path)
             .resize(500, 500)
             .toFile(`${thumbPath}/0.jpg`, (err) => {
-                if(!err) {
-                    console.log('UPLOAD-FIELDS: sharp success');
-                    res.write("Sq thumbnail uploaded successfully.");
-                    res.end();
-                } else {
-                    console.log('UPLOAD-FIELDS SHARP ERROR', err);
-                }
+                // if(!err) {
+                //     console.log('UPLOAD-FIELDS: sharp success');
+                //     res.write("Sq thumbnail uploaded successfully.");
+                //     res.end();
+                // } else {
+                //     console.log('UPLOAD-FIELDS SHARP ERROR', err);
+                // }
             })
 
         console.log('SOMEINFO: ', req.body.someinfo);
