@@ -1026,10 +1026,10 @@ app.post(
 
 var storageArray = multer.diskStorage({
     destination: function (req, file, cb) {
-        const path = '../client/public/media/fresh-multer-test'
-        console.log('ID: ', req.params.id)
-        mkdirp.sync(`${path}/${req.params.id}`);
-        cb(null, `${path}/${req.params.id}`)
+        const path = `../client/public/media/items/${req.params.id}/original`
+        // console.log('ID: ', req.params.id)
+        mkdirp.sync(path);
+        cb(null, path)
 
     },
     filename: function (req, file, cb) {
@@ -1046,7 +1046,7 @@ var storageArray = multer.diskStorage({
             default:
               ext = extension
           }
-        cb(null, `file-${uniqueId}.${ext}`)
+        cb(null, `${uniqueId}.${ext}`)
     }
 })
 
@@ -1073,21 +1073,30 @@ app.post('/upload-array/:id',
     }, 
 
     (req, res, next) => {
-        let thumbPath = `../client/public/media/fresh-multer-test/${req.params.id}/sq_thumbnail`;
+        let thumbPath = `../client/public/media/items/${req.params.id}/sq_thumbnail`;
+
         mkdirp.sync(thumbPath);
 
-        sharp(req.files[0].path)
-            .resize(500, 500)
-            .toFile(`${thumbPath}/0.jpg`, (err) => {
-                if (err) {
-                    console.log('UPLOAD-FIELDS SHARP ERROR', err);
-                } else {
-                    console.log('UPLOAD-FIELDS: sharp success');
-                    // res.write("Sq thumbnail uploaded successfully.");
-                    // res.end();
-                    res.send("Sq thumbnail uploaded successfully.");
-                }
-            })
+        fs.readdir(thumbPath, function(err, thumbFiles) {
+            thumbFiles = thumbFiles.filter(item => !(/(^|\/)\.[^\/\.]/g).test(item));
+            if (!thumbFiles.length) {
+                sharp(req.files[0].path)
+                    .resize(500, 500)
+                    .toFile(`${thumbPath}/0.jpg`, (err) => {
+                        if (err) {
+                            console.log('UPLOAD-FIELDS SHARP ERROR', err);
+                        } else {
+                            console.log('UPLOAD-FIELDS: sharp success');
+                            // res.write("Sq thumbnail uploaded successfully.");
+                            // res.end();
+                            res.send("Sq thumbnail uploaded successfully.");
+                        }
+                    })
+            } else {
+                console.log('THUMB FILES: ', thumbFiles)
+                res.send("Files uploaded.");
+            }
+        })
     }
 )
 
@@ -1150,7 +1159,9 @@ app.post(
                 }
             })
         })
-        .fields(fieldData), (req, res, next) => {
+        .fields(fieldData), 
+        
+        (req, res, next) => {
             console.log('UPLOAD-FIELDS THIRD ARG REQ.FILES: ', req.files.file_0[0].path)
             itemId = req.params.id;
             // sharp.cache({files: 0});
