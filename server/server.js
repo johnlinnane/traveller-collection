@@ -1078,13 +1078,13 @@ app.post('/multer-test-array/:id',
                     console.log('UPLOAD-FIELDS SHARP ERROR', err);
                 } else {
                     console.log('UPLOAD-FIELDS: sharp success');
-                    res.write("Sq thumbnail uploaded successfully.");
-                    res.end();
+                    // res.write("Sq thumbnail uploaded successfully.");
+                    // res.end();
                 }
             })
 
-        console.log('SOMEINFO: ', req.body.someinfo);
-        res.send('File uploaded');
+        // console.log('SOMEINFO: ', req.body.someinfo);
+        // res.send('File uploaded');
     }
 )
 
