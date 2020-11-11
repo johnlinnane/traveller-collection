@@ -1067,10 +1067,9 @@ app.post('/multer-test-array/:id',
     }, 
 
     (req, res, next) => {
-        const thumbPath = `../client/public/media/fresh-multer-test/${req.params.id}/sq_thumbnail`
+        let thumbPath = `../client/public/media/fresh-multer-test/${req.params.id}/sq_thumbnail`;
         mkdirp.sync(thumbPath);
 
-        console.log('REQ.FILES.PATH: ', req.files[0].path)
         sharp(req.files[0].path)
             .resize(500, 500)
             .toFile(`${thumbPath}/0.jpg`, (err) => {
@@ -1080,11 +1079,9 @@ app.post('/multer-test-array/:id',
                     console.log('UPLOAD-FIELDS: sharp success');
                     // res.write("Sq thumbnail uploaded successfully.");
                     // res.end();
+                    res.send("Sq thumbnail uploaded successfully.");
                 }
             })
-
-        // console.log('SOMEINFO: ', req.body.someinfo);
-        // res.send('File uploaded');
     }
 )
 
