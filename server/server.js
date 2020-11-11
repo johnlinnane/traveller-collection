@@ -1270,7 +1270,10 @@ app.post('/basic-evaa',
 
 var storageArray = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, '../client/public/media/fresh-multer-test')
+        const path = '../client/public/media/fresh-multer-test'
+        console.log('ID: ', req.params.id)
+        mkdirp.sync(`${path}/${req.params.id}`);
+        cb(null, `${path}/${req.params.id}`)
 
     },
     filename: function (req, file, cb) {
@@ -1287,7 +1290,7 @@ var storageArray = multer.diskStorage({
 let uploadArray = multer({ storage: storageArray }).array('files');
 
 
-app.post('/multer-test-array', 
+app.post('/multer-test-array/:id', 
     // (req, res, next) => {
     //     console.log('first callback')
     //     next()
