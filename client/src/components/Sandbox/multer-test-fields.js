@@ -54,14 +54,26 @@ class Sandbox extends Component {
 
     onClickHandler = () => {
 
+        // let data = new FormData() 
+        // let fields = []
 
-        let formdata = new FormData() 
-        
-        formdata.append('someinfo', 'Well Hello There')
+        // data.append('someinfo', JSON.stringify(fields));
+        // data.append('someinfo', 'bones');
+
+        let dataArray = [];
+
         this.state.filesArray.forEach( (file, i) => {
-            formdata.append('files', file[0]);  
+            // data.append(`file_${i}`, file[0]);    
+            // fields.push({name: `file_${i}`, maxCount: 1});
+
+            dataArray.push(file[0])
         })
+
+        let formArray = new FormData() 
         
+        
+        formArray.append('formarray', dataArray)
+        console.log('DATAARRAY: ', dataArray )
         
 
         
@@ -69,7 +81,7 @@ class Sandbox extends Component {
         //     console.log(pair[0]+ ', ' + pair[1]); 
         // }
         
-        axios.post(`http://${config.IP_ADDRESS}:3001/multer-test-array`, formdata)
+        axios.post(`http://${config.IP_ADDRESS}:3001/basic-evaa`, formArray)
             .then(res => console.log(res))
             .catch(err => { 
                 console.log(err)

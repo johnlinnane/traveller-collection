@@ -1020,7 +1020,7 @@ app.post(
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////
+/////////////////////// TEST ZONE //////////////////////////////////////
 
 
 // FIELDS UPLOAD
@@ -1129,11 +1129,13 @@ app.post('/fresh-multer-test', uploadX.single('avatar'));
 var storageAaa = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, '../client/public/media/fresh-multer-test')
+
     },
     filename: function (req, file, cb) {
         let extArray = file.mimetype.split("/");
         let extension = extArray[extArray.length - 1];
         console.log(file.mimetype)
+        console.log('REQ.FILES: ', req.files)
         // cb(null, `${req.params.filename}-${file.fieldname}-${uniqueSuffix}.${extension}`)
         cb(null, `output-file-name-${Date.now()}.${extension}`)
     }
@@ -1144,26 +1146,34 @@ var uploadFieldAa = multer({ storage: storageAaa })
 
 // var cpUploadAaa = uploadFieldAa.fields([{ name: 'file_0', maxCount: 1 }, { name: 'file_1', maxCount: 1 }])
 // var cpUploadAaa = uploadFieldAa.fields(req.body.info)
+// let theFields = []
+// let numbahOFiles = 0;
 
-app.post('/basic-evaa/:numberfiles', 
-    (req, res, next) => {
-        console.log('first callback executed')
-        console.log('params: ', req.params.numberfiles);
-        var num = req.params.numberfiles;
-        var fields = [];
-        for (i = 0; i < num; i++) {
-            fields.push({
-                name: `file_${i}`,
-                maxCount: 1
-            })
-        }
+app.post('/basic-evaa', 
+    // (req, res, next) => {
+    //     console.log('first callback executed')
+    //     // console.log('params: ', req.params.numberfiles);
+    //     // var num = req.params.numberfiles;
+    //     // var fields = [];
+    //     // for (i = 0; i < num; i++) {
+    //     //     fields.push({
+    //     //         name: `file_${i}`,
+    //     //         maxCount: 1
+    //     //     })
+    //     // }
         
-        res.locals.myvar = fields;
-        next()
-    },
-    uploadFieldAa.fields([{ name: 'file_0', maxCount: 1 }, { name: 'file_1', maxCount: 1 }]), 
+    //     // theFields = fields;
+    //     // console.log('FIELDS: ', fields)
+    //     // numbahOFiles = req.params.numberfiles;
+    //     next()
+    // },
+    // uploadFieldAa.fields([{ name: 'file_0', maxCount: 1 }, { name: 'file_1', maxCount: 1 }]), 
+    // uploadFieldAa.fields([...theFields]), 
+    uploadFieldAa.array('formarray'), 
     
     (req, res, next) => {
+        
+        // console.log('numbah: ', numbahOFiles)
         console.log('MYVAR: ', res.locals.myvar)
         console.log('third callback executed')
         // req.file is the `avatar` file
@@ -1253,9 +1263,54 @@ app.post('/basic-evaa/:numberfiles',
     
 // })
 
+// MULTER ARRAY ----------------
 
 
-////////////////////////////////////////////////////////////////////////
+
+
+var storageArray = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, '../client/public/media/fresh-multer-test')
+
+    },
+    filename: function (req, file, cb) {
+        let extArray = file.mimetype.split("/");
+        let extension = extArray[extArray.length - 1];
+        console.log(file.mimetype)
+        console.log('REQ.FILES: ', req.files)
+        cb(null, `output-file-name-${Date.now()}.${extension}`)
+    }
+})
+
+let uploadArray = multer({ storage: storageArray })
+
+
+app.post('/multer-test-array', 
+    (req, res, next) => {
+        console.log('first callback')
+        next()
+    },
+    uploadArray.array('files'), 
+    
+    (req, res, next) => {
+        
+        console.log('SOMEINFO: ', req.body.someinfo);
+        res.send('File uploaded');
+    }
+)
+
+
+
+
+
+
+
+
+
+
+
+
+/////////////////////// TEST ZONE //////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
