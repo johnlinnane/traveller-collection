@@ -442,7 +442,7 @@ class EditItemFile extends PureComponent {
                                         <button 
                                             type="button" 
                                             className="btn btn-success btn-block  delete" 
-                                            onClick={(e) => { if (window.confirm('Delete this file?')) this.deleteImage(i) }}
+                                            onClick={(e) => { if (window.confirm('This will permanently delete this file!')) this.deleteImage(i) }}
                                         >
                                             Delete File
                                         </button>
