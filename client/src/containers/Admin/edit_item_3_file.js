@@ -411,7 +411,6 @@ class EditItemFile extends PureComponent {
             <div className="main_view">
                 <div className="rl_container article edit_page">
                         
-                    <div className="item_container">
                         <Link to={`/items/${this.state.formdata._id}`} target="_blank" >
 
                             <div className="container">
@@ -419,17 +418,18 @@ class EditItemFile extends PureComponent {
                                     <img src={`/media/items/${this.state.formdata._id}/original/${this.state.itemFiles[0]}`} alt="item main image"  onError={this.addDefaultImg} />
                                 </div>
                                 
-                                <div className="centered edit_img_text"><h2>{this.state.formdata.title}</h2></div>
+                                <div className="centered edit_img_text">
+                                    <h2>{this.state.formdata.title}</h2>
+                                </div>
                                 
 
                             </div>
                         </Link>
-                    </div>
 
                     <h2>Upload Media File(s)</h2>
 
                     {this.state.itemFiles.length ?
-                        <div>
+                        <div className="edit_3_list_of_cards">
 
                             {this.state.itemFiles.map( (img, i) => (
                                 <div key={`card${i}`} className="edit_3_card">

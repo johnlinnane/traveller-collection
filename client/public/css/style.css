@@ -468,6 +468,7 @@ header .navItem span {
 }
 
 .rl_container button {
+  cursor: pointer;
   font-size: 20px;
   padding: 10px 52px;
   background: #02bcd4;
@@ -1324,14 +1325,6 @@ td, th {
   width: 60% !important;
 }
 
-.edit_page_3_finish {
-  width: 60% !important;
-}
-
-.edit_page_3_button {
-  width: 100%;
-}
-
 .edit_map {
   width: 75%;
   height: 300px;
@@ -1392,18 +1385,27 @@ input[type=number] {
   display: none;
 }
 
-.edit_3_label div {
-  cursor: pointer;
-  border: 1px solid #CCC;
-  background: #86bedf;
-  padding: 15px;
-  border-radius: 5px;
-}
-
 .edit_3_label div:hover {
   cursor: pointer;
   border: 1px solid #CCC;
   background: #e77f7f;
+}
+
+.edit_page_3_finish {
+  width: 60% !important;
+}
+
+.edit_page_3_button {
+  cursor: pointer;
+  font-size: 20px;
+  padding: 10px 52px;
+  background: #02bcd4;
+  color: #fff;
+  font-weight: 300;
+  border-radius: 3px;
+  border: none;
+  margin-top: 20px;
+  width: 100%;
 }
 
 /*=============================
