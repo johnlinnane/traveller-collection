@@ -1,0 +1,38 @@
+
+.p_items_view {
+    text-align: center;
+}
+
+.p_item_card {
+    height: 20vh;
+    background-color: #e1e1e1;
+    padding: 15px;
+    border-radius: 15px;
+    margin: 15px;
+    text-align: left;
+}
+
+.p_item_img {
+    height: 100%;
+    display: inline-block;
+}
+
+.p_item_img img {
+    height: 100%;
+    width: auto;
+    border-radius: 5%;
+}
+
+.p_item_text {
+    display: inline-block;
+    width: 30%;
+    padding: 15px;
+    vertical-align: top;
+}
+
+.p_item_accept {
+    display: inline-block;
+    width: 30%;
+    padding: 15px;
+    vertical-align: top;
+}

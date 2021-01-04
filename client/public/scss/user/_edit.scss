@@ -1,0 +1,164 @@
+
+
+
+
+/*=============================
+            EDIT
+===============================*/
+
+
+.edit_page table, tr, td {
+    border: none;
+    background: none;
+    background-color: rgb(255, 255, 255);
+    /* vertical-align: top; */
+}
+
+.edit_page .label {
+
+    width: 25%;
+}
+
+.edit_page .full {
+
+    width: 100%;
+}
+
+.edit_page hr {
+    width: 100%;
+    margin: 0px;
+}
+
+
+.edit_main_img {
+    width: 40%;
+    box-shadow: 20px 11px 21px 6px rgba(0,0,0,0.1);
+}
+
+.edit_img_text {
+    width: 40%;
+    
+}
+
+.edit_img_text h2 {
+    all: revert;
+    color: #ffffff;
+}
+
+
+.edit_page .half_width button {
+    width: 48% !important;
+    /* margin: 5px; */
+} 
+
+.edit_page .half_width_l {
+    margin-right: 2%;
+}
+
+.edit_page .half_width_r {
+    margin-left: 2%;
+}
+
+.edit_page_2_save {
+    width: 60% !important;
+}
+
+
+
+.edit_map {
+    width: 75%; 
+    height: 300px;
+    margin-top: 20px;
+}
+
+
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+   -webkit-appearance: none;
+   margin: 0;
+}
+
+input[type="number"] {
+   -moz-appearance: textfield;
+}
+
+ .share_toggle {
+     width: 20px;
+ }
+
+ .share_toggle input {
+     margin-bottom: 15px;
+ }
+
+
+.edit_3_card {
+    background-color: #cacaca;
+    display: inline-block;
+    text-align: left;
+    margin: 5px;
+    border-radius: 15px;
+    width: 85%;
+}
+
+
+.edit_3_card_left {
+    display: inline-block;
+    width: 25%;
+    height: 25vh;
+}
+
+.edit_3_card_right {
+    display: inline-block;
+    vertical-align: top;
+    margin: 30px
+}
+
+.edit_3_card_right cancel {
+    display: inline-block;
+}
+
+.edit_3_card img {
+    border-radius: 5%;
+    margin: 15px;
+    object-fit: cover;
+    width: 100%;
+}
+ 
+.edit_3_label input {
+    display: none;
+}
+
+// .edit_3_label div {
+//     cursor: pointer;
+//     // border:1px solid #CCC;
+//     // background:rgb(134, 190, 223);
+//     // padding: 15px;
+//     // border-radius: 5px;
+// }
+
+.edit_3_label div:hover {
+    cursor: pointer;
+    border:1px solid #CCC;
+    background:rgb(231, 127, 127);
+    
+
+}
+
+.edit_page_3_finish {
+    width: 60% !important;
+}
+
+.edit_page_3_button {
+    cursor: pointer;
+    font-size: 20px;
+    padding: 10px 52px;
+    background: #02bcd4;
+    color: #fff;
+    font-weight: 300;
+    border-radius: 3px;
+    border: none;
+    margin-top: 20px;
+    width: 100%;
+}
+

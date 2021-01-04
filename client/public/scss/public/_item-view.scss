@@ -1,0 +1,282 @@
+
+.item_container {
+    box-sizing: border-box;
+    padding:20px;
+    width: 90%;
+}
+
+.item_container .item_header {
+    border-bottom: 1px solid #e1e1e1;
+    margin-bottom: 20px;
+    /* text-align: center; */
+}
+
+.item_container .item_header h2{
+    font-weight: 300;
+    font-size: 38px;
+    margin: 0px;
+}
+.item_container .item_header h5{
+    margin: 5px 0px;
+    font-size: 31px;
+    /* color: #02bcd4; */
+    color: #24727c;
+}
+
+.item_container .item_header .item_reviewer {
+    font-size: 12px;
+    margin-bottom: 10px;
+    text-align: left;
+}
+.item_container .item_header .item_reviewer span {
+    font-weight: 500;
+}
+
+.item_container .item_review {
+    font-size: 20px;
+    font-weight: 300;
+    line-height: 27px;
+}
+
+.item_container .item_box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 40px;
+    
+
+}
+
+.item_container .item_box .left {
+    /* min-width: 50%; */
+    width: 50%;
+    height: 106px;
+    /* background: #E91E63; */
+    background: #4fb0bd;
+    color: #fff;
+    box-sizing: border-box;
+    padding: 15px 15px 5px 15px;
+    font-weight: 300;
+    font-size: 15px;
+}
+.item_container .item_box .left div {
+    padding: 0px;
+    box-sizing: border-box;
+}
+.item_container .item_box .left div span { 
+    font-weight: 500;
+    font-size: 17px;
+}
+
+.item_container .item_box .right {
+    width: 50%;
+    flex-grow: 1;
+    height: 106px;
+    background: #a4a4a4;
+    color: #fff;
+    font-weight: 300;
+    padding: 15px;
+    box-sizing: border-box;
+    /* text-align: center; */
+    font-size: 15px;
+}
+.item_container .item_box .right div {
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+.item_container .item_box .right div span{
+    font-weight: 500;
+    font-size: 17px;
+
+}
+
+.item_container .item_main_img {
+    width: 100%;
+    // box-shadow: 20px 11px 21px 6px rgba(0,0,0,0.1);
+    
+    height: 85vh;
+    object-fit: contain;
+}
+
+.item_container .item_img {
+}
+
+.item_media {
+    padding-bottom: 30px;
+}
+
+.item_field {
+    padding-bottom: 1em;
+}
+
+.item_field b {
+    margin-bottom: 20px;
+}
+
+.item_creator {
+    text-align: left;
+}
+.item_creator span {
+    /* color: #252525; */
+    display: block;
+    padding-bottom: 10px;
+}
+
+
+/* .link_blue a:active,
+.link_blue a:visited,
+.link_blue a:focus {
+    color:rgb(61, 66, 143)
+} */
+
+.item_field a {
+    color:rgb(78, 112, 150)
+}
+
+.item_body {
+    border-bottom: 1px solid #e1e1e1;
+    margin-bottom: 20px;
+}
+
+
+.video {
+    width: 100%;
+}
+
+.no_overflow {
+    overflow: hidden;
+    height: 50px;
+}
+
+.link_wrapper {
+    display: flex;
+    background-color: #a4a4a4;
+    width: 50%;
+    border-radius: 10px;
+
+
+}
+
+@media(max-width: 500px) {
+    .link_wrapper {
+        width: 100%;    }
+}
+
+.link_img {
+    margin: 15px;
+
+}
+
+.link_text {
+    padding: 15px;
+
+
+}
+
+/* MAP */
+
+.item_map_heading {
+    cursor: pointer;
+}
+
+.item_map {
+    width: 75%; 
+    /* height: 350px; */
+    margin-bottom: 30px;
+    transition: height 2s;
+
+}
+
+
+.shareIcons {
+    margin: 20px 20px 20px 0px;
+}
+
+.shareIcon {
+    margin: 0px 5px;
+}
+
+/* PDF CHAPTER INDEX TABLE */
+
+
+
+.index_table {
+    display:table;
+    margin: auto;         
+    width:auto;                
+    /* border:1px solid  #666666;          */
+    padding: 20px;
+   
+}
+
+.index_row {
+    display:table-row;
+    width:auto;
+    clear:both;
+    cursor: pointer;
+}
+
+.index_col {
+    float:left;
+    display:table-column;         
+    width:200px;         
+    /* border:1px solid  #ccc; */
+    background-color: #f7f7f7;
+    /* border-radius: 5px; */
+    margin: 2px;
+
+
+}
+
+.index_top {
+    background-color: rgb(233, 232, 232);
+    padding: 4px 0px;
+}
+
+.index_page {
+    width: 10%;
+}
+
+.index_heading {
+    /* width: 40%; */
+}
+
+.index_desc {
+    /* width: 40%; */
+}
+
+.index_child {
+    width: 10%
+}
+
+
+.index_add_cont {
+    margin: 15px 7px;
+    text-align: left;
+    color: #535353
+}
+
+.index_add_cont span {
+    margin: 0px 10px;
+    
+}
+
+.index_add_rem {
+    text-align: center;
+    width: 20px !important;
+    height: 20px;
+    margin: 0px 2px;
+    border:1px solid  #ccc;
+    display: inline-block;
+
+
+}
+
+.index_cancelled {
+    margin: 30px;
+}
+
+.index_create_item {
+    margin-top: 0px !important;
+}

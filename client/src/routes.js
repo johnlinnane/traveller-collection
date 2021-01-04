@@ -2,45 +2,45 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
 
-import Intro from './components/Intro/intro';
-import CatList from './components/Categories/cats_list';
-import CatView from './components/Categories/cat_view';
-import SubcatView from './components/Categories/subcat_view';
-import ItemView from './components/Items/item_view';
-import Search from './components/Search';
-import MainMap from './components/MainMap';
-import Info from './components/Info/info';
-import AddItem from './components/Admin/add_item';
-import Login from './containers/Admin/login';
+import Intro from './components/Public/Intro/intro';
+import CatList from './components/Public/Categories/cats_list';
+import CatView from './components/Public/Categories/cat_view';
+import SubcatView from './components/Public/Categories/subcat_view';
+import ItemView from './components/Public/Items/item_view';
+import Search from './components/Public/Search';
+import MainMap from './components/Public/MainMap';
+import Info from './components/Public/Info/info';
+import AddItem from './components/User/EditItem/add_item';
+import Login from './components/Public/Login/login';
 
 // CONTAINERS ETC.
-import Home from './components/Home/home'
+import Home from './components/Public/Home/home'
 import Layout from './hoc/layout';
 import Auth from './hoc/auth';
-import Register from './containers/Admin/register';
+import Register from './components/User/UserAdmin/register';
 
 
 
 // WHEN LOGGED IN
-import Logout from './components/Admin/logout';
-import User from './components/Admin';
-import UserItems from './components/Admin/userItems';
-import AllItems from './components/Admin/all_items';
-import PendingItemsView from './components/Items/pending_items_view';
+import Logout from './components/User/UserAdmin/logout';
+import User from './components/User/UserAdmin';
+import UserItems from './components/User/UserAdmin/userItems';
+import AllItems from './components/User/UserAdmin/all_items';
+import PendingItemsView from './components/Public/Items/pending_items_view';
 
-import EditItem from './containers/Admin/edit_item';
-import EditItemSel from './containers/Admin/edit_item_2_sel';
-import EditItemFile from './containers/Admin/edit_item_3_file';
-import ChapterIndex from './containers/Admin/chapter_index';
+import EditItem from './components/User/EditItem/edit_item';
+import EditItemSel from './components/User/EditItem/edit_item_2_sel';
+import EditItemFile from './components/User/EditItem/edit_item_3_file';
+import ChapterIndex from './components/User/EditItem/chapter_index';
 
-import Admin from './components/AdminSection';
-import CatEdit from './containers/Admin/cat_edit';
+import Admin from './components/User/AdminSection';
+import CatEdit from './components/User/EditItem/cat_edit';
 
 
 // DEPRECATED & MISC
-import CollList from './components/Collections/list';
-import Collection from './components/Collections/collection';
-import Sandbox from './components/Sandbox/sandbox';
+import CollList from './components/Public/Collections/list';
+import Collection from './components/Public/Collections/collection';
+import Sandbox from './components/User/Sandbox/sandbox';
 
 
 

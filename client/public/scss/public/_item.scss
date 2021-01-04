@@ -1,0 +1,167 @@
+
+/*=============================
+            ITEM
+===============================*/
+
+.item_item {
+    border-bottom: 4px solid #f1f1f1;
+    box-sizing: border-box;
+    padding: 10px 20px;
+    display: block;
+    // background: #f5f5f578;
+    background: #bb494978;
+}
+
+.item_item .item_header h2 {
+    font-size: 20px;
+    color: #686868;
+    margin: 4px 0px 0px 0px;
+    font-weight: 300;
+}
+
+
+.item_item .item_bubble {
+    background: #E91E63;
+    display: inline-block;
+    padding: 3px 5px;
+    border-radius: 3px;
+    font-size: 11px;
+    margin-right: 5px;
+    color: #fff;
+}
+
+.item_item .item_bubble.rating {
+    background: #5f5f5f;
+}
+
+.item_item .item_author {
+    font-size: 15px;
+    color: #5f5f5f;
+    font-weight: 700;
+}
+
+.item_item .item_items {
+    font-size:13px;
+}
+
+.item_item .item_items strong { 
+    color: #ffffff;
+}
+.item_item .item_items div {
+    margin-bottom: 8px;
+}
+
+.loadmore {
+    background: #dbdbdb;
+    text-align: center;
+    text-transform: uppercase;
+    color: #ffffff;
+    padding: 20px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.white_txt {
+    color: white;
+}
+
+.pdf {
+    /* background-color: black; */
+    text-align: center;
+    display: inline-block;
+
+}
+
+.pdf_wrapper {
+    text-align: center;
+}
+
+.pdf_page {
+    height: 1000px;
+    width: 650px;
+    /* max-height: 1000px; */
+    overflow-y: auto;
+}
+
+.pdf_wrapper a {
+    color: #000dc4;
+    font-size: small;
+}
+
+.pdf_scale {
+    cursor: pointer;
+    font-size: 22px;
+    padding: 4px;
+}
+
+.pdf_control_panel {
+    background-color: rgb(233, 232, 232);
+    width: 83%;
+    display: inline-block;
+    padding: 10px;
+}
+
+.pdf_prev_next {
+    padding-right: 20px;
+    display: inline-block;
+}
+
+.item_container p {
+    max-width: 65ch;
+}
+
+.item_pagenum {
+    max-width: none !important;
+    padding-left: 25px;
+    padding-right: 25px;
+}
+
+
+
+
+/*=============================
+            ITEM: SLIDER
+===============================*/
+
+
+
+.featured_item {
+    position: relative;
+}
+  
+  
+.featured_item a {
+    position: absolute;
+    width: 100%;
+    bottom: 0px;
+    text-decoration: none;
+    right: 0px;
+}
+  
+.featured_image {
+    height: 85vh;
+    
+    
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+}
+
+
+.slick_slider .slick-next:before,
+.slick_slider .slick-prev:before {
+    color: #757575;
+}
+  
+  
+  /* .featured_caption {
+    color: #ffffff;
+    top: 0px;
+    width: 100%;
+    padding: 20px;
+    font-weight: 300;
+    font-size: 28px;
+    box-sizing: border-box;
+  } */
+
+
+
