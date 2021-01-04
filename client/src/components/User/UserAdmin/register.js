@@ -102,7 +102,7 @@ class Register extends PureComponent {
         let user = this.props.user;
 
         return (
-            <div className="rl_container">
+            <div className="form_input">
 
                 <form onSubmit={this.submitForm}>
                     <h2>Add user</h2>

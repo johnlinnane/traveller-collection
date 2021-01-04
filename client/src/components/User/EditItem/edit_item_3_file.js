@@ -409,7 +409,7 @@ class EditItemFile extends PureComponent {
         return (
             
             <div className="main_view">
-                <div className="rl_container article edit_page">
+                <div className="form_input item_form_input edit_page">
                         
                         <Link to={`/items/${this.state.formdata._id}`} target="_blank" >
 

@@ -15,12 +15,12 @@
 .p_item_img {
     height: 100%;
     display: inline-block;
-}
 
-.p_item_img img {
-    height: 100%;
-    width: auto;
-    border-radius: 5%;
+    img {
+        height: 100%;
+        width: auto;
+        border-radius: 5%;
+    }
 }
 
 .p_item_text {

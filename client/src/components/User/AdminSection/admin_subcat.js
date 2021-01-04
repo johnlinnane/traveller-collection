@@ -600,7 +600,7 @@ class AdminSubCat extends Component {
                 { this.props.chosenSubCatInfo ? 
                     <div>
                         <form onSubmit={this.submitForm}>
-                            <table className="rl_container">
+                            <table className="form_input">
                             <tbody>
                                 
 

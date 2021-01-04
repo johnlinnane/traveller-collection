@@ -6,8 +6,6 @@ body {
     background-color: $white;
 }
 
-
-
 a {
     text-decoration: none;
     color:$black;
@@ -42,14 +40,8 @@ a:focus {
     padding-top: 31px;
 }
 
-/* added by me */
 
 img:before {
-    /* content: ' ';
-    display: block;
-    position: absolute;
-    height: 50px;
-    width: 50px; */
     background-image: url(/media/default/default.jpg);
 }
 
@@ -66,25 +58,22 @@ img:before {
 
 .nav_bar {
     background-color: #d3d3d3;
-    /* padding: 7px; */
     padding: 7px 20%;
     border-bottom: 1px solid #cacaca;
+
+    span .nowrap{
+        white-space: nowrap;
+    }
+
+    .wrap {
+        white-space: pre-line;
+    }
 }
 
 @media(max-width: 650px) {
     .nav_bar {
         padding: 7px 10px;
     }
-}
-
-
-
-.nav_bar span .nowrap{
-    white-space: nowrap;
-}
-
-.nav_bar .wrap {
-    white-space: pre-line;
 }
 
 
@@ -97,6 +86,5 @@ img:before {
 }
 
 .message {
-    // color: #c22f25;
     color: $black;
 }

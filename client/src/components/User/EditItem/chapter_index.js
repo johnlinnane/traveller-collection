@@ -431,7 +431,7 @@ class ChapterIndex extends PureComponent {
 
                 
 
-                <div className="rl_container article edit_page">
+                <div className="form_input item_form_input edit_page">
                     
                     {/* {
                         items.updateItem ?

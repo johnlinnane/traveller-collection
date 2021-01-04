@@ -3,10 +3,10 @@
 .user_posts {
     padding:10px;
     box-sizing: border-box;
-}
 
-.user_posts h4 {
-    text-align: center;
+    h4 {
+        text-align: center;
+    }
 }
 
 .edit_confirm {
@@ -14,6 +14,8 @@
     color: #fff;
     padding: 10px 0px;
 }
+
+
 table {
     font-family: arial, sans-serif;
     border-collapse: collapse;
@@ -22,42 +24,44 @@ table {
 
 .item_list {
     table-layout: fixed;
-}
 
-.item_list tr td {
-    border-bottom: 1px solid #ccc;
+    tr td {
+        border-bottom: 1px solid #ccc;
+    }
 }
-
 
 
 td, th {
-    border: 1px solid #dddddd;
+    // border: 1px solid #dddddd;
     text-align: left;
     padding: 8px;
 }
 
-/* tr:nth-child(even) {
-    background-color: #dddddd;
-} */
 
-.user_container .avatar {
-text-align: center;
-margin-top: 30px;
-}
-.user_container .avatar img {
-width: 200px;
-}
-.user_container .nfo{
-box-sizing: border-box;
-padding:20px;
-}
-.user_container .nfo div {
-font-size: 23px;
-font-weight: 300;
-margin-bottom: 10px;
-color: #a4a4a4;
-}
-.user_container .nfo div span { 
-font-weight: 500;
-color: #02bcd4;
+.user_container {
+    .avatar {
+        text-align: center;
+        margin-top: 30px;
+
+        img {
+            width: 200px;
+        }
+    }
+
+    .nfo{
+        box-sizing: border-box;
+        padding:20px;
+
+        div {
+            font-size: 23px;
+            font-weight: 300;
+            margin-bottom: 10px;
+            color: #a4a4a4;
+
+            span { 
+                font-weight: 500;
+                color: #02bcd4;
+            }
+        }
+    }
 }

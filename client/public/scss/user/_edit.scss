@@ -1,34 +1,24 @@
 
+.edit_page {
+    table, tr, td {
+        border: none;
+        background: none;
+        background-color: rgb(255, 255, 255);
+    }
 
+    .label {
+        width: 25%;
+    }
 
-
-/*=============================
-            EDIT
-===============================*/
-
-
-.edit_page table, tr, td {
-    border: none;
-    background: none;
-    background-color: rgb(255, 255, 255);
-    /* vertical-align: top; */
+    .full {
+        width: 100%;
+    }
+    
+    hr {
+        width: 100%;
+        margin: 0px;
+    }
 }
-
-.edit_page .label {
-
-    width: 25%;
-}
-
-.edit_page .full {
-
-    width: 100%;
-}
-
-.edit_page hr {
-    width: 100%;
-    margin: 0px;
-}
-
 
 .edit_main_img {
     width: 40%;
@@ -37,32 +27,30 @@
 
 .edit_img_text {
     width: 40%;
+
+    h2 {
+        all: revert;
+        color: #ffffff;
+    }
     
+    .half_width button {
+        width: 48% !important;
+    } 
+
+    .half_width_l {
+        margin-right: 2%;
+    }
+
+    .half_width_r {
+        margin-left: 2%;
+    }
 }
 
-.edit_img_text h2 {
-    all: revert;
-    color: #ffffff;
-}
 
-
-.edit_page .half_width button {
-    width: 48% !important;
-    /* margin: 5px; */
-} 
-
-.edit_page .half_width_l {
-    margin-right: 2%;
-}
-
-.edit_page .half_width_r {
-    margin-left: 2%;
-}
 
 .edit_page_2_save {
     width: 60% !important;
 }
-
 
 
 .edit_map {
@@ -70,7 +58,6 @@
     height: 300px;
     margin-top: 20px;
 }
-
 
 
 input::-webkit-outer-spin-button,
@@ -83,13 +70,13 @@ input[type="number"] {
    -moz-appearance: textfield;
 }
 
- .share_toggle {
-     width: 20px;
- }
+.share_toggle {
+    width: 20px;
 
- .share_toggle input {
-     margin-bottom: 15px;
- }
+    input {
+        margin-bottom: 15px;
+    }
+}
 
 
 .edit_3_card {
@@ -99,6 +86,13 @@ input[type="number"] {
     margin: 5px;
     border-radius: 15px;
     width: 85%;
+
+    img {
+        border-radius: 5%;
+        margin: 15px;
+        object-fit: cover;
+        width: 100%;
+    }
 }
 
 
@@ -111,39 +105,29 @@ input[type="number"] {
 .edit_3_card_right {
     display: inline-block;
     vertical-align: top;
-    margin: 30px
+    margin: 30px;
+
+    .cancel {
+        display: inline-block;
+    }
 }
 
-.edit_3_card_right cancel {
-    display: inline-block;
-}
 
-.edit_3_card img {
-    border-radius: 5%;
-    margin: 15px;
-    object-fit: cover;
-    width: 100%;
-}
- 
-.edit_3_label input {
-    display: none;
-}
-
-// .edit_3_label div {
-//     cursor: pointer;
-//     // border:1px solid #CCC;
-//     // background:rgb(134, 190, 223);
-//     // padding: 15px;
-//     // border-radius: 5px;
-// }
-
-.edit_3_label div:hover {
-    cursor: pointer;
-    border:1px solid #CCC;
-    background:rgb(231, 127, 127);
+.edit_3_label {
     
+    input {
+        display: none;
+    }
 
+    div:hover {
+        cursor: pointer;
+        border:1px solid #CCC;
+        background:rgb(231, 127, 127);
+        
+    
+    }
 }
+
 
 .edit_page_3_finish {
     width: 60% !important;

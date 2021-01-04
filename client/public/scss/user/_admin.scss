@@ -1,17 +1,5 @@
 
 
-
-
-/*=============================
-            ADMIN
-===============================*/
-
-.admin_view {
-    padding: 40px 0px;
-}
-
-
-
 .vert_tab {
     display: flex;
     
@@ -24,189 +12,194 @@
     padding: 0px;
     margin-right: 60px;
 
+    .react-tabs__tab--selected {
+        border: 0.5px solid #838383;
+        border-radius: 5px 5px 5px 5px;
+        background: #eeeded;
+    }
+
 }
 
-.vert_tab_list .react-tabs__tab--selected {
-    /* border-bottom: 0.5px solid ; */
-    border: 0.5px solid #838383;
-    border-radius: 5px 5px 5px 5px;
-    /* border-right: none; */
-    background: #eeeded;
-}
 
 
-/* rl_container -> admin classes */
 
 /******** CAT */
 
 
-.admin {
-    text-align: center;
+
+
+
+.admin_view {
+
+    padding: 40px 0px;
+    
+    td {
+        vertical-align: top;
+
+        h3 {
+            margin-top: 0;
+        }
+
+        textarea {
+            margin-top: 0;
+        }
+
+        span {
+            margin-top: 4px;
+        }
+    }
 }
-
-.admin .form_element {
-    margin-top: 20px;
-}
-
-.admin_view td {
-    vertical-align: top;
-}
-
-.admin_view td h3 {
-    margin-top: 0;
-}
-
-.admin_view td textarea {
-    margin-top: 0;
-}
-
-.admin_view td span {
-    margin-top: 4px;
-}
-
-
 
 
 .change_cat_img {
     width: 250px;
     display: block;
-    /* padding: 15px; */
     border-radius: 10px;
 }
 
 
 
-.admin h2 {
-    font-size: 33px;
-    font-weight: 300;
-    color: #02bcd4;
-}
-
-.admin .admin_cat_img_input {
-    font-size: 15px;
-    border-radius: 3px;
-    border: 1px solid #ebebeb;
-    box-sizing: border-box;
-    padding: 11px 31px;
-    background: #f7f7f7;
-    font-weight: 300;
-    width: 260px;
-}
-.admin.article input {
-    width: 80%;
-}
-
-.admin textarea {
-    background: #f7f7f7;
-    border: 1px solid #ebebeb;
-    border-radius: 3px;
-    width: 100%;
-    padding: 20px;
-    box-sizing: border-box;
-    margin-top: 20px;
-    font-size: 15px;
-    font-family:'Arial'
-}
-.admin.article select {
-    width: 80%;
-    background: #f7f7f7;
-    font-size: 20px;
-    border: 1px solid #e1e1e1;
-}
-
-
-
-.admin button {
-    font-size: 15px;
-    padding: 10px 52px;
-    background: #02bcd4;
-    color: #fff;
-    font-weight: 300;
-    border-radius: 3px;
-    border: none;
-    /* margin-top: 20px; */
-    width: 260px;
-}
-.admin.article button {
-    width: 85%;
-}
-
-
-
-.admin .conf_link {
-    color: #8BC34A;
-    font-weight: 600;
-    margin-top: 20px;
-}
-
-.admin .error {
-    color: #FF5722;
-    margin-top: 10px;
-    font-weight: 600;
-}
-
-.admin .success a {
-    color: #FF5722;
-    font-size: 20px;
-}
-
-.admin .delete_post {
+.admin {
+    
     text-align: center;
-    margin-top: 20px;
+
+    .form_element {
+        margin-top: 20px;
+    }
+
+    h2 {
+        font-size: 33px;
+        font-weight: 300;
+        color: #02bcd4;
+    }
+
+    .admin_cat_img_input {
+        font-size: 15px;
+        border-radius: 3px;
+        border: 1px solid #ebebeb;
+        box-sizing: border-box;
+        padding: 11px 31px;
+        background: #f7f7f7;
+        font-weight: 300;
+        width: 260px;
+    }
+
+    
+
+    textarea {
+        background: #f7f7f7;
+        border: 1px solid #ebebeb;
+        border-radius: 3px;
+        width: 100%;
+        padding: 20px;
+        box-sizing: border-box;
+        margin-top: 20px;
+        font-size: 15px;
+        font-family:'Arial'
+    }
+
+    button {
+        font-size: 15px;
+        padding: 10px 52px;
+        background: #02bcd4;
+        color: #fff;
+        font-weight: 300;
+        border-radius: 3px;
+        border: none;
+        width: 260px;
+    }
+
+    .conf_link {
+        color: #8BC34A;
+        font-weight: 600;
+        margin-top: 20px;
+    }
+
+    .error {
+        color: #FF5722;
+        margin-top: 10px;
+        font-weight: 600;
+    }
+
+    .success a {
+        color: #FF5722;
+        font-size: 20px;
+    }
+
+    .delete_post {
+        text-align: center;
+        margin-top: 20px;
+
+        .button {
+            font-size: 20px;
+            padding: 10px 52px;
+            background: #E91E63;
+            color: #fff;
+            font-weight: 300;
+            border-radius: 3px;
+            border: none;
+            width: 80%;
+            box-sizing: border-box;
+            display: inline-block;
+        }
+    }
+
+    .delete {
+        background: #E91E63;
+        width: 100%;
+    }
+
+    .spacer {
+        height: 30px;
+    }
+
+    table {
+        margin-left: 20px;
+    }
+
+    .remove {
+        width: 100px;
+        padding: 10px 10px;
+    }
+    
+    .tooltip {
+        position: relative;
+        display: inline-block;
+    }
+
+    .tooltiptext {
+        visibility: hidden;
+        padding-left: 15px;
+        position: absolute;
+        z-index: 1;
+
+        .tooltip:hover {
+            visibility: visible;
+        }
+    }
+
+    i {
+        cursor: pointer;
+    }
+
 }
 
-.admin .delete_post .button {
-    font-size: 20px;
-    padding: 10px 52px;
-    background: #E91E63;
-    color: #fff;
-    font-weight: 300;
-    border-radius: 3px;
-    border: none;
-    width: 80%;
-    box-sizing: border-box;
-    display: inline-block;
-}
+.admin.item_form_input {
+    input {
+        width: 80%;
+    }
 
-.admin .delete {
-    background: #E91E63;
-    width: 100%;
-    // margin-top: 20px;
-}
+    select {
+        width: 80%;
+        background: #f7f7f7;
+        font-size: 20px;
+        border: 1px solid #e1e1e1;
+    }
 
-.admin .spacer {
-    height: 30px;
+    button {
+        width: 85%;
+    }
 }
-
-.admin table {
-    margin-left: 20px;
-}
-
-.admin .remove {
-    width: 100px;
-    padding: 10px 10px;
-}
-
-.admin i {
-    cursor: pointer;
-}
-
-.admin .tooltip {
-    position: relative;
-    display: inline-block;
-}
-  
-.admin .tooltiptext {
-    visibility: hidden;
-    padding-left: 15px;
-    position: absolute;
-    z-index: 1;
-}
-  
-.admin .tooltip:hover .tooltiptext {
-    visibility: visible;
-}
-
 
 .add_cat_tab {
     border-top: solid;
@@ -225,9 +218,11 @@
     text-align: left;
 }
 
-.intro_buttons button {
-    width: 40%;
-    margin-right: 20px;
+.intro_buttons {
+    button {
+        width: 40%;
+        margin-right: 20px;
+    }
 }
 
 .intro_input {
@@ -236,32 +231,33 @@
 
 
 
-/******** ADMIN: INFO */
+/********INFO */
 
 .admin_info {
     text-align: left;
+
+    td {
+        width:50%
+    }
 }
 
-.admin_info td {
-    width:50%
-}
 
 .admin_info_table_section {
     width: 100%;
-}
+    
+    input {
+        width: 100%;
+    }
 
-.admin_info_table_section input {
-    width: 100%;
-}
+    textarea {
+        width: 100%;
+    }
 
-.admin_info_table_section textarea {
-    width: 100%;
-}
+    img {
+        width: 100%;
+    }
 
-.admin_info_table_section img {
-    width: 100%;
-}
-
-.admin_info_table_section button {
-    width: 100%;
+    button {
+        width: 100%;
+    }
 }

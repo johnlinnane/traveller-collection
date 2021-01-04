@@ -2,16 +2,15 @@
 
 .search_input {
     margin: 40px;
-}
-
-.search_input input {
-    width: 90%;
+    
+    input {
+        width: 90%;
+    }
 }
 
 
 .search_container {
     display: block;
-    /* overflow: hidden */
     min-height: 250px;
     clear: left;
 }
@@ -25,19 +24,16 @@
 .search_item_image {
     float:left;
     margin-right: 15px;
-    
 }
 
 
 .search_item_info {
     overflow: hidden;
-    
 }
 
 .news_item {
     padding: 20px;
     box-sizing: border-box;
-    // border-bottom: 1px solid grey;
 }
 
 .item_grey {

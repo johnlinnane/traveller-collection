@@ -473,7 +473,7 @@ class AdminInfo extends Component {
         console.log(this.state)
 
         return (
-            <div className="admin rl_container">
+            <div className="admin form_input">
                 <div className="admin_info">
 
                     <h1>Edit Info Page</h1>

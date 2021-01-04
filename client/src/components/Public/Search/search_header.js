@@ -13,7 +13,7 @@ const SearchHeader = (props) => {
 
 
     return (
-        <div className="search_input rl_container">  
+        <div className="search_input form_input">  
 
           {/* <div className="logo">Search</div> */}
           <input 

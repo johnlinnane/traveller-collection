@@ -59,7 +59,7 @@ class Login extends Component {
         let user = this.props.user;
 
         return (
-            <div className="rl_container">
+            <div className="form_input">
                 <form onSubmit={this.submitForm}>
                     <h2>Log in here</h2>
 
