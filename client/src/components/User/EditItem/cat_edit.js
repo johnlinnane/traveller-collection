@@ -13,39 +13,6 @@ const config = require('../../../config_client').get(process.env.NODE_ENV);
 class CatEdit extends PureComponent {
 
     state = {
-    //     formdata:{
-    //         _id:this.props.match.params.id,
-    //         title: '',
-    //         creator: '',
-    //         subject: '',
-    //         description: '',
-    //         source: '',
-    //         date_created: '',
-            
-    //         contributor: '',
-    //         // collection_id: '',     
-    //         item_format: '',
-    //         materials: '',
-    //         physical_dimensions: '',
-    //         pages: '',        
-    //         editor: '',
-    //         publisher: '',
-    //         further_info: '',
-    //         language: '',
-    //         reference: '',
-    //         rights: '',
-    //         file_format: '',
-    //         address: '',
-    //         subcategory_ref: '',
-       
-    //         external_link: {
-    //             url: '',
-    //             text: ''
-    //         },
-    //         geo: {
-    //             address: ''
-    //         }
-    //     },
         catInfo: null,
         selectedFile: null,
         loaded: 0
@@ -69,52 +36,6 @@ class CatEdit extends PureComponent {
         }
 
     }    
-    // deletePost = () => {
-    //     this.props.dispatch(deleteItem(this.state.formdata._id));
-    //     this.props.history.push('/user/all-items');
-    // }
-
-
-   
-
-
-    // static getDerivedStateFromProps(nextProps, prevState) {
-
-    //     let formdata = prevState.formdata;
-    //     if (nextProps.items.item ) {
-
-    //         let item = nextProps.items.item;
-
-    //         formdata = {
-    //             ...formdata,
-    //             _id:item._id,
-    //             title:item.title,  //
-    //             creator:item.creator,  //
-    //             description:item.description,  //
-    //             pages:item.pages,  //
-    //             source:item.source,   //
-
-    //             subject: item.subject,
-    //             date_created: item.date_created,
-    //             contributor: item.contributor,
-    //             item_format: item.item_format,
-    //             materials: item.materials,
-    //             physical_dimensions: item.physical_dimensions,
-    //             editor: item.editor,
-    //             publisher: item.publisher,
-    //             further_info: item.further_info,
-    //             language: item.language,
-    //             reference: item.reference,
-    //             rights: item.rights,
-    //             file_format: item.file_format,
-    //             subcategory_ref: item.subcategory_ref
-    //         }
-    //     }
-    //     return {
-    //         formdata: formdata
-    //     }
-    // }
-
 
     // *************** UPDLOAD LOGIC ********************
 

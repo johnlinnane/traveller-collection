@@ -6,7 +6,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 
-import { getAllColls, getAllCats, getAllSubCats  } from '../../../actions';
+import { getAllCats, getAllSubCats  } from '../../../actions';
 import { addCat, deleteCat, addSubcat, deleteSubcat, updateCat, updateSubcat  }  from '../../../actions';
 
 
@@ -23,33 +23,17 @@ class AdminCat extends Component {
                 title: null,
                 description: null,
                 catIsHidden: false
-            },
-            // theseSubcats: [],
-            // allSubcats: [],
-
-
-            // newSubcat: {
-            //     title: null,
-            //     description: null,
-            //     parent_cat: this.props.chosenCatInfo._id
-        
-            // }
+            }
             
         },
         imgSrc: `/media/cover_img_cat/${this.props.chosenCatInfo._id}.jpg`,
-        // imgSrcSubs: [],
         saved: false,
         catDeleted: false,
 
-        // selectedSubFiles: []
-
-        // subRemoved: false
     }
 
     componentDidMount() {
-        this.props.dispatch(getAllColls())
         this.props.dispatch(getAllCats());
-        // this.props.dispatch(getAllSubCats());
     }
 
     componentDidUpdate(prevProps) {
@@ -670,7 +654,6 @@ class AdminCat extends Component {
 
 function mapStateToProps(state) {
     return {
-        colls:state.collections.colls,
         cats:state.cats.cats,
         subcats:state.cats.subcats
     }

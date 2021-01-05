@@ -8,7 +8,7 @@ import 'react-tabs/style/react-tabs.css';
 import Select from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 
-import { getAllColls, getAllCats, getAllSubCats  } from '../../../actions';
+import { getAllCats, getAllSubCats  } from '../../../actions';
 import { addCat, deleteCat, addSubcat, deleteSubcat, updateCat, updateSubcat  }  from '../../../actions';
 
 
@@ -61,7 +61,6 @@ class AdminSubCat extends Component {
     }
 
     componentDidMount() {
-        this.props.dispatch(getAllColls())
         this.props.dispatch(getAllCats());
         this.props.dispatch(getAllSubCats());
     }
@@ -69,48 +68,6 @@ class AdminSubCat extends Component {
     componentDidUpdate(prevProps) {
     
         if (this.props != prevProps) {
-            // if (this.props.subcats && this.props.subcats.length) {
-            //     if (this.props.subcats != prevProps.subcats) {
-
-            //         let tempAllSubcats = [];
-            //         let tempTheseSubcats = [];
-
-            //         if (this.props.subcats) {
-
-            //             tempAllSubcats = this.props.subcats;
-
-            //             this.props.subcats.map( (subcat, i) => {
-            //                 if (subcat.parent_cat == this.props.chosenSubCatInfo._id) {
-            //                     tempTheseSubcats.push(subcat)
-            //                 }
-            //             })
-            //         }
-                    
-            //         this.setState({
-            //             formdata: {
-            //                 ...this.state.formdata,
-                            
-            //                 // theseSubcats: tempTheseSubcats
-            //             },
-            //             allSubcats: tempAllSubcats,
-            //         })
-            //     }
-            // }
-
-            
-            // if (this.props.subcats && this.state.formdata.cat._id) {
-            //     let tempImgSrcSubs = [];
-            //     this.props.subcats.forEach( subcat => {
-                    
-            //         if (subcat.parent_cat === this.state.formdata.cat._id ) {
-            //             tempImgSrcSubs.push(`/media/cover_img_subcat/${subcat._id}.jpg`)
-
-            //         }
-            //     } )
-            //     this.setState({
-            //         imgSrcSubs: tempImgSrcSubs
-            //     })
-            // }
 
             if (this.props.chosenSubCatInfo) {
                 this.setState({
@@ -149,15 +106,11 @@ class AdminSubCat extends Component {
 
 
         }
-        // { this.state.allSubcats.length ?
-        //     this.state.allSubcats.map( (subcat, i) => (
-        //         (subcat.parent_cat == this.props.chosenSubCatInfo._id) && !subcat.isDeleted ? 
     
     }
 
     // not used
     handleTabIndex = () => {
-        // console.log(this.props.index);
         this.props.getTabIndex(this.props.index)
     }
 
@@ -183,34 +136,6 @@ class AdminSubCat extends Component {
 
     }
 
-
-    // onSubImgChange = (event, id, i) => {
-
-    //     console.log(id)
-    //     var files = event.target.files;
-
-    //     let tempSelectedSubFiles = this.state.selectedSubFiles;
-    //     tempSelectedSubFiles[i] = {
-    //         id: id,
-    //         file: files
-    //     };
-
-    //     if (this.maxSelectFile(event) && this.checkMimeType(event) && this.checkMimeType(event)) {  
-    //         this.setState({
-    //             selectedSubFiles: tempSelectedSubFiles
-    //         })
-    //     }
-
-       
-
-    //     let tempImgSrcSubs = this.state.imgSrcSubs;
-    //     tempImgSrcSubs[i] = URL.createObjectURL(event.target.files[0]);
-
-    //     this.setState({
-    //         imgSrcSubs: tempImgSrcSubs
-    //     })
-
-    // }
 
     onClickHandler = () => {
         const data = new FormData();
@@ -241,40 +166,6 @@ class AdminSubCat extends Component {
             })
         }
 
-        
-
-        // this.state.selectedSubFiles.forEach( subfile => {
-        //     const subData = new FormData();
-
-        //     if (subfile) {
-        //         for(var x = 0; x<subfile.file.length; x++) {
-        //             subData.append('file', subfile.file[x])
-        //         }
-            
-
-        //         axios.post(`http://${config.IP_ADDRESS}:3001/upload-subcat/${subfile.id}`, subData, { 
-        //             // receive two parameter endpoint url ,form data 
-        //             onUploadProgress: ProgressEvent => {
-        //                 this.setState({
-        //                     loaded: (ProgressEvent.loaded / ProgressEvent.total*100)
-        //                 })
-        //             }
-        //         })
-        //         .then(res => { // then print response status
-        //             // console.log(res.config.data.id);
-        //             // console.log(res.statusText);
-        //             console.log(res);
-        //             toast.success('upload success')
-        //             alert('File uploaded successfully')
-        //         })
-        //         .catch(err => { 
-        //             toast.error('upload fail')
-        //         })
-
-        //     }
-
-
-        // } )
 
 
 
@@ -357,25 +248,6 @@ class AdminSubCat extends Component {
     // ****************************************************
 
 
-    // handleCatInput = (event, field) => {
-
-    //     let newFormdata = {
-    //         ...this.state.formdata
-    //     }
-
-    //     if (field === 'cat_title') {
-    //         newFormdata.cat.title = event.target.value;
-
-    //     } else if (field === 'cat_description') {
-    //         newFormdata.cat.description = event.target.value;
-    //     } 
-
-    //     this.setState({
-    //         formdata: newFormdata
-    //     })
-    // }
-
-
 
     addDefaultImg = (ev) => {
         const newImg = '/media/default/default.jpg';
@@ -387,30 +259,6 @@ class AdminSubCat extends Component {
 
 
     handleSubCatInput(event, field) {
-        // console.log(field, i);
-        // let newSubCatArray = this.state.allSubcats;
-
-        // switch(field) {
-        //     case 'title':
-        //         newSubCatArray[i].title = event.target.value;
-        //         break;
-        //     case 'description':
-        //         newSubCatArray[i].description = event.target.value;
-        //         break;
-        //     default:
-        // }
-
-        // newSubCatArray[i].isModified = true;
-
-        // console.log(newSubCatArray);
-
-        // this.setState({
-        //     formdata: {
-        //         ...this.state.formdata,
-        //         allSubcats: newSubCatArray
-                
-        //     }
-        // }) 
 
         let tempSubcat = this.state.formdata.subCat;
 
@@ -438,14 +286,6 @@ class AdminSubCat extends Component {
         console.log(newValue)
 
 
-        // let tempFormdata = {
-        //     ...this.state.formdata,
-        //     subCat: {
-        //         ...this.state.formdata.subCat,
-        //         parent_cat: newValue.value
-        //     }
-
-        // }
 
 
         this.setState({
@@ -472,58 +312,9 @@ class AdminSubCat extends Component {
         })
     }
 
-    // removeSubCat = (e, id) => {
-        // this.props.dispatch(deleteCat(id));
-
-        // this.setState({
-        //     catDeleted: true
-        // })
-
-        // setTimeout(() => {
-        //     // this.props.history.push(`/user/edit-item-sel/${this.props.items.newitem.itemId}`);
-        //     this.props.history.push(`/admin/0`);
-        // }, 2000)
-    // }
-
-
-    // addField = () => {
-    //     let newFormdata = {
-    //         ...this.state.formdata,
-    //         allSubcats: [
-    //             ...this.state.allSubcats,
-    //             {
-    //                 title: '',
-    //                 description: '',
-    //                 parent_cat: this.props.chosenSubCatInfo._id,
-    //                 isNew: true
-    //             }
-    //         ]
-    //     }
-    //     this.setState({
-    //         formdata: newFormdata
-    //     }) 
-
-    // }
-
 
 
     removeSubCat = (id) => {
-        // const tempAllSubcats = this.state.allSubcats;
-        // let removeIndex = this.state.allSubcats.map(subcat => subcat._id).indexOf(id);
-
-        // tempAllSubcats[removeIndex] = {
-        //     ...tempAllSubcats[removeIndex],
-        //     isDeleted: true
-        // }
-
-        // // (removeIndex >= 0) && tempAllSubcats.splice(removeIndex, 1);
-
-        // this.setState({
-        //     formdata: {
-        //         ...this.state.formdata,
-        //         allSubcats: tempAllSubcats
-        //     }
-        // })
 
         console.log(id)
         this.props.dispatch(deleteSubcat(id))
@@ -533,13 +324,6 @@ class AdminSubCat extends Component {
 
     submitForm = (e) => {
         e.preventDefault();
-        // console.log({...this.state.formdata.cat});
-        // console.log(this.state.formdata.cat);
-
-        // this.props.dispatch(updateCat(
-        //         this.state.formdata.cat
-            
-        // ))
 
 
         this.props.dispatch(updateSubcat(
@@ -548,36 +332,6 @@ class AdminSubCat extends Component {
 
         this.onClickHandler();
 
-        // this.state.allSubcats.map( (subcat) =>{
-        //     if (subcat.isModified) {
-        //         // console.log(subcat)
-        //         this.props.dispatch(updateSubcat(
-        //             subcat
-        //         ))
-        //     }
-        // })
-
-        // // handle new subcats
-        // this.state.allSubcats.map( (subcat) =>{
-        //     if (subcat.isNew) {
-        //         this.props.dispatch(addSubcat(
-        //             subcat
-        //         ))
-        //     }
-        // })
-
-        // // handle deleted subcats
-        // this.state.allSubcats.map( (subcat) =>{
-        //     if (subcat.isDeleted) {
-        //         this.props.dispatch(deleteSubcat(subcat._id))
-        //     }
-        // })
-
-        // this.onClickHandler();
-
-        // this.setState({
-        //     saved: true
-        // })
 
         setTimeout(() => {
             this.props.history.push(`/admin/${this.props.index}`);
@@ -635,19 +389,6 @@ class AdminSubCat extends Component {
                                 </tr>
 
 
-                                {/* <tr>
-                                    <td>
-                                        Image
-                                    </td>
-                                    <td>
-                                        <img 
-                                            className="change_cat_img" 
-                                            src={`/media/cover_img_subcat/${this.props.chosenSubCatInfo._id}.jpg`}
-                                            // src={this.state.imgSrc} 
-                                            onError={this.addDefaultImg}
-                                        />
-                                    </td>
-                                </tr> */}
                                 <tr>
                                     <td>
                                         <h3>Sub-Category Image</h3>
@@ -707,59 +448,6 @@ class AdminSubCat extends Component {
                                     : null}
                                 </tr>
 
-                                {/* { this.state.allSubcats.length ?
-                                    this.state.allSubcats.map( (subcat, i) => (
-                                        (subcat.parent_cat == this.props.chosenSubCatInfo._id) && !subcat.isDeleted ? 
-                                            <section key={i}>
-                                                <tr >
-                                                    <td>
-                                                        <input
-                                                            type="text"
-                                                            placeholder='Title'
-                                                            defaultValue={subcat.title} 
-                                                            onChange={(event) => this.handleSubCatInput(event, 'title', i)}
-                                                        />
-                                                    </td>
-
-                                                    <td>
-                                                        <input
-                                                            type="text"
-                                                            placeholder="Description"
-                                                            defaultValue={subcat.description} 
-                                                            onChange={(event) => this.handleSubCatInput(event, 'description', i)}
-                                                        />
-                                                    </td>
-
-                                                    <td>
-
-                                                    <div className="tooltip" onClick={(e) => { if (window.confirm('Are you sure you want to remove this subcategory?')) this.removeSubcat(subcat._id) } }>
-                                                        <i className="fa fa-times-circle"></i>
-                                                        <span className="tooltiptext">Remove</span>
-                                                    </div>
-
-                                                    </td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td>
-                                                        <img 
-                                                            className="change_cat_img" 
-                                                            src={this.state.imgSrcSubs[i]}
-                                                            // src={this.state.imgSrc} 
-                                                            onError={this.addDefaultImg}
-                                                        />
-                                                    </td>
-                                                    <td>
-                                                        <div className="form_element">
-                                                            <input type="file" className="form-control" multiple name="file" accept="image/*" onChange={(event) => {this.onSubImgChange(event, subcat._id, i) } }/>
-                                                            <br />
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            </section>
-                                        : null 
-                                    ) )    
-                                : null } */}
                          
 
                                 
@@ -824,7 +512,6 @@ class AdminSubCat extends Component {
 
 function mapStateToProps(state) {
     return {
-        colls:state.collections.colls,
         cats:state.cats.cats,
         subcats:state.cats.subcats
     }

@@ -25,7 +25,6 @@ class EditItemFile extends PureComponent {
             date_created: '',
             
             contributor: '',
-            // collection_id: '',     
             item_format: '',
             materials: '',
             physical_dimensions: '',

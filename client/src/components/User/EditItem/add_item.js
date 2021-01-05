@@ -4,15 +4,10 @@ import { Link } from 'react-router-dom';
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
 
 
-// import axios from 'axios';
-// import {Progress} from 'reactstrap';
-// import { ToastContainer, toast } from 'react-toastify';
 import '../../../../node_modules/react-toastify/dist/ReactToastify.css';
 
 
 import { addItem, addPendingItem, clearNewItem } from '../../../actions';
-// import {getAllColls, getAllCats, getAllSubCats, updateItem  } from '../../../actions';
-// import moment from 'moment-js';
 
 
 class AddItem extends Component {

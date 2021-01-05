@@ -226,7 +226,7 @@ class SubcatView  extends Component {
                         : null}
 
                         <hr />
-                        <div className="cat_grid_row">
+                        <div className="cat_grid_flex_container">
                             <div className="cat_grid_column">
                                 { this.props.subcatitems && this.props.subcatitems.length ?
                                     this.renderItems()

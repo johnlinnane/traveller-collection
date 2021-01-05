@@ -22,18 +22,6 @@ const NavigationBar = (props) => {
                 </Link>
             : null }
 
-            {props.navinfo && props.navinfo.type === 'Collections' ?
-                <Link to={`/collections`}>
-                    <span>  /  {props.navinfo.type}</span>
-                </Link>
-            : null }
-
-            
-            {props.navinfo && props.navinfo.collTitle ?
-                <Link to={`/collection/${props.navinfo.collId}`}>
-                    <span>  /  {props.navinfo.collTitle}</span>
-                </Link>
-            : null}
 
 
             {props.navinfo && props.navinfo.catTitle ?

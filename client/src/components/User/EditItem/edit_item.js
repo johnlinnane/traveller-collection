@@ -12,7 +12,6 @@ import axios from 'axios';
 
 
 import { getItemById, updateItem, clearItem, deleteItem, getParentPdf, deleteChapter, getFilesFolder } from '../../../actions';
-// import { getAllColls, getAllCats, getAllSubCats  } from '../../../actions';
 
 const config = require('../../../config_client').get(process.env.NODE_ENV);
 
@@ -105,7 +104,6 @@ class EditItem extends PureComponent {
                     creator:item.creator,
                     description:item.description,
                     pages:item.pages,
-                    collection_id:item.collection_id,
                     source:item.source,
                     subject: item.subject,
                     date_created: item.date_created,

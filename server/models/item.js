@@ -23,7 +23,6 @@ const itemSchema = mongoose.Schema({
         type:String
     },
 
-    collection_id: Number,
 
     category_ref: [String],
     subcategory_ref: [String], 
@@ -76,7 +75,6 @@ const itemSchema = mongoose.Schema({
     },
     omeka: {
         omeka_id: Number,
-        omeka_collection_id: String,
         omeka_original : String,
         omeka_fullsize : String,
         omeka_thumbnail : String,

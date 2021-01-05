@@ -4,7 +4,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 
  
-import { getAllColls, getAllCats, getAllSubCats  } from '../../../actions';
+import { getAllCats, getAllSubCats  } from '../../../actions';
 import AdminCat from './admin_cat';
 import AdminSubCat from './admin_subcat';
 import AdminIntro from './admin_intro';
@@ -24,7 +24,6 @@ class Admin extends React.Component  {
     }
 
     componentDidMount() {
-        this.props.dispatch(getAllColls())
         this.props.dispatch(getAllCats());
         this.props.dispatch(getAllSubCats());
     }
@@ -32,7 +31,6 @@ class Admin extends React.Component  {
    
     
     setTabIndex = (index) => {
-        // console.log(index);
         this.setState({
             tabIndexSide: index
         })
@@ -170,7 +168,6 @@ class Admin extends React.Component  {
 
 function mapStateToProps(state) {
     return {
-        colls:state.collections.colls,
         cats:state.cats.cats,
         subcats:state.cats.subcats
     }

@@ -38,8 +38,6 @@ import CatEdit from './components/User/EditItem/cat_edit';
 
 
 // DEPRECATED & MISC
-import CollList from './components/Public/Collections/list';
-import Collection from './components/Public/Collections/collection';
 import Sandbox from './components/User/Sandbox/sandbox';
 
 
@@ -87,8 +85,6 @@ const Routes = () => {
                 {/* DEPRECATED & MISC */}
                 
                 <Route path="/user/register" exact component={Auth(Register, true)}/> 
-                <Route path="/collections" exact component={Auth(CollList, null)}/>
-                <Route path="/collection/:id" exact component={Auth(Collection, null)}/>
                 <Route path="/home" exact component={Auth(Home, null)}/>
                 <Route path="/sandbox" exact component={Auth(Sandbox, true)}/>
                 

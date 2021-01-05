@@ -103,8 +103,7 @@ class CatView  extends Component {
     renderSubcats = () => {
         return (
            
-                    // <div className="cat_grid_row">
-                        <div className="cat_grid_row cat_grid_column">
+                        <div className="cat_grid_flex_container cat_grid_column">
 
                             {this.state.theseSubcats && this.state.theseSubcats.length ?
                                 

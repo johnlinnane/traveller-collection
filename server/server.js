@@ -37,7 +37,6 @@ const { User } = require('./models/user');
 // const { Book } = require('./models/book');
 const { Item, PendingItem } = require('./models/item');
 
-const { Collection } = require('./models/collection');
 const { Cat } = require('./models/cat');
 const { SubCat } = require('./models/subcat');
 const { Intro } = require('./models/intro');
@@ -246,27 +245,9 @@ app.get('/api/user_items', (req, res) => {
 
 
 
-// * * * * * * * * * * * * * * * * * * * * get all collections
-
-app.get('/api/collections', (req, res) => {
-    Collection.find({}, (err, items) => {
-        if(err) return res.status(400).send(err);
-        res.status(200).send(items);
-    })
-})
 
 
 
-// * * * * * * * * * * * * * * * * * * * * get collection by id
-
-
-app.get('/api/getCollById', (req,res) => {
-    let idQuery = req.query.id;
-    Collection.find({id: idQuery}, (err, doc) => {
-        if(err) return res.status(400).send(err);
-        res.send(doc);
-    })
-})
 
 
 // * * * * * * * * * * * * * * * * * * * * get all categories
@@ -290,18 +271,6 @@ app.get('/api/subcategories', (req, res) => {
 })
 
 
-// * * * * * * * * * * * * * * * * * * * * get item by collection
-
-
-app.get('/api/getItemByColl', (req, res) => {
-
-    let value = req.query.value;
-  
-    Item.find({ collection_id:value }).exec( (err, docs) => {
-        if(err) return res.status(400).send(err);
-        res.send(docs);
-    })
-})
 
 
 // * * * * * * * * * * * * * * * * * * * * get item by category

@@ -20,13 +20,11 @@ const CatItem = (props) => {
     return (
         <div className="cat_item_card">
             <div className="cat_item_img">
-                {/* <Link to={`/items/${props.cat._id}`} target="_blank"> */}
                     <img src={`/media/cover_img_cat/${props.cat._id}.jpg`} alt="category cover" onError={addDefaultImg} />
-                {/* </Link> */}
             </div>
 
             <div className="cat_item_text">
-                <h2><b>{props.cat.title}</b></h2><br />
+                <h2><b>{props.cat.title}</b></h2>
                 {props.cat.description ? props.cat.description : null }<br />
 
 

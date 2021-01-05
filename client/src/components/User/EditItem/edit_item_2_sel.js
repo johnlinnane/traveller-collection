@@ -10,7 +10,7 @@ import CreatableSelect from 'react-select/creatable';
 
 
 import { getItemById, getPendItemById, updateItem, updatePendItem, clearItem, getFilesFolder } from '../../../actions';
-import { getAllColls, getAllCats, getAllSubCats  } from '../../../actions';
+import { getAllCats, getAllSubCats  } from '../../../actions';
 
 
 
@@ -23,22 +23,18 @@ class EditItemSel extends PureComponent {
             _id: null,
             category_ref: [],
             subcategory_ref: [],
-            tags: [],
-            collection_id: ''
+            tags: []
             
         },
         catsConverted: null,
         subcatsConverted: null,
-        collConverted: null,
         tagsConverted: null,
-        collList: null,
         catList: null,
         subcatList: [],
         subcatsInitialised: false,
         saved: false,
 
-        tagsDisabled: true,
-        collsDisabled: true
+        tagsDisabled: true
        
 
     }
@@ -51,7 +47,6 @@ class EditItemSel extends PureComponent {
         } else {
             this.props.dispatch(getPendItemById(this.props.match.params.id))
         }
-        this.props.dispatch(getAllColls())
         this.props.dispatch(getAllCats());
         this.props.dispatch(getAllSubCats());
         this.props.dispatch(getFilesFolder({folder: `/items/${this.props.match.params.id}/original`}));
@@ -70,7 +65,7 @@ class EditItemSel extends PureComponent {
         let item = this.props.items.item;
         // console.log(item)
         if (this.props !== prevProps) {
-            if (this.props.items && this.props.items.item && this.props.cats && this.props.colls && this.props.subcats) {
+            if (this.props.items && this.props.items.item && this.props.cats && this.props.subcats) {
 
 
                 // REFORMAT EXISTING CATEGORIES
@@ -163,16 +158,6 @@ class EditItemSel extends PureComponent {
 
 
 
-                // REFORMAT EXISTING COLLECTION
-                let collForState = {value:'', label:''};
-                this.props.colls.map( (coll) => {
-                    if ( coll.id == this.props.items.item.collection_id) {
-                        collForState = {
-                            value: coll.id,
-                            label: coll.title
-                        }
-                    }
-                })
 
 
                 let existsForState = {
@@ -180,7 +165,6 @@ class EditItemSel extends PureComponent {
                     category_ref: this.props.items.item.category_ref,
                     subcategory_ref: this.props.items.item.subcategory_ref,
                     tags: this.props.items.item.tags,
-                    collection_id: this.props.items.item.collection_id
                 }
 
                 let tagsForState = this.props.items.item.tags;
@@ -201,7 +185,6 @@ class EditItemSel extends PureComponent {
                 this.setState({
                     catsConverted: catsForState,
                     subcatsConverted: subcatsForState,
-                    collConverted: collForState,
                     tagsConverted: tagsForState,
                     dataToUpdate: existsForState
                 })
@@ -253,15 +236,6 @@ class EditItemSel extends PureComponent {
         }
     }
 
-    handleInputColl = (newValue) => {
-        let latestData = {
-            ...this.state.dataToUpdate,
-            collection_id: newValue.value
-        }
-        this.setState({
-            dataToUpdate: latestData
-        })
-    }
 
     handleInputCats = (newValue) => {
         let catArray = [];
@@ -375,24 +349,6 @@ class EditItemSel extends PureComponent {
     }
 
 
-    getCollOptions = () => {
-        
-        let collList = [
-            {
-                value: 0,
-                label: 'None'
-            }
-        ];
-        this.props.colls.map( coll => {
-            collList.push({
-                value: coll.id,
-                label: coll.title
-            })
-        })
-        this.setState({
-            collList
-        })
-    }
 
 
     getCatOptions = () => {
@@ -527,32 +483,7 @@ class EditItemSel extends PureComponent {
                                 </tr>
                             }
                           
-                            {this.state.collsDisabled === true ?
-                                null
-                            :
-                                <tr>
-                                    <td>
-                                        Collection
-                                    </td>
-                                    <td>
-                                        <div className="form_element select">
-                                            <Select
-                                                className="basic-single"
-                                                classNamePrefix="select"
-                                                defaultValue={this.state.collConverted}
-                                                isDisabled={false}
-                                                isLoading={false}
-                                                isClearable={true}
-                                                isRtl={false}
-                                                isSearchable={true}
-                                                name="color"
-                                                options={this.state.collList}
-                                                onChange={this.handleInputColl}
-                                            />
-                                        </div>
-                                    </td>
-                                </tr>
-                            }
+                           
 
 
                             <tr>
@@ -659,7 +590,7 @@ class EditItemSel extends PureComponent {
                         : null
                     }
                     
-                    {this.state.tagsConverted && this.state.catsConverted && this.state.subcatsConverted && this.state.collConverted ?
+                    {this.state.tagsConverted && this.state.catsConverted && this.state.subcatsConverted ?
                     
                         this.renderForm()
                     : null }
@@ -679,7 +610,6 @@ class EditItemSel extends PureComponent {
 function mapStateToProps(state) {
     return {
         items:state.items,
-        colls:state.collections.colls,
         cats:state.cats.cats,
         subcats:state.cats.subcats
     }
