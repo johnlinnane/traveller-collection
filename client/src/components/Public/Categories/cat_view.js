@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { getItemsByCat, getCatById, getAllSubCats } from '../../../actions';
-import NavigationBar from '../widgetsUI/navigation';
+import NavigationBar from '../../widgetsUI/navigation';
 
 
 class CatView  extends Component {
