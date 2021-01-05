@@ -187,47 +187,22 @@ class EditItemFile extends PureComponent {
     onClickHandler = () => {
         console.log('ONCLICKHANDLER TRIGGERED')
 
-        if (this.props.user.login.isAuth) {
-            this.props.dispatch(updateItem(
-                { 
-                    _id: this.state.formdata._id
-                    // file_format: this.state.selectedType
-                }
-            ))
-        } else {
-            this.props.dispatch(updatePendItem(
-                { 
-                    _id: this.state.formdata._id
-                    // file_format: this.state.selectedType
-                }
-            ))
-        }
+        // if (this.props.user.login.isAuth) {
+        //     this.props.dispatch(updateItem(
+        //         { 
+        //             _id: this.state.formdata._id
+        //         }
+        //     ))
+        // } else {
+        //     this.props.dispatch(updatePendItem(
+        //         { 
+        //             _id: this.state.formdata._id
+        //         }
+        //     ))
+        // }
 
         const data = new FormData() 
         
-        // if (this.state.selectedFiles.length) {
-        //     for (let i = 0; i < this.state.selectedFiles.length; i++) {
-        //         // data.append('file', this.state.selectedFiles[i])
-        //         data.append(`file_${i}`, this.state.selectedFiles[i][0]);
-        //     }
-
-        //     axios.post(`http://${config.IP_ADDRESS}:3001/upload-fields/${this.state.formdata._id}/${this.state.selectedFiles.length}`, data, {     
-        //         onUploadProgress: ProgressEvent => {
-        //             this.setState({
-        //                 loaded: (ProgressEvent.loaded / ProgressEvent.total*100)
-        //             })
-        //         }
-        //     })
-        //     .then(res => { // then print response status
-        //         // console.log(res.config.data.id);
-        //         // console.log(res.statusText);
-        //         console.log(res);
-        //         alert('File(s) uploaded successfully')
-        //     })
-        //     .catch(err => { 
-        //         console.log(err)
-        //     })
-        // }
 
         if (this.state.selectedFiles.length) {
             let formdata = new FormData() 
