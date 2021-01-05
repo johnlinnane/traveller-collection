@@ -15,8 +15,8 @@ import Login from './components/Public/Login/login';
 
 // CONTAINERS ETC.
 import Home from './components/Public/Home/home'
-import Layout from './hoc/layout';
-import Auth from './hoc/auth';
+import Layout from './components/HOCs/layout';
+import Auth from './components/HOCs/auth';
 import Register from './components/User/UserAdmin/register';
 
 

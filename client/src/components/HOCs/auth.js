@@ -4,7 +4,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { auth } from '../actions';
+import { auth } from '../../actions';
 
 //  this is a post component
 // function that receives a class as an argument
