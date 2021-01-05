@@ -177,7 +177,6 @@ class EditItemSel extends PureComponent {
 
 
                 // GET OPTIONS
-                this.getCollOptions()
                 this.getCatOptions()
                 this.getSubcatOptions()
                 this.renderForm()
