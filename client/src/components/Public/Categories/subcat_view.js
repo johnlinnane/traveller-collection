@@ -5,7 +5,7 @@ import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
 
 import { getSubcat, getItemsBySubcat, getCatById } from '../../../actions';
 import { addItem } from '../../../actions';
-import NavigationBar from '../widgetsUI/navigation';
+import NavigationBar from '../../widgetsUI/navigation';
 
 
 var mongoose = require('mongoose');
