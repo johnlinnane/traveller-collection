@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import ItemItem from './widgetsUI/item_item';
 import { getItems } from '../../actions';
-import NewsSlider from './widgetsUI/Slider/slider';
+import NewsSlider from './../widgetsUI/Slider/slider';
 
 
 

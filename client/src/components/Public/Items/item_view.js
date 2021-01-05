@@ -17,7 +17,7 @@ import { Document, Page, pdfjs } from 'react-pdf';
 
 
 import { getItemWithContributor, clearItemWithContributor, getPendItemById, getAllCats, getAllSubCats, getNextItem, getPrevItem, getParentPdf, getFilesFolder } from '../../../actions';
-import NavigationBar from '../widgetsUI/navigation';
+import NavigationBar from '../../widgetsUI/navigation';
 
 
 const config = require('./../../../config_client').get(process.env.NODE_ENV);
