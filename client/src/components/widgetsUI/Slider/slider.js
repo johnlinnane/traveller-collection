@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import SliderTemplates from './slider_templates'
-import { getItems } from '../../../../actions';
+import { getItems } from './../../../actions';
 
 
 class NewsSlider extends Component {
