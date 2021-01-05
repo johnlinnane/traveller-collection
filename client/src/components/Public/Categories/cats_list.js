@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 
 
-import NavigationBar from '../widgetsUI/navigation';
+import NavigationBar from '../../widgetsUI/navigation';
 import { getAllCats } from '../../../actions';
 // import { getItemsByCat } from '../../../actions';
 
