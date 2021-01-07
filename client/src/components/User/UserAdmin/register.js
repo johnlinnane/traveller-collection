@@ -15,7 +15,7 @@ class Register extends PureComponent {
     }
 
 
-    componentWillMount() {
+    componentDidMount() {
         this.props.dispatch(getUsers())
     } 
 
@@ -35,19 +35,6 @@ class Register extends PureComponent {
         this.setState({lastname:event.target.value})
     }
 
-    
-    // componentWillReceiveProps(nextProps) {
-    //     if(nextProps.user.register === false) {
-    //         this.setState({error:'Error, try again'})
-    //     } else {
-    //         this.setState({
-    //             name:'', 
-    //             lastname:'',
-    //             email:'',
-    //             password:''
-    //         })
-    //     }
-    // }
 
     // reset the state when form is submitted
     componentDidUpdate(prevProps, prevState) {

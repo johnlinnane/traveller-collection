@@ -11,7 +11,6 @@ import { getUserItems } from '../../../actions';
 class UserItems extends Component {
 
 
-    // componentWillMount() {
     componentDidMount() {
         this.props.dispatch(getUserItems(this.props.user.login.id))
     }
@@ -41,7 +40,6 @@ class UserItems extends Component {
 
         return (
             <div className="user_posts">
-                {/* <h4>Your reviews:</h4> */}
                 <h4>Your Items</h4>
 
                 <table className="item_list">

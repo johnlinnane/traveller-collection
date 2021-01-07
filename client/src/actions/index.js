@@ -198,7 +198,7 @@ export function getItems(
 
 
 
-// two requests inside one action, book and user. user reduxthunk
+// two requests inside one action, item and user. user reduxthunk
 export function getItemWithContributor(id) {
 
     // reduxthunk's dispatched function sends payload to reducers whenever we are ready
@@ -240,10 +240,8 @@ export function getItemWithContributor(id) {
 
 export function clearItemWithContributor() {
     return {
-        type:'CLEAR_ITEM_W_REVIEWER',
+        type:'CLEAR_ITEM_W_CONTRIBUTOR',
         payload:{
-            // item:{},
-            // reviewer:{},
             items: null,
             cats: null,
             subcats: null,
@@ -293,48 +291,6 @@ export function clearNewItem() {
 }
 
 
-// // ended up not needing....
-
-// export function getItemWithInfo(id) {
-
-//     // reduxthunk's dispatched function sends payload to reducers whenever we are ready
-//     // as an alternative to getItems
-//     const request = axios.get(`/api/getItemById?id=${id}`)
-
-//     // return a dispatch function
-//     return (dispatch) => {
-
-//         // get the promise, using {{{destructuring}}}
-//         request.then(({data}) => {
-//             let item = data;
-//             // console.log(item);
-
-//             // axios.get(`/api/getContributor?id=${item.ownerId}`)
-//             // console.log(data);
-
-//             // axios.get(`/api/getContributor?id=${item._id}`)
-//             axios.get(`/api/getCatById?id=${item.something}`)
-
-//                 .then(({data}) => {
-                
-//                     let response = {
-//                         item, 
-//                         // reviewer:data
-//                         catinfo:data
-//                     }
-
-//                     // console.log(response);
-
-//                     // only gets executed when ready
-//                     dispatch({
-//                         type:'GET_ITEM_W_INFO',
-//                         payload:response
-//                     })
-//                 })
-//         })
-//     }
-// }
-
 
 export function getNextItem(oldId) {
     const request = axios.get(`/api/getNextItem?oldId=${oldId}`)
@@ -342,9 +298,6 @@ export function getNextItem(oldId) {
                                 return response.data
                             }
                         );
-
-    // console.log(request);
-
     return {
         type:'GET_NEXT_ITEM',
         payload:request
@@ -358,9 +311,6 @@ export function getPrevItem(oldId) {
                                 return response.data
                             }
                         );
-
-    // console.log(request);
-
     return {
         type:'GET_PREV_ITEM',
         payload:request
@@ -625,11 +575,9 @@ export function getItemsWithCat(catId) {
                 
                     let response = {
                         catInfo, 
-                        // reviewer:data
                         catItems:data
                     }
 
-                    // console.log(response);
 
 
                     dispatch({

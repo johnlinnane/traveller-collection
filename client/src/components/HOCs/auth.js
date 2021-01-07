@@ -23,28 +23,10 @@ export default function(ComposedClass, reload) {
 
 
         // dispatch an action to check if user is authenticated
-        // componentWillMount() {
         componentDidMount() {
 
             this.props.dispatch(auth())
         }
-
-        // componentWillReceiveProps(nextProps) {
-        //     // console.log(nextProps);
-        //     this.setState({loading:false})
-        //     // check if user is authenticated, show them corresponding screen
-        //     if(!nextProps.user.login.isAuth) {
-        //         // stop infinite loop
-        //         if(reload === true) {
-        //             this.props.history.push('/login');
-        //         }
-        //     } else {
-        //         // kick back to user page if logged in
-        //         if(reload === false) {
-        //             this.props.history.push('/user')
-        //         }
-        //     }
-        // }
 
         // check if props have been received
         componentDidUpdate(prevProps, prevState) {

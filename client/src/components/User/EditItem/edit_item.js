@@ -90,8 +90,6 @@ class EditItem extends PureComponent {
 
         if (this.props.items.item) {
             let item = this.props.items.item;
-            // console.log(this.state.formdata);
-            // console.log(book);
 
             // can create a updatedFormdata variable, but no need
             if (this.props.items !== prevProps.items) {

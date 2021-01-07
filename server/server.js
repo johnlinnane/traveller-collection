@@ -34,7 +34,6 @@ mongoose.connect(config.DATABASE)
 
 // bring in mongo model
 const { User } = require('./models/user');
-// const { Book } = require('./models/book');
 const { Item, PendingItem } = require('./models/item');
 
 const { Cat } = require('./models/cat');
@@ -49,13 +48,6 @@ const { fileURLToPath } = require('url');
 
 
 // set middleware
-
-// // https://stackoverflow.com/questions/35931135/cannot-post-error-using-express
-// // to stop cannot POST url message
-// app.use(bodyParser.urlencoded({
-//     extended: false
-//  }));
-
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(cors())
@@ -191,18 +183,6 @@ app.get('/api/items', (req,res) => {
 
 
 
-// get reviewer by id  -- NOT USED 
-app.get('/api/getReviewer', (req, res) => {
-    let id = req.query.id;
-
-    User.findById(id, (err, doc) => {
-        if(err) return res.status(400).send(err);
-        res.json({
-            name:doc.name,
-            lastname:doc.lastname
-        })
-    })
-})
 
 
 // * * * * * * * * * * * * * * * * * * * * get contributor by id
@@ -229,12 +209,6 @@ app.get('/api/users', (req, res) => {
 })
 
 
-app.get('/api/user_posts', (req, res) => {
-    Book.find({ownerId:req.query.user}).exec( (err, docs) => {
-        if(err) return res.status(400).send(err);
-        res.send(docs);
-    })
-})
 
 app.get('/api/user_items', (req, res) => {
     Item.find({ownerId:req.query.user}).exec( (err, docs) => {

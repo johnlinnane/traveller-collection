@@ -267,41 +267,20 @@ class ItemView extends Component {
         }
 
         var slickDivs = [];
-        // files.forEach( (file, i) => {      
-        //     slickDivs.push( 
-        //         <div key={i} className="featured_item"> 
-        //             <div className="featured_image"
-        //                  style={{
-        //                     background: `url(/media/items/${this.props.match.params.id}/original/${files[i]}), url(/media/default/default.jpg)`
-        //                  }}
-        //             >
-                        
-
-        //             </div>
-        //         </div>
-        //     )
-        // })
-
-        for (let i = 0; i < 2; i++) {
+        files.forEach( (file, i) => {      
             slickDivs.push( 
                 <div key={i} className="featured_item"> 
-                    {/* <div className="featured_image"
-                        style={{
-                            background: `url(/media/default/default.jpg)`
-                        }}
+                    <div className="featured_image"
+                         style={{
+                            background: `url(/media/items/${this.props.match.params.id}/original/${files[i]}), url(/media/default/default.jpg)`
+                         }}
                     >
-                        
-
-                    </div> */}
-                    Hello
+                    </div>
                 </div>
             )
-        }
+        })
         
         return <Slick {...settings}>{slickDivs}</Slick>;
-        // return <Slick {...settings}>{[<div key="1">Hello</div>,<div key="2">Spaceboy</div>]}</Slick>;
-
-
     }
 
 
@@ -531,19 +510,12 @@ class ItemView extends Component {
 
                     
                     {itemdata.creator ?
-                        <div className="item_field item_creator item_review"><p><b>Creator </b></p><h5>{itemdata.creator}</h5></div>
+                        <div className="item_field item_creator item_view"><p><b>Creator </b></p><h5>{itemdata.creator}</h5></div>
                     : null }
 
 
 
-                    {/* <div className="item_field link_blue">
-                        <p><b>{text}</b></p>
-                        
-                        <span dangerouslySetInnerHTML={{__html:  ref}}></span>
-                    </div> */}
-                    
-
-                    <div className="item_reviewer ">
+                    <div className="item_contributor ">
                         <span className="item_field">
                             { itemdata.contributor && itemdata.contributor.name && itemdata.contributor.lastname ?
                                 <span>Submitted by: {itemdata.contributor.name} {itemdata.contributor.lastname} - </span>
@@ -557,7 +529,7 @@ class ItemView extends Component {
                 </div>
 
 
-                <div className="item_review item_body">
+                <div className="item_view item_body">
 
                     {this.renderField('Subject', itemdata.subject)}
                     {this.renderField('Description', itemdata.description)}

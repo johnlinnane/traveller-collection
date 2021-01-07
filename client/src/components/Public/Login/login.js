@@ -30,11 +30,6 @@ class Login extends Component {
         document.title = `Traveller Collection`
     }
 
-    // componentWillReceiveProps(nextProps) {
-    //     if(nextProps.user.login.isAuth) {
-    //         this.props.history.push('/user')
-    //     }
-    // }
 
     // redirect to user screen when login
     componentDidUpdate(prevProps, prevState) {

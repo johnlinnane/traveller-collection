@@ -433,15 +433,15 @@ header .navItem span {
   /* color: #02bcd4; */
   color: #24727c;
 }
-.item_container .item_header .item_reviewer {
+.item_container .item_header .item_contributor {
   font-size: 12px;
   margin-bottom: 10px;
   text-align: left;
 }
-.item_container .item_header .item_reviewer span {
+.item_container .item_header .item_contributor span {
   font-weight: 500;
 }
-.item_container .item_review {
+.item_container .item_view {
   font-size: 20px;
   font-weight: 300;
   line-height: 27px;
