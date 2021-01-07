@@ -46,8 +46,8 @@ class CatView  extends Component {
 
             let theseSubcats = this.state.theseSubcats;
 
-            this.props.subcats.map( subcat => {
-                if (subcat.parent_cat == this.props.match.params.id) {
+            this.props.subcats.forEach( subcat => {
+                if (subcat.parent_cat === this.props.match.params.id) {
                     theseSubcats.push(subcat)
                 }
             })

@@ -2,14 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from "react-router-dom";
 import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import { toast } from 'react-toastify';
 import 'react-tabs/style/react-tabs.css';
 import Select from 'react-select';
-import CreatableSelect from 'react-select/creatable';
 
 import { getAllCats, getAllSubCats  } from '../../../actions';
-import { addCat, deleteCat, addSubcat, deleteSubcat, updateCat, updateSubcat  }  from '../../../actions';
+import { deleteSubcat, updateSubcat  }  from '../../../actions';
 
 
 const config = require('../../../config_client').get(process.env.NODE_ENV);
@@ -67,7 +65,7 @@ class AdminSubCat extends Component {
 
     componentDidUpdate(prevProps) {
     
-        if (this.props != prevProps) {
+        if (this.props !== prevProps) {
 
             if (this.props.chosenSubCatInfo) {
                 this.setState({
@@ -79,13 +77,13 @@ class AdminSubCat extends Component {
             if (this.props.cats && this.props.cats.length) {
                 let tempAllCatsConverted = [];
                 let tempSelectedCatConverted;
-                this.props.cats.map( cat => {
+                this.props.cats.forEach( cat => {
                     tempAllCatsConverted.push({
                         value: cat._id,
                         label: cat.title
                     })
 
-                    if (cat._id == this.props.chosenSubCatInfo.parent_cat) {
+                    if (cat._id === this.props.chosenSubCatInfo.parent_cat) {
                         tempSelectedCatConverted = {
                             value: cat._id,
                             label: cat.title
@@ -122,7 +120,7 @@ class AdminSubCat extends Component {
     onImgChange = (event) => {
 
 
-        var files = event.target.files;
+        let files = event.target.files;
 
         if (this.maxSelectFile(event) && this.checkMimeType(event) && this.checkMimeType(event)) {  
             this.setState({
@@ -141,7 +139,7 @@ class AdminSubCat extends Component {
         const data = new FormData();
         
         if (this.state.selectedFile) {
-            for(var x = 0; x<this.state.selectedFile.length; x++) {
+            for(let x = 0; x<this.state.selectedFile.length; x++) {
                 data.append('file', this.state.selectedFile[x])
             }
 
@@ -211,7 +209,7 @@ class AdminSubCat extends Component {
         // list allow mime type
         const types = ['image/png', 'image/jpeg', 'image/gif']
         // loop access array
-        for(var x = 0; x<files.length; x++) {
+        for(let x = 0; x<files.length; x++) {
          // compare file type find doesn't matach
             if (types.every(type => files[x].type !== type)) {
                 // create error message and assign to container   
@@ -219,7 +217,7 @@ class AdminSubCat extends Component {
             }
         };
 
-        for(var z = 0; z<err.length; z++) { // loop create toast massage
+        for(let z = 0; z<err.length; z++) { // loop create toast massage
             event.target.value = null 
             toast.error(err[z])
         }
@@ -231,13 +229,13 @@ class AdminSubCat extends Component {
         let size = 15000 
         let err = ""; 
 
-        for(var x = 0; x<files.length; x++) {
+        for(let x = 0; x<files.length; x++) {
             if (files[x].size > size) {
                 err += files[x].type+'is too large, please pick a smaller file\n';
             }
         };
 
-        for(var z = 0; z<err.length; z++) {
+        for(let z = 0; z<err.length; z++) {
             toast.error(err[z])
             event.target.value = null
         }
@@ -398,6 +396,7 @@ class AdminSubCat extends Component {
                                             className="change_cat_img" 
                                             src={this.state.imgSrc} 
                                             onError={this.addDefaultImg}
+                                            alt='sub category cover'
                                         />
                                     </td>
                                 </tr>

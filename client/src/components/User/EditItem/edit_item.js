@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
+import { Map, TileLayer, Marker } from 'react-leaflet'
 import axios from 'axios';
 // import Select from 'react-select';
 // import CreatableSelect from 'react-select/creatable';
@@ -358,33 +358,11 @@ class EditItem extends PureComponent {
 
 
     renderForm = () => {
-        // console.log(this.state);
 
-        const items = this.props.items;
         const formdata = this.state.formdata;
 
         return (
             <div>
-            {/* {
-                items.updateItem ?
-                    <div className="edit_confirm">
-                        Post updated, <Link to={`/items/${items.item._id}`}>
-                            Click here to see your post
-                        </Link>
-                    </div>
-                : null
-            } */}
-
-
-            {/* {
-                items.itemDeleted ?
-                    <div className="red_tag">
-                        Item Deleted    
-                        {this.redirectUser()}
-                    </div>
-
-                : null
-            } */}
 
             <form onSubmit={this.submitForm}>
                 
@@ -396,9 +374,9 @@ class EditItem extends PureComponent {
 
                                 { this.props.items.files && this.props.items.files.length ?
                                     <div>
-                                    <img src={`/media/items/${formdata._id}/original/${this.props.items.files[0].name}`} alt="item main image" className="edit_main_img" onError={this.addDefaultImg} />
+                                    <img src={`/media/items/${formdata._id}/original/${this.props.items.files[0].name}`} alt="item main " className="edit_main_img" onError={this.addDefaultImg} />
                                     </div>
-                                : <img src={'/media/default/default.jpg'} /> }
+                                : <img src={'/media/default/default.jpg'} alt='default'/> }
                                 
 
                             </div>
@@ -693,8 +671,6 @@ class EditItem extends PureComponent {
 
 
     render() {
-        let items = this.props.items;
-
         console.log('STATE', this.state);
         console.log('PROPS', this.props);
 

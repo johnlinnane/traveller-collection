@@ -1,14 +1,9 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
-import Select from 'react-select';
-import CreatableSelect from 'react-select/creatable';
 
 
-
-import { getItemById, updateItem, addItem, clearItem, deleteItem } from '../../../actions';
+import { getItemById, updateItem, addItem } from '../../../actions';
 
 const mongoose = require('mongoose');
 
@@ -197,7 +192,7 @@ class ChapterIndex extends PureComponent {
 
         let temp_has_chapter_children = false;
 
-        this.state.formdata.pdf_page_index.map(chapt => {
+        this.state.formdata.pdf_page_index.forEach(chapt => {
             if (chapt.has_child) {
                 temp_has_chapter_children = true;
             }
@@ -230,7 +225,6 @@ class ChapterIndex extends PureComponent {
 
             creator: '',
             subject: '',
-            description: '',
             source: '',
             date_created: '',
             
@@ -416,12 +410,8 @@ class ChapterIndex extends PureComponent {
 
     render() {
 
-        let items = this.props.items;
-
-        // console.log(this.props);
         console.log(this.state.formdata);
 
-        // this.refineSubcatList();
 
 
 

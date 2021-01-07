@@ -2,17 +2,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from "react-router-dom";
 import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import Select from 'react-select';
-import CreatableSelect from 'react-select/creatable';
-
-
 
 
 import { getAllCats } from '../../../actions';
 import { addSubcat } from '../../../actions';
 
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
 const config = require('../../../config_client').get(process.env.NODE_ENV);
 
@@ -38,11 +35,11 @@ class AdminAddSubCat extends Component {
 
 
     componentDidUpdate(prevProps, prevState) {
-        if (this.props != prevProps) {
+        if (this.props !== prevProps) {
 
             if (this.props.cats && this.props.cats.length) {
                 let tempAllCatsConverted = [];
-                this.props.cats.map( cat => {
+                this.props.cats.forEach( cat => {
                     tempAllCatsConverted.push({
                         value: cat._id,
                         label: cat.title
@@ -121,7 +118,7 @@ class AdminAddSubCat extends Component {
     // *************** UPLOAD LOGIC ********************
 
     onImgChange = (event) => {
-        var files = event.target.files;
+        let files = event.target.files;
 
         if (this.maxSelectFile(event) && this.checkMimeType(event) && this.checkMimeType(event)) {  
             this.setState({
@@ -139,7 +136,7 @@ class AdminAddSubCat extends Component {
         const data = new FormData();
         
         if (this.state.selectedFile) {
-            for(var x = 0; x<this.state.selectedFile.length; x++) {
+            for(let x = 0; x<this.state.selectedFile.length; x++) {
                 data.append('file', this.state.selectedFile[x])
             }
             axios.post(`http://${config.IP_ADDRESS}:3001/upload-subcat/${this.state.subcatdata._id}`, data, { 
@@ -191,7 +188,7 @@ class AdminAddSubCat extends Component {
         // list allow mime type
         const types = ['image/png', 'image/jpeg', 'image/gif']
         // loop access array
-        for(var x = 0; x<files.length; x++) {
+        for(let x = 0; x<files.length; x++) {
          // compare file type find doesn't matach
             if (types.every(type => files[x].type !== type)) {
                 // create error message and assign to container   
@@ -199,7 +196,7 @@ class AdminAddSubCat extends Component {
             }
         };
 
-        for(var z = 0; z<err.length; z++) { // loop create toast massage
+        for(let z = 0; z<err.length; z++) { // loop create toast massage
             event.target.value = null 
             toast.error(err[z])
         }
@@ -211,13 +208,13 @@ class AdminAddSubCat extends Component {
         let size = 15000 
         let err = ""; 
 
-        for(var x = 0; x<files.length; x++) {
+        for(let x = 0; x<files.length; x++) {
             if (files[x].size > size) {
                 err += files[x].type+'is too large, please pick a smaller file\n';
             }
         };
 
-        for(var z = 0; z<err.length; z++) {
+        for(let z = 0; z<err.length; z++) {
             toast.error(err[z])
             event.target.value = null
         }
@@ -343,6 +340,7 @@ class AdminAddSubCat extends Component {
                                             className="change_cat_img" 
                                             src={this.state.imgSrc} 
                                             onError={this.addDefaultImg}
+                                            alt='parent category cover'
                                         />
                                     </td>
                                     <td>

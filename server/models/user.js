@@ -43,7 +43,7 @@ const userSchema = mongoose.Schema({
 // pre-save: hash the password before saving
 // middleware uses next
 userSchema.pre('save', function(next){
-    var user = this;
+    let user = this;
 
     if (user.isModified('password')) {
         // hash the password
@@ -73,9 +73,9 @@ userSchema.methods.comparePassword = function(candidatePassword, cb) {
 
 // create a method to generate token
 userSchema.methods.generateToken = function(cb) {
-    var user = this;
+    let user = this;
     // generate token
-    var token = jwt.sign(user._id.toHexString(), config.SECRET);
+    let token = jwt.sign(user._id.toHexString(), config.SECRET);
 
     // save all user info, with token
     user.token = token;
@@ -87,7 +87,7 @@ userSchema.methods.generateToken = function(cb) {
 
 // find user by token, check in cookies
 userSchema.statics.findByToken = function(token, cb) {
-    var user = this;
+    let user = this;
 
     // decode contains the user id
     jwt.verify(token, config.SECRET, function(err, decode) {
@@ -102,7 +102,7 @@ userSchema.statics.findByToken = function(token, cb) {
 
 // delete token on logout
 userSchema.methods.deleteToken = function(token, cb) {
-    var user = this;
+    let user = this;
 
     // unset the value (to 1)
     user.update({$unset:{token:1}}, (err, user) => {

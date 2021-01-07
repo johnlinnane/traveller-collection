@@ -447,7 +447,7 @@ export function deleteChapter(parentId, title) {
     return (dispatch) => {
         request.then(({data}) => {
 
-            data.pdf_page_index.map( (chapt, i) => {
+            data.pdf_page_index.forEach( (chapt, i) => {
 
                 if (chapt.heading === title && chapt.has_child === true) {
                     data.pdf_page_index[i].has_child = false;

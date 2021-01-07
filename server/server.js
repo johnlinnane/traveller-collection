@@ -127,7 +127,7 @@ app.get('/api/searchItem', (req,res) => {
     let queryKey = req.query.key;
     let queryValue = req.query.value;
 
-    var query = {};
+    let query = {};
     query[queryKey] = queryValue;
 
     Item.find( query , (err, doc) => {
@@ -892,7 +892,7 @@ app.post('/get-number-files', function(req, res) {
 //   }
 // })
 
-// var upload = multer({ storage: storage }).single('file');
+// let upload = multer({ storage: storage }).single('file');
 // let upload = multer({ storage: storage }).array('file')
 
 
@@ -907,7 +907,7 @@ app.post(
                 destination: function (req, file, cb) {
                     itemId = req.params.id;
                     console.log('UPLOAD ITEM ID: ', itemId);
-                    // var dest = `../client/public/media/items/${itemId}/original`;
+                    // let dest = `../client/public/media/items/${itemId}/original`;
                     mkdirp.sync(dest);
                     cb(null, dest)
                 },
@@ -942,7 +942,7 @@ app.post(
 
             let width = 500;
             let height = 500;
-            var dest = `../client/public/media/items/${itemId}/sq_thumbnail`;
+            let dest = `../client/public/media/items/${itemId}/sq_thumbnail`;
             mkdirp.sync(dest);
 
             sharp(req.file.path)
@@ -967,7 +967,7 @@ app.post(
 ///////////////////////// ARRAY ////////////////////////////////////////
 
 
-var storageArray = multer.diskStorage({
+let storageArray = multer.diskStorage({
     destination: function (req, file, cb) {
         const path = `../client/public/media/items/${req.params.id}/original`
         // console.log('ID: ', req.params.id)
@@ -1076,7 +1076,7 @@ app.post(
                     console.log('MULTER REQ: ', req)
                     itemId = req.params.id;
                     console.log('ITEM ID: ' + itemId);
-                    var dest = `../client/public/media/items/${itemId}/original`;
+                    let dest = `../client/public/media/items/${itemId}/original`;
                     mkdirp.sync(dest);
                     cb(null, dest)
                 },
@@ -1122,7 +1122,7 @@ app.post(
 
                         let width = 500;
                         let height = 500;
-                        var dest = `../client/public/media/items/${itemId}/sq_thumbnail`;
+                        let dest = `../client/public/media/items/${itemId}/sq_thumbnail`;
                         mkdirp.sync(dest);
 
                         // sharp(req.file.path)
@@ -1175,8 +1175,8 @@ app.post(
         multer({ storage: multer.diskStorage({
             destination: function (req, file, cb) {
 
-                var dest = `../client/public/media/cover_img_cat`;
-                // var dest = `../client/public/media/upload_test`;
+                let dest = `../client/public/media/cover_img_cat`;
+                // let dest = `../client/public/media/upload_test`;
                 // fs.mkdirSync(dest, { recursive: true })
                 mkdirp.sync(dest);
                 cb(null, dest)
@@ -1215,8 +1215,8 @@ app.post(
         multer({ storage: multer.diskStorage({
             destination: function (req, file, cb) {
 
-                var dest = `../client/public/media/cover_img_subcat`;
-                // var dest = `../client/public/media/upload_test`;
+                let dest = `../client/public/media/cover_img_subcat`;
+                // let dest = `../client/public/media/upload_test`;
                 // fs.mkdirSync(dest, { recursive: true })
                 mkdirp.sync(dest);
                 cb(null, dest)
@@ -1253,8 +1253,8 @@ app.post(
         multer({ storage: multer.diskStorage({
             destination: function (req, file, cb) {
 
-                var dest = `../client/public/media/intro`;
-                // var dest = `../client/public/media/upload_test`;
+                let dest = `../client/public/media/intro`;
+                // let dest = `../client/public/media/upload_test`;
                 // fs.mkdirSync(dest, { recursive: true })
                 mkdirp.sync(dest);
                 cb(null, dest)
@@ -1289,7 +1289,7 @@ app.post(
         multer({ storage: multer.diskStorage({
             destination: function (req, file, cb) {
 
-                var dest = `../client/public/media/info`;
+                let dest = `../client/public/media/info`;
                 mkdirp.sync(dest);
                 cb(null, dest)
                 

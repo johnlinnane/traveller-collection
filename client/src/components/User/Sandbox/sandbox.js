@@ -88,13 +88,13 @@ class Sandbox extends Component {
                 {this.state.filesArray.map( (file, i) => (
                     <div key={`input${i}`}>
                         <p>FILENAME: {file[0].name}</p>
-                        <img className="sandbox_img" src={this.state.selectedFilesImg[i]} />
+                        <img className="sandbox_img" src={this.state.selectedFilesImg[i]} alt='sandbox'/>
                         <button type="button" onClick={() => this.removeFile(i)}>Remove File</button> 
                         <br />
                     </div>
                 ))}
 
-                {this.state.filesArray.length == 0 ?
+                {this.state.filesArray.length === 0 ?
                 <input
                     type="file" 
                     value=''

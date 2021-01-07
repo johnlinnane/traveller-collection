@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 
-import { getAllPendItems, deletePendItem, acceptItem, addItem } from '../../../actions';
+import { getAllPendItems, deletePendItem, acceptItem } from '../../../actions';
 
 
 import PendingItemCard from './pending_item_card'
@@ -30,7 +30,7 @@ class PendingItemsView extends Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if (this.props != prevProps) {
+        if (this.props !== prevProps) {
             if (this.props.items && this.props.items.items) {
                 this.setState({
                     items: this.props.items.items
@@ -63,20 +63,20 @@ class PendingItemsView extends Component {
 
     handleChoice = (itemId, choice) => {
 
-        if (choice == 'accept') {
+        if (choice === 'accept') {
             this.props.dispatch(acceptItem(itemId, this.props.user.login.id))
             console.log('Item ' + itemId + ' accepted! by ' + this.props.user.login.id)
             // move item to items database    
         }
 
-        if (choice == 'reject') {
+        if (choice === 'reject') {
             this.props.dispatch(deletePendItem(itemId));
             this.deleteAllMedia(itemId);
             console.log('Item ' + itemId + ' rejected!')
         }
 
         let tempItems = this.state.items
-        var index = tempItems.findIndex(p => p._id == itemId)
+        let index = tempItems.findIndex(p => p._id === itemId)
 
         if (index > -1) {
             tempItems.splice(index, 1);

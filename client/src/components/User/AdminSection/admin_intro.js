@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { withRouter } from "react-router-dom";
 
 import { getIntroText, updateIntroText } from '../../../actions';
@@ -29,7 +29,7 @@ class AdminIntro extends Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if (this.props != prevProps) {
+        if (this.props !== prevProps) {
             
             
             let introData = {
@@ -51,7 +51,7 @@ class AdminIntro extends Component {
     onImgChange = (event) => {
 
 
-        var files = event.target.files;
+        let files = event.target.files;
 
         if (this.maxSelectFile(event) && this.checkMimeType(event) && this.checkMimeType(event)) {  
             this.setState({
@@ -70,7 +70,7 @@ class AdminIntro extends Component {
         const data = new FormData() 
         
         if (this.state.selectedFile) {
-            for(var x = 0; x<this.state.selectedFile.length; x++) {
+            for(let x = 0; x<this.state.selectedFile.length; x++) {
                 data.append('file', this.state.selectedFile[x])
             }
             
@@ -123,7 +123,7 @@ class AdminIntro extends Component {
         // list allow mime type
         const types = ['image/png', 'image/jpeg', 'image/gif']
         // loop access array
-        for(var x = 0; x<files.length; x++) {
+        for(let x = 0; x<files.length; x++) {
          // compare file type find doesn't matach
             if (types.every(type => files[x].type !== type)) {
                 // create error message and assign to container   
@@ -131,7 +131,7 @@ class AdminIntro extends Component {
             }
         };
 
-        for(var z = 0; z<err.length; z++) { // loop create toast massage
+        for(let z = 0; z<err.length; z++) { // loop create toast massage
             event.target.value = null 
             toast.error(err[z])
         }
@@ -143,13 +143,13 @@ class AdminIntro extends Component {
         let size = 15000 
         let err = ""; 
 
-        for(var x = 0; x<files.length; x++) {
+        for(let x = 0; x<files.length; x++) {
             if (files[x].size > size) {
                 err += files[x].type+'is too large, please pick a smaller file\n';
             }
         };
 
-        for(var z = 0; z<err.length; z++) {
+        for(let z = 0; z<err.length; z++) {
             toast.error(err[z])
             event.target.value = null
         }
@@ -285,7 +285,7 @@ class AdminIntro extends Component {
 
                                 <tr>
                                     <td>
-                                        <img src={this.state.imgSrc} onError={this.addDefaultImg}/>
+                                        <img src={this.state.imgSrc} onError={this.addDefaultImg} alt='intro main'/>
                                     </td>
                                 </tr>
 

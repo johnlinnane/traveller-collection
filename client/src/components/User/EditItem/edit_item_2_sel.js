@@ -1,8 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
 import Select from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 
@@ -62,8 +60,6 @@ class EditItemSel extends PureComponent {
 
     componentDidUpdate(prevProps, prevState) {
 
-        let item = this.props.items.item;
-        // console.log(item)
         if (this.props !== prevProps) {
             if (this.props.items && this.props.items.item && this.props.cats && this.props.subcats) {
 
@@ -71,9 +67,9 @@ class EditItemSel extends PureComponent {
                 // REFORMAT EXISTING CATEGORIES
                 let catsForState = [];
                 if (this.props.items.item.category_ref && this.props.items.item.category_ref.length) {
-                    this.props.items.item.category_ref.map( (catref) => {
-                        this.props.cats.map( (cat) => {
-                            if ( cat._id == catref) {
+                    this.props.items.item.category_ref.forEach( (catref) => {
+                        this.props.cats.forEach( (cat) => {
+                            if ( cat._id === catref) {
                                 catsForState.push(
                                     {
                                         value: cat._id,
@@ -88,33 +84,15 @@ class EditItemSel extends PureComponent {
 
                 // REFORMAT EXISTING SUBCATEGORIES
                 let subcatsForState = [];
-                // checks if item props have arrived
-                // console.log(this.props.items.item.subcategory_ref)
 
                 if (this.props.items.item.subcategory_ref && this.props.items.item.subcategory_ref.length) {
 
 
-                    // // if there is categories
-                    // if (this.props.items.item.category_ref && this.props.items.item.category_ref.length) {
-                    //     console.log('there is categories')
-                    //     // loop through all subcats
-                    //     this.props.subcats.map( (subcat) => {
-                    //         // if subcat is part of the chosen cat
-                    //         if (this.props.items.item.category_ref.indexOf(subcat.parent_cat) !== -1) {
-                    //             subcatsForState.push({
-                    //                 value: subcat.subcat_id,
-                    //                 label: subcat.title
-                    //             })
-                    //         }  
-                    //     })
-                    // } else {
-
-
 
                         // loop through the item subcats
-                        this.props.items.item.subcategory_ref.map( (subcatref) => {
-                            this.props.subcats.map( (subcat) => {
-                                if ( subcat._id == subcatref) {
+                        this.props.items.item.subcategory_ref.forEach( (subcatref) => {
+                            this.props.subcats.forEach( (subcat) => {
+                                if ( subcat._id === subcatref) {
                                     // make new array of formatted subcats for the form
                                     subcatsForState.push(
                                         {
@@ -127,33 +105,6 @@ class EditItemSel extends PureComponent {
                         })
                     // }
                 }
-
-
-
-
-
-                // if (this.props.items.item.category_ref && this.props.items.item.category_ref.length && this.state.catsConverted) {
-                //     console.log('hi');
-                //     let catsId = [];
-                //     prevState.catsConverted.map( cat => {
-                //         catsId.push(cat.value)
-                //     })
-        
-        
-                //     let refinedSubcatList = [];
-        
-                //     prevProps.subcats.map( (subcat, i) => {
-                        
-                //         if (catsId.indexOf(subcat.parent_cat) !== -1) {
-                //             refinedSubcatList.push({
-                //                 value: subcat.subcat_id,
-                //                 label: subcat.title
-                //             })
-                //         }
-                        
-                //     })
-                //     subcatsForState = refinedSubcatList;
-                // }
 
 
 
@@ -192,10 +143,6 @@ class EditItemSel extends PureComponent {
     }
 
 
-    // deletePost = () => {
-    //     this.props.dispatch(deleteItem(this.state.formdata._id));
-    //     this.props.history.push('/user/all-items');
-    // }
 
     addDefaultImg = (ev) => {
         const newImg = '/media/default/default.jpg';
@@ -239,7 +186,7 @@ class EditItemSel extends PureComponent {
     handleInputCats = (newValue) => {
         let catArray = [];
         if (newValue && newValue.length) {
-            newValue.map( cat => {
+            newValue.forEach( cat => {
                 catArray.push(cat.value)
             })
         }
@@ -259,11 +206,11 @@ class EditItemSel extends PureComponent {
             // loop through subcats
             // console.log('new list written')
 
-            newValue.map( newval => {
+            newValue.forEach( newval => {
                 // console.log(newval)
-                this.props.subcats.map( (subcat) => {
+                this.props.subcats.forEach( (subcat) => {
                     // console.log(newval.value, subcat.parent_cat);
-                    if (newval.value == subcat.parent_cat){
+                    if (newval.value === subcat.parent_cat){
                         newSubcatList.push({
                             value: subcat._id,
                             label: subcat.title
@@ -307,7 +254,7 @@ class EditItemSel extends PureComponent {
     handleInputSubcats = (newValue) => {
         let subcatArray = [];
         if (newValue && newValue.length) {
-            newValue.map( subcat => {
+            newValue.forEach( subcat => {
                 subcatArray.push(subcat.value)
             })
         }
@@ -352,7 +299,7 @@ class EditItemSel extends PureComponent {
 
     getCatOptions = () => {
         let catList = [];
-        this.props.cats.map( cat => {
+        this.props.cats.forEach( cat => {
             catList.push({
                 value: cat._id,
                 label: cat.title
@@ -377,7 +324,7 @@ class EditItemSel extends PureComponent {
         if (!this.state.subcatsInitialised) {
             if (this.props.items.item.category_ref && this.props.items.item.category_ref.length) {
                 // loop through all subcats
-                this.props.subcats.map( (subcat) => {
+                this.props.subcats.forEach( (subcat) => {
                     // if subcat is part of the chosen cat
                     if (this.props.items.item.category_ref.indexOf(subcat.parent_cat) !== -1) {
                         subcatList.push({
@@ -387,7 +334,7 @@ class EditItemSel extends PureComponent {
                     }  
                 })
             } else {
-                this.props.subcats.map( subcat => {
+                this.props.subcats.forEach( subcat => {
                     subcatList.push({
                         value: subcat._id,
                         label: subcat.title
@@ -403,31 +350,6 @@ class EditItemSel extends PureComponent {
     }
 
 
-    // refineSubcatList = () => {
-    //     // if cat is selected
-    //     if (this.state.catsConverted && this.state.catsConverted.length) {
-    //         let catsId = [];
-    //         this.state.catsConverted.map( cat => {
-    //             catsId.push(cat.value)
-    //         })
-
-
-    //         let refinedSubcatList = [];
-
-    //         this.props.subcats.map( (subcat, i) => {
-                
-    //             if (catsId.indexOf(subcat.parent_cat) !== -1) {
-    //                 refinedSubcatList.push({
-    //                     value: subcat.subcat_id,
-    //                     label: subcat.title
-    //                 })
-    //             }
-                
-    //         })
-    //         this.setState({subcatList: refinedSubcatList})
-    //     }
-        
-    // }
 
 
     renderForm = () => (
@@ -443,9 +365,9 @@ class EditItemSel extends PureComponent {
 
                                         { this.props.items.files && this.props.items.files.length ?
                                             <div>
-                                            <img src={`/media/items/${this.props.match.params.id}/original/${this.props.items.files[0].name}`} alt="item main image" className="edit_main_img" onError={this.addDefaultImg} />
+                                            <img src={`/media/items/${this.props.match.params.id}/original/${this.props.items.files[0].name}`} alt="item main" className="edit_main_img" onError={this.addDefaultImg} />
                                             </div>
-                                        : <img src={'/media/default/default.jpg'} /> }
+                                        : <img src={'/media/default/default.jpg'} alt='default'/> }
 
                                     </div>
                                     {this.props.items && this.props.items.item ?

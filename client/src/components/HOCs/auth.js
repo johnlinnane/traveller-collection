@@ -10,7 +10,7 @@ import { auth } from '../../actions';
 // function that receives a class as an argument
 // returns the component !!
 // reload determines what type of redirect it should be
-export default function(ComposedClass, reload) {
+export default function foo(ComposedClass, reload) {
 
     // make a class to dispatch an action to check if user is authenticated
     class AuthenticationCheck extends Component {
@@ -30,7 +30,7 @@ export default function(ComposedClass, reload) {
 
         // check if props have been received
         componentDidUpdate(prevProps, prevState) {
-            if (this.props != prevProps) {
+            if (this.props !== prevProps) {
                 this.setState({loading:false})
                 if(!this.props.user.login.isAuth) {
                     if(reload === true) {

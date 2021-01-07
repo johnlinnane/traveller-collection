@@ -38,7 +38,7 @@ class Register extends PureComponent {
 
     // reset the state when form is submitted
     componentDidUpdate(prevProps, prevState) {
-        if (this.props != prevProps) {
+        if (this.props !== prevProps) {
             if(this.props.user.register === false) {
                 this.setState({error:'Error, try again'})
             } else {

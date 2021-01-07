@@ -33,7 +33,7 @@ class Login extends Component {
 
     // redirect to user screen when login
     componentDidUpdate(prevProps, prevState) {
-        if (this.props != prevProps) {
+        if (this.props !== prevProps) {
             if(this.props.user.login.isAuth) {
                 this.props.history.push('/user')
             }

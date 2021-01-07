@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import {Progress} from 'reactstrap';
 import Select from 'react-select';
 
@@ -94,7 +94,7 @@ class EditItemFile extends PureComponent {
 
     componentDidUpdate(prevProps, prevState) {
 
-        if (this.props != prevProps) {
+        if (this.props !== prevProps) {
             let tempFormdata = this.state.formdata;
 
             if (this.props.items.item ) {
@@ -179,30 +179,27 @@ class EditItemFile extends PureComponent {
             
             })
         }
-        // console.log(this.state)
     }
 
 
 
-    onClickHandler = () => {
-        console.log('ONCLICKHANDLER TRIGGERED for', this.state.formdata._id)
+    onSubmitHandler = () => {
+        console.log('ONSUBMITHANDLER TRIGGERED for', this.state.formdata._id)
 
-        // if (this.props.user.login.isAuth) {
-        //     this.props.dispatch(updateItem(
-        //         { 
-        //             _id: this.state.formdata._id
-        //         }
-        //     ))
-        // } else {
-        //     this.props.dispatch(updatePendItem(
-        //         { 
-        //             _id: this.state.formdata._id
-        //         }
-        //     ))
-        // }
+        if (this.props.user.login.isAuth) {
+            this.props.dispatch(updateItem(
+                { 
+                    _id: this.state.formdata._id
+                }
+            ))
+        } else {
+            this.props.dispatch(updatePendItem(
+                { 
+                    _id: this.state.formdata._id
+                }
+            ))
+        }
 
-        const data = new FormData() 
-        
 
         if (this.state.selectedFiles.length) {
             let formdata = new FormData() 
@@ -250,7 +247,7 @@ class EditItemFile extends PureComponent {
         // list allow mime type
         const types = ['image/png', 'image/jpg', 'image/jpeg', 'image/gif', 'application/pdf', 'video/mp4', 'video/quicktime']
         // loop access array
-        for(var x = 0; x<files.length; x++) {
+        for(let x = 0; x<files.length; x++) {
          // compare file type find doesn't matach
             if (types.every(type => files[x].type !== type)) {
                 // create error message and assign to container   
@@ -258,7 +255,7 @@ class EditItemFile extends PureComponent {
             }
         };
 
-        for(var z = 0; z<err.length; z++) { // loop create toast massage
+        for(let z = 0; z<err.length; z++) { // loop create toast massage
             event.target.value = null 
             toast.error(err[z])
         }
@@ -270,13 +267,13 @@ class EditItemFile extends PureComponent {
         let size = 15000 
         let err = ""; 
 
-        for(var x = 0; x<files.length; x++) {
+        for(let x = 0; x<files.length; x++) {
             if (files[x].size > size) {
                 err += files[x].type+'is too large, please pick a smaller file\n';
             }
         };
 
-        for(var z = 0; z<err.length; z++) {
+        for(let z = 0; z<err.length; z++) {
             toast.error(err[z])
             event.target.value = null
         }
@@ -328,17 +325,13 @@ class EditItemFile extends PureComponent {
                 console.log(res.data);
                 let tempItemFiles = [...this.state.itemFiles];
                 tempItemFiles.splice(i, 1);
-                console.log(tempItemFiles);
+                console.log('FILES REMAINING: ',tempItemFiles);
                 this.setState({
                     itemFiles: tempItemFiles
                 })
             })
 
 
-        let data2 = {
-            path: `/items/${this.state.formdata._id}/sq_thumbnail/${this.state.itemFiles[i]}`
-        };
-        // axios.post(`http://${config.IP_ADDRESS}:3001/delete-file`, data2  )
     }
 
 
@@ -378,7 +371,6 @@ class EditItemFile extends PureComponent {
     render() {
         console.log(this.state);
         console.log('selectedFilesImg', this.state.selectedFilesImg.length, 'selectedFilesNum', this.state.selectedFilesNum)
-        let items = this.props.items;
 
         return (
             
@@ -389,7 +381,7 @@ class EditItemFile extends PureComponent {
 
                             <div className="container">
                                 <div className="img_back">
-                                    <img src={`/media/items/${this.state.formdata._id}/original/${this.state.itemFiles[0]}`} alt="item main image"  onError={this.addDefaultImg} />
+                                    <img src={`/media/items/${this.state.formdata._id}/original/${this.state.itemFiles[0]}`} alt="item main"  onError={this.addDefaultImg} />
                                 </div>
                                 
                                 <div className="centered edit_img_text">
@@ -409,8 +401,8 @@ class EditItemFile extends PureComponent {
                                 <div key={`card${i}`} className="edit_3_card">
                                     <div className="edit_3_card_left">
                                         { img.includes(`.pdf`) ?
-                                            <img src={'/media/icons/pdf.png'} alt="item main image"  onError={this.addDefaultImg} />
-                                        : <img src={`/media/items/${this.state.formdata._id}/original/${img}`} alt="item main image"  onError={this.addDefaultImg} /> }
+                                            <img src={'/media/icons/pdf.png'} alt="item main"  onError={this.addDefaultImg} />
+                                        : <img src={`/media/items/${this.state.formdata._id}/original/${img}`} alt="item main"  onError={this.addDefaultImg} /> }
                                     </div>
                                     <div className="edit_3_card_right">
                                         <button 
@@ -432,7 +424,7 @@ class EditItemFile extends PureComponent {
                             <div key={`card${i}`} className="edit_3_card">
 
                                 <div className="edit_3_card_left">
-                                    <img src={img} alt="item main image"  onError={this.addDefaultImg} />
+                                    <img src={img} alt="item main"  onError={this.addDefaultImg} />
                                 </div>
                                 <div className="edit_3_card_right">
                                 <button 
@@ -453,13 +445,13 @@ class EditItemFile extends PureComponent {
                         className="edit_3_card"
                     >
                         <div className="edit_3_card_left">
-                            <img src={this.state.imgSrc} alt="item main image" className="edit_main_img" onError={this.addDefaultImg} />
+                            <img src={this.state.imgSrc} alt="item main" className="edit_main_img" onError={this.addDefaultImg} />
                         </div>
 
                         <div className="edit_3_card_right">
                             
                             <label className="edit_3_label">
-                                {this.state.selectedType == 'jpg' ?
+                                {this.state.selectedType === 'jpg' ?
                                     <input 
                                         id="file_input"
                                         key={this.state.inputKey}
@@ -468,7 +460,7 @@ class EditItemFile extends PureComponent {
                                         accept="image/*" 
                                         onChange={(event) => {this.onChangeHandler(event)}}
                                     />
-                                : this.state.selectedType == 'mp4' ? 
+                                : this.state.selectedType === 'mp4' ? 
                                     <input 
                                         id="file_input"
                                         key={this.state.inputKey}
@@ -477,7 +469,7 @@ class EditItemFile extends PureComponent {
                                         accept="video/*" 
                                         onChange={(event) => {this.onChangeHandler(event)}}
                                     /> 
-                                : this.state.selectedType == 'pdf' ? 
+                                : this.state.selectedType === 'pdf' ? 
                                     <input 
                                         id="file_input"
                                         key={this.state.inputKey}
@@ -534,7 +526,7 @@ class EditItemFile extends PureComponent {
                         : null }
 
                         <div className="center">
-                            <button type="button" className="btn btn-success btn-block edit_page_3_finish" onClick={this.onClickHandler}>Save and Finish</button> 
+                            <button type="button" className="btn btn-success btn-block edit_page_3_finish" onClick={this.onSubmitHandler}>Save and Finish</button> 
                         </div>
                     </div>
 

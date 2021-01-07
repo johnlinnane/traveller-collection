@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
+import { Map, TileLayer, Marker } from 'react-leaflet'
 
 
 import '../../../../node_modules/react-toastify/dist/ReactToastify.css';

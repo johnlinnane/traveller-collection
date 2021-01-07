@@ -1,8 +1,7 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import {Progress} from 'reactstrap';
 
 // import { getItemById, deleteItem } from '../../../actions';
@@ -26,8 +25,8 @@ class CatEdit extends PureComponent {
     componentDidUpdate(prevProps, prevState) {
         if (this.props !== prevProps ) {
 
-            this.props.cats.map( cat => {
-                if (cat._id == this.props.match.params.id) {
+            this.props.cats.forEach( cat => {
+                if (cat._id === this.props.match.params.id) {
                     this.setState({
                         catInfo: {...cat}
                     })
@@ -42,7 +41,7 @@ class CatEdit extends PureComponent {
     onChangeHandler = (id, event) => {
         console.log(id);
 
-        var files = event.target.files;
+        let files = event.target.files;
 
         if (this.maxSelectFile(event) && this.checkMimeType(event) && this.checkMimeType(event)) {  
             this.setState({
@@ -57,7 +56,7 @@ class CatEdit extends PureComponent {
         const data = new FormData() 
         
         if (this.state.selectedFile) {
-            for(var x = 0; x<this.state.selectedFile.length; x++) {
+            for(let x = 0; x<this.state.selectedFile.length; x++) {
                 data.append('file', this.state.selectedFile[x])
             }
 
@@ -89,7 +88,6 @@ class CatEdit extends PureComponent {
 
     maxSelectFile=(event)=>{
 
-        // console.log(event);
 
         let files = event.target.files // create file object
             if (files.length > 6) { 
@@ -104,24 +102,18 @@ class CatEdit extends PureComponent {
     }
 
     checkMimeType=(event)=>{
-        //getting file object
         let files = event.target.files 
-        //define message container
         let err = ''
-        // list allow mime type
         const types = ['image/png', 'image/jpeg', 'image/gif', 'application/pdf']
-        // loop access array
-        for(var x = 0; x<files.length; x++) {
-         // compare file type find doesn't matach
-            if (types.every(type => files[x].type !== type)) {
-                // create error message and assign to container   
-                err += files[x].type+' is not a supported format\n';
+        for(let i = 0; i < files.length; i++) {
+            if (types.every(type => files[i].type !== type)) {
+                err += files[i].type+' is not a supported format\n';
             }
         };
 
-        for(var z = 0; z<err.length; z++) { // loop create toast massage
+        for(let j = 0; j < err.length; j++) { 
             event.target.value = null 
-            toast.error(err[z])
+            toast.error(err[j])
         }
         return true;
     }
@@ -131,13 +123,13 @@ class CatEdit extends PureComponent {
         let size = 15000 
         let err = ""; 
 
-        for(var x = 0; x<files.length; x++) {
+        for(let x = 0; x<files.length; x++) {
             if (files[x].size > size) {
                 err += files[x].type+'is too large, please pick a smaller file\n';
             }
         };
 
-        for(var z = 0; z<err.length; z++) {
+        for(let z = 0; z<err.length; z++) {
             toast.error(err[z])
             event.target.value = null
         }
@@ -154,16 +146,8 @@ class CatEdit extends PureComponent {
         }, 1000)
     }
 
-    // addDefaultImg = (ev) => {
-    //     const newImg = '/media/default/default.jpg';
-    //     if (ev.target.src !== newImg) {
-    //         ev.target.src = newImg
-    //     }  
-    // } 
 
     render() {
-        // console.log(this.state);
-        let items = this.props.items;
 
 
         return (
@@ -173,23 +157,12 @@ class CatEdit extends PureComponent {
                         
                     <h3>Change Category Image:</h3>
 
-                    {/* {this.props.items && this.props.items.item ?
-                        <span>Item: {this.props.items.item.title}</span>
-                    : null } */}
-
-
-                    {/* <img src={`/media/items/${this.props.match.params.id}/sq_thumbnail/0.jpg`} alt="Item" onError={this.addDefaultImg}/> */}
-
-
-                    
-                    
-
                     <div className="form_element sel_cat">
                         { this.state.catInfo ?
                             
                                 <div>
                                     <h3>{this.state.catInfo.title}</h3>
-                                    <img src={`../media/cover_img_cat/${this.state.catInfo._id}.jpg`}/>
+                                    <img src={`../media/cover_img_cat/${this.state.catInfo._id}.jpg`} alt='cat cover'/>
                                     <br/>
                                     <input type="file" className="form-control" name="file" accept="image/*" onChange={(e) => this.onChangeHandler(this.state.catInfo._id, e)} />
                                     
@@ -210,10 +183,6 @@ class CatEdit extends PureComponent {
                             :null}
                         </Progress>
                     </div>
-
-                    {/* <div className="form-group">
-                        <ToastContainer />
-                    </div> */}
 
                 </div>
             </div>

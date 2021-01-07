@@ -8,7 +8,7 @@ import { addItem } from '../../../actions';
 import NavigationBar from '../../widgetsUI/navigation';
 
 
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
 class SubcatView  extends Component {
     

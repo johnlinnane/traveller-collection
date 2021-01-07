@@ -1,25 +1,8 @@
 import React from 'react';
-import {css} from 'glamor';
 import { Link } from 'react-router-dom';
 
 
 const SearchItem = ({item}) => {
-  
-  // let news_item = css({
-  //   padding: '20px', 
-  //   boxSizing: 'border-box',
-  //   borderBottom: '1px solid grey',
-  //   ':hover': {
-  //     color: 'red'
-  //   },
-  //   '@media(max-width: 500px)': {
-  //     color: 'blue'
-  //   }
-  // })
-  
-  // let item_grey = css({
-  //   background: 'lightgrey'
-  // })
 
     const addDefaultImg = (ev) => {
         const newImg = '/media/default/default.jpg';
@@ -28,7 +11,6 @@ const SearchItem = ({item}) => {
         }  
     } 
 
-    // console.log(item);
     return(
       
         // INSERT LINK HERE

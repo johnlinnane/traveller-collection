@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import ReactDOM from 'react-dom';
 import { WithContext as ReactTags } from 'react-tag-input';
 import { updateItem } from '../actions';
  

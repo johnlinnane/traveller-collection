@@ -1,4 +1,4 @@
-export default function(state={}, action) {
+export default function foo(state={}, action) {
     switch(action.type) {
 
         case 'UPDATE_INFO_TEXT':

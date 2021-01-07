@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from "react-router-dom";
 import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 
 import { addCat } from '../../../actions';
 
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 const config = require('../../../config_client').get(process.env.NODE_ENV);
 
 
@@ -73,7 +73,7 @@ class AdminAddCat extends Component {
     // *************** UPLOAD LOGIC ********************
 
     onImgChange = (event) => {
-        var files = event.target.files;
+        let files = event.target.files;
 
         if (this.maxSelectFile(event) && this.checkMimeType(event) && this.checkMimeType(event)) {  
             this.setState({
@@ -91,7 +91,7 @@ class AdminAddCat extends Component {
         const data = new FormData();
         
         if (this.state.selectedFile) {
-            for(var x = 0; x<this.state.selectedFile.length; x++) {
+            for(let x = 0; x<this.state.selectedFile.length; x++) {
                 data.append('file', this.state.selectedFile[x])
             }
             axios.post(`http://${config.IP_ADDRESS}:3001/upload-cat/${this.state.catdata._id}`, data, { 
@@ -143,7 +143,7 @@ class AdminAddCat extends Component {
         // list allow mime type
         const types = ['image/png', 'image/jpeg', 'image/gif']
         // loop access array
-        for(var x = 0; x<files.length; x++) {
+        for(let x = 0; x<files.length; x++) {
          // compare file type find doesn't matach
             if (types.every(type => files[x].type !== type)) {
                 // create error message and assign to container   
@@ -151,7 +151,7 @@ class AdminAddCat extends Component {
             }
         };
 
-        for(var z = 0; z<err.length; z++) { // loop create toast massage
+        for(let z = 0; z<err.length; z++) { // loop create toast massage
             event.target.value = null 
             toast.error(err[z])
         }
@@ -163,13 +163,13 @@ class AdminAddCat extends Component {
         let size = 15000 
         let err = ""; 
 
-        for(var x = 0; x<files.length; x++) {
+        for(let x = 0; x<files.length; x++) {
             if (files[x].size > size) {
                 err += files[x].type+'is too large, please pick a smaller file\n';
             }
         };
 
-        for(var z = 0; z<err.length; z++) {
+        for(let z = 0; z<err.length; z++) {
             toast.error(err[z])
             event.target.value = null
         }
@@ -248,27 +248,14 @@ class AdminAddCat extends Component {
                                 </tr>
 
 
-                                {/* <tr>
-                                    <td>
-                                        <img className="change_cat_img" src={`/media/cover_img_cat/XXXX.jpg`} onError={this.addDefaultImg}/>
-                                    </td>
-                                    <td>
-                                        <div className="form_element">
-                                            <input type="file" className="form-control" multiple name="file" onChange={this.onChangeHandler}/>
-                                            <br />
-                                            <button type="button" className="btn btn-success btn-block" onClick={this.onClickHandler}>Upload</button> 
-                                        </div>
-                                    </td>
-                                </tr>
 
-                             */}
-
-<tr>
+                                <tr>
                                     <td>
                                         <img 
                                             className="change_cat_img" 
                                             src={this.state.imgSrc} 
                                             onError={this.addDefaultImg}
+                                            alt='cat cover'
                                         />
                                     </td>
                                     <td>

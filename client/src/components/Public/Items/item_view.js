@@ -8,17 +8,10 @@ import FontAwesome from 'react-fontawesome';
 import { EmailShareButton, FacebookShareButton, WhatsappShareButton } from "react-share";
 import { EmailIcon, FacebookIcon, WhatsappIcon } from "react-share";
 
-
-
-
 import { Document, Page, pdfjs } from 'react-pdf';
-
-
-
 
 import { getItemWithContributor, clearItemWithContributor, getPendItemById, getAllCats, getAllSubCats, getNextItem, getPrevItem, getParentPdf, getFilesFolder } from '../../../actions';
 import NavigationBar from '../../widgetsUI/navigation';
-
 
 const config = require('./../../../config_client').get(process.env.NODE_ENV);
 
@@ -26,10 +19,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 
 
 
-
 class ItemView extends Component {
-
-    
 
     state = {
 
@@ -53,7 +43,6 @@ class ItemView extends Component {
 
         getParentCalled: false,
         getItemWithCCalled: false,
-        // getPendItemCalled: false,
 
         itemFiles: [],
         imgFiles: [],
@@ -63,9 +52,6 @@ class ItemView extends Component {
 
     
     componentDidMount() {
-        
-
-
         if (!this.state.getItemWithCCalled) {
             this.props.dispatch(getItemWithContributor(this.props.match.params.id));
             this.setState({
@@ -85,7 +71,7 @@ class ItemView extends Component {
 
     componentDidUpdate(prevProps, prevState) {
 
-        if (this.props.match.params.id != prevProps.match.params.id && !this.state.stateCleared) {
+        if (this.props.match.params.id !== prevProps.match.params.id && !this.state.stateCleared) {
             // this.componentWillUnmount();
             console.log('PARAM ID CHANGED **********************')
             this.setState({
@@ -97,7 +83,7 @@ class ItemView extends Component {
             })
         }
 
-        if (this.props != prevProps) {
+        if (this.props !== prevProps) {
             if (this.props.items) {
                 if (this.props.items.item ) {
                     const item = this.props.items.item;
@@ -111,11 +97,11 @@ class ItemView extends Component {
                     document.title = `${item.title}`
 
                     if (item.category_ref ) {
-                        {this.getCatName(item.category_ref)}
+                        this.getCatName(item.category_ref)
                     }
 
                     if (item.subcategory_ref ) {
-                        {this.getSubCatName(item.subcategory_ref)}
+                        this.getSubCatName(item.subcategory_ref)
                     }
 
                     if (item.is_pdf_chapter && item.pdf_item_pages && item.pdf_item_pages.start) {
@@ -217,9 +203,9 @@ class ItemView extends Component {
     getSubCatName = (subCatId) => {
         // console.log(subCatId);
         if (this.props.subcats && this.props.subcats.length) {
-            this.props.subcats.map( subcat => {
+            this.props.subcats.forEach( subcat => {
                 
-                if (subcat._id == subCatId[0]) {
+                if (subcat._id === subCatId[0]) {
                     // console.log(cat.title);
                     this.navInfo.subCatTitle = subcat.title;
                     this.navInfo.subCatId = subcat._id;
@@ -266,7 +252,7 @@ class ItemView extends Component {
             // variableWidth: true
         }
 
-        var slickDivs = [];
+        let slickDivs = [];
         files.forEach( (file, i) => {      
             slickDivs.push( 
                 <div key={i} className="featured_item"> 
@@ -290,7 +276,7 @@ class ItemView extends Component {
 
     renderPDF = () => {
         // ************* PDF STUFF *************
-        const { pageNumber, setPageNumber, numPages, setNumPages } = this.state;
+        const { pageNumber, numPages } = this.state;
 
         const onDocumentLoadSuccess = ({ numPages }) => {
             this.setState({ numPages });
@@ -321,12 +307,6 @@ class ItemView extends Component {
         const scaleUp = () => {
             this.setState({
                 pdfScale: this.state.pdfScale + 0.2
-            })
-        }
-
-        const handlePageChange = (event) => {
-            this.setState({
-                pageNumber: parseInt(event.target.value)
             })
         }
 
@@ -607,7 +587,7 @@ class ItemView extends Component {
                     <Link to={itemdata.external_link[0].url}  target="_blank">
                         <div className="link_wrapper">
                             <div className="link_img">
-                                <img src='/media/icons/ext_link.png' className="ext_link"/>
+                                <img src='/media/icons/ext_link.png' className="ext_link" alt='external link'/>
                             </div>
 
                             <div className="link_text">

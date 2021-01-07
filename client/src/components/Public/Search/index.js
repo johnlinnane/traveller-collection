@@ -29,6 +29,7 @@ class Search extends Component {
     getKeyword = (event) => {
         let keyword = event.target.value.toLowerCase();
         let matchFound = false;
+
         let filteredByKeyword = this.props.items.items.filter( (item) => {
             let isMatch = false;
 
@@ -63,7 +64,7 @@ class Search extends Component {
                 })
                 return true;
             } 
-            
+            return false;
         });
         if (!matchFound) {
             this.setState({

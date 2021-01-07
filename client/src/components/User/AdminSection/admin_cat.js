@@ -2,12 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from "react-router-dom";
 import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import { toast } from 'react-toastify';
 import 'react-tabs/style/react-tabs.css';
 
-import { getAllCats, getAllSubCats  } from '../../../actions';
-import { addCat, deleteCat, addSubcat, deleteSubcat, updateCat, updateSubcat  }  from '../../../actions';
+import { getAllCats  } from '../../../actions';
+import { deleteCat, updateCat }  from '../../../actions';
 
 
 const config = require('../../../config_client').get(process.env.NODE_ENV);
@@ -38,7 +37,7 @@ class AdminCat extends Component {
 
     componentDidUpdate(prevProps) {
     
-        if (this.props != prevProps) {
+        if (this.props !== prevProps) {
 
             if(this.props.chosenCatInfo ) {
                 let tempFormdata = {
@@ -132,7 +131,7 @@ class AdminCat extends Component {
     onImgChange = (event) => {
 
 
-        var files = event.target.files;
+        let files = event.target.files;
 
         if (this.maxSelectFile(event) && this.checkMimeType(event) && this.checkMimeType(event)) {  
             this.setState({
@@ -150,7 +149,7 @@ class AdminCat extends Component {
     // onSubImgChange = (event, id, i) => {
 
     //     console.log(id)
-    //     var files = event.target.files;
+    //     let files = event.target.files;
 
     //     let tempSelectedSubFiles = this.state.selectedSubFiles;
     //     tempSelectedSubFiles[i] = {
@@ -179,7 +178,7 @@ class AdminCat extends Component {
         const data = new FormData();
         
         if (this.state.selectedFile) {
-            for(var x = 0; x<this.state.selectedFile.length; x++) {
+            for(let x = 0; x<this.state.selectedFile.length; x++) {
                 data.append('file', this.state.selectedFile[x])
             }
 
@@ -210,7 +209,7 @@ class AdminCat extends Component {
         //     const subData = new FormData();
 
         //     if (subfile) {
-        //         for(var x = 0; x<subfile.file.length; x++) {
+        //         for(let x = 0; x<subfile.file.length; x++) {
         //             subData.append('file', subfile.file[x])
         //         }
             
@@ -283,7 +282,7 @@ class AdminCat extends Component {
         // list allow mime type
         const types = ['image/png', 'image/jpeg', 'image/gif']
         // loop access array
-        for(var x = 0; x<files.length; x++) {
+        for(let x = 0; x<files.length; x++) {
          // compare file type find doesn't matach
             if (types.every(type => files[x].type !== type)) {
                 // create error message and assign to container   
@@ -291,7 +290,7 @@ class AdminCat extends Component {
             }
         };
 
-        for(var z = 0; z<err.length; z++) { // loop create toast massage
+        for(let z = 0; z<err.length; z++) { // loop create toast massage
             event.target.value = null 
             toast.error(err[z])
         }
@@ -303,13 +302,13 @@ class AdminCat extends Component {
         let size = 15000 
         let err = ""; 
 
-        for(var x = 0; x<files.length; x++) {
+        for(let x = 0; x<files.length; x++) {
             if (files[x].size > size) {
                 err += files[x].type+'is too large, please pick a smaller file\n';
             }
         };
 
-        for(var z = 0; z<err.length; z++) {
+        for(let z = 0; z<err.length; z++) {
             toast.error(err[z])
             event.target.value = null
         }
@@ -552,7 +551,7 @@ class AdminCat extends Component {
                                         <h3>Category Image</h3>
                                     </td>
                                     <td>
-                                        <img className="change_cat_img" src={this.state.imgSrc} onError={this.addDefaultImg}/>
+                                        <img className="change_cat_img" src={this.state.imgSrc} onError={this.addDefaultImg} alt='category cover'/>
                                     </td>
                                 </tr>
                                 <tr>

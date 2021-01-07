@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { withRouter } from "react-router-dom";
 
 import { getInfoText, updateInfoText } from '../../../actions';
@@ -29,7 +29,7 @@ class AdminInfo extends Component {
 
 
     componentDidUpdate(prevProps, prevState) {
-        if (this.props != prevProps) {
+        if (this.props !== prevProps) {
 
             const infotext = this.props.infotext;
 
@@ -40,7 +40,7 @@ class AdminInfo extends Component {
                 let tempImgUrls = [];
                 let tempKey = '';
 
-                infotext.sections.map( (section, i) => {
+                infotext.sections.forEach( (section, i) => {
                     tempSections[i] = {
                         heading: section.heading,
                         paragraph: section.paragraph,
@@ -77,7 +77,7 @@ class AdminInfo extends Component {
     onChangeHandler = (event, i, name) => {
 
 
-        var files = event.target.files;
+        let files = event.target.files;
 
         // console.log(files);
         if (i) {
@@ -207,7 +207,7 @@ class AdminInfo extends Component {
         // list allow mime type
         const types = ['image/png', 'image/jpeg', 'image/gif']
         // loop access array
-        for(var x = 0; x<files.length; x++) {
+        for(let x = 0; x<files.length; x++) {
          // compare file type find doesn't matach
             if (types.every(type => files[x].type !== type)) {
                 // create error message and assign to container   
@@ -215,7 +215,7 @@ class AdminInfo extends Component {
             }
         };
 
-        for(var z = 0; z<err.length; z++) { // loop create toast massage
+        for(let z = 0; z<err.length; z++) { // loop create toast massage
             event.target.value = null 
             toast.error(err[z])
         }
@@ -227,13 +227,13 @@ class AdminInfo extends Component {
         let size = 15000 
         let err = ""; 
 
-        for(var x = 0; x<files.length; x++) {
+        for(let x = 0; x<files.length; x++) {
             if (files[x].size > size) {
                 err += files[x].type+'is too large, please pick a smaller file\n';
             }
         };
 
-        for(var z = 0; z<err.length; z++) {
+        for(let z = 0; z<err.length; z++) {
             toast.error(err[z])
             event.target.value = null
         }
@@ -335,7 +335,7 @@ class AdminInfo extends Component {
         ))
 
         if (this.state.selectedFiles && this.state.selectedFiles.length) {
-            this.state.selectedFiles.map( (file, i) => {
+            this.state.selectedFiles.forEach( (file, i) => {
                 this.onClickHandler(i)
             })
         }
@@ -403,7 +403,7 @@ class AdminInfo extends Component {
                     <td>Paragraph {i + 1} Image</td>
                     <td>
                         
-                        <img src={this.state.imgUrls[i]} onError={this.addDefaultImg}/>
+                        <img src={this.state.imgUrls[i]} onError={this.addDefaultImg} alt='paragraph'/>
                         <div className="form_element">
                             <input type="file" className="form-control" name="file" accept="image/*" onChange={(event) => this.onChangeHandler(event, i)}/>
                             {/* <button type="button" className="btn btn-success btn-block" onClick={ () => {this.onClickHandler(i)} }>Upload</button>  */}
@@ -454,7 +454,7 @@ class AdminInfo extends Component {
             <tr>
                 <td>Icons Image</td>
                 <td>
-                    <img src={this.state.iconImgSrc} onError={this.addDefaultImg}/>
+                    <img src={this.state.iconImgSrc} onError={this.addDefaultImg} alt='icons'/>
                     <div className="form_element">
                         <input type="file" className="form-control" name="file" accept="image/*" onChange={(event) => this.onChangeHandler(event, null, 'icons')}/>
                         {/* <button type="button" className="btn btn-success btn-block" onClick={ () => {this.onClickHandler(i)} }>Upload</button>  */}
