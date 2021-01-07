@@ -254,7 +254,7 @@ class ItemView extends Component {
 
 
     renderSlider = (files) => {
-
+        console.log('render slider called', `/media/items/${this.props.match.params.id}/original/${files[0]}`)
         const settings = {
             dots: true,
             infinite: false,
@@ -267,21 +267,39 @@ class ItemView extends Component {
         }
 
         var slickDivs = [];
-        files.forEach( (file, i) => {      
+        // files.forEach( (file, i) => {      
+        //     slickDivs.push( 
+        //         <div key={i} className="featured_item"> 
+        //             <div className="featured_image"
+        //                  style={{
+        //                     background: `url(/media/items/${this.props.match.params.id}/original/${files[i]}), url(/media/default/default.jpg)`
+        //                  }}
+        //             >
+                        
+
+        //             </div>
+        //         </div>
+        //     )
+        // })
+
+        for (let i = 0; i < 2; i++) {
             slickDivs.push( 
                 <div key={i} className="featured_item"> 
-                    <div className="featured_image"
-                         style={{
-                            background: `url(/media/items/${this.props.match.params.id}/original/${files[i]})`
-                            // <img src={`/media/items/${items.item._id}/original/0.jpg`} alt="Item" onError={this.addDefaultImg}/>
-                         }}
+                    {/* <div className="featured_image"
+                        style={{
+                            background: `url(/media/default/default.jpg)`
+                        }}
                     >
-                    </div>
+                        
+
+                    </div> */}
+                    Hello
                 </div>
             )
-        })
+        }
         
         return <Slick {...settings}>{slickDivs}</Slick>;
+        // return <Slick {...settings}>{[<div key="1">Hello</div>,<div key="2">Spaceboy</div>]}</Slick>;
 
 
     }
