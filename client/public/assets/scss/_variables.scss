@@ -1,0 +1,31 @@
+$dark-grey: #4F646B;    /* cutty sark */
+$sky-blue: #69CDEE;     /* sky blue */
+$blue: #ADDCEB;         /* regent st blue* */
+$lighter-blue: #cce6ee;
+$dark-turq: #2F5C6B;    /* casal */
+$turquoise: #88ACB8;    /* nepal */
+
+$light-pink: #EBC5CF;   /*vanilla ice */
+$white: #ffffff;   /* white */
+$black: #000000;   /* white */
+$off-black: #333;
+
+
+$breakpoints: (
+  "small": 576px,
+  "medium": 768px,
+  "large": 992px,
+  "widescreen": 1200px,
+);
+
+@mixin respond-to($breakpoint) {
+    @if map-has-key($breakpoints, $breakpoint) {
+  
+      $breakpoint-value: map-get($breakpoints, $breakpoint);
+  
+      @media screen and (min-width: $breakpoint-value) {
+        @content;
+      }
+    }
+  }
+  
