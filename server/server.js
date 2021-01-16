@@ -26,7 +26,7 @@ let index = 0;
 // connect to mongo
 mongoose.Promise = global.Promise;
 
-mongoose.connect(config.DATABASE)
+mongoose.connect(config.DATABASE, { useNewUrlParser: true })
     .catch(error => console.log('MONGOOSE CONNECT ERROR: ', error));
 
 
