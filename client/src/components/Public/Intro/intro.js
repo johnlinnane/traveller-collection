@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
+import { Link } from 'react-router-dom';
 import { getIntroText } from '../../../actions';
 
 
@@ -42,19 +42,12 @@ class Intro extends Component  {
                             
 
                             : null}
-                            <a href="/categories" className="btn">Browse</a>
+                            <Link to={'/categories'} className="btn">
+                                Browse
+                            </Link>
                             
                         </div>
-                        
-
-                        
-                            {/* <img src={`/assets/media/intro/intro.jpg`} alt={"Item"} onError={addDefaultImg}/> */}
-                    
                     </div>
-                    {/* <div className="intro-items">
-                        <p>Hello</p>
-                        </div> */}
-                
                 </div>
         );
     }
@@ -62,13 +55,9 @@ class Intro extends Component  {
 
 
 function mapStateToProps(state) {
-    // console.log(state);
-
     return {
         text: state.intros.text
-        
     }
 }
-
-
+    
 export default connect(mapStateToProps)(Intro)

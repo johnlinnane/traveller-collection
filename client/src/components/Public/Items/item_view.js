@@ -380,13 +380,6 @@ class ItemView extends Component {
                     
                 </div>
 
-                {/* <br />
-                    <input 
-                        readOnly 
-                        value={this.state.pdfPageNumber} 
-                        onChange={(e) => {this.handlePageChange(e)}} 
-                        ref={(input)=> this.myinput = input}
-                    /> */}
 
                 { this.props.items.item.pdf_page_index && this.props.items.item.pdf_page_index.length ?
                     <div className="index_container">
