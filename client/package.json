@@ -63,6 +63,5 @@
   "main": "file-server.js",
   "devDependencies": {},
   "author": "",
-  "license": "ISC",
-  "homepage": "64.227.34.134"
+  "license": "ISC"
 }
