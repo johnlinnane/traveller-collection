@@ -79,7 +79,6 @@ class AdminInfo extends Component {
 
         let files = event.target.files;
 
-        // console.log(files);
         if (i) {
             if (this.maxSelectFile(event) && this.checkMimeType(event)) {  
                 let tempSelectedFiles = this.state.selectedFiles;
@@ -126,9 +125,7 @@ class AdminInfo extends Component {
             data.append('file', this.state.selectedFiles[i])
 
             axios.post(`http://${config.IP_ADDRESS}:3002/upload-info/${i}`, data, {
-            // axios.post(`http://${config.IP_ADDRESS}:8000/upload-info/${i}`, data, {
                 
-                // receive two parameter endpoint url ,form data 
                 onUploadProgress: ProgressEvent => {
                     this.setState({
                         loaded: (ProgressEvent.loaded / ProgressEvent.total*100)
@@ -136,8 +133,6 @@ class AdminInfo extends Component {
                 }
             })
             .then(res => { // then print response status
-                // console.log(res.config.data.id);
-                // console.log(res.statusText);
                 console.log(res);
                 toast.success('upload success')
                 alert('Files uploaded successfully')
@@ -169,8 +164,6 @@ class AdminInfo extends Component {
                 }
             })
             .then(res => { // then print response status
-                // console.log(res.config.data.id);
-                // console.log(res.statusText);
                 console.log(res);
                 toast.success('upload success')
                 alert('Files uploaded successfully')
@@ -185,7 +178,6 @@ class AdminInfo extends Component {
 
     maxSelectFile=(event)=>{
 
-        // console.log(event);
 
         let files = event.target.files // create file object
             if (files.length > 1) { 
@@ -200,17 +192,11 @@ class AdminInfo extends Component {
     }
 
     checkMimeType=(event)=>{
-        //getting file object
         let files = event.target.files 
-        //define message container
         let err = ''
-        // list allow mime type
         const types = ['image/png', 'image/jpeg', 'image/gif']
-        // loop access array
-        for(let x = 0; x<files.length; x++) {
-         // compare file type find doesn't matach
+        for(let x = 0; x < files.length; x++) {
             if (types.every(type => files[x].type !== type)) {
-                // create error message and assign to container   
                 err += files[x].type+' is not a supported format\n';
             }
         };
@@ -310,17 +296,12 @@ class AdminInfo extends Component {
         let tempSections = this.state.formdata.sections;
         tempSections.splice(index, 1);
 
-        // console.log(tempSections)
-
         this.setState({
             formdata: {
                 ...this.state.formdata,
                 sections: tempSections
             }
         })
-
-
-
 
     }
 
@@ -457,7 +438,6 @@ class AdminInfo extends Component {
                     <img src={this.state.iconImgSrc} onError={this.addDefaultImg} alt='icons'/>
                     <div className="form_element">
                         <input type="file" className="form-control" name="file" accept="image/*" onChange={(event) => this.onChangeHandler(event, null, 'icons')}/>
-                        {/* <button type="button" className="btn btn-success btn-block" onClick={ () => {this.onSubmitHandler(i)} }>Upload</button>  */}
                     </div>
                 </td>
             </tr>

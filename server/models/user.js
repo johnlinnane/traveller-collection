@@ -113,8 +113,6 @@ userSchema.methods.deleteToken = function(token, cb) {
 
 
 
-// create model
 const User = mongoose.model('User', userSchema);
 
-// export model
 module.exports = { User }

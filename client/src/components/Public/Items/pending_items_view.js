@@ -7,6 +7,7 @@ import { getAllPendItems, deletePendItem, acceptItem } from '../../../actions';
 
 import PendingItemCard from './pending_item_card'
 
+
 const config = require('../../../config_client').get(process.env.NODE_ENV);
 
 

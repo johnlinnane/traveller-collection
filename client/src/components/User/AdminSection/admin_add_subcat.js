@@ -94,16 +94,6 @@ class AdminAddSubCat extends Component {
     handleCatChange = (newValue) => {
         console.log(newValue)
 
-
-        // let tempFormdata = {
-        //     ...this.state.formdata,
-        //     subCat: {
-        //         ...this.state.formdata.subCat,
-        //         parent_cat: newValue.value
-        //     }
-
-        // }
-
         let tempSubcatdata = this.state.subcatdata;
         tempSubcatdata.parent_cat = newValue.value
     
@@ -156,9 +146,6 @@ class AdminAddSubCat extends Component {
             })
         }
 
-        // this.setState({
-        //     imgSrc : this.state.imgSrc + '?' + Math.random()
-        // });
 
         this.props.history.push(`/admin/${this.props.index}`);
         
@@ -166,7 +153,6 @@ class AdminAddSubCat extends Component {
 
     maxSelectFile=(event)=>{
 
-        // console.log(event);
 
         let files = event.target.files // create file object
             if (files.length > 1) { 
@@ -181,17 +167,11 @@ class AdminAddSubCat extends Component {
     }
 
     checkMimeType=(event)=>{
-        //getting file object
         let files = event.target.files 
-        //define message container
         let err = ''
-        // list allow mime type
         const types = ['image/png', 'image/jpeg', 'image/gif']
-        // loop access array
         for(let x = 0; x<files.length; x++) {
-         // compare file type find doesn't matach
             if (types.every(type => files[x].type !== type)) {
-                // create error message and assign to container   
                 err += files[x].type+' is not a supported format\n';
             }
         };
@@ -229,7 +209,6 @@ class AdminAddSubCat extends Component {
 
     submitForm = (e) => {
         e.preventDefault();
-        // console.log(this.state.formdata);
 
         // dispatch an action, adding updated  formdata + the user id from the redux store
         this.props.dispatch(addSubcat({
@@ -244,7 +223,6 @@ class AdminAddSubCat extends Component {
         })
 
         setTimeout(() => {
-            // this.props.history.push(`/user/edit-item-sel/${this.props.items.newitem.itemId}`);
             this.props.history.push(`/admin/0`);
         }, 2000)
     }
@@ -295,20 +273,6 @@ class AdminAddSubCat extends Component {
                                 </tr>
 
 
-                                {/* <tr>
-                                    <td>
-                                        <img className="change_cat_img" src={`/assets/media/cover_img_cat/XXXX.jpg`} onError={this.addDefaultImg}/>
-                                    </td>
-                                    <td>
-                                        <div className="form_element">
-                                            <input type="file" className="form-control" multiple name="file" onChange={this.onChangeHandler}/>
-                                            <br />
-                                            <button type="button" className="btn btn-success btn-block" onClick={this.onSubmitHandler}>Upload</button> 
-                                        </div>
-                                    </td>
-                                </tr>
-
-                             */}
 
                             <tr>
                                     <td>

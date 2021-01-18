@@ -168,7 +168,6 @@ class SubcatView  extends Component {
                 className="main_map"
                 center={[this.state.initLat, this.state.initLong]} 
                 zoom={this.state.initZoom} 
-                // style={{ height: this.state.showMap ? '350px' : '0px'}}
             >
                 <TileLayer
                     attribution='&copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -255,15 +254,11 @@ class SubcatView  extends Component {
 
 
 function mapStateToProps(state) {
-    // console.log(state)
     return {
-        // catitems: state.cats.catitems,
-        // catinfo: state.cats.catinfo,
         subcat: state.cats.subcat,
         subcats: state.cats.subcats,
         subcatitems: state.cats.subcatitems,
         catinfo: state.cats.catinfo
-        
     }
 }
 

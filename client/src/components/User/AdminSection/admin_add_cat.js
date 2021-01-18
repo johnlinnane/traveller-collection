@@ -111,9 +111,6 @@ class AdminAddCat extends Component {
             })
         }
 
-        // this.setState({
-        //     imgSrc : this.state.imgSrc + '?' + Math.random()
-        // });
 
         this.props.history.push(`/admin/${this.props.index}`);
         
@@ -121,7 +118,6 @@ class AdminAddCat extends Component {
 
     maxSelectFile=(event)=>{
 
-        // console.log(event);
 
         let files = event.target.files // create file object
             if (files.length > 1) { 
@@ -136,17 +132,11 @@ class AdminAddCat extends Component {
     }
 
     checkMimeType=(event)=>{
-        //getting file object
         let files = event.target.files 
-        //define message container
         let err = ''
-        // list allow mime type
         const types = ['image/png', 'image/jpeg', 'image/gif']
-        // loop access array
         for(let x = 0; x<files.length; x++) {
-         // compare file type find doesn't matach
             if (types.every(type => files[x].type !== type)) {
-                // create error message and assign to container   
                 err += files[x].type+' is not a supported format\n';
             }
         };
@@ -204,7 +194,6 @@ class AdminAddCat extends Component {
 
 
     render() {
-        // console.log(this.state)
 
         return (
             <div className="admin">
@@ -224,9 +213,6 @@ class AdminAddCat extends Component {
                                             defaultValue={this.state.catdata.title} 
                                             onChange={(event) => this.handleInput(event, 'title')}
                                         />
-
-
-
 
                                     </td>
                                 </tr>
@@ -302,11 +288,8 @@ class AdminAddCat extends Component {
 
 
 function mapStateToProps(state) {
-    // console.log(state);
-
     return {
         // xxx: state.xxx.xxxx
-        
     }
 }
 

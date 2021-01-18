@@ -24,14 +24,6 @@ class ChapterIndex extends PureComponent {
     }
 
 
-    // pdf_page_index: [
-    //     {
-    //         page: Number,
-    //         heading: String,
-    //         description: String
-    //     }
-    // ]
-
 
     componentDidMount() {
         document.title = "Chapter Index - Traveller Collection"
@@ -63,18 +55,6 @@ class ChapterIndex extends PureComponent {
                         formdata: tempFormdata
                     })
                 }
-
-                // if (this.props.items.item.pdf_page_index) {
-                
-                //     let newFormdata = {
-                //         ...this.state.formdata,
-                //         pdf_page_index: this.props.items.item.pdf_page_index
-                //     }
-
-                //     this.setState({
-                //         formdata: newFormdata
-                //     })  
-                // }
             }
             
               
@@ -85,7 +65,6 @@ class ChapterIndex extends PureComponent {
 
 
     handleInput(event, field, i) {
-        // console.log(field, i);
         
         let newData = this.state.formdata.pdf_page_index;
 
@@ -169,7 +148,6 @@ class ChapterIndex extends PureComponent {
 
         const chapterItemId = mongoose.Types.ObjectId().toHexString()
 
-        // let pdf_chapter_children = this.state.formdata.pdf_chapter_children;
         let temp_pdf_page_index = this.state.formdata.pdf_page_index;
 
         temp_pdf_page_index[i] = {
@@ -290,7 +268,6 @@ class ChapterIndex extends PureComponent {
 
 
     renderChapters = () => {
-                // console.log(this.props.items.item.pdf_page_index)
                 return (
                         this.state.formdata.pdf_page_index.map( (chapt, i) => (
                       
@@ -423,15 +400,6 @@ class ChapterIndex extends PureComponent {
 
                 <div className="form_input item_form_input edit_page">
                     
-                    {/* {
-                        items.updateItem ?
-                            <div className="edit_confirm">
-                                Post updated, <Link to={`/items/${items.item._id}`}>
-                                    Click here to see your post
-                                </Link>
-                            </div>
-                        : null
-                    } */}
 
                     
                     {this.state.cancelled ?
@@ -441,17 +409,6 @@ class ChapterIndex extends PureComponent {
                     :
                         this.renderPage()
                     }
-                    
-
-
-
-                    
-
-                    
-                    
-                   
-
-                    
 
                         
                 </div>

@@ -56,8 +56,6 @@ const itemSchema = mongoose.Schema({
             text: String
         }
     ],
-
-    // file_format: String,
     date_added: String,
     date_modified: String,
     number_files: Number,
@@ -107,13 +105,6 @@ const itemSchema = mongoose.Schema({
     ],
     
     has_chapter_children: Boolean,
-    // pdf_chapter_children : [
-    //     {
-    //         child_id: String,
-    //         page: Number
-    //     }
-    // ],
-
     is_pdf_chapter: Boolean,
     pdf_item_pages: {
         start: Number,
