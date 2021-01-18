@@ -9,6 +9,7 @@
 /client/build
 /client/public/assets/media
 /client/src/config_client.js
+/client/.env
 
 # misc
 .DS_Store
