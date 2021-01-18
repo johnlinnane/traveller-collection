@@ -32,7 +32,6 @@ class UserItems extends Component {
 
     
     render() {
-        // console.log(this.props);
 
         let user = this.props.user;
 
@@ -59,8 +58,6 @@ class UserItems extends Component {
 }
 
 function mapStateToProps(state) {
-
-    // console.log(state.user);
     return {
         user:state.user
     }

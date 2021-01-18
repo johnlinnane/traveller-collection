@@ -122,7 +122,6 @@ class EditItemFile extends PureComponent {
                     language: item.language,
                     reference: item.reference,
                     rights: item.rights,
-                    // file_format: item.file_format,
                     subcategory_ref: item.subcategory_ref,
                     number_files: item.number_files
                 }
@@ -133,7 +132,6 @@ class EditItemFile extends PureComponent {
 
                 })
 
-                // console.log(item);
                 if (this.props.items.files && this.props.items.files.length) {
                     let tempItemFiles = [];
                     this.props.items.files.forEach( item => {
@@ -240,17 +238,11 @@ class EditItemFile extends PureComponent {
     }
 
     checkMimeType=(event)=>{
-        //getting file object
         let files = event.target.files 
-        //define message container
         let err = ''
-        // list allow mime type
         const types = ['image/png', 'image/jpg', 'image/jpeg', 'image/gif', 'application/pdf', 'video/mp4', 'video/quicktime']
-        // loop access array
         for(let x = 0; x<files.length; x++) {
-         // compare file type find doesn't matach
             if (types.every(type => files[x].type !== type)) {
-                // create error message and assign to container   
                 err += files[x].type+' is not a supported format\n';
             }
         };
@@ -419,7 +411,6 @@ class EditItemFile extends PureComponent {
                     : null }    
                             
                     { this.state.selectedFilesImg.length === this.state.selectedFilesNum ?
-                        // <p>{this.state.selectedFilesImg.length}</p>
                         this.state.selectedFilesImg.map( (img, i) => (
                             <div key={`card${i}`} className="edit_3_card">
 
@@ -543,10 +534,6 @@ class EditItemFile extends PureComponent {
                             :null}
                         </Progress>
                     </div>
-
-                    {/* <div className="form-group">
-                        <ToastContainer />
-                    </div> */}
                 </div>
             </div>
         );

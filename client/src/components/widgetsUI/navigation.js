@@ -4,11 +4,6 @@ import { Link } from 'react-router-dom';
 
 const NavigationBar = (props) => {
 
-
-
-
-    // console.log(props);
-
     return (
         <div className="nav_bar">
 

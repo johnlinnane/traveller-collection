@@ -190,26 +190,15 @@ class EditItemSel extends PureComponent {
                 catArray.push(cat.value)
             })
         }
-        
-
-        // console.log(newValue);
-
 
         // make reformatted list of all subcats
         let newSubcatList = [];
-
         
         // get new cat id
         if (newValue && newValue.length) {
 
-
-            // loop through subcats
-            // console.log('new list written')
-
             newValue.forEach( newval => {
-                // console.log(newval)
                 this.props.subcats.forEach( (subcat) => {
-                    // console.log(newval.value, subcat.parent_cat);
                     if (newval.value === subcat.parent_cat){
                         newSubcatList.push({
                             value: subcat._id,
@@ -218,37 +207,16 @@ class EditItemSel extends PureComponent {
                     }
                 })
             })
-            // console.log(newSubcatList);
         }
-
-
-        
-
-
-        // send new array to state
-
-
-
-  
-
-
-
-
         let latestData = {
             ...this.state.dataToUpdate,
             category_ref: catArray
         }
 
-
-
-
-
         this.setState({
             dataToUpdate: latestData,
             subcatList: newSubcatList
         })
-        // console.log(latestData);
-
     }
 
     handleInputSubcats = (newValue) => {
@@ -316,16 +284,13 @@ class EditItemSel extends PureComponent {
 
     getSubcatOptions = () => {
         
-        // console.log('full list written')
 
         let subcatList = this.state.subcatList;
+
         // make reformatted list of all subcats
-  
         if (!this.state.subcatsInitialised) {
             if (this.props.items.item.category_ref && this.props.items.item.category_ref.length) {
-                // loop through all subcats
                 this.props.subcats.forEach( (subcat) => {
-                    // if subcat is part of the chosen cat
                     if (this.props.items.item.category_ref.indexOf(subcat.parent_cat) !== -1) {
                         subcatList.push({
                             value: subcat._id,
@@ -462,44 +427,18 @@ class EditItemSel extends PureComponent {
                         </tbody>
                         </table>
 
-                        
-                        
-                        {/* <div className="delete_post">
-                            <div className="button" onClick={(e) => { if (window.confirm('Are you sure you wish to delete this item?')) this.deletePost(e) } }>
-                                Delete item
-                            </div>
-                        </div> */}
-
                     </form>
     )
 
     render() {
-        // console.log('rendered');
 
         let items = this.props.items;
-
-        // console.log(this.state);
         console.log(this.props);
-
-        // this.refineSubcatList();
-
-
 
         return (
             
             <div className="main_view">
                 <div className="form_input item_form_input edit_page">
-                    
-                    {/* {
-                        items.updateItem ?
-                            <div className="edit_confirm">
-                                Post updated, <Link to={`/items/${items.item._id}`}>
-                                    Click here to see your post
-                                </Link>
-                            </div>
-                        : null
-                    } */}
-
 
                     {
                         items.itemDeleted ?
@@ -537,5 +476,3 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(EditItemSel)
-
-

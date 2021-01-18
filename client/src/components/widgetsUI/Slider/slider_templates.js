@@ -32,7 +32,6 @@ const SliderTemplates = (props) => {
                         <div className={style.featured_item}>
                             <div className={style.featured_image}
                                 style={{
-                                    // background: `url(/assets/media/sq_thumb/${item.omeka.omeka_id}.jpg)`
                                     background: `url(/assets/media/items/${item._id}/thumbnail/0.jpg)`
                                 }}
                             >
@@ -50,10 +49,6 @@ const SliderTemplates = (props) => {
 
 
         break;
-
-        // case 'other' :
-        //    template = props.something else
-        //    break;
         
         default: 
             template = null;

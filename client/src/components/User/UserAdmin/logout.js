@@ -4,7 +4,6 @@ import axios from 'axios';
 
 const Logout = (props) => {
     
-    // let request = 
     axios.get(`${process.env.REACT_APP_API_PREFIX}logout`)
                     .then(request => {
                         setTimeout( () => {

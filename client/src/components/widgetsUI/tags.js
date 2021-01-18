@@ -63,7 +63,6 @@ class Tags extends React.Component {
         this.props.dispatch(updateItem({
             _id: this.state.id,
             tags: ['froub']
-            // tags: this.state.tags
             
         }
     ))
@@ -100,8 +99,6 @@ class Tags extends React.Component {
     }
 };
  
-// export default Tags;
-
 const mapDispatchToProps = dispatch => ({
     dispatch       
  })

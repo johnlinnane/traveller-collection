@@ -3,12 +3,6 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Map, TileLayer, Marker } from 'react-leaflet'
 import axios from 'axios';
-// import Select from 'react-select';
-// import CreatableSelect from 'react-select/creatable';
-
-// import {Progress} from 'reactstrap';
-// import { ToastContainer, toast } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
 
 
 import { getItemById, updateItem, clearItem, deleteItem, getParentPdf, deleteChapter, getFilesFolder } from '../../../actions';
@@ -38,7 +32,6 @@ class EditItem extends PureComponent {
             language: '',
             reference: '',
             rights: '',
-            // file_format: '',
             external_link: [
                 {
                     url: '',
@@ -84,18 +77,14 @@ class EditItem extends PureComponent {
         document.title = `Traveller Collection`
     }
 
-    // baseline export before adding new stuff
     componentDidUpdate(prevProps) {
-        // console.log(prevProps);
 
         if (this.props.items.item) {
             let item = this.props.items.item;
 
-            // can create a updatedFormdata variable, but no need
             if (this.props.items !== prevProps.items) {
 
                 let newFormdata = {
-                    
                     ...this.state.formdata,
                     _id:item._id,
                     title:item.title,
@@ -116,15 +105,11 @@ class EditItem extends PureComponent {
                     language: item.language,
                     reference: item.reference,
                     rights: item.rights,
-                    // file_format: item.file_format,
                     category_ref: item.category_ref,
                     subcategory_ref: item.subcategory_ref,
                     location: item.location,
-
                     is_pdf_chapter: item.is_pdf_chapter,
                     pdf_item_parent_id: item.pdf_item_parent_id,
-
-
                     shareDisabled: item.shareDisabled
                 }
 
@@ -202,12 +187,9 @@ class EditItem extends PureComponent {
 
     handleInput = (event, name, level) => {
 
-        // make a copy of formdata
         let newFormdata = {
             ...this.state.formdata
         }
-
-        // console.log(newFormdata);
 
         if (level === 'external_link') {
                 newFormdata.external_link[0][name] = event.target.value;
@@ -225,12 +207,10 @@ class EditItem extends PureComponent {
             newFormdata[name] = event.target.value;
         }
 
-        // copy it back to state
         this.setState({
             formdata: newFormdata
 
         })
-        console.log(newFormdata);
     }
 
 
@@ -254,7 +234,6 @@ class EditItem extends PureComponent {
     }
 
     handleSwitch() {
-        // console.log('switch switched')
         this.setState({
             formdata: {
                 ...this.state.formdata,
@@ -323,10 +302,6 @@ class EditItem extends PureComponent {
             this.props.history.push(`/user/edit-item-sel/${this.props.items.item._id}`)
         }, 1000)
     }
-
-    
-
-
 
     createTextInput = (existing, name, placeholder, inputLabel, level) => {
         return (
@@ -450,7 +425,6 @@ class EditItem extends PureComponent {
                                             placeholder="Start page from parent item's PDF"
                                             defaultValue={formdata.pdf_item_pages.start} 
                                             onChange={(event) => this.handleInput(event, 'start', 'pdf_item_pages')}
-                                            // className="input_latlng"
                                         />
                                     </div>
                                 </td>
@@ -467,7 +441,6 @@ class EditItem extends PureComponent {
                                             placeholder="End page from parent item's PDF"
                                             defaultValue={formdata.pdf_item_pages.end} 
                                             onChange={(event) => this.handleInput(event, 'end', 'pdf_item_pages')}
-                                            // className="input_latlng"
                                         />
                                     </div>
                                 </td>
@@ -679,21 +652,6 @@ class EditItem extends PureComponent {
                 <div className="form_input item_form_input edit_page">
                         {this.renderForm()}
                 </div>
-
-            {/* // <div className="form-group">
-            //     <Progress max="100" color="success" value={this.state.loaded} >
-            //         { this.state.loaded ?
-            //             <div>    
-            //                 {Math.round(this.state.loaded,2)}
-            //                 %
-            //             </div>
-            //         :null}
-            //     </Progress>
-            // </div>
-
-            // <div className="form-group">
-            //     <ToastContainer />
-            // </div> */}
             </div>
             
         );

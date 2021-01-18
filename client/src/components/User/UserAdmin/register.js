@@ -57,7 +57,6 @@ class Register extends PureComponent {
         e.preventDefault();
         this.setState({error:''});
 
-        // dispatch the action to get state into props
         this.props.dispatch(userRegister({
             email:this.state.email,
             password:this.state.password,

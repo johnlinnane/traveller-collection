@@ -144,7 +144,6 @@ export default function foo(state={}, action) {
         case 'ACCEPT_ITEM':
             return {
                 ...state
-                // item:action.payload
             }
 
         case 'GET_FILES_FOLDER':

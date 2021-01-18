@@ -34,7 +34,6 @@ class AllItems extends Component {
 
     
     render() {
-        // console.log(this.props);
 
         let items = this.props.items;
 

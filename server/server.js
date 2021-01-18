@@ -3,8 +3,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 const path = require("path")
-// get() is for heroku
-const config = require('./config/config').get(process.env.NODE_ENV);
+const config = require('./config/config').get(process.env.NODE_ENV); // get() is for mongodb (and heroku)
 const sharp = require('sharp');
 
 const app = express();
@@ -30,7 +29,6 @@ mongoose.connect(config.DATABASE, { useNewUrlParser: true })
     .catch(error => console.log('MONGOOSE CONNECT ERROR: ', error));
 
 
-// mongoose.connect(config.DATABASE);
 
 // bring in mongo model
 const { User } = require('./models/user');
@@ -52,12 +50,6 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(cors())
 
-
-
-// FOR HEROKU
-// DIRECT TO BUILD FOLDER !!
-// static is css and js
-app.use(express.static('client/build'))
 
 
 
@@ -170,7 +162,6 @@ app.get('/api/items', (req,res) => {
     let limit = parseInt(req.query.limit);
     let order = req.query.order;
 
-    // order  = asc || desc
     Item.find().skip(skip).sort({_id:order}).limit(limit).exec((err,doc) => {
         if(err) return res.status(400).send(err);
         res.send(doc);
@@ -457,12 +448,10 @@ app.post('/api/register', (req, res) => {
 app.post('/api/login', (req, res) => {
     // look through the whole database
     User.findOne({'email':req.body.email}, (err, user) => {
-        // console.log(user);
 
         if(!user) return res.json({isAuth:false, message:'Auth failed, email not found'});
 
         user.comparePassword(req.body.password, (err, isMatch) => {
-            // console.log(user);
 
             if(!isMatch) return res.json({
                 isAuth:false,
@@ -488,7 +477,6 @@ app.post('/api/add-cat', (req, res) => {
     const cat = new Cat( req.body );             // req is the data you post
 
     cat.save( (err, doc) =>{                      // saves the new document
-        // console.log(doc._id);
         if(err) return res.status(400).send(doc);
         res.status(200).json({
             post:true,
@@ -568,7 +556,6 @@ app.post('/api/item', (req, res) => {
     const item = new Item( req.body );             // req is the data you post
 
     item.save( (err, doc) =>{                      // saves the new document
-        // console.log(doc._id);
         if(err) return res.status(400).send(doc);
         res.status(200).json({
             post:true,
@@ -647,9 +634,6 @@ app.post('/api/subcat-update', (req, res) => {
 // * * * * * * * * * * * * * * * * * * * * update intro text
 app.post('/api/update-intro-text', (req, res) => {
     // new:true allows upsert
-
-    // console.log(req.body);
-
     Intro.findOneAndUpdate({}, req.body, { sort: { '_id':1 } }, (err, doc) => {
         if(err) return res.status(400).send(err);
         res.json({
@@ -663,9 +647,6 @@ app.post('/api/update-intro-text', (req, res) => {
 // * * * * * * * * * * * * * * * * * * * * update info text
 app.post('/api/update-info-text', (req, res) => {
     // new:true allows upsert
-
-    // console.log(req.body);
-
     Info.findOneAndUpdate({}, req.body, { sort: { '_id':1 } }, (err, doc) => {
         if(err) return res.status(400).send(err);
         res.json({
@@ -770,7 +751,6 @@ app.post('/api/get-files-folder', (req, res) => {
     fs.readdir(fullPath, {withFileTypes: true}, (err, files) => {
         if (err) {
             console.log('GET-FILES-FOLDER: error finding files in folder / no files in folder')
-        // res.status(200).json({ files:files })
         } else if (files.length && files[0].name === '.DS_Store') {
             files.shift()
         }
@@ -807,7 +787,6 @@ app.post('/delete-dir', function(req, res) {
             if (files && files.length) {
                 files.forEach( file => {
                     let string = path.resolve(dir, file.name)
-                    // console.log(string);
                     if (fs.lstatSync(string).isFile()) {
                         fs.unlink(string, function (err) {
                             if (err) throw err;
@@ -894,7 +873,6 @@ app.post('/get-number-files', function(req, res) {
 let storageArray = multer.diskStorage({
     destination: function (req, file, cb) {
         const path = `../client/public/assets/media/items/${req.params.id}/original`
-        // console.log('ID: ', req.params.id)
         mkdirp.sync(path);
         cb(null, path)
 
@@ -954,8 +932,6 @@ app.post('/upload-array/:id',
                             console.log('UPLOAD-FIELDS SHARP ERROR', err);
                         } else {
                             console.log('UPLOAD-FIELDS: sharp success');
-                            // res.write("Sq thumbnail uploaded successfully.");
-                            // res.end();
                             res.send("Sq thumbnail uploaded successfully.");
                         }
                     })
@@ -984,14 +960,11 @@ app.post(
             destination: function (req, file, cb) {
 
                 let dest = `../client/public/assets/media/cover_img_cat`;
-                // let dest = `../client/public/assets/media/upload_test`;
-                // fs.mkdirSync(dest, { recursive: true })
                 mkdirp.sync(dest);
                 cb(null, dest)
                 
             },
             filename: function (req, file, cb) {
-                // cb(null, Date.now() + '-' +file.originalname )
                 cb(null, `${catId}.jpg` );
                 index++;
             }
@@ -1114,20 +1087,6 @@ app.post(
 });
 
 
-
-
-
-//  ******************* FOR HEROKU *************************************
-// if the server doesn't find the route, fall back to home dir
-if(process.env.NODE_ENV === 'production') {
-    const path = require('path');
-
-    app.get('/*', () => {
-        // mian root of directory
-        // find in /client/build/index.html 
-        res.sendfile(path.resolve(__dirname), '../client', 'build', 'index.html')
-    })
-}
 
 
 
