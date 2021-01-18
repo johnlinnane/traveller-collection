@@ -58,6 +58,7 @@ export function loginUser({email, password}) {
 
     const request = axios.post(`${API_PREFIX}login`, {email, password})
                         .then(response => response.data);
+                        console.log('ACTION: loginUser():', request)
 
     return {
         type:'USER_LOGIN',
@@ -69,7 +70,7 @@ export function loginUser({email, password}) {
 export function auth() {
     const request = axios.get(`${API_PREFIX}auth`) 
                         .then(response => response.data);
-
+    console.log('ACTIONS AUTH() REQUEST: ', request);  
     return {
         type:'USER_AUTH',
         payload:request
@@ -481,7 +482,6 @@ export function deletePendItem(id) {
 
 
 export function getFilesFolder(data) {
-    console.log('getFilesFolder called');
     const request = axios.post(`${API_PREFIX}get-files-folder`, data)
                         .then(response => response.data);
     return {

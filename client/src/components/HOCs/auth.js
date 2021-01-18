@@ -1,13 +1,9 @@
-
-// check if token is valid
-
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
 import { auth } from '../../actions';
 
-//  this is a post component
-// function that receives a class as an argument
+// this is a post component
+// a function that receives a class as an argument
 // returns the component !!
 // reload determines what type of redirect it should be
 export default function foo(ComposedClass, reload) {
@@ -17,21 +13,19 @@ export default function foo(ComposedClass, reload) {
 
 
         state = {
-            // display loading logo
-            loading:true
+            loading:false
         }
 
 
-        // dispatch an action to check if user is authenticated
         componentDidMount() {
-
             this.props.dispatch(auth())
         }
 
-        // check if props have been received
         componentDidUpdate(prevProps, prevState) {
             if (this.props !== prevProps) {
+                console.log(this.props)
                 this.setState({loading:false})
+                console.log('AUTH.JS (this.props.user.login):', this.props.user.login);
                 if(!this.props.user.login.isAuth) {
                     if(reload === true) {
                         this.props.history.push('/login');
@@ -44,28 +38,23 @@ export default function foo(ComposedClass, reload) {
             }
         }
 
-
-
-
-
         render() {
-
-            // console.log(this. props);
-
+            console.log('AUTH.JS PROPZ - USER.LOGIN', this.props.user.login)
             if(this.state.loading) {
                 return <div className="loader">Loading...</div>
             }
 
             // return the actual route, with the data of the user (from react router)
             return(
+                // inject the props of the user from /api/auth, otherwise no user data
+                // {...this.props} is all the properties we're getting from the router
                 <ComposedClass {...this.props} user={this.props.user}/>
-
             )
         }
-
     }
 
     function mapStateToProps(state) {
+        console.log('REDUX STATE.USER.LOGIN: ', state.user.login)
         return {
             user:state.user
         }

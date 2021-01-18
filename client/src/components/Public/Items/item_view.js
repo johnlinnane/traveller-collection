@@ -451,7 +451,6 @@ class ItemView extends Component {
                                 imgFiles.length === 1 ?
                                     /////////////////////// SHOW SINGLE IMAGE ///////////////////////
                                     <div>
-                                        {/* { itemdata.number_files == null || itemdata.number_files < 2 ? */}
                                             <div className="item_img">
                                                 <img src={`/assets/media/items/${itemdata._id}/original/${itemFiles[0]}`} 
                                                 className="item_main_img"

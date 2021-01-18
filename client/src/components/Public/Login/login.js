@@ -23,7 +23,7 @@ class Login extends Component {
     }
 
     componentDidMount() {
-        document.title = "Login - Traveller Collection"
+        document.title = "Login - Traveller Collection";
     }
     
     componentWillUnmount() {
@@ -33,9 +33,13 @@ class Login extends Component {
 
     // redirect to user screen when login
     componentDidUpdate(prevProps, prevState) {
+        // console.log('COMPONENTDIDUPDATE USER.LOGIN', prevProps.user.login, ' -> ', this.props.user.login)
         if (this.props !== prevProps) {
             if(this.props.user.login.isAuth) {
+                // console.log('IZAUTHO')
                 this.props.history.push('/user')
+            } else {
+                // console.log('NOTAUTHO')
             }
         }
     }
@@ -43,8 +47,6 @@ class Login extends Component {
 
     submitForm = (e) => {
         e.preventDefault();
-        // console.log(this.state)
-
         // login and set cookie
         this.props.dispatch(loginUser(this.state))
     }
@@ -52,6 +54,11 @@ class Login extends Component {
     
     render() {
         let user = this.props.user;
+        setTimeout(() => { 
+            // console.log('RENDER: LOGIN.PROPS.USER.LOGIN:', this.props.user.login)
+        }, 1000);
+        
+
 
         return (
             <div className="form_input">
@@ -64,6 +71,7 @@ class Login extends Component {
                             placeholder="Enter your email"
                             value={this.state.email}
                             onChange={this.handleInputEmail}
+                            autoComplete="off"
                         />
                     </div>
 
@@ -74,6 +82,7 @@ class Login extends Component {
                             placeholder="Enter your password"
                             value={this.state.password}
                             onChange={this.handleInputPassword}
+                            autoComplete="off"
                         />
                     </div>
 
@@ -98,7 +107,7 @@ class Login extends Component {
 }
 
 function mapStateToProps(state) {
-    // console.log(state);
+    console.log(state)
     return {
         user:state.user
     }

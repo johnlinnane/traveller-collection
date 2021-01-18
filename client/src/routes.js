@@ -64,7 +64,7 @@ const Routes = () => {
                 <Route path="/map" exact component={Auth(MainMap, null)}/>
                 <Route path="/info" exact component={Auth(Info, null)}/>
                 <Route path="/add_item" exact component={Auth(AddItem, null)}/>
-                <Route path="/login" exact component={Auth(Login, false)}/>
+                <Route path="/login" exact component={Auth(Login, false)}/> {/* NEVER SHOW IF USER IS LOGGED IN */}
 
                 {/* WHEN LOGGED IN */}
 

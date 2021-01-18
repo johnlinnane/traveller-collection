@@ -90,10 +90,13 @@ userSchema.statics.findByToken = function(token, cb) {
     let user = this;
 
     // decode contains the user id
+    
     jwt.verify(token, config.SECRET, function(err, decode) {
         user.findOne({"_id":decode, "token":token}, function(err, user) {
+            console.log('JWT VERFY !!!!!!!!')
             if(err) return cb(err);
             // return all user info if token is correct
+
             cb(null, user)
         })
     })

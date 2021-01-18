@@ -20,7 +20,7 @@ const SearchHeader = (props) => {
             type="text" 
             onChange={props.keywords}
             placeholder={props.placeholder}
-            
+            autoComplete="off"
           />
     
         </div>

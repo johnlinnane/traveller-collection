@@ -61,6 +61,7 @@ app.use(cors())
 
 // deny access
 app.get('/api/auth', auth, (req, res) => {
+    console.log('API/AUTH FIRED')
     res.json({
         isAuth:true,
         id:req.user._id,
@@ -452,15 +453,17 @@ app.post('/api/login', (req, res) => {
         if(!user) return res.json({isAuth:false, message:'Auth failed, email not found'});
 
         user.comparePassword(req.body.password, (err, isMatch) => {
-
+            console.log('COMPAREPASSWORDS() FIRED', isMatch);
             if(!isMatch) return res.json({
                 isAuth:false,
                 message:'Wrong password'
             });
             // generate token
             user.generateToken((err, user) => {
+                
                 if(err) return res.status(400).send(err);
 
+                console.log('GENERATETOKEN() SUCCESS', user.token);
                 res.cookie('auth', user.token).send({
                     isAuth:true,
                     id:user._id,
@@ -727,7 +730,7 @@ const isDirEmpty = (dirname) => {
 
 // delete file
 app.post('/delete-file', function(req, res) {
-    let query = '../client/public/media';
+    let query = '../client/public/assets/media';
 
     let fullPath = query + req.body.path
 
@@ -742,8 +745,8 @@ app.post('/delete-file', function(req, res) {
 
 app.post('/api/get-files-folder', (req, res) => {
     
-    
-    let query = '../client/public/media';
+    console.log('API/GETFILESFOLDER CALLED');
+    let query = '../client/public/assets/media';
 
     let fullPath = query + req.body.folder
     console.log('FS.READDIR WITH FULLPATH:', fullPath)
@@ -763,7 +766,7 @@ app.post('/api/get-files-folder', (req, res) => {
 
 // remove directory recursively
 app.post('/delete-dir', function(req, res) {
-    const baseUrl = '../client/public/media';
+    const baseUrl = '../client/public/assets/media';
 
     let section = req.body.section;
     let id = req.body.id;
@@ -827,7 +830,7 @@ app.post('/delete-dir', function(req, res) {
 
 // get number of files
 app.post('/get-number-files', function(req, res) {
-    const baseUrl = '../client/public/media';
+    const baseUrl = '../client/public/assets/media';
 
     let section = req.body.section;
     let id = req.body.id;
