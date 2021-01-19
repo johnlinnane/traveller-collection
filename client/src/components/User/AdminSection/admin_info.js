@@ -7,7 +7,7 @@ import { withRouter } from "react-router-dom";
 import { getInfoText, updateInfoText } from '../../../actions';
 
 const mongoose = require('mongoose');
-const config = require('../../../config_client').get(process.env.NODE_ENV);
+const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 
 class AdminInfo extends Component {
 
@@ -124,7 +124,7 @@ class AdminInfo extends Component {
 
             data.append('file', this.state.selectedFiles[i])
 
-            axios.post(`http://${config.IP_ADDRESS}:3002/upload-info/${i}`, data, {
+            axios.post(`${API_PREFIX}/upload-info/${i}`, data, {
                 
                 onUploadProgress: ProgressEvent => {
                     this.setState({
@@ -154,7 +154,7 @@ class AdminInfo extends Component {
 
             data.append('file', this.state.selectedIconImg)
 
-            axios.post(`http://${config.IP_ADDRESS}:3002/upload-info/${name}`, data, {
+            axios.post(`${API_PREFIX}/upload-info/${name}`, data, {
                 
                 // receive two parameter endpoint url ,form data 
                 onUploadProgress: ProgressEvent => {

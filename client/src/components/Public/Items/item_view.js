@@ -13,7 +13,7 @@ import { Document, Page, pdfjs } from 'react-pdf';
 import { getItemWithContributor, clearItemWithContributor, getPendItemById, getAllCats, getAllSubCats, getNextItem, getPrevItem, getParentPdf, getFilesFolder } from '../../../actions';
 import NavigationBar from '../../widgetsUI/navigation';
 
-const config = require('./../../../config_client').get(process.env.NODE_ENV);
+const IP_ADDRESS_REMOTE = process.env.REACT_APP_IP_ADDRESS_REMOTE;
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -596,7 +596,7 @@ class ItemView extends Component {
                     :               
                     <div className="shareIcons">
                         <FacebookShareButton
-                            url={`http://${config.IP_ADDRESS}:3000/items/${itemdata._id}`}
+                            url={`http://${IP_ADDRESS_REMOTE}/items/${itemdata._id}`}
                             className="shareIcon"
                             quote={itemdata.title}
                             >
@@ -605,7 +605,7 @@ class ItemView extends Component {
 
 
                         <WhatsappShareButton
-                            url={`http://${config.IP_ADDRESS}:3000/items/${itemdata._id}`}
+                            url={`http://${IP_ADDRESS_REMOTE}/items/${itemdata._id}`}
                             className="shareIcon"
                             title={itemdata.title}
                             >
@@ -613,7 +613,7 @@ class ItemView extends Component {
                         </WhatsappShareButton>
 
                         <EmailShareButton
-                            url={`http://${config.IP_ADDRESS}:3000/items/${itemdata._id}`}
+                            url={`http://${IP_ADDRESS_REMOTE}/items/${itemdata._id}`}
                             className="shareIcon"
                             subject={itemdata.title}
                             >

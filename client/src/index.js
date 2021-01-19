@@ -9,7 +9,6 @@ import ReduxThunk from 'redux-thunk';
 import reducers from './reducers';
 import Routes from './routes';
 
-// require('dotenv').config({path: __dirname + '../../.env'})
 require('dotenv').config({path: '../../.env'})
 
 // apply middleware and create store

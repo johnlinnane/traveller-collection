@@ -3,11 +3,12 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 const path = require("path")
-const config = require('./config/config').get(process.env.NODE_ENV); // get() is for mongodb (and heroku)
 const sharp = require('sharp');
+
 
 const app = express();
 
+require('dotenv').config({path: '../.env'})
 
 // file upload
 const cors = require('cors');
@@ -25,7 +26,7 @@ let index = 0;
 // connect to mongo
 mongoose.Promise = global.Promise;
 
-mongoose.connect(config.DATABASE, { useNewUrlParser: true })
+mongoose.connect(process.env.REACT_APP_DB, { useNewUrlParser: true })
     .catch(error => console.log('MONGOOSE CONNECT ERROR: ', error));
 
 
@@ -49,7 +50,6 @@ const { fileURLToPath } = require('url');
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(cors())
-
 
 
 
@@ -894,7 +894,7 @@ let storageArray = multer.diskStorage({
 let uploadArray = multer({ storage: storageArray }).array('files');
 
 
-app.post('/upload-array/:id', 
+app.post('/api/upload-array/:id', 
     (req, res, next) => {
         console.log('first callback')
         next()
@@ -945,7 +945,7 @@ app.post('/upload-array/:id',
 // *********************** CATEGORY IMAGE ************************
 
 app.post(
-    '/upload-cat/:id',
+    'api/upload-cat/:id',
     function(req, res) {
         
         let catId = req.params.id;
@@ -982,7 +982,7 @@ app.post(
 
 
 app.post(
-    '/upload-subcat/:id',
+    '/api/upload-subcat/:id',
     function(req, res) {
         
         let subCatId = req.params.id;
@@ -1018,7 +1018,7 @@ app.post(
 // *********************** INTRO IMAGE ************************
 
 app.post(
-    '/upload-intro-img',
+    '/api/upload-intro-img',
     function(req, res) {
         
         console.log('UPLOAD-INTRO-IMG REQ.FILE', req.file);
@@ -1051,7 +1051,7 @@ app.post(
 // *********************** INFORMATION IMAGE ************************
 
 app.post(
-    '/upload-info/:number',
+    '/api/upload-info/:number',
     function(req, res) {
         
         let number = req.params.number;

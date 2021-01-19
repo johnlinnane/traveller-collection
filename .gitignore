@@ -1,14 +1,12 @@
 /node_modules
 /.vscode
-
-/server/config
+/.env
 
 /client/node_modules
 /client/build
-/client/public/assets/media
-/client/src/config_client.js
 /client/.env
 /client/.eslintcache
+/client/public/assets/media
 
 # misc
 .DS_Store

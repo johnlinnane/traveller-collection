@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const config = require('./../config/config').get(process.env.NODE_ENV);
+// const config = require('./../config/config').get(process.env.NODE_ENV);
 
 const SALT_I = 10;
 
-
+require('dotenv').config({path: '../../.env'})
 
 // create schema
 
@@ -75,7 +75,8 @@ userSchema.methods.comparePassword = function(candidatePassword, cb) {
 userSchema.methods.generateToken = function(cb) {
     let user = this;
     // generate token
-    let token = jwt.sign(user._id.toHexString(), config.SECRET);
+    let token = jwt.sign(user._id.toHexString(), process.env.REACT_APP_PW); // old: config.SECRET
+    
 
     // save all user info, with token
     user.token = token;
@@ -91,7 +92,7 @@ userSchema.statics.findByToken = function(token, cb) {
 
     // decode contains the user id
     
-    jwt.verify(token, config.SECRET, function(err, decode) {
+    jwt.verify(token, process.env.REACT_APP_PW, function(err, decode) { // old: config.SECRET
         user.findOne({"_id":decode, "token":token}, function(err, user) {
             console.log('JWT VERFY !!!!!!!!')
             if(err) return cb(err);
