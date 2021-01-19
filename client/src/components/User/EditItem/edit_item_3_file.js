@@ -9,6 +9,7 @@ import Select from 'react-select';
 
 import { getItemById, getPendItemById, updateItem, updatePendItem, getFilesFolder } from '../../../actions';
 
+const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 const config = require('../../../config_client').get(process.env.NODE_ENV);
 
 
@@ -206,7 +207,7 @@ class EditItemFile extends PureComponent {
                 formdata.append('files', file[0]);  
             })
 
-            axios.post(`http://${config.IP_ADDRESS}:3002/upload-array/${this.state.formdata._id}`, formdata)
+            axios.post(`${API_PREFIX}/upload-array/${this.state.formdata._id}`, formdata)
                 .then(res => { // then print response status
                     console.log(res);
                     alert('File(s) uploaded successfully')
@@ -283,7 +284,7 @@ class EditItemFile extends PureComponent {
             deleteAll: true
         };
 
-        axios.post(`http://${config.IP_ADDRESS}:3002/delete-dir`, fileData  )
+        axios.post(`${API_PREFIX}/delete-dir`, fileData  )
             .then(res => { 
                 console.log(res);
                 toast.success('Media deleted successfully')
@@ -312,7 +313,7 @@ class EditItemFile extends PureComponent {
             path: `/items/${this.state.formdata._id}/original/${this.state.itemFiles[i]}`
         };
         
-        axios.post(`http://${config.IP_ADDRESS}:3002/delete-file`, data  )
+        axios.post(`${API_PREFIX}/delete-file`, data  )
             .then( res => {
                 console.log(res.data);
                 let tempItemFiles = [...this.state.itemFiles];

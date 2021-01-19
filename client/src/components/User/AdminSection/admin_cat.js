@@ -8,7 +8,7 @@ import 'react-tabs/style/react-tabs.css';
 import { getAllCats  } from '../../../actions';
 import { deleteCat, updateCat }  from '../../../actions';
 
-
+const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 const config = require('../../../config_client').get(process.env.NODE_ENV);
 
 
@@ -68,7 +68,7 @@ class AdminCat extends Component {
             path: `/cover_img_cat/${this.state.formdata.cat._id}.jpg`
         };
         
-        axios.post(`http://${config.IP_ADDRESS}:3002/delete-file`, data  )
+        axios.post(`${API_PREFIX}/delete-file`, data  )
 
         this.setState({
             imgSrc: '/assets/media/default/default.jpg'
@@ -104,7 +104,7 @@ class AdminCat extends Component {
                 data.append('file', this.state.selectedFile[x])
             }
 
-            axios.post(`http://${config.IP_ADDRESS}:3002/upload-cat/${this.props.chosenCatInfo._id}`, data, { 
+            axios.post(`${API_PREFIX}/upload-cat/${this.props.chosenCatInfo._id}`, data, { 
                 // receive two parameter endpoint url ,form data 
                 onUploadProgress: ProgressEvent => {
                     this.setState({

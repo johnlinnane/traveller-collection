@@ -6,6 +6,7 @@ import { withRouter } from "react-router-dom";
 
 import { getIntroText, updateIntroText } from '../../../actions';
 
+const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 const config = require('../../../config_client').get(process.env.NODE_ENV);
 
 class AdminIntro extends Component {
@@ -74,7 +75,7 @@ class AdminIntro extends Component {
                 data.append('file', this.state.selectedFile[x])
             }
             
-            axios.post(`http://${config.IP_ADDRESS}:8000/upload-intro-img`, data, { 
+            axios.post(`${API_PREFIX}/upload-intro-img`, data, { 
                 
                 // receive two parameter endpoint url ,form data 
                 onUploadProgress: ProgressEvent => {

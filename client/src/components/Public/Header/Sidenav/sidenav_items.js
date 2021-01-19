@@ -28,7 +28,7 @@ const SidenavItems = ({user}) => {
         {   type:'navItem',
             icon:'file-text-o',
             text:'Edit My Items',
-            link:'/user/user-items',
+            link:'/user/user_items',
             restricted:true
         },
         {   type:'navItem',

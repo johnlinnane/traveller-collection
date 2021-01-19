@@ -7,6 +7,7 @@ import axios from 'axios';
 
 import { getItemById, updateItem, clearItem, deleteItem, getParentPdf, deleteChapter, getFilesFolder } from '../../../actions';
 
+const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 const config = require('../../../config_client').get(process.env.NODE_ENV);
 
 
@@ -253,7 +254,7 @@ class EditItem extends PureComponent {
             deleteAll: true
         };
 
-        axios.post(`http://${config.IP_ADDRESS}:3002/delete-dir`, fileData  )
+        axios.post(`${API_PREFIX}/delete-dir`, fileData  )
             .then(res => { // then print response status
                 console.log(res);
                 alert('Media deleted successfully')

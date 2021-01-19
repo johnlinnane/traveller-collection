@@ -7,6 +7,7 @@ import {Progress} from 'reactstrap';
 // import { getItemById, deleteItem } from '../../../actions';
 import { getAllCats } from '../../../actions';
 
+const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 const config = require('../../../config_client').get(process.env.NODE_ENV);
 
 class CatEdit extends PureComponent {
@@ -60,8 +61,7 @@ class CatEdit extends PureComponent {
                 data.append('file', this.state.selectedFile[x])
             }
 
-            axios.post(`http://${config.IP_ADDRESS}:3002/upload-cat/${this.props.match.params.id}`, data, { 
-            // axios.post(`http://${config.IP_ADDRESS}:8000/upload-cat/${this.props.match.params.id}`, data, { 
+            axios.post(`${API_PREFIX}/upload-cat/${this.props.match.params.id}`, data, { 
                 
                 // receive two parameter endpoint url ,form data 
                 onUploadProgress: ProgressEvent => {

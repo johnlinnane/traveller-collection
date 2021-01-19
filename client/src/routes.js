@@ -16,7 +16,7 @@ import Login from './components/Public/Login/login';
 // CONTAINERS ETC.
 import Home from './components/Public/Home/home'
 import Layout from './components/HOCs/layout';
-import Auth from './components/HOCs/auth';
+import Auth from './components/HOCs/auth_container';
 import Register from './components/User/UserAdmin/register';
 
 
@@ -24,7 +24,7 @@ import Register from './components/User/UserAdmin/register';
 // WHEN LOGGED IN
 import Logout from './components/User/UserAdmin/logout';
 import User from './components/User/UserAdmin';
-import UserItems from './components/User/UserAdmin/userItems';
+import UserItems from './components/User/UserAdmin/user_items';
 import AllItems from './components/User/UserAdmin/all_items';
 import PendingItemsView from './components/Public/Items/pending_items_view';
 
@@ -70,7 +70,7 @@ const Routes = () => {
 
                 <Route path="/user/logout" exact component={Auth(Logout, true)}/>
                 <Route path="/user" exact component={Auth(User, true)}/>
-                <Route path="/user/user-items" exact component={Auth(UserItems, true)}/>
+                <Route path="/user/user_items" exact component={Auth(UserItems, true)}/>
                 <Route path="/user/all-items" exact component={Auth(AllItems, true)}/>
                 <Route path="/user/pending-items" exact component={Auth(PendingItemsView, true)}/>
 

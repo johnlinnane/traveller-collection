@@ -1,9 +1,9 @@
-const { User } = require('./../models/user');
+const { User } = require('../models/user');
 
 
-let auth = (req, res, next) => {
+let authMiddleware = (req, res, next) => {
 
-    let token = req.cookies.auth;
+    let token = req.cookies.tc_auth_cookie;
 
     User.findByToken(token, (err, user) => {
         if(err) throw err;
@@ -23,4 +23,4 @@ let auth = (req, res, next) => {
 
 }
 
-module.exports = { auth }
+module.exports = { authMiddleware }

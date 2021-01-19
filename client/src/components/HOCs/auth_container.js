@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { auth } from '../../actions';
+import { authGetCredentials } from '../../actions';
 
 // this is a post component
 // a function that receives a class as an argument
@@ -18,7 +18,7 @@ export default function foo(ComposedClass, reload) {
 
 
         componentDidMount() {
-            this.props.dispatch(auth())
+            this.props.dispatch(authGetCredentials())
         }
 
         componentDidUpdate(prevProps, prevState) {
@@ -52,7 +52,7 @@ export default function foo(ComposedClass, reload) {
 
             // return the actual route, with the data of the user (from react router)
             return(
-                // inject the props of the user from /api/auth, otherwise no user data
+                // inject the props of the user from /api/auth-get-user-creds, otherwise no user data
                 // {...this.props} is all the properties we're getting from the router
                 <ComposedClass {...this.props} user={this.props.user}/>
             )

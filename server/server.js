@@ -41,7 +41,7 @@ const { Info } = require('./models/info');
 
 
 
-const { auth } = require('./middleware/auth');
+const { authMiddleware } = require('./middleware/auth_middleware');
 const { fileURLToPath } = require('url');
 
 
@@ -60,7 +60,7 @@ app.use(cors())
 
 
 // deny access
-app.get('/api/auth', auth, (req, res) => {
+app.get('/api/auth-get-user-creds', authMiddleware, (req, res) => {
     console.log('API/AUTH FIRED')
     res.json({
         isAuth:true,
@@ -74,7 +74,7 @@ app.get('/api/auth', auth, (req, res) => {
 
 
 // check if user is logged in, auth is middleware
-app.get('/api/logout', auth, (req, res) => {
+app.get('/api/logout', authMiddleware, (req, res) => {
     //delete user's cookie info in the db
     req.user.deleteToken(req.token, (err, user) => {
         if(err) return res.status(400).send(err);
@@ -87,7 +87,7 @@ app.get('/api/logout', auth, (req, res) => {
 
 
 // * * * * * * * * * * * * * * * * * * * * getItemById
-app.get('/api/getItemById', (req,res) => {
+app.get('/api/get-item-by-id', (req,res) => {
     let id = req.query.id;
     Item.findById(id, (err, doc) => {
         if(err) return res.status(400).send(err);
@@ -97,7 +97,7 @@ app.get('/api/getItemById', (req,res) => {
 
 
 //////// * * * * * * * * * * * * * * * * * * * * getPendItemById
-app.get('/api/getPendItemById', (req,res) => {
+app.get('/api/get-pend-item-by-id', (req,res) => {
     let id = req.query.id;
     PendingItem.findById(id, (err, doc) => {
         if(err) return res.status(400).send(err);
@@ -106,7 +106,7 @@ app.get('/api/getPendItemById', (req,res) => {
 })
 
 // * * * * * * * * * * * * * * * * * * * * getParentPdf
-app.get('/api/getParentPdf', (req,res) => {
+app.get('/api/get-parent-pdf', (req,res) => {
     let id = req.query.id;
     Item.findById(id, (err, doc) => {
         if(err) return res.status(400).send(err);
@@ -115,8 +115,8 @@ app.get('/api/getParentPdf', (req,res) => {
 })
 
 
-// * * * * * * * * * * * * * * * * * * * * searchItem
-app.get('/api/searchItem', (req,res) => {
+// * * * * * * * * * * * * * * * * * * * * searchItem // unused???
+app.get('/api/search-item', (req,res) => {
     let queryKey = req.query.key;
     let queryValue = req.query.value;
 
@@ -142,7 +142,7 @@ app.get('/api/allItems', (req, res) => {
 
 
 /////////////////// get all pend items
-app.get('/api/allPendItems', (req, res) => {
+app.get('/api/all-pend-items', (req, res) => {
     // empty object returns all
     PendingItem.find({}, (err, items) => {
         if(err) return res.status(400).send(err);
@@ -178,7 +178,7 @@ app.get('/api/items', (req,res) => {
 
 
 // * * * * * * * * * * * * * * * * * * * * get contributor by id
-app.get('/api/getContributor', (req, res) => {
+app.get('/api/get-contributor', (req, res) => {
     let id = req.query.id;
 
     User.findById(id, (err, doc) => {
@@ -202,7 +202,7 @@ app.get('/api/users', (req, res) => {
 
 
 
-app.get('/api/user_items', (req, res) => {
+app.get('/api/user-items', (req, res) => {
     Item.find({ownerId:req.query.user}).exec( (err, docs) => {
         if(err) return res.status(400).send(err);
         res.send(docs);
@@ -218,7 +218,7 @@ app.get('/api/user_items', (req, res) => {
 
 // * * * * * * * * * * * * * * * * * * * * get all categories
 
-app.get('/api/categories', (req, res) => {
+app.get('/api/get-all-categories', (req, res) => {
     Cat.find({}, (err, items) => {
         if(err) return res.status(400).send(err);
         res.status(200).send(items);
@@ -229,7 +229,7 @@ app.get('/api/categories', (req, res) => {
 
 // * * * * * * * * * * * * * * * * * * * * get all sub-categories
 
-app.get('/api/subcategories', (req, res) => {
+app.get('/api/get-all-subcategories', (req, res) => {
     SubCat.find({}, (err, items) => {
         if(err) return res.status(400).send(err);
         res.status(200).send(items);
@@ -242,7 +242,7 @@ app.get('/api/subcategories', (req, res) => {
 // * * * * * * * * * * * * * * * * * * * * get item by category
 
 
-app.get('/api/getItemsByCat', (req, res) => {
+app.get('/api/get-items-by-cat', (req, res) => {
 
     let value = req.query.value;
     console.log('GETITEMSBYCAT VALUE', value);
@@ -256,7 +256,7 @@ app.get('/api/getItemsByCat', (req, res) => {
 
 
 // * * * * * * * * * * * * * * * * * * * * getNextItem
-app.get('/api/getNextItem', (req,res) => {
+app.get('/api/get-next-item', (req,res) => {
     let oldId = req.query.oldId;
     let query = {_id: {$gt: oldId}}
     Item.findOne(query, (err, doc) => {
@@ -267,7 +267,7 @@ app.get('/api/getNextItem', (req,res) => {
 
 
 // * * * * * * * * * * * * * * * * * * * * getPrevItem
-app.get('/api/getPrevItem', (req,res) => {
+app.get('/api/get-prev-item', (req,res) => {
     let oldId = req.query.oldId;
     // let query = {_id: {$lt: oldId}}, null, { sort: { '_id':-1 } };
     Item.findOne({_id: {$lt: oldId}}, null, { sort: { '_id':-1 } }, (err, doc) => {
@@ -278,7 +278,7 @@ app.get('/api/getPrevItem', (req,res) => {
 
 
 // * * * * * * * * * * * * * * * * * * * * get latest item
-app.get('/api/getLatestItem', (req,res) => {
+app.get('/api/get-latest-item', (req,res) => {
 
     Item.findOne({}, {}, { sort: { '_id':-1 } }, (err, doc) => {
         if(err) return res.status(400).send(err);
@@ -288,8 +288,9 @@ app.get('/api/getLatestItem', (req,res) => {
 
 
 
-// * * * * * * * * * * * * * * * * * * * * get subcat info
-app.get('/api/getSubcat', (req,res) => {
+// * * * * * * * * * * * * * * * * * * * * get subcat info 
+// * * * * * * * * * * * * * * * * * * * * not used?? replaced by get-subcat-by-id??? 
+app.get('/api/get-subcat', (req,res) => {
     let subcatId = req.query.subcatid;
 
     SubCat.findOne({ _id: subcatId}, {}, { sort: { '_id':1 } }, (err, doc) => {
@@ -300,7 +301,7 @@ app.get('/api/getSubcat', (req,res) => {
 
 
 // * * * * * * * * * * * * * * * * * * * * get items by subcat
-app.get('/api/getItemsBySubcat', (req,res) => {
+app.get('/api/get-items-by-subcat', (req,res) => {
     let subcatId = req.query.subcatid;
 
     Item.find({ subcategory_ref: subcatId}, {}, { sort: { '_id':1 } }, (err, doc) => {
@@ -313,7 +314,7 @@ app.get('/api/getItemsBySubcat', (req,res) => {
 
 // not used
 // * * * * * * * * * * * * * * * * * * * * get first item by subcat and cat
-app.get('/api/getFirstItemBySubcat', (req,res) => {
+app.get('/api/get-first-item-by-subcat', (req,res) => {
     let catId = req.query.catid;
     let subcatId = req.query.subcatid;
 
@@ -324,7 +325,7 @@ app.get('/api/getFirstItemBySubcat', (req,res) => {
 })
 
 // * * * * * * * * * * * * * * * * * * * * get subcats by cat
-app.get('/api/getSubcatByCat', (req,res) => {
+app.get('/api/get-subcat-by-cat', (req,res) => {
     let catId = req.query.catid;
 
     SubCat.find({ parent_cat: catId}, {}, { sort: { '_id':1 } }, (err, doc) => {
@@ -337,7 +338,7 @@ app.get('/api/getSubcatByCat', (req,res) => {
 // * * * * * * * * * * * * * * * * * * * * GET CAT / SUBCAT / COLL BY ID!
 
 
-app.get('/api/getCatById', (req, res) => {
+app.get('/api/get-cat-by-id', (req, res) => {
     let value = req.query.id;
   
     Cat.findOne({ _id:value }).exec( (err, docs) => {
@@ -347,7 +348,7 @@ app.get('/api/getCatById', (req, res) => {
 })
 
 
-app.get('/api/getSubcatById', (req, res) => {
+app.get('/api/get-subcat-by-id', (req, res) => {
     let value = req.query.id;
   
     SubCat.find({ _id:value }).exec( (err, docs) => {
@@ -358,7 +359,7 @@ app.get('/api/getSubcatById', (req, res) => {
 
 // ******************** get intro text
 
-app.get('/api/getIntroText', (req,res) => {
+app.get('/api/get-intro-text', (req,res) => {
 
     Intro.findOne({}, {}, { sort: { '_id':1 } }, (err, doc) => {
         if(err) return res.status(400).send(err);
@@ -369,7 +370,7 @@ app.get('/api/getIntroText', (req,res) => {
 
 //  ******************** get info text
 
-app.get('/api/getInfoText', (req,res) => {
+app.get('/api/get-info-text', (req,res) => {
     Info.findOne({}, {}, { sort: { '_id':1 } }, (err, doc) => {
         if(err) return res.status(400).send(err);
         res.send(doc);
@@ -380,7 +381,7 @@ app.get('/api/getInfoText', (req,res) => {
 
 //  ******************** get documents with coordinates
 
-app.get('/api/getItemsWithCoords', (req,res) => {
+app.get('/api/get-items-with-coords', (req,res) => {
     // console.log('getItemsWithCoords called')
     Item.find( { "geo.latitude": {$ne:null} }, {}, { sort: { '_id':1 } }, (err, doc) => {
         if(err) return res.status(400).send(err);
@@ -464,7 +465,7 @@ app.post('/api/login', (req, res) => {
                 if(err) return res.status(400).send(err);
 
                 console.log('GENERATETOKEN() SUCCESS', user.token);
-                res.cookie('auth', user.token).send({
+                res.cookie('tc_auth_cookie', user.token).send({
                     isAuth:true,
                     id:user._id,
                     email:user.email
@@ -581,7 +582,7 @@ app.post('/api/item', (req, res) => {
 
 
 // * * * * * * * * * * * * * * * * * * * * update item
-app.post('/api/item_update', (req, res) => {
+app.post('/api/item-update', (req, res) => {
     // new:true allows upsert
     Item.findByIdAndUpdate(req.body._id, req.body, {new:true}, (err, doc) => {
         if(err) return res.status(400).send(err);
@@ -594,7 +595,7 @@ app.post('/api/item_update', (req, res) => {
 
 
 ///////////////// * * * * * * * * * * update pending item
-app.post('/api/item_pend_update', (req, res) => {
+app.post('/api/item-pend-update', (req, res) => {
     // new:true allows upsert
     PendingItem.findByIdAndUpdate(req.body._id, req.body, {new:true}, (err, doc) => {
         if(err) return res.status(400).send(err);
@@ -670,7 +671,7 @@ app.post('/api/update-info-text', (req, res) => {
 
 
 // * * * * * * * * * * * * * * * * * * * *  delete item
-app.delete('/api/delete_item', (req, res) => {
+app.delete('/api/delete-item', (req, res) => {
     let id = req.query.id;
 
     Item.findByIdAndRemove(id, (err, doc) => {
@@ -682,7 +683,7 @@ app.delete('/api/delete_item', (req, res) => {
 
 
 /////////////////// * * * * * * * * * * * * * * * * * * * *  delete item
-app.delete('/api/del_pend_item', (req, res) => {
+app.delete('/api/del-pend-item', (req, res) => {
     let id = req.query.id;
 
     PendingItem.findByIdAndRemove(id, (err, doc) => {
@@ -729,7 +730,7 @@ const isDirEmpty = (dirname) => {
 
 
 // delete file
-app.post('/delete-file', function(req, res) {
+app.post('/api/delete-file', function(req, res) {
     let query = '../client/public/assets/media';
 
     let fullPath = query + req.body.path
@@ -765,7 +766,7 @@ app.post('/api/get-files-folder', (req, res) => {
 
 
 // remove directory recursively
-app.post('/delete-dir', function(req, res) {
+app.post('/api/delete-dir', function(req, res) {
     const baseUrl = '../client/public/assets/media';
 
     let section = req.body.section;
@@ -828,34 +829,26 @@ app.post('/delete-dir', function(req, res) {
 
 
 
-// get number of files
-app.post('/get-number-files', function(req, res) {
-    const baseUrl = '../client/public/assets/media';
+// // get number of files
+// app.post('/get-number-files', function(req, res) {
+//     const baseUrl = '../client/public/assets/media';
+//     let section = req.body.section;
+//     let id = req.body.id;
+//     let fileType = req.body.filetype;
+//     let dir = path.resolve(baseUrl, section, id, fileType)
+//     let numFiles = 0;
 
-    let section = req.body.section;
-    let id = req.body.id;
-    let fileType = req.body.filetype;
-
-    let dir = path.resolve(baseUrl, section, id, fileType)
-
-    let numFiles = 0;
-
-    console.log('GET FILES FROM DIR: ', dir);
-
-
-
-
-    if (dir != baseUrl) {
-        fs.readdir(dir, {withFileTypes: true}, (err, files) => {
-            if (files && files.length) {
-                files.forEach( file => {
-                    numFiles++
-                })
-            }
-        })
-    }
-    return res.status(200)
-})
+//     if (dir != baseUrl) {
+//         fs.readdir(dir, {withFileTypes: true}, (err, files) => {
+//             if (files && files.length) {
+//                 files.forEach( file => {
+//                     numFiles++
+//                 })
+//             }
+//         })
+//     }
+//     return res.status(200)
+// })
 
 
 

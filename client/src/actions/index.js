@@ -9,7 +9,7 @@ const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 // * * * * * * * * * *  GET ITEMS  BY USER* * * * * * * * * *  
 
 export function getUserItems(userId) {
-    const request = axios.get(`${API_PREFIX}user_items?user=${userId}`)
+    const request = axios.get(`${API_PREFIX}/user-items?user=${userId}`)
                         .then(response => response.data);
     
     return {
@@ -42,7 +42,7 @@ export function acceptItem(itemId, userId) {
 
     console.log('user ID: ' + userId);
 
-    const request = axios.get(`${API_PREFIX}accept-item?itemid=${itemId}&userid=${userId}`)
+    const request = axios.get(`${API_PREFIX}/accept-item?itemid=${itemId}&userid=${userId}`)
                         .then(response => response.data);
     
 
@@ -56,7 +56,7 @@ export function acceptItem(itemId, userId) {
 
 export function loginUser({email, password}) {
 
-    const request = axios.post(`${API_PREFIX}login`, {email, password})
+    const request = axios.post(`${API_PREFIX}/login`, {email, password})
                         .then(response => response.data);
                         console.log('ACTION: loginUser():', request)
 
@@ -67,8 +67,8 @@ export function loginUser({email, password}) {
 }
 
 
-export function auth() {
-    const request = axios.get(`${API_PREFIX}auth`) 
+export function authGetCredentials() {
+    const request = axios.get(`${API_PREFIX}/auth-get-user-creds`) 
                         .then(response => response.data);
     console.log('ACTIONS AUTH() REQUEST: ', request);  
     return {
@@ -81,7 +81,7 @@ export function auth() {
 
 
 export function getUsers() {
-    const request = axios.get(`${API_PREFIX}users`)
+    const request = axios.get(`${API_PREFIX}/users`)
                         .then(response => response.data);
 
     return {
@@ -93,7 +93,7 @@ export function getUsers() {
 
 // uses thunk
 export function userRegister(user, userList) {
-    const request = axios.post(`${API_PREFIX}register`, user);
+    const request = axios.post(`${API_PREFIX}/register`, user);
 
     return (dispatch) => {
         request.then(({data}) => {
@@ -121,7 +121,7 @@ export function userRegister(user, userList) {
 
 
 export function getAllItems() {
-    const request = axios.get(`${API_PREFIX}allItems`)
+    const request = axios.get(`${API_PREFIX}/allItems`)
                         .then(response => {
                                 return response.data
                             }
@@ -138,7 +138,7 @@ export function getAllItems() {
 
 //////////////////
 export function getAllPendItems() {
-    const request = axios.get(`${API_PREFIX}allPendItems`)
+    const request = axios.get(`${API_PREFIX}/all-pend-items`)
                         .then(response => {
                                 return response.data
                             }
@@ -159,7 +159,7 @@ export function getItems(
     order = 'asc',
     list = ''
 ) {
-    const request = axios.get(`${API_PREFIX}items?limit=${limit}&skip=${start}&order=${order}`)
+    const request = axios.get(`${API_PREFIX}/items?limit=${limit}&skip=${start}&order=${order}`)
                         .then(response => {
                             if(list){
                                 return [...list, ...response.data]
@@ -184,7 +184,7 @@ export function getItemWithContributor(id) {
 
     // reduxthunk's dispatched function sends payload to reducers whenever we are ready
     // as an alternative to getItems
-    const request = axios.get(`${API_PREFIX}getItemById?id=${id}`)
+    const request = axios.get(`${API_PREFIX}/get-item-by-id?id=${id}`)
 
     // return a dispatch function
     return (dispatch) => {
@@ -194,8 +194,8 @@ export function getItemWithContributor(id) {
             let item = data;
             // console.log(data);
 
-            // axios.get(`${API_PREFIX}getContributor?id=${item._id}`)
-            axios.get(`${API_PREFIX}getContributor?id=5e99a141fb671004505351b4`)
+            // axios.get(`${API_PREFIX}/get-contributor?id=${item._id}`)
+            axios.get(`${API_PREFIX}/get-contributor?id=5e99a141fb671004505351b4`)
 
                 .then(({data}) => {
                 
@@ -235,7 +235,7 @@ export function addItem(item) {
 
     console.log(item);
 
-    const request = axios.post(`${API_PREFIX}item`, item)
+    const request = axios.post(`${API_PREFIX}/item`, item)
                         .then(response => response.data);
     
 
@@ -250,7 +250,7 @@ export function addItem(item) {
 export function addPendingItem(item) {
     console.log('action triggered');
     console.log(item);
-    const request = axios.post(`${API_PREFIX}item-pending`, item)
+    const request = axios.post(`${API_PREFIX}/item-pending`, item)
                         .then(response => response.data);
     
 
@@ -271,7 +271,7 @@ export function clearNewItem() {
 
 
 export function getNextItem(oldId) {
-    const request = axios.get(`${API_PREFIX}getNextItem?oldId=${oldId}`)
+    const request = axios.get(`${API_PREFIX}/get-next-item?oldId=${oldId}`)
                         .then(response => {
                                 return response.data
                             }
@@ -284,7 +284,7 @@ export function getNextItem(oldId) {
 
 
 export function getPrevItem(oldId) {
-    const request = axios.get(`${API_PREFIX}getPrevItem?oldId=${oldId}`)
+    const request = axios.get(`${API_PREFIX}/get-prev-item?oldId=${oldId}`)
                         .then(response => {
                                 return response.data
                             }
@@ -297,7 +297,7 @@ export function getPrevItem(oldId) {
 
 
 export function getLatestItem() {
-    const request = axios.get(`${API_PREFIX}getLatestItem`)
+    const request = axios.get(`${API_PREFIX}/get-latest-item`)
         .then(response => {
                 return response.data
             }    
@@ -311,7 +311,7 @@ export function getLatestItem() {
 
 
 export function getSubcat(subcatId) {
-    const request = axios.get(`${API_PREFIX}getSubcat?subcatid=${subcatId}`)
+    const request = axios.get(`${API_PREFIX}/get-subcat-by-id?subcatid=${subcatId}`)
         .then(response => {
                 return response.data
             }    
@@ -324,7 +324,7 @@ export function getSubcat(subcatId) {
 
 
 export function getItemsBySubcat(subcatId) {
-    const request = axios.get(`${API_PREFIX}getItemsBySubcat?subcatid=${subcatId}`)
+    const request = axios.get(`${API_PREFIX}/get-items-by-subcat?subcatid=${subcatId}`)
         .then(response => {
                 return response.data
             }    
@@ -339,7 +339,7 @@ export function getItemsBySubcat(subcatId) {
 
 // not used
 export function getFirstItemBySubcat(catId, subcatId) {
-    const request = axios.get(`${API_PREFIX}getFirstItemBySubcat?catid=${catId}&subcatid=${subcatId}`)
+    const request = axios.get(`${API_PREFIX}/get-first-item-by-subcat?catid=${catId}&subcatid=${subcatId}`)
         .then(response => {
                 return response.data
             }    
@@ -353,7 +353,7 @@ export function getFirstItemBySubcat(catId, subcatId) {
 
 
 export function getItemsWithCoords() {
-    const request = axios.get(`${API_PREFIX}getItemsWithCoords`)
+    const request = axios.get(`${API_PREFIX}/get-items-with-coords`)
         .then(response => {
                 return response.data
             }    
@@ -371,7 +371,7 @@ export function getItemsWithCoords() {
 // * * * * * * * * * *  EDIT ITEMS * * * * * * * * * *  
 
 export function getItemById(id) {
-    const request = axios.get(`${API_PREFIX}getItemById?id=${id}`)
+    const request = axios.get(`${API_PREFIX}/get-item-by-id?id=${id}`)
                         .then(response => response.data);
 
     return {
@@ -382,7 +382,7 @@ export function getItemById(id) {
 
 
 export function getParentPdf(id) {
-    const request = axios.get(`${API_PREFIX}getParentPdf?id=${id}`)
+    const request = axios.get(`${API_PREFIX}/get-parent-pdf?id=${id}`)
                         .then(response => response.data);
 
     return {
@@ -394,7 +394,7 @@ export function getParentPdf(id) {
 
 ////////////////////////
 export function getPendItemById(id) {
-    const request = axios.get(`${API_PREFIX}getPendItemById?id=${id}`)
+    const request = axios.get(`${API_PREFIX}/get-pend-item-by-id?id=${id}`)
                         .then(response => response.data);
 
     return {
@@ -406,7 +406,7 @@ export function getPendItemById(id) {
 
 export function updateItem(data) {
     console.log('updateItem called');
-    const request = axios.post(`${API_PREFIX}item_update`, data)
+    const request = axios.post(`${API_PREFIX}/item-update`, data)
                         .then(response => response.data);
     console.log(data);
     return {
@@ -418,7 +418,7 @@ export function updateItem(data) {
 
 
 export function deleteChapter(parentId, title) {
-    const request = axios.get(`${API_PREFIX}getItemById?id=${parentId}`)
+    const request = axios.get(`${API_PREFIX}/get-item-by-id?id=${parentId}`)
 
     return (dispatch) => {
         request.then(({data}) => {
@@ -432,7 +432,7 @@ export function deleteChapter(parentId, title) {
             })
 
             console.log(data)
-            const request = axios.post(`${API_PREFIX}item_update`, data)
+            const request = axios.post(`${API_PREFIX}/item-update`, data)
                             .then(response => response.data);
 
                             return {
@@ -452,7 +452,7 @@ export function deleteChapter(parentId, title) {
 /////////////////////
 export function updatePendItem(data) {
     console.log('updatePendItem called');
-    const request = axios.post(`${API_PREFIX}item_pend_update`, data)
+    const request = axios.post(`${API_PREFIX}/item-pend-update`, data)
                         .then(response => response.data);
     console.log(data);
     return {
@@ -462,7 +462,7 @@ export function updatePendItem(data) {
 }
 
 export function deleteItem(id) {
-    const request = axios.delete(`${API_PREFIX}delete_item?id=${id}`)
+    const request = axios.delete(`${API_PREFIX}/delete-item?id=${id}`)
                         .then(response => response.data)
     return {
         type:'DELETE_ITEM',
@@ -472,7 +472,7 @@ export function deleteItem(id) {
 
 ////////////////////
 export function deletePendItem(id) {
-    const request = axios.delete(`${API_PREFIX}del_pend_item?id=${id}`)
+    const request = axios.delete(`${API_PREFIX}/del-pend-item?id=${id}`)
                         .then(response => response.data)
     return {
         type:'DEL_PEND_ITEM',
@@ -482,7 +482,7 @@ export function deletePendItem(id) {
 
 
 export function getFilesFolder(data) {
-    const request = axios.post(`${API_PREFIX}get-files-folder`, data)
+    const request = axios.post(`${API_PREFIX}/get-files-folder`, data)
                         .then(response => response.data);
     return {
         type:'GET_FILES_FOLDER',
@@ -496,7 +496,7 @@ export function getFilesFolder(data) {
 
 
 export function getAllCats() {
-    const request = axios.get(`${API_PREFIX}categories`)
+    const request = axios.get(`${API_PREFIX}/get-all-categories`)
                         .then(response => {
                                 return response.data
                             }
@@ -508,7 +508,7 @@ return {
 }
 
 export function getCatById(catId) {
-    const request = axios.get(`${API_PREFIX}getCatById?id=${catId}`)
+    const request = axios.get(`${API_PREFIX}/get-cat-by-id?id=${catId}`)
                         .then(response => {
                                 return response.data
                             }
@@ -522,7 +522,7 @@ return {
 
 
 export function getItemsByCat(catId) {
-    const request = axios.get(`${API_PREFIX}getItemsByCat?value=${catId}`)
+    const request = axios.get(`${API_PREFIX}/get-items-by-cat?value=${catId}`)
                         .then(response => {
                                 return response.data
                             }
@@ -535,7 +535,7 @@ export function getItemsByCat(catId) {
 
 
 export function getItemsWithCat(catId) {
-    const request = axios.get(`${API_PREFIX}getCatById?id=${catId}`)
+    const request = axios.get(`${API_PREFIX}/get-cat-by-id?id=${catId}`)
 
     return (dispatch) => {
         request.then(({data}) => {
@@ -544,7 +544,7 @@ export function getItemsWithCat(catId) {
 
             console.log(data);
 
-            axios.get(`${API_PREFIX}getItemsByCat?value=${catInfo._id}`)
+            axios.get(`${API_PREFIX}/get-items-by-cat?value=${catInfo._id}`)
 
                 .then(({data}) => {
                 
@@ -565,7 +565,7 @@ export function getItemsWithCat(catId) {
 }
 
 export function addCat(cat) {
-    const request = axios.post(`${API_PREFIX}add-cat`, cat)
+    const request = axios.post(`${API_PREFIX}/add-cat`, cat)
                         .then(response => response.data);
     
 
@@ -579,7 +579,7 @@ export function addCat(cat) {
 
 export function deleteCat(id) {
     console.log('delete cat called');
-    const request = axios.delete(`${API_PREFIX}delete-cat?id=${id}`)
+    const request = axios.delete(`${API_PREFIX}/delete-cat?id=${id}`)
                         .then(response => response.data)
     return {
         type:'DELETE_CAT',
@@ -589,7 +589,7 @@ export function deleteCat(id) {
 
 export function updateCat(data) {
     console.log('updateCat called');
-    const request = axios.post(`${API_PREFIX}cat-update`, data)
+    const request = axios.post(`${API_PREFIX}/cat-update`, data)
                         .then(response => response.data);
     // console.log(data);
     return {
@@ -603,7 +603,7 @@ export function updateCat(data) {
 
 
 export function getAllSubCats() {
-    const request = axios.get(`${API_PREFIX}subcategories`)
+    const request = axios.get(`${API_PREFIX}/get-all-subcategories`)
                         .then(response => {
                                 return response.data
                             }
@@ -617,7 +617,7 @@ return {
 
 
 export function getSubcatById(SubcatId) {
-    const request = axios.get(`${API_PREFIX}getSubcatById?id=${SubcatId}`)
+    const request = axios.get(`${API_PREFIX}/get-subcat-by-id?id=${SubcatId}`)
                         .then(response => {
                                 return response.data
                             }
@@ -630,7 +630,7 @@ return {
 
 
 export function getSubcatByCat(catId) {
-    const request = axios.get(`${API_PREFIX}getSubcatByCat?catid=${catId}`)
+    const request = axios.get(`${API_PREFIX}/get-subcat-by-cat?catid=${catId}`)
                         .then(response => {
                                 return response.data
                             }
@@ -643,7 +643,7 @@ return {
 
 
 export function addSubcat(subCat) {
-    const request = axios.post(`${API_PREFIX}add-subcat`, subCat)
+    const request = axios.post(`${API_PREFIX}/add-subcat`, subCat)
                         .then(response => response.data);
     return {
         type: 'ADD_SUBCAT',
@@ -653,7 +653,7 @@ export function addSubcat(subCat) {
 
 
 export function deleteSubcat(id) {
-    const request = axios.delete(`${API_PREFIX}delete-subcat?id=${id}`)
+    const request = axios.delete(`${API_PREFIX}/delete-subcat?id=${id}`)
                         .then(response => response.data)
     return {
         type:'DELETE_SUBCAT',
@@ -663,7 +663,7 @@ export function deleteSubcat(id) {
 
 export function updateSubcat(data) {
     console.log('updateSubcat called');
-    const request = axios.post(`${API_PREFIX}subcat-update`, data)
+    const request = axios.post(`${API_PREFIX}/subcat-update`, data)
                         .then(response => response.data);
     // console.log(data);
     return {
@@ -679,7 +679,7 @@ export function updateSubcat(data) {
 
 export function updateIntroText(data) {
     console.log('updateIntroText called');
-    const request = axios.post(`${API_PREFIX}update-intro-text`, data)
+    const request = axios.post(`${API_PREFIX}/update-intro-text`, data)
                         .then(response => response.data);
     // console.log(data);
     return {
@@ -690,7 +690,7 @@ export function updateIntroText(data) {
 
 
 export function getIntroText() {
-    const request = axios.get(`${API_PREFIX}getIntroText`)
+    const request = axios.get(`${API_PREFIX}/get-intro-text`)
         .then(response => {
                 return response.data
             }    
@@ -709,7 +709,7 @@ export function getIntroText() {
 
 export function updateInfoText(data) {
     console.log('updateInfoText called');
-    const request = axios.post(`${API_PREFIX}update-info-text`, data)
+    const request = axios.post(`${API_PREFIX}/update-info-text`, data)
                         .then(response => response.data);
     // console.log(data);
     return {
@@ -721,7 +721,7 @@ export function updateInfoText(data) {
 
 export function getInfoText() {
     // console.log('getInfoText called')
-    const request = axios.get(`${API_PREFIX}getInfoText`)
+    const request = axios.get(`${API_PREFIX}/get-info-text`)
         .then(response => {
                 return response.data
             }    

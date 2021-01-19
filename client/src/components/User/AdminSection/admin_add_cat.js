@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 import { addCat } from '../../../actions';
 
 const mongoose = require('mongoose');
+const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 const config = require('../../../config_client').get(process.env.NODE_ENV);
 
 
@@ -94,7 +95,7 @@ class AdminAddCat extends Component {
             for(let x = 0; x<this.state.selectedFile.length; x++) {
                 data.append('file', this.state.selectedFile[x])
             }
-            axios.post(`http://${config.IP_ADDRESS}:3002/upload-cat/${this.state.catdata._id}`, data, { 
+            axios.post(`${API_PREFIX}/upload-cat/${this.state.catdata._id}`, data, { 
                 onUploadProgress: ProgressEvent => {
                     this.setState({
                         loaded: (ProgressEvent.loaded / ProgressEvent.total*100)
