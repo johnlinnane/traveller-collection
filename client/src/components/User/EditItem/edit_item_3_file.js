@@ -6,11 +6,9 @@ import { toast } from 'react-toastify';
 import {Progress} from 'reactstrap';
 import Select from 'react-select';
 
-
 import { getItemById, getPendItemById, updateItem, updatePendItem, getFilesFolder } from '../../../actions';
 
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
-const config = require('../../../config_client').get(process.env.NODE_ENV);
 
 
 class EditItemFile extends PureComponent {

@@ -8,7 +8,6 @@ import axios from 'axios';
 import { getItemById, updateItem, clearItem, deleteItem, getParentPdf, deleteChapter, getFilesFolder } from '../../../actions';
 
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
-const config = require('../../../config_client').get(process.env.NODE_ENV);
 
 
 class EditItem extends PureComponent {

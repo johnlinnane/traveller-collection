@@ -10,7 +10,6 @@ import { getAllCats, getAllSubCats  } from '../../../actions';
 import { deleteSubcat, updateSubcat  }  from '../../../actions';
 
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
-const config = require('../../../config_client').get(process.env.NODE_ENV);
 
 
 class AdminSubCat extends Component {
@@ -25,18 +24,7 @@ class AdminSubCat extends Component {
                 description: this.props.chosenSubCatInfo.description,
                 parent_cat: this.props.chosenSubCatInfo.parent_cat
 
-            },
-            // theseSubcats: [],
-            
-
-
-            // newSubcat: {
-            //     title: null,
-            //     description: null,
-            //     parent_cat: this.props.chosenSubCatInfo._id
-        
-            // }
-            
+            }
         },
         allCats: [],
         allSubcats: [],
@@ -47,15 +35,11 @@ class AdminSubCat extends Component {
         allCatsConverted: [],
 
         imgSrc: `/assets/media/cover_img_cat/${this.props.chosenSubCatInfo._id}.jpg`,
-        // imgSrcSubs: [],
         saved: false,
         catDeleted: false,
 
         selectedSubFiles: [],
         selectedCatsLoaded: false
-
-        // subRemoved: false
-
     }
 
     componentDidMount() {
@@ -91,8 +75,6 @@ class AdminSubCat extends Component {
                     }
                 })
 
-
-
                 this.setState({
                     allCats: this.props.cats,
                     allCatsConverted: tempAllCatsConverted,
@@ -100,8 +82,6 @@ class AdminSubCat extends Component {
                     selectedCatsLoaded: true
                 })
             }
-
-
 
         }
     
