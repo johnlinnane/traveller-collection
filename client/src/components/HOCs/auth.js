@@ -26,15 +26,21 @@ export default function foo(ComposedClass, reload) {
                 console.log(this.props)
                 this.setState({loading:false})
                 console.log('AUTH.JS (this.props.user.login):', this.props.user.login);
-                if(!this.props.user.login.isAuth) {
-                    if(reload === true) {
-                        this.props.history.push('/login');
+
+                setTimeout( () => {
+                    if(!this.props.user.login.isAuth) {
+                        console.log('HI')
+                        if(reload === true) {
+                            this.props.history.push('/login');
+                        }
+                    } else {
+                        if(reload === false) {
+                            this.props.history.push('/user')
+                        }
                     }
-                } else {
-                    if(reload === false) {
-                        this.props.history.push('/user')
-                    }
-                }
+                }, 2000 )
+
+                
             }
         }
 
