@@ -36,10 +36,10 @@ class Login extends Component {
         // console.log('COMPONENTDIDUPDATE USER.LOGIN', prevProps.user.login, ' -> ', this.props.user.login)
         if (this.props !== prevProps) {
             if(this.props.user.login.isAuth) {
-                // console.log('IZAUTHO')
+                // console.log('IZ-AUTHO')
                 this.props.history.push('/user')
             } else {
-                // console.log('NOTAUTHO')
+                // console.log('NOT-AUTHO')
             }
         }
     }
