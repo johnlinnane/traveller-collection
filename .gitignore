@@ -10,6 +10,7 @@
 /client/public/assets/media
 /client/src/config_client.js
 /client/.env
+/client/.eslintcache
 
 # misc
 .DS_Store
