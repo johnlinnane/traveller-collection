@@ -9,7 +9,7 @@ import Select from 'react-select';
 import { getItemById, getPendItemById, updateItem, updatePendItem, getFilesFolder } from '../../../actions';
 
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
-
+const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX_CLIENT;
 
 class EditItemFile extends PureComponent {
 
@@ -372,7 +372,7 @@ class EditItemFile extends PureComponent {
 
                             <div className="container">
                                 <div className="img_back">
-                                    <img src={`/assets/media/items/${this.state.formdata._id}/original/${this.state.itemFiles[0]}`} alt="item main"  onError={this.addDefaultImg} />
+                                    <img src={`${FS_PREFIX}/assets/media/items/${this.state.formdata._id}/original/${this.state.itemFiles[0]}`} alt="item main"  onError={this.addDefaultImg} />
                                 </div>
                                 
                                 <div className="centered edit_img_text">
@@ -393,7 +393,7 @@ class EditItemFile extends PureComponent {
                                     <div className="edit_3_card_left">
                                         { img.includes(`.pdf`) ?
                                             <img src={'/assets/media/icons/pdf.png'} alt="item main"  onError={this.addDefaultImg} />
-                                        : <img src={`/assets/media/items/${this.state.formdata._id}/original/${img}`} alt="item main"  onError={this.addDefaultImg} /> }
+                                        : <img src={`${FS_PREFIX}/assets/media/items/${this.state.formdata._id}/original/${img}`} alt="item main"  onError={this.addDefaultImg} /> }
                                     </div>
                                     <div className="edit_3_card_right">
                                         <button 

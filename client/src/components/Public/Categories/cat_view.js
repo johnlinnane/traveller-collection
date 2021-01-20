@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { getItemsByCat, getCatById, getAllSubCats } from '../../../actions';
 import NavigationBar from '../../widgetsUI/navigation';
 
+const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX_CLIENT;
 
 class CatView  extends Component {
     
@@ -78,20 +79,20 @@ class CatView  extends Component {
         //     if (firstItem) {
         //         console.log(firstItem);    
         //         return (
-        //             <img src={`/assets/media/items/${firstItem._id}/sq_thumbnail/0.jpg`} 
+        //             <img src={`${FS_PREFIX}/assets/media/items/${firstItem._id}/sq_thumbnail/0.jpg`} 
         //                 alt={firstItem.title} 
         //                 onError={this.addDefaultImg} 
         //                 className="subcat_list_img"/>
         //         )
         //     } else {
-        //         return <img src={`/assets/media/default/default.jpg`} alt="default item image" className="subcat_list_img"/>
+        //         return <img src={`${FS_PREFIX}/assets/media/default/default.jpg`} alt="default item image" className="subcat_list_img"/>
         //     }
         // } else {
-        //     return <img src={`/assets/media/default/default.jpg`} alt="default item image" className="subcat_list_img"/>
+        //     return <img src={`${FS_PREFIX}/assets/media/default/default.jpg`} alt="default item image" className="subcat_list_img"/>
         // }
         
         return (
-            <img src={`/assets/media/cover_img_subcat/${subCat._id}.jpg`} 
+            <img src={`${FS_PREFIX}/assets/media/cover_img_subcat/${subCat._id}.jpg`} 
                 alt={subCat.title} 
                 onError={this.addDefaultImg} 
                 className="subcat_list_img"

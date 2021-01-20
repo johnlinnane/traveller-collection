@@ -1,6 +1,8 @@
 import React from 'react';
 import Slick from 'react-slick';   // uses cdn css
 
+const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX_CLIENT;
+
 const ItemImageSlider = (props) => {
 
 
@@ -28,7 +30,7 @@ const ItemImageSlider = (props) => {
                             <div className="featured_item">
                                 <div className="featured_image"
                                     style={{
-                                        background: `url(/assets/media/items/5eb4417bf2ff151113f3e11f/thumbnail/0.jpg)`
+                                        background: `url(${FS_PREFIX}/assets/media/items/5eb4417bf2ff151113f3e11f/thumbnail/0.jpg)`
                                     }}
                                 >
                                 </div>

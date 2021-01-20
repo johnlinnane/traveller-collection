@@ -8,6 +8,7 @@ import { getInfoText, updateInfoText } from '../../../actions';
 
 const mongoose = require('mongoose');
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
+const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX_CLIENT;
 
 class AdminInfo extends Component {
 
@@ -18,7 +19,7 @@ class AdminInfo extends Component {
         },
         selectedFiles: [],
         imgUrls: [],
-        iconImgSrc: '/assets/media/info/icons.jpg',
+        iconImgSrc: `${FS_PREFIX}/assets/media/info/icons.jpg`,
         selectedIconImg: ''
         
     }
@@ -49,7 +50,7 @@ class AdminInfo extends Component {
 
                     tempKey = tempKey + section.heading;
 
-                    tempImgUrls[i] = `/assets/media/info/${i}.jpg`;
+                    tempImgUrls[i] = `${FS_PREFIX}/assets/media/info/${i}.jpg`;
                 } )
 
 

@@ -14,6 +14,7 @@ import { getItemWithContributor, clearItemWithContributor, getPendItemById, getA
 import NavigationBar from '../../widgetsUI/navigation';
 
 const IP_ADDRESS_REMOTE = process.env.REACT_APP_IP_ADDRESS_REMOTE;
+const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX_CLIENT;
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -239,7 +240,7 @@ class ItemView extends Component {
 
 
     renderSlider = (files) => {
-        console.log('render slider called', `/assets/media/items/${this.props.match.params.id}/original/${files[0]}`)
+        console.log('render slider called', `${FS_PREFIX}/assets/media/items/${this.props.match.params.id}/original/${files[0]}`)
         const settings = {
             dots: true,
             infinite: false,
@@ -257,7 +258,7 @@ class ItemView extends Component {
                 <div key={i} className="featured_item"> 
                     <div className="featured_image"
                          style={{
-                            background: `url(/assets/media/items/${this.props.match.params.id}/original/${files[i]}), url(/assets/media/default/default.jpg)`
+                            background: `url(${FS_PREFIX}/assets/media/items/${this.props.match.params.id}/original/${files[i]}), url(/assets/media/default/default.jpg)`
                          }}
                     >
                     </div>
@@ -320,7 +321,7 @@ class ItemView extends Component {
                 <div className="pdf">
                     
                     <Document
-                        file={`/assets/media/items/${pdfId}/original/${this.state.pdfFiles[0]}`}
+                        file={`${FS_PREFIX}/assets/media/items/${pdfId}/original/${this.state.pdfFiles[0]}`}
                         onLoadSuccess={onDocumentLoadSuccess}
                         // onLoadError={this.setState({ pdfError: true })}
                         
@@ -376,7 +377,8 @@ class ItemView extends Component {
                         
                     </span>
 
-                    <a href="/assets/media/items/5eb4417bf2ff151113f3e178/original/0.pdf">[pdf]</a>
+                    <a href="/assets/media/items/5eb4417bf2ff151113f3e178/original/0.pdf">[pdf EDIT ME!!!]</a>
+                    {/* ${FS_PREFIX} */}
                     
                 </div>
 
@@ -452,7 +454,7 @@ class ItemView extends Component {
                                     /////////////////////// SHOW SINGLE IMAGE ///////////////////////
                                     <div>
                                             <div className="item_img">
-                                                <img src={`/assets/media/items/${itemdata._id}/original/${itemFiles[0]}`} 
+                                                <img src={`${FS_PREFIX}/assets/media/items/${itemdata._id}/original/${itemFiles[0]}`} 
                                                 className="item_main_img"
                                                 alt="Item" 
                                                 onError={i => i.target.style.display='none'}/>
@@ -472,7 +474,7 @@ class ItemView extends Component {
                             {vidFiles && vidFiles.length ?
                                 
                                 <video className="video" controls name="media">
-                                    <source src={`/assets/media/items/${itemdata._id}/original/${vidFiles[0]}`} type="video/mp4"/>
+                                    <source src={`${FS_PREFIX}/assets/media/items/${itemdata._id}/original/${vidFiles[0]}`} type="video/mp4"/>
                                 </video>
                             : null }
                         </div>

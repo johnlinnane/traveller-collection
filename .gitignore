@@ -6,6 +6,6 @@
 /client/build
 /client/.env
 /client/.eslintcache
-/client/public/assets/media
+/server/public/assets/media
 
 .DS_Store

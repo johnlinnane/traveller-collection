@@ -7,12 +7,9 @@ import { withRouter } from "react-router-dom";
 import { getIntroText, updateIntroText } from '../../../actions';
 
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
+const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX_CLIENT;
 
 class AdminIntro extends Component {
-
-    
-
-
 
     state = {
         introData: {
@@ -20,7 +17,7 @@ class AdminIntro extends Component {
             body: ''
         },
         saved: false,
-        imgSrc: '/assets/media/intro/intro.jpg'
+        imgSrc: `${FS_PREFIX}/assets/media/intro/intro.jpg`
     }
 
 

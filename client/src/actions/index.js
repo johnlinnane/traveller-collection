@@ -57,8 +57,11 @@ export function acceptItem(itemId, userId) {
 export function loginUser({email, password}) {
 
     const request = axios.post(`${API_PREFIX}/login`, {email, password})
-                        .then(response => response.data);
-                        console.log('ACTION: loginUser():', request)
+                        .then(function (response) {
+                            console.log(response);
+                        })
+                        // .then(response => response.data)
+                        // console.log('ACTION: loginUser():', request)
 
     return {
         type:'USER_LOGIN',
@@ -69,8 +72,9 @@ export function loginUser({email, password}) {
 
 export function authGetCredentials() {
     const request = axios.get(`${API_PREFIX}/auth-get-user-creds`) 
-                        .then(response => response.data);
-    console.log('ACTIONS AUTH() REQUEST: ', request);  
+                        .then(response => response.data)
+                        // .then(data => console.log(data));
+    // console.log('ACTIONS authGetCredentials() REQUEST: ', request);  
     return {
         type:'USER_AUTH',
         payload:request

@@ -10,7 +10,7 @@ import { getAllCats, getAllSubCats  } from '../../../actions';
 import { deleteSubcat, updateSubcat  }  from '../../../actions';
 
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
-
+const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX_CLIENT;
 
 class AdminSubCat extends Component {
 
@@ -34,7 +34,7 @@ class AdminSubCat extends Component {
         },
         allCatsConverted: [],
 
-        imgSrc: `/assets/media/cover_img_cat/${this.props.chosenSubCatInfo._id}.jpg`,
+        imgSrc: `${FS_PREFIX}/assets/media/cover_img_cat/${this.props.chosenSubCatInfo._id}.jpg`,
         saved: false,
         catDeleted: false,
 
@@ -53,7 +53,7 @@ class AdminSubCat extends Component {
 
             if (this.props.chosenSubCatInfo) {
                 this.setState({
-                    imgSrc: `/assets/media/cover_img_subcat/${this.props.chosenSubCatInfo._id}.jpg`
+                    imgSrc: `${FS_PREFIX}/assets/media/cover_img_subcat/${this.props.chosenSubCatInfo._id}.jpg`
                 })
             }
 

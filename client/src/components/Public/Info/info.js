@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import { getInfoText } from '../../../actions';
 
+const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX_CLIENT;
 
 class Info extends Component {
 
@@ -32,7 +33,7 @@ class Info extends Component {
 
                             <div className="img_and_para">
                                 {/* <div> */}
-                                    <img src={`/assets/media/info/${i+1}.jpg`} 
+                                    <img src={`${FS_PREFIX}/assets/media/info/${i+1}.jpg`} 
                                         alt="Item" 
                                         onError={i => i.target.style.display='none'}/
                                     >
@@ -66,7 +67,7 @@ class Info extends Component {
                 <h3>{text.iconsCaption}</h3>
             </div>
             
-            <img src={`/assets/media/info/icons.jpg`} 
+            <img src={`${FS_PREFIX}/assets/media/info/icons.jpg`} 
                 className="info_icons_img"
                 alt="Item" 
                 onError={i => i.target.style.display='none'}/

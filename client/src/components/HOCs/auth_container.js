@@ -18,18 +18,17 @@ export default function foo(ComposedClass, reload) {
 
 
         componentDidMount() {
-            this.props.dispatch(authGetCredentials())
+            this.props.dispatch(authGetCredentials()) // returns nothing if not logged in
         }
 
         componentDidUpdate(prevProps, prevState) {
             if (this.props !== prevProps) {
-                console.log(this.props)
+                // console.log(this.props)
                 this.setState({loading:false})
-                console.log('AUTH.JS (this.props.user.login):', this.props.user.login);
+                // console.log('AUTH_CONTAINER.JS (this.props.user.login):', this.props.user.login);
 
                 setTimeout( () => {
-                    if(!this.props.user.login.isAuth) {
-                        console.log('HI')
+                    if(this.props.user.login && !this.props.user.login.isAuth) {
                         if(reload === true) {
                             this.props.history.push('/login');
                         }
@@ -40,12 +39,14 @@ export default function foo(ComposedClass, reload) {
                     }
                 }, 2000 )
 
+                // if successful, nothing should happen here
+
                 
             }
         }
 
         render() {
-            console.log('AUTH.JS PROPZ - USER.LOGIN', this.props.user.login)
+            // console.log('AUTH_CONTAINER.JS PROPZ - USER.LOGIN', this.props.user.login)
             if(this.state.loading) {
                 return <div className="loader">Loading...</div>
             }
@@ -60,7 +61,7 @@ export default function foo(ComposedClass, reload) {
     }
 
     function mapStateToProps(state) {
-        console.log('REDUX STATE.USER.LOGIN: ', state.user.login)
+        // console.log('REDUX STATE.USER.LOGIN: ', state.user.login)
         return {
             user:state.user
         }

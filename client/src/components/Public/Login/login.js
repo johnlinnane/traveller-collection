@@ -33,9 +33,18 @@ class Login extends Component {
 
     // redirect to user screen when login
     componentDidUpdate(prevProps, prevState) {
+        console.log('componentDidUpdate fired')
         // console.log('COMPONENTDIDUPDATE USER.LOGIN', prevProps.user.login, ' -> ', this.props.user.login)
+
+        
+
+
         if (this.props !== prevProps) {
-            if(this.props.user.login.isAuth) {
+            // console.log(this.props)
+
+
+
+            if(this.props.user.login && this.props.user.login.isAuth) {
                 // console.log('IZ-AUTHO')
                 this.props.history.push('/user')
             } else {
@@ -107,7 +116,7 @@ class Login extends Component {
 }
 
 function mapStateToProps(state) {
-    console.log(state)
+    // console.log(state)
     return {
         user:state.user
     }

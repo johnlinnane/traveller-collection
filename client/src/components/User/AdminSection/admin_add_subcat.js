@@ -12,7 +12,6 @@ import { addSubcat } from '../../../actions';
 const mongoose = require('mongoose');
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 
-
 class AdminAddSubCat extends Component {
 
     state = {

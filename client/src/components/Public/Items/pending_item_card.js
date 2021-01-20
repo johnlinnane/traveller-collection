@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 
+const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX_CLIENT;
+
 const PendingItemCard = (props) => {
     
 
@@ -20,7 +22,7 @@ const PendingItemCard = (props) => {
         <div className="p_item_card">
             <div className="p_item_img">
                 <Link to={`/items/${props.item._id}`} target="_blank">
-                    <img src={`/assets/media/items/${props.item._id}/sq_thumbnail/0.jpg`} alt={props.item.name} onError={addDefaultImg} />
+                    <img src={`${FS_PREFIX}/assets/media/items/${props.item._id}/sq_thumbnail/0.jpg`} alt={props.item.name} onError={addDefaultImg} />
                 </Link>
             </div>
 

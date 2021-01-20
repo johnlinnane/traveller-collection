@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 
 import style from './slider.module.css';
 
+const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX_CLIENT;
+
 const SliderTemplates = (props) => {
 
     console.log(props.data.list);
@@ -32,7 +34,7 @@ const SliderTemplates = (props) => {
                         <div className={style.featured_item}>
                             <div className={style.featured_image}
                                 style={{
-                                    background: `url(/assets/media/items/${item._id}/thumbnail/0.jpg)`
+                                    background: `url(${FS_PREFIX}/assets/media/items/${item._id}/thumbnail/0.jpg)`
                                 }}
                             >
                             </div>

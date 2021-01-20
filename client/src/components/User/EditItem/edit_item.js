@@ -8,7 +8,7 @@ import axios from 'axios';
 import { getItemById, updateItem, clearItem, deleteItem, getParentPdf, deleteChapter, getFilesFolder } from '../../../actions';
 
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
-
+const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX_CLIENT;
 
 class EditItem extends PureComponent {
 
@@ -349,7 +349,7 @@ class EditItem extends PureComponent {
 
                                 { this.props.items.files && this.props.items.files.length ?
                                     <div>
-                                    <img src={`/assets/media/items/${formdata._id}/original/${this.props.items.files[0].name}`} alt="item main " className="edit_main_img" onError={this.addDefaultImg} />
+                                    <img src={`${FS_PREFIX}/assets/media/items/${formdata._id}/original/${this.props.items.files[0].name}`} alt="item main " className="edit_main_img" onError={this.addDefaultImg} />
                                     </div>
                                 : <img src={'/assets/media/default/default.jpg'} alt='default'/> }
                                 

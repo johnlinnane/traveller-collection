@@ -1,5 +1,6 @@
 import React from 'react';
 
+const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX_CLIENT;
 
 const CatItem = (props) => {
     
@@ -18,7 +19,7 @@ const CatItem = (props) => {
     return (
         <div className="cat_item_card">
             <div className="cat_item_img">
-                    <img src={`/assets/media/cover_img_cat/${props.cat._id}.jpg`} alt="category cover" onError={addDefaultImg} />
+                    <img src={`${FS_PREFIX}/assets/media/cover_img_cat/${props.cat._id}.jpg`} alt="category cover" onError={addDefaultImg} />
             </div>
 
             <div className="cat_item_text">

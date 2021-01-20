@@ -9,6 +9,7 @@ import NavigationBar from '../../widgetsUI/navigation';
 
 
 const mongoose = require('mongoose');
+const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX_CLIENT;
 
 class SubcatView  extends Component {
     
@@ -129,7 +130,7 @@ class SubcatView  extends Component {
             className="item_list_add item_list_figure"
             onClick={() => { if (window.confirm('Would you like to add an item to this section?')) this.addClick() }}
         >
-            <img src={`/assets/media/icons/add_item_icon.jpg`} 
+            <img src={`${FS_PREFIX}/assets/media/icons/add_item_icon.jpg`} 
                 id="add_img"
                 alt="Add an item to this sub-category" 
                 onError={this.addDefaultImg} />
@@ -146,7 +147,7 @@ class SubcatView  extends Component {
                         <div key={i}>
                             <Link to={`/items/${item._id}`} key={i}>
                                 <figure key={i}  className="item_list_figure">
-                                    <img src={`/assets/media/items/${item._id}/sq_thumbnail/0.jpg`} 
+                                    <img src={`${FS_PREFIX}/assets/media/items/${item._id}/sq_thumbnail/0.jpg`} 
                                         alt={item.title} 
                                         onError={this.addDefaultImg} />
                                     <figcaption>{item.title}</figcaption>

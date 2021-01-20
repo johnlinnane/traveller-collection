@@ -4,12 +4,10 @@ import { Link } from 'react-router-dom';
 import Select from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 
-
-
-
 import { getItemById, getPendItemById, updateItem, updatePendItem, clearItem, getFilesFolder } from '../../../actions';
 import { getAllCats, getAllSubCats  } from '../../../actions';
 
+const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX_CLIENT;
 
 
 class EditItemSel extends PureComponent {
@@ -330,7 +328,7 @@ class EditItemSel extends PureComponent {
 
                                         { this.props.items.files && this.props.items.files.length ?
                                             <div>
-                                            <img src={`/assets/media/items/${this.props.match.params.id}/original/${this.props.items.files[0].name}`} alt="item main" className="edit_main_img" onError={this.addDefaultImg} />
+                                            <img src={`${FS_PREFIX}/assets/media/items/${this.props.match.params.id}/original/${this.props.items.files[0].name}`} alt="item main" className="edit_main_img" onError={this.addDefaultImg} />
                                             </div>
                                         : <img src={'/assets/media/default/default.jpg'} alt='default'/> }
 

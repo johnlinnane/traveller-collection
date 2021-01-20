@@ -88,13 +88,13 @@ userSchema.methods.generateToken = function(cb) {
 
 // find user by token, check in cookies
 userSchema.statics.findByToken = function(token, cb) {
+    // console.log('findByToken fired. token: ', token)
     let user = this;
 
     // decode contains the user id
     
     jwt.verify(token, process.env.REACT_APP_PW, function(err, decode) { // old: config.SECRET
         user.findOne({"_id":decode, "token":token}, function(err, user) {
-            console.log('JWT VERFY !!!!!!!!')
             if(err) return cb(err);
             // return all user info if token is correct
 

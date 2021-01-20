@@ -7,6 +7,7 @@ import {Progress} from 'reactstrap';
 import { getAllCats } from '../../../actions';
 
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
+const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX_CLIENT;
 
 class CatEdit extends PureComponent {
 
@@ -160,7 +161,7 @@ class CatEdit extends PureComponent {
                             
                                 <div>
                                     <h3>{this.state.catInfo.title}</h3>
-                                    <img src={`../assets/media/cover_img_cat/${this.state.catInfo._id}.jpg`} alt='cat cover'/>
+                                    <img src={`${FS_PREFIX}/assets/media/cover_img_cat/${this.state.catInfo._id}.jpg`} alt='cat cover'/>
                                     <br/>
                                     <input type="file" className="form-control" name="file" accept="image/*" onChange={(e) => this.onChangeHandler(this.state.catInfo._id, e)} />
                                     

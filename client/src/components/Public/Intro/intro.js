@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { getIntroText } from '../../../actions';
 
+const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX_CLIENT;
 
 class Intro extends Component  {
 
@@ -25,13 +26,30 @@ class Intro extends Component  {
 
 
     render() {
-
+        console.log(process.env)
         return (
 
                 <div className="intro">
                     
                     <div id="intro-main">
-                        <div className="bg-image"></div>
+                        <div 
+                            className="bg-image" 
+                            style={{
+                                position: 'absolute',
+                                background: `url(${FS_PREFIX}/assets/media/intro/intro.jpg), #333`,
+                                backgroundPosition: 'center',
+                                backgroundRepeat: 'no-repeat',
+                                backgroundSize: 'cover',
+                                width: '100%',
+                                height: '600px',
+                                zIndex: '-1',
+                                opacity: '0.8',
+                                top: '0'
+                            }}
+                        >
+                        </div>
+
+
                         <div className="content-wrap">
                             {this.props.text && this.props.text.title ?
                             <h1>{this.props.text.title}</h1>

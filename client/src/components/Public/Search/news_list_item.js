@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX_CLIENT;
 
 const SearchItem = ({item}) => {
 
@@ -19,7 +20,7 @@ const SearchItem = ({item}) => {
 
             <div className="search_container news_item item_grey">
               <div className="search_item_image">
-                  <img src={`/assets/media/items/${item._id}/original/0.jpg`} 
+                  <img src={`${FS_PREFIX}/assets/media/items/${item._id}/original/0.jpg`} 
                       alt="Item" 
                       onError={addDefaultImg}
                       className="search_item_img"/>

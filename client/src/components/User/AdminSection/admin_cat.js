@@ -9,7 +9,7 @@ import { getAllCats  } from '../../../actions';
 import { deleteCat, updateCat }  from '../../../actions';
 
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
-
+const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX_CLIENT;
 
 class AdminCat extends Component {
 
@@ -24,7 +24,7 @@ class AdminCat extends Component {
             }
             
         },
-        imgSrc: `/assets/media/cover_img_cat/${this.props.chosenCatInfo._id}.jpg`,
+        imgSrc: `${FS_PREFIX}/assets/media/cover_img_cat/${this.props.chosenCatInfo._id}.jpg`,
         saved: false,
         catDeleted: false,
 

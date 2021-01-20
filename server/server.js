@@ -17,12 +17,6 @@ const fs = require('fs')
 const mkdirp = require('mkdirp')
 
 
-
-
-let itemId = null;
-let index = 0;
-
-
 // connect to mongo
 mongoose.Promise = global.Promise;
 
@@ -61,7 +55,8 @@ app.use(cors())
 
 // deny access
 app.get('/api/auth-get-user-creds', authMiddleware, (req, res) => {
-    console.log('API/AUTH FIRED')
+    // console.log('API/AUTH-GET-USER-CREDS FIRED')
+    // console.log('API/AUTH-GET-USER-CREDS REQ', req)
     res.json({
         isAuth:true,
         id:req.user._id,
@@ -450,21 +445,24 @@ app.post('/api/register', (req, res) => {
 app.post('/api/login', (req, res) => {
     // look through the whole database
     User.findOne({'email':req.body.email}, (err, user) => {
-
+        
         if(!user) return res.json({isAuth:false, message:'Auth failed, email not found'});
 
         user.comparePassword(req.body.password, (err, isMatch) => {
-            console.log('COMPAREPASSWORDS() FIRED', isMatch);
+            
+
+            // console.log('COMPAREPASSWORDS() FIRED', isMatch);
             if(!isMatch) return res.json({
                 isAuth:false,
                 message:'Wrong password'
             });
             // generate token
             user.generateToken((err, user) => {
-                
+                    
                 if(err) return res.status(400).send(err);
 
-                console.log('GENERATETOKEN() SUCCESS', user.token);
+                // console.log('GENERATETOKEN() SUCCESS: ', user._id, ': ', user.email );
+                res.header("Access-Control-Allow-Origin", "*");
                 res.cookie('tc_auth_cookie', user.token).send({
                     isAuth:true,
                     id:user._id,
@@ -513,7 +511,7 @@ app.get('/api/accept-item', (req, res) => {
 
     let newId = mongoose.Types.ObjectId();
 
-    const itemsPath = '../client/public/assets/media/items/';
+    const itemsPath = './public/assets/media/items/';
 
     PendingItem.findOne({ _id: itemid }, function(err, pendItem) {
         let data = { 
@@ -731,7 +729,7 @@ const isDirEmpty = (dirname) => {
 
 // delete file
 app.post('/api/delete-file', function(req, res) {
-    let query = '../client/public/assets/media';
+    let query = './public/assets/media';
 
     let fullPath = query + req.body.path
 
@@ -747,7 +745,7 @@ app.post('/api/delete-file', function(req, res) {
 app.post('/api/get-files-folder', (req, res) => {
     
     console.log('API/GETFILESFOLDER CALLED');
-    let query = '../client/public/assets/media';
+    let query = './public/assets/media';
 
     let fullPath = query + req.body.folder
     console.log('FS.READDIR WITH FULLPATH:', fullPath)
@@ -767,7 +765,7 @@ app.post('/api/get-files-folder', (req, res) => {
 
 // remove directory recursively
 app.post('/api/delete-dir', function(req, res) {
-    const baseUrl = '../client/public/assets/media';
+    const baseUrl = './public/assets/media';
 
     let section = req.body.section;
     let id = req.body.id;
@@ -831,7 +829,7 @@ app.post('/api/delete-dir', function(req, res) {
 
 // // get number of files
 // app.post('/get-number-files', function(req, res) {
-//     const baseUrl = '../client/public/assets/media';
+//     const baseUrl = './public/assets/media';
 //     let section = req.body.section;
 //     let id = req.body.id;
 //     let fileType = req.body.filetype;
@@ -868,7 +866,7 @@ app.post('/api/delete-dir', function(req, res) {
 
 let storageArray = multer.diskStorage({
     destination: function (req, file, cb) {
-        const path = `../client/public/assets/media/items/${req.params.id}/original`
+        const path = `./public/assets/media/items/${req.params.id}/original`
         mkdirp.sync(path);
         cb(null, path)
 
@@ -914,7 +912,7 @@ app.post('/api/upload-array/:id',
     }, 
 
     (req, res, next) => {
-        let thumbPath = `../client/public/assets/media/items/${req.params.id}/sq_thumbnail`;
+        let thumbPath = `./public/assets/media/items/${req.params.id}/sq_thumbnail`;
 
         mkdirp.sync(thumbPath);
 
@@ -955,7 +953,7 @@ app.post(
         multer({ storage: multer.diskStorage({
             destination: function (req, file, cb) {
 
-                let dest = `../client/public/assets/media/cover_img_cat`;
+                let dest = `./public/assets/media/cover_img_cat`;
                 mkdirp.sync(dest);
                 cb(null, dest)
                 
@@ -992,7 +990,7 @@ app.post(
         multer({ storage: multer.diskStorage({
             destination: function (req, file, cb) {
 
-                let dest = `../client/public/assets/media/cover_img_subcat`;
+                let dest = `./public/assets/media/cover_img_subcat`;
                 mkdirp.sync(dest);
                 cb(null, dest)
                 
@@ -1027,7 +1025,7 @@ app.post(
         multer({ storage: multer.diskStorage({
             destination: function (req, file, cb) {
 
-                let dest = `../client/public/assets/media/intro`;
+                let dest = `./public/assets/media/intro`;
                 mkdirp.sync(dest);
                 cb(null, dest)
                 
@@ -1061,7 +1059,7 @@ app.post(
         multer({ storage: multer.diskStorage({
             destination: function (req, file, cb) {
 
-                let dest = `../client/public/assets/media/info`;
+                let dest = `./public/assets/media/info`;
                 mkdirp.sync(dest);
                 cb(null, dest)
                 
