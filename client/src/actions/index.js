@@ -1,4 +1,6 @@
 import axios from 'axios';
+// axios.defaults.withCredentials = true;
+
 
 
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
@@ -55,13 +57,8 @@ export function acceptItem(itemId, userId) {
 // ******************** USER ACTIONS ********************
 
 export function loginUser({email, password}) {
-
-    const request = axios.post(`${API_PREFIX}/login`, {email, password})
-                        .then(function (response) {
-                            console.log(response);
-                        })
-                        // .then(response => response.data)
-                        // console.log('ACTION: loginUser():', request)
+    const request = axios.post(`${API_PREFIX}/login`, {email, password}, {withCredentials: true})
+                        .then(response => response.data);
 
     return {
         type:'USER_LOGIN',
@@ -73,8 +70,6 @@ export function loginUser({email, password}) {
 export function authGetCredentials() {
     const request = axios.get(`${API_PREFIX}/auth-get-user-creds`) 
                         .then(response => response.data)
-                        // .then(data => console.log(data));
-    // console.log('ACTIONS authGetCredentials() REQUEST: ', request);  
     return {
         type:'USER_AUTH',
         payload:request
@@ -239,12 +234,12 @@ export function addItem(item) {
 
     console.log(item);
 
-    const request = axios.post(`${API_PREFIX}/item`, item)
+    const request = axios.post(`${API_PREFIX}/create-item`, item)
                         .then(response => response.data);
     
 
     return {
-        type: 'ADD_ITEM',
+        type: 'CREATE_ITEM',
         payload:request
     }
 }
@@ -254,12 +249,12 @@ export function addItem(item) {
 export function addPendingItem(item) {
     console.log('action triggered');
     console.log(item);
-    const request = axios.post(`${API_PREFIX}/item-pending`, item)
+    const request = axios.post(`${API_PREFIX}/create-item-pending`, item)
                         .then(response => response.data);
     
 
     return {
-        type: 'ADD_PEND_ITEM',
+        type: 'CREATE_PEND_ITEM',
         payload:request
     }
 }

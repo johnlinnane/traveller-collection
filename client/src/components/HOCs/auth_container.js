@@ -18,35 +18,29 @@ export default function foo(ComposedClass, reload) {
 
 
         componentDidMount() {
-            this.props.dispatch(authGetCredentials()) // returns nothing if not logged in
+            if(this.props.user.login && !this.props.user.login.isAuth) {
+                this.props.dispatch(authGetCredentials()); // returns nothing if not logged in
+            }   
         }
 
         componentDidUpdate(prevProps, prevState) {
             if (this.props !== prevProps) {
-                // console.log(this.props)
                 this.setState({loading:false})
-                // console.log('AUTH_CONTAINER.JS (this.props.user.login):', this.props.user.login);
 
-                setTimeout( () => {
-                    if(this.props.user.login && !this.props.user.login.isAuth) {
-                        if(reload === true) {
-                            this.props.history.push('/login');
-                        }
-                    } else {
-                        if(reload === false) {
-                            this.props.history.push('/user')
-                        }
+                if(this.props.user.login && !this.props.user.login.isAuth) {
+                    if(reload === true) {
+                        this.props.history.push('/login');
                     }
-                }, 2000 )
+                } else {
+                    if(reload === false) {
+                        this.props.history.push('/user')
+                    }
+                }
 
-                // if successful, nothing should happen here
-
-                
             }
         }
 
         render() {
-            // console.log('AUTH_CONTAINER.JS PROPZ - USER.LOGIN', this.props.user.login)
             if(this.state.loading) {
                 return <div className="loader">Loading...</div>
             }
@@ -61,7 +55,6 @@ export default function foo(ComposedClass, reload) {
     }
 
     function mapStateToProps(state) {
-        // console.log('REDUX STATE.USER.LOGIN: ', state.user.login)
         return {
             user:state.user
         }

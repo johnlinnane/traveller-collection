@@ -88,7 +88,6 @@ userSchema.methods.generateToken = function(cb) {
 
 // find user by token, check in cookies
 userSchema.statics.findByToken = function(token, cb) {
-    // console.log('findByToken fired. token: ', token)
     let user = this;
 
     // decode contains the user id

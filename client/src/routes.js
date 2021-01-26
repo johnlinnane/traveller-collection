@@ -86,7 +86,7 @@ const Routes = () => {
                 
                 <Route path="/user/register" exact component={Auth(Register, true)}/> 
                 <Route path="/home" exact component={Auth(Home, null)}/>
-                <Route path="/sandbox" exact component={Auth(Sandbox, true)}/>
+                <Route path="/sandbox" exact component={Auth(Sandbox, false)}/>  {/* true */}
                 
             </Switch>
         </Layout>

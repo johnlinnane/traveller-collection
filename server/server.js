@@ -43,7 +43,11 @@ const { fileURLToPath } = require('url');
 // set middleware
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.use(cors())
+app.use(cors({
+    credentials: true,
+    origin: "http://localhost:3000"
+    // origin: "*" // wildcard does not work with post
+}));
 
 
 
@@ -55,7 +59,7 @@ app.use(cors())
 
 // deny access
 app.get('/api/auth-get-user-creds', authMiddleware, (req, res) => {
-    // console.log('API/AUTH-GET-USER-CREDS FIRED')
+    console.log('API/AUTH-GET-USER-CREDS FIRED')
     // console.log('API/AUTH-GET-USER-CREDS REQ', req)
     res.json({
         isAuth:true,
@@ -395,7 +399,7 @@ app.get('/api/get-items-with-coords', (req,res) => {
 
 
 // * * * * * * * * * * * * * * * * * * * * post new item
-app.post('/api/item', (req, res) => {
+app.post('/api/create-item', (req, res) => {
     const item = new Item( req.body );             // req is the data you post
 
     item.save( (err, doc) =>{                      // saves the new document
@@ -411,7 +415,7 @@ app.post('/api/item', (req, res) => {
 
 
 //////////// * * * * * * * * * * * post pending item
-app.post('/api/item-pending', (req, res) => {
+app.post('/api/create-item-pending', (req, res) => {
     const pendingItem = new PendingItem( req.body );             // req is the data you post
     console.log('ITEM-PENDING REQ.BODY: ', req.body);
 
@@ -443,26 +447,26 @@ app.post('/api/register', (req, res) => {
 
 // create the login
 app.post('/api/login', (req, res) => {
-    // look through the whole database
     User.findOne({'email':req.body.email}, (err, user) => {
         
-        if(!user) return res.json({isAuth:false, message:'Auth failed, email not found'});
+        if(!user) {
+            return res.json({isAuth:false, message:'Auth failed, email not found'})
+        };
 
         user.comparePassword(req.body.password, (err, isMatch) => {
             
 
-            // console.log('COMPAREPASSWORDS() FIRED', isMatch);
-            if(!isMatch) return res.json({
-                isAuth:false,
-                message:'Wrong password'
-            });
+            if(!isMatch) {
+                return res.json({
+                    isAuth:false,
+                    message:'Wrong password'
+                })
+            };
             // generate token
             user.generateToken((err, user) => {
                     
                 if(err) return res.status(400).send(err);
 
-                // console.log('GENERATETOKEN() SUCCESS: ', user._id, ': ', user.email );
-                res.header("Access-Control-Allow-Origin", "*");
                 res.cookie('tc_auth_cookie', user.token).send({
                     isAuth:true,
                     id:user._id,
@@ -554,17 +558,6 @@ app.get('/api/accept-item', (req, res) => {
 
 
 
-app.post('/api/item', (req, res) => {
-    const item = new Item( req.body );             // req is the data you post
-
-    item.save( (err, doc) =>{                      // saves the new document
-        if(err) return res.status(400).send(doc);
-        res.status(200).json({
-            post:true,
-            itemId:doc._id                       // gets the id from the post
-        })
-      })
-})
 
 
 

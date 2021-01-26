@@ -59,13 +59,13 @@ export default function foo(state={}, action) {
                 contributor:action.payload.contributor
             };
         
-        case 'ADD_ITEM':
+        case 'CREATE_ITEM':
             return {
                 ...state,
                 newitem:action.payload
             };
 
-        case 'ADD_PEND_ITEM':
+        case 'CREATE_PEND_ITEM':
             return {
                 ...state,
                 newitem:action.payload
