@@ -8,7 +8,7 @@ import { getInfoText, updateInfoText } from '../../../actions';
 
 const mongoose = require('mongoose');
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
-const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX_CLIENT;
+const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
 class AdminInfo extends Component {
 

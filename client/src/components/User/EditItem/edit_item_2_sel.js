@@ -7,7 +7,7 @@ import CreatableSelect from 'react-select/creatable';
 import { getItemById, getPendItemById, updateItem, updatePendItem, clearItem, getFilesFolder } from '../../../actions';
 import { getAllCats, getAllSubCats  } from '../../../actions';
 
-const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX_CLIENT;
+const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
 
 class EditItemSel extends PureComponent {

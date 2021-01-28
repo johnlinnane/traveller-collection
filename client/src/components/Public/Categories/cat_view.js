@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { getItemsByCat, getCatById, getAllSubCats } from '../../../actions';
 import NavigationBar from '../../widgetsUI/navigation';
 
-const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX_CLIENT;
+const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
 class CatView  extends Component {
     

@@ -1,7 +1,7 @@
 import React from 'react';
 import Slick from 'react-slick';   // uses cdn css
 
-const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX_CLIENT;
+const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
 const ItemImageSlider = (props) => {
 

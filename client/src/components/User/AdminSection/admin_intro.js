@@ -7,7 +7,7 @@ import { withRouter } from "react-router-dom";
 import { getIntroText, updateIntroText } from '../../../actions';
 
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
-const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX_CLIENT;
+const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
 class AdminIntro extends Component {
 

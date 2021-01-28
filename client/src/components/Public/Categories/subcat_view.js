@@ -9,7 +9,7 @@ import NavigationBar from '../../widgetsUI/navigation';
 
 
 const mongoose = require('mongoose');
-const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX_CLIENT;
+const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
 class SubcatView  extends Component {
     

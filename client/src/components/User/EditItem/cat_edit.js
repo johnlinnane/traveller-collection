@@ -7,7 +7,7 @@ import {Progress} from 'reactstrap';
 import { getAllCats } from '../../../actions';
 
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
-const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX_CLIENT;
+const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
 class CatEdit extends PureComponent {
 
