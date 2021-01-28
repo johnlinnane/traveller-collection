@@ -26,7 +26,6 @@ class Intro extends Component  {
 
 
     render() {
-        console.log(process.env)
         return (
 
                 <div className="intro">

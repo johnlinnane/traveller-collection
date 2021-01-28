@@ -43,10 +43,17 @@ const { fileURLToPath } = require('url');
 // set middleware
 app.use(bodyParser.json());
 app.use(cookieParser());
+// app.use(cors());
 app.use(cors({
     credentials: true,
-    origin: "http://localhost:3000"
+    // origin: "http://localhost:3000"
     // origin: "*" // wildcard does not work with post
+    // origin: ["http://localhost:3000", "mongodb://localhost:27017", "http://localhost:5000"]
+    origin: [
+        process.env.REACT_APP_CLIENT_PREFIX,
+        process.env.REACT_APP_DB, 
+        process.env.REACT_APP_CLIENT_BUILD_PREFIX
+    ]
 }));
 
 
@@ -445,8 +452,10 @@ app.post('/api/register', (req, res) => {
 })
 
 
+
 // create the login
-app.post('/api/login', (req, res) => {
+// cors({ credentials: true, origin: "http://localhost:3000"}),
+app.post('/api/login',  (req, res) => {
     User.findOne({'email':req.body.email}, (err, user) => {
         
         if(!user) {
