@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 
 
 const SidenavItems = ({user}) => {
-
     const items = [
         {   type:'navItem',
             icon:'home',
@@ -105,23 +104,25 @@ const SidenavItems = ({user}) => {
     )
 
     // the first time the component renders, it will not have the user info
-    const showItems = () => (
-        user.login ?
-            items.map((item, i) => {
-              
-                //check if user is authenticated
-                if (user.login.isAuth) {
-                    return !item.exclude ?
-                        element(item, i)
-                    : null
-                } else {
-                    return !item.restricted ?
-                        element(item, i)
-                    : null
-                }
-            })
-        : null
-    )
+    const showItems = () => {
+        return(
+            user.login ?
+                items.map((item, i) => {
+                
+                    //check if user is authenticated
+                    if (user.login.isAuth) {
+                        return !item.exclude ?
+                            element(item, i)
+                        : null
+                    } else {
+                        return !item.restricted ?
+                            element(item, i)
+                        : null
+                    }
+                })
+            : null
+        )
+    }
 
 
     return (

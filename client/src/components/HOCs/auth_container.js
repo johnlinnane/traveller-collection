@@ -18,8 +18,12 @@ export default function foo(ComposedClass, reload) {
 
 
         componentDidMount() {
-            if(this.props.user.login && !this.props.user.login.isAuth) {
+            if(!this.props.user.login) {
                 this.props.dispatch(authGetCredentials()); // returns nothing if not logged in
+            }
+            
+            if(this.props.user.login && !this.props.user.login.isAuth) {
+                this.props.dispatch(authGetCredentials()); 
             }   
         }
 
@@ -55,6 +59,7 @@ export default function foo(ComposedClass, reload) {
     }
 
     function mapStateToProps(state) {
+        console.log(state.user)
         return {
             user:state.user
         }
