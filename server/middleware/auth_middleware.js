@@ -3,7 +3,9 @@ const { User } = require('../models/user');
 
 let authMiddleware = (req, res, next) => {
     let token = req.cookies.tc_auth_cookie;
-
+    // console.log('authmiddleware REQ.HEADERS: ', req.headers)
+    console.log('authmiddleware REQ.COOKIE: ', req.cookie)
+    // console.log('authmiddleware TOKEN: ', token)
     User.findByToken(token, (err, user) => {
 
         if(err) {

@@ -41,9 +41,8 @@ const { fileURLToPath } = require('url');
 
 
 // set middleware
-app.use(bodyParser.json());
 app.use(cookieParser());
-// app.use(cors());
+app.use(bodyParser.json());
 app.use(cors({
     credentials: true,
     origin: [
@@ -59,6 +58,8 @@ app.use(cors({
 // *************************************************************
 // **************************** GET ****************************
 // *************************************************************
+
+
 
 
 
@@ -474,7 +475,7 @@ app.post('/api/login',  (req, res) => {
                     
                 if(err) return res.status(400).send(err);
 
-                res.cookie('tc_auth_cookie', user.token).send({
+                res.cookie('tc_auth_cookie', user.token, { sameSite: 'lax', secure: false }).send({
                     isAuth:true,
                     id:user._id,
                     email:user.email

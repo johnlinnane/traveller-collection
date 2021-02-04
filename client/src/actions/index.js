@@ -57,6 +57,7 @@ export function acceptItem(itemId, userId) {
 // ******************** USER ACTIONS ********************
 
 export function loginUser({email, password}) {
+    console.log('loginuser called')
     const request = axios.post(`${API_PREFIX}/login`, {email, password}, {withCredentials: true})
                         .then(response => response.data);
 
@@ -68,8 +69,10 @@ export function loginUser({email, password}) {
 
 
 export function authGetCredentials() {
-    const request = axios.get(`${API_PREFIX}/auth-get-user-creds`) 
+    console.log('authGetCredentials executed')
+    const request = axios.get(`${API_PREFIX}/auth-get-user-creds`, {withCredentials: true}) 
                         .then(response => response.data)
+                        // .then(data => console.log('HIIII'))
     return {
         type:'USER_AUTH',
         payload:request
