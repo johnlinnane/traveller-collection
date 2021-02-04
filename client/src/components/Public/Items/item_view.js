@@ -51,6 +51,7 @@ class ItemView extends Component {
         vidFiles: []
     }
 
+    getItemWithCCalled = false;
     
     componentDidMount() {
         if (!this.state.getItemWithCCalled) {
@@ -147,7 +148,7 @@ class ItemView extends Component {
                 // if (this.props.items.itemReceived && !this.props.items.item.ownerId === 'guest' && !this.props.items.item.title && this.state.getItemWithCCalled && !this.state.getPendItemCalled) {
                 if (this.props.items.itemReceived && !this.props.items.item) {
                     console.log('DISPATCHED')
-                    this.props.dispatch(getPendItemById(this.props.match.params.id));
+                    // this.props.dispatch(getPendItemById(this.props.match.params.id)); // to avoid re-render
                     this.setState({
                         // getPendItemCalled: true,
                         isPending: true
@@ -320,7 +321,7 @@ class ItemView extends Component {
             <div className="pdf_wrapper">
                 <div className="pdf">
                     
-                    <Document
+                    {/* <Document
                         file={`${FS_PREFIX}/assets/media/items/${pdfId}/original/${this.state.pdfFiles[0]}`}
                         onLoadSuccess={onDocumentLoadSuccess}
                         // onLoadError={this.setState({ pdfError: true })}
@@ -375,11 +376,10 @@ class ItemView extends Component {
                     <span className="item_pagenum">
                         Page {pageNumber || (numPages ? 1 : '--')} of {numPages || '--'}
                         
-                    </span>
+                    </span> */}
 
-                    <a href="/assets/media/items/5eb4417bf2ff151113f3e178/original/0.pdf">[pdf EDIT ME!!!]</a>
-                    {/* ${FS_PREFIX} */}
-                    
+                    {/* <a href={`${FS_PREFIX}/assets/media/items/${pdfId}/original/${this.state.pdfFiles[0]}`}>[pdf]</a> */}
+                    <embed src={`${FS_PREFIX}/assets/media/items/${pdfId}/original/${this.state.pdfFiles[0]}`} width="800px" height="2100px" />
                 </div>
 
 
