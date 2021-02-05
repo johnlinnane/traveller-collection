@@ -49,7 +49,7 @@ export default function foo(ComposedClass, reload) {
                         console.log('push to user')
                         this.props.history.push('/user')
                     } else {
-                        console.log('Proceed')
+                        console.log('Reload is null... Proceed!!')
                     }
                 } 
 

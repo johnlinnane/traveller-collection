@@ -494,7 +494,7 @@ class ItemView extends Component {
                                 <span>Submitted by: {itemdata.contributor.name} {itemdata.contributor.lastname} - </span>
                             : null }
                             
-                            {this.props.user.login.isAuth && !this.state.isPending === true ?
+                            {this.props.user.login && this.props.user.login.isAuth && !this.state.isPending === true ?
                                 <Link to={`/user/edit-item/${this.props.match.params.id}`}>Edit</Link>
                             : null }
                         </span>
@@ -665,8 +665,9 @@ class ItemView extends Component {
 
     render() {
 
-        console.log('PROPS: ', this.props)
-        console.log('STATE: ', this.state)
+        // console.log('PROPS: ', this.props)
+        // console.log('STATE: ', this.state)
+        console.log('PROPS.USER.LOGIN: ', this.props.user.login)
 
         let items = this.props.items;
 
