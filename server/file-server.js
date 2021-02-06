@@ -1,12 +1,14 @@
-var express = require('express');
-var http = require('http');
+const express = require('express');
+const http = require('http');
 
-var app = express();
-var server = http.createServer(app);
+const app = express();
+const server = http.createServer(app);
 
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
+
+require('dotenv').config({path: '../.env'})
 
 app.use(cookieParser());
 app.use(bodyParser.json());
@@ -22,4 +24,6 @@ app.use(cors({
 
 app.use(express.static('public'));
 console.log("FILE-SERVER running on port 4000");
+
+
 server.listen(4000);

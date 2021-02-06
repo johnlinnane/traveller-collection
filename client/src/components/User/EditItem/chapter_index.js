@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -7,7 +7,7 @@ import { getItemById, updateItem, addItem } from '../../../actions';
 
 const mongoose = require('mongoose');
 
-class ChapterIndex extends PureComponent {
+class ChapterIndex extends Component { // was PureComponent
 
 
     state = {

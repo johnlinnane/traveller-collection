@@ -69,7 +69,7 @@ export function loginUser({email, password}) {
 
 
 export function authGetCredentials() {
-    console.log('authGetCredentials executed')
+    // console.log('authGetCredentials executed')
     const request = axios.get(`${API_PREFIX}/auth-get-user-creds`, {withCredentials: true}) 
                         .then(response => response.data)
                         // .then(data => console.log('HIIII'))
@@ -181,14 +181,11 @@ export function getItems(
 
 
 
-// two requests inside one action, item and user. user reduxthunk
 export function getItemWithContributor(id) {
 
     // reduxthunk's dispatched function sends payload to reducers whenever we are ready
-    // as an alternative to getItems
     const request = axios.get(`${API_PREFIX}/get-item-by-id?id=${id}`)
 
-    // return a dispatch function
     return (dispatch) => {
 
         // get the promise, using {{{destructuring}}}
@@ -206,9 +203,6 @@ export function getItemWithContributor(id) {
                         contributor:data
                     }
 
-                    // console.log(response);
-
-                    // only gets executed when ready
                     dispatch({
                         type:'GET_ITEM_W_CONTRIBUTOR',
                         payload:response

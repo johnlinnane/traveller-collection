@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Select from 'react-select';
@@ -10,7 +10,7 @@ import { getAllCats, getAllSubCats  } from '../../../actions';
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
 
-class EditItemSel extends PureComponent {
+class EditItemSel extends Component { // was PureComponent
 
 
     state = {

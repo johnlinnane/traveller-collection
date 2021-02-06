@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import { toast } from 'react-toastify';
@@ -9,7 +9,7 @@ import { getAllCats } from '../../../actions';
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
-class CatEdit extends PureComponent {
+class CatEdit extends Component { // was PureComponent
 
     state = {
         catInfo: null,

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { authGetCredentials } from '../../actions';
+import { withRouter } from "react-router-dom";
 
 // this is a post component
 // a function that receives a class as an argument
@@ -25,9 +26,9 @@ export default function foo(ComposedClass, reload) {
             // if(this.props.user.login && !this.props.user.login.isAuth) {
             //     this.props.dispatch(authGetCredentials()); 
             // }  
-            console.log('authgetcredentials about to be called')
+            // console.log('authgetcredentials about to be called')
             this.props.dispatch(authGetCredentials()); // THIS IS NOT CALLED BEFORE EVERYTHING ELSE! AFTER THE FIRST RENDER
-            console.log('authgetcredentials called')
+            // console.log('authgetcredentials called')
             
         }
 
@@ -44,12 +45,12 @@ export default function foo(ComposedClass, reload) {
                     }
                 // else { ..
                 } else { 
-                    console.log('user is authenticated')
+                    // console.log('user is authenticated')
                     if (reload === false) {
                         console.log('push to user')
                         this.props.history.push('/user')
                     } else {
-                        console.log('Reload is null... Proceed!!')
+                        // console.log('Reload is null... Proceed!!')
                     }
                 } 
 
@@ -57,6 +58,7 @@ export default function foo(ComposedClass, reload) {
         }
 
         render() {
+            // console.log(this.props)
             if(this.state.loading) {
                 return <div className="loader">Loading...</div>
             }
@@ -71,10 +73,10 @@ export default function foo(ComposedClass, reload) {
     }
 
     function mapStateToProps(state) {
-        console.log(state.user)
+        // console.log(state.user)
         return {
             user:state.user
         }
     }
-    return connect(mapStateToProps)(AuthenticationCheck)
+    return withRouter(connect(mapStateToProps)(AuthenticationCheck))
 }

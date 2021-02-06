@@ -453,7 +453,6 @@ app.post('/api/register', (req, res) => {
 
 
 // create the login
-// cors({ credentials: true, origin: "http://localhost:3000"}),
 app.post('/api/login',  (req, res) => {
     User.findOne({'email':req.body.email}, (err, user) => {
         
