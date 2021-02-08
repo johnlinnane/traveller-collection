@@ -1122,6 +1122,7 @@ p {
   text-align: left;
   height: 100%;
   color: white;
+  border: 1px solid #afafaf;
 }
 .item_list_card h2 {
   color: white;
@@ -1145,9 +1146,8 @@ p {
 .item_list_add_card {
   background-color: #e7e7e7;
   text-align: left;
+  height: 100%;
   color: white;
-  width: 100px;
-  height: 100px;
 }
 .item_list_add_card h2 {
   color: white;

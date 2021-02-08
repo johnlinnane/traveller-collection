@@ -145,14 +145,14 @@ class SubcatView  extends Component {
             onClick={() => { if (window.confirm('Would you like to add an item to this section?')) this.addClick() }}
         >
             <div className="item_list_img">
-                <img src={`${FS_PREFIX}/assets/media/icons/add_item_icon.jpg`} 
+                <img src={`/assets/media/icons/add_item_icon.jpg`} 
                     id="add_img"
                     alt="Add an item to this sub-category" 
                     onError={this.addDefaultImg} />
             </div>
             
             <div className="item_list_text">
-                Add Item
+                Add An Item
             </div>
         </div>
 
