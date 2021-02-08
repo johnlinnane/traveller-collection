@@ -1,4 +1,114 @@
 
+
+.edit_item_container {
+    box-sizing: border-box;
+    padding:20px;
+    width: 90%;
+
+    .item_header {
+        border-bottom: 1px solid #e1e1e1;
+        margin-bottom: 20px;
+        
+        h2 {
+            font-weight: 300;
+            font-size: 38px;
+            margin: 0px;
+        }
+
+        h5 {
+            margin: 5px 0px;
+            font-size: 31px;
+            /* color: #02bcd4; */
+            color: #24727c;
+        }
+
+        .item_contributor {
+            font-size: 12px;
+            margin-bottom: 10px;
+            text-align: left;
+
+            span {
+                font-weight: 500;
+            }
+        }
+    
+    }
+
+    .item_view {
+        font-size: 20px;
+        font-weight: 300;
+        line-height: 27px;
+    }
+
+    .item_box {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 40px;
+
+        .left {
+            /* min-width: 50%; */
+            width: 50%;
+            height: 106px;
+            /* background: #E91E63; */
+            background: #4fb0bd;
+            color: #fff;
+            box-sizing: border-box;
+            padding: 15px 15px 5px 15px;
+            font-weight: 300;
+            font-size: 15px;
+
+            div {
+                padding: 0px;
+                box-sizing: border-box;
+
+                span { 
+                    font-weight: 500;
+                    font-size: 17px;
+                }
+            }
+        }
+
+        .right {
+            width: 50%;
+            flex-grow: 1;
+            height: 106px;
+            background: #a4a4a4;
+            color: #fff;
+            font-weight: 300;
+            padding: 15px;
+            box-sizing: border-box;
+            /* text-align: center; */
+            font-size: 15px;
+
+            div {
+                padding: 0px;
+                box-sizing: border-box;
+
+                span{
+                    font-weight: 500;
+                    font-size: 17px;
+                
+                }
+            }
+        }
+        
+    
+    }
+
+    .item_main_img {
+        width: 100%;
+        // box-shadow: 20px 11px 21px 6px rgba(0,0,0,0.1);
+        
+        height: 85vh;
+        object-fit: contain;
+    }
+
+   
+}
+
+
+
 .edit_page {
     table, tr, td {
         border: none;

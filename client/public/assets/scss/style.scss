@@ -1,6 +1,7 @@
 @import 'variables';
 
-@import 'public/categories';
+@import 'public/categories_list';
+@import 'public/categories_view';
 @import 'public/forms';
 @import 'public/header';
 @import 'public/info';
@@ -11,6 +12,7 @@
 @import 'public/loader';
 @import 'public/map';
 @import 'public/search';
+@import 'public/subcat_view';
 
 @import 'user/admin';
 @import 'user/edit';

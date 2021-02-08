@@ -341,7 +341,7 @@ class EditItem extends Component { // was PureComponent
 
             <form onSubmit={this.submitForm}>
                 
-                <div className="item_container">
+                <div className="edit_item_container">
                     <Link to={`/items/${this.state.formdata._id}`} target="_blank" >
                         <div className="container">
                             <div className="img_back">

@@ -104,7 +104,7 @@ class CatView  extends Component {
     renderSubcats = () => {
         return (
            
-                        <div className="cat_grid_flex_container cat_grid_column">
+                        <div className="cat_view_flex_container cat_view_flex_column">
 
                             {this.state.theseSubcats && this.state.theseSubcats.length ?
                                 
@@ -115,8 +115,9 @@ class CatView  extends Component {
                                         <Link to={`/subcategory/${subcat._id}`} key={i}>
                                             <figure>
                                                 {this.renderImage(subcat)}
-                                                <figcaption>{subcat.title}</figcaption>
+                                                
                                             </figure>
+                                            <h3>{subcat.title}</h3>
                                         </Link>
                                     </div>
                                 ))
@@ -148,14 +149,13 @@ class CatView  extends Component {
 
                         
                         { catinfo ? 
-                            <div>
+                            <div className="header">
                                 <h2 className="title">{catinfo.title}</h2>
                                 <p className="description">{catinfo.description}</p>
                             </div>
                         :null
                         }
 
-                        <hr />
                         {this.renderSubcats()}
                 </div>
             </div>

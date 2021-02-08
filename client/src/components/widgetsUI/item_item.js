@@ -13,7 +13,7 @@ const ItemItem = (item) => {
 
                 
 
-                 <div className="item_header">
+                 <div className="widget_item_header">
                     <h2>{item.name}</h2>
                 </div>
                  <div className="item_items">

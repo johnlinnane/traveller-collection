@@ -215,7 +215,7 @@ class SubcatView  extends Component {
         return (
             <div className="subcat_view_component">
                 <NavigationBar navinfo={this.state.navInfo}/>
-                    <div className="main_view cat_view">
+                    <div className="main_view subcat_view">
                         
                         { this.props.subcat && this.props.subcat.title ?
                             <h2 className="title">{this.props.subcat.title}</h2>
@@ -226,8 +226,8 @@ class SubcatView  extends Component {
                         : null}
 
                         <hr />
-                        <div className="cat_grid_flex_container">
-                            <div className="cat_grid_column">
+                        <div className="subcat_view_flex_container">
+                            <div className="subcat_view_flex_column">
                                 { this.props.subcatitems && this.props.subcatitems.length ?
                                     this.renderItems()
                             

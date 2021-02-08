@@ -510,152 +510,162 @@ class ItemView extends Component {
     renderItem = (itemInfo, itemFiles, imgFiles, pdfFiles, vidFiles) => {
 
         return ( 
-            <div className="item_container">
-                <div className="item_header">
-                    <h1>{itemInfo.title}</h1>
-                    {itemFiles && itemFiles.length ?
-                        <div className="item_media">
-                            {imgFiles && imgFiles.length ?
-                                imgFiles.length === 1 ?
-                                    /////////////////////// SHOW SINGLE IMAGE ///////////////////////
-                                    <div>
-                                            <div className="item_img">
-                                                <img src={`${FS_PREFIX}/assets/media/items/${itemInfo._id}/original/${itemFiles[0]}`} 
-                                                className="item_main_img"
-                                                alt="Item" 
-                                                onError={i => i.target.style.display='none'}/>
-                                            </div>
-                                        {/* : null } */}
-                                    </div>
-                                    ///////////////////////// SHOW MULTIPLE IMAGES ///////////////////////
-                                    : this.renderSlider(imgFiles) 
+            <div className="view_item_container">
+                
+                <div className="item_view_item_details">
+                    
+                    <div className="item_view_media_wrapper">
+                        {itemFiles && itemFiles.length ?
+                            <div className="item_media">
+                                {imgFiles && imgFiles.length ?
+                                    imgFiles.length === 1 ?
+                                        /////////////////////// SHOW SINGLE IMAGE ///////////////////////
+                                        <div>
+                                                <div className="item_img">
+                                                    <img src={`${FS_PREFIX}/assets/media/items/${itemInfo._id}/original/${itemFiles[0]}`} 
+                                                    className="item_main_img"
+                                                    alt="Item" 
+                                                    onError={i => i.target.style.display='none'}/>
+                                                </div>
+                                            {/* : null } */}
+                                        </div>
+                                        ///////////////////////// SHOW MULTIPLE IMAGES ///////////////////////
+                                        : this.renderSlider(imgFiles) 
+                                : null}
+
+                                {/* /////////////////////// SHOW PDF /////////////////////// */}
+                                { ( pdfFiles.length ) || (itemInfo.is_pdf_chapter === true) ? 
+                                    this.renderPDF()
+                                : null }
+
+                                {/* /////////////////////// SHOW VIDEO /////////////////////// */}
+                                {vidFiles && vidFiles.length ?
+                                    
+                                    <video className="video" controls name="media">
+                                        <source src={`${FS_PREFIX}/assets/media/items/${itemInfo._id}/original/${vidFiles[0]}`} type="video/mp4"/>
+                                    </video>
+                                : null }
+                            </div>
+                        : null }
+                    </div>
+
+
+
+                    <div className="item_view_text">
+                        <h1>{itemInfo.title}</h1>
+                        
+                        {itemInfo.creator ?
+                            <div className="item_field item_creator item_view"><p><b>Creator </b></p><h5>{itemInfo.creator}</h5></div>
+                        : null }
+
+
+
+                        <div className="item_contributor ">
+                            <span className="item_field">
+                                { itemInfo.contributor && itemInfo.contributor.name && itemInfo.contributor.lastname ?
+                                    <span>Submitted by: {itemInfo.contributor.name} {itemInfo.contributor.lastname} - </span>
+                                : null }
+                                
+                                
+                            </span>
+                        </div>
+                    
+
+
+                        <div className="item_view item_body">
+
+                            {this.renderField('Subject', itemInfo.subject)}
+                            {this.renderField('Description', itemInfo.description)}
+                            {this.renderField('Source', itemInfo.source)}
+                            {this.renderField('Date Created', itemInfo.date_created)}
+                            {this.renderField('Contributor', itemInfo.contributor)}
+                            {this.renderField('Item Format', itemInfo.item_format)}
+                            {this.renderField('Materials', itemInfo.materials)}
+                            {this.renderField('Physical Dimensions', itemInfo.physical_dimensions)}
+                            {this.renderField('Pages', itemInfo.pages)}
+                            {this.renderField('Editor', itemInfo.editor)}
+                            {this.renderField('Publisher', itemInfo.publisher)}
+                            {this.renderField('Further Info', itemInfo.further_info)}
+                            
+                            
+
+                            {itemInfo.geo && itemInfo.geo.address ?
+                                this.renderField('Address', itemInfo.geo.address)
+                            : null }
+
+
+                            {itemInfo.pdf_item_parent_id && this.props.parentpdf ?
+                                <div className="item_field link_blue">
+                                    <p><b>Source Document Item</b></p>
+                                    <Link to={`/items/${this.props.parentpdf._id}`} target="_blank">
+                                        <span>{this.props.parentpdf.title}</span>
+                                    </Link>
+                                </div>
+                                
                             : null}
 
-                            {/* /////////////////////// SHOW PDF /////////////////////// */}
-                            { ( pdfFiles.length ) || (itemInfo.is_pdf_chapter === true) ? 
-                                this.renderPDF()
-                            : null }
 
-                            {/* /////////////////////// SHOW VIDEO /////////////////////// */}
-                            {vidFiles && vidFiles.length ?
-                                
-                                <video className="video" controls name="media">
-                                    <source src={`${FS_PREFIX}/assets/media/items/${itemInfo._id}/original/${vidFiles[0]}`} type="video/mp4"/>
-                                </video>
-                            : null }
-                        </div>
-                    : null }
-
-
-                    
-                    {itemInfo.creator ?
-                        <div className="item_field item_creator item_view"><p><b>Creator </b></p><h5>{itemInfo.creator}</h5></div>
-                    : null }
-
-
-
-                    <div className="item_contributor ">
-                        <span className="item_field">
-                            { itemInfo.contributor && itemInfo.contributor.name && itemInfo.contributor.lastname ?
-                                <span>Submitted by: {itemInfo.contributor.name} {itemInfo.contributor.lastname} - </span>
-                            : null }
-                            
-                            {this.state.userIsAuth && !this.state.isPending === true ?
-                                <Link to={`/user/edit-item/${this.props.match.params.id}`}>Edit</Link>
-                            : null }
-                        </span>
-                    </div>
-                </div>
-
-
-                <div className="item_view item_body">
-
-                    {this.renderField('Subject', itemInfo.subject)}
-                    {this.renderField('Description', itemInfo.description)}
-                    {this.renderField('Source', itemInfo.source)}
-                    {this.renderField('Date Created', itemInfo.date_created)}
-                    {this.renderField('Contributor', itemInfo.contributor)}
-                    {this.renderField('Item Format', itemInfo.item_format)}
-                    {this.renderField('Materials', itemInfo.materials)}
-                    {this.renderField('Physical Dimensions', itemInfo.physical_dimensions)}
-                    {this.renderField('Pages', itemInfo.pages)}
-                    {this.renderField('Editor', itemInfo.editor)}
-                    {this.renderField('Publisher', itemInfo.publisher)}
-                    {this.renderField('Further Info', itemInfo.further_info)}
-                    
-                    
-
-                    {itemInfo.geo && itemInfo.geo.address ?
-                        this.renderField('Address', itemInfo.geo.address)
-                    : null }
-
-
-                    {itemInfo.pdf_item_parent_id && this.props.parentpdf ?
-                        <div className="item_field link_blue">
-                            <p><b>Source Document Item</b></p>
-                            <Link to={`/items/${this.props.parentpdf._id}`} target="_blank">
-                                <span>{this.props.parentpdf.title}</span>
-                            </Link>
-                        </div>
-                        
-                    : null}
-
-
-                    {itemInfo.geo && itemInfo.geo.latitude && itemInfo.geo.longitude ? 
-                        <div>
-                            <div className="item_map_heading" onClick={() => this.setState({showMap: !this.state.showMap})}>
-                                <p>
-                                    <b>View on Map </b> 
+                            {itemInfo.geo && itemInfo.geo.latitude && itemInfo.geo.longitude ? 
+                                <div>
+                                    <div className="item_map_heading" onClick={() => this.setState({showMap: !this.state.showMap})}>
+                                        <p>
+                                            <b>View on Map </b> 
+                                            {this.state.showMap ?
+                                                <i className="fa fa-angle-up"></i>
+                                            : <i className="fa fa-angle-down"></i>}
+                                        </p>
+                                    </div>
                                     {this.state.showMap ?
-                                        <i className="fa fa-angle-up"></i>
-                                    : <i className="fa fa-angle-down"></i>}
-                                </p>
-                            </div>
-                            {this.state.showMap ?
-                                <Map 
-                                    className="item_map"
-                                    center={[itemInfo.geo.latitude, itemInfo.geo.longitude]} 
-                                    zoom={this.state.mapZoom} 
-                                    style={{ height: this.state.showMap ? '350px' : '0px'}}
-                                >
-                                    <TileLayer
-                                        attribution='&copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                                    />
+                                        <Map 
+                                            className="item_map"
+                                            center={[itemInfo.geo.latitude, itemInfo.geo.longitude]} 
+                                            zoom={this.state.mapZoom} 
+                                            style={{ height: this.state.showMap ? '350px' : '0px'}}
+                                        >
+                                            <TileLayer
+                                                attribution='&copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                                                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                                            />
 
-                                    <Marker 
-                                        position={[itemInfo.geo.latitude, itemInfo.geo.longitude]} 
-                                        // key={incident['incident_number']} 
-                                    >
-                                        <Popup>
-                                            <span><b>{itemInfo.title}</b></span>
-                                            <br/>
-                                            <span>{itemInfo.geo.address}</span><br/>
-                                            <br/>
-                                            <span>{itemInfo.geo.latitude}, {itemInfo.geo.longitude}</span><br/>
-                                        </Popup>
-                                    </Marker>
-                                </Map>
-                            : null }
-                        </div>
-                    : null}
-                </div> 
+                                            <Marker 
+                                                position={[itemInfo.geo.latitude, itemInfo.geo.longitude]} 
+                                                // key={incident['incident_number']} 
+                                            >
+                                                <Popup>
+                                                    <span><b>{itemInfo.title}</b></span>
+                                                    <br/>
+                                                    <span>{itemInfo.geo.address}</span><br/>
+                                                    <br/>
+                                                    <span>{itemInfo.geo.latitude}, {itemInfo.geo.longitude}</span><br/>
+                                                </Popup>
+                                            </Marker>
+                                        </Map>
+                                    : null }
+                                </div>
+                            : null}
+                        </div> 
 
 
-                {itemInfo.external_link && itemInfo.external_link[0].url ?
-                    <Link to={itemInfo.external_link[0].url}  target="_blank">
-                        <div className="link_wrapper">
-                            <div className="link_img">
-                                <img src='/assets/media/icons/ext_link.png' className="ext_link" alt='external link'/>
-                            </div>
+                        {itemInfo.external_link && itemInfo.external_link[0].url ?
+                            <Link to={itemInfo.external_link[0].url}  target="_blank">
+                                <div className="link_wrapper">
+                                    <div className="link_text">
+                                        <b>Visit</b><br />
+                                        {itemInfo.external_link[0].text}
+                                    </div>
+                                    
+                                    <div className="link_img">
+                                        <img src='/assets/media/icons/ext_link.png' className="ext_link" alt='external link'/>
+                                    </div>
 
-                            <div className="link_text">
-                                <b>External Link:</b><br />
-                                {itemInfo.external_link[0].text}
-                            </div>
-                        </div>
-                    </Link>
-                : null }
+                                    
+                                </div>
+                            </Link>
+                        : null }
+                    </div>
+
+                </div>
+                
 
 
 
@@ -690,7 +700,9 @@ class ItemView extends Component {
                     </div>
                 }
 
-
+                {this.state.userIsAuth && !this.state.isPending === true ?
+                    <Link to={`/user/edit-item/${this.props.match.params.id}`} className="item_view_edit_link">Edit</Link>
+                : null }
 
 
                 {this.state.isPending === false ?
@@ -698,10 +710,10 @@ class ItemView extends Component {
                         <div className="left">
                             {this.state.prevItem ?
                                 <Link to={`/items/${this.state.prevItem._id}`}>
-                                    <div>
-                                        <span className="white_txt">Previous Item</span>
+                                    <div className="prev_next_box_header">
+                                        <span>Previous Item</span>
                                     </div>
-                                    <div className="no_overflow">
+                                    <div className="prev_next_box_item">
                                         <span>{this.state.prevItem.title}</span>
                                     </div>
                                 </Link>
@@ -711,10 +723,10 @@ class ItemView extends Component {
                         <div className="right">
                             {this.state.nextItem ?
                                 <Link to={`/items/${this.state.nextItem._id}`}>
-                                    <div>
-                                        <span className="white_txt">Next Item</span>
+                                    <div className="prev_next_box_header">
+                                        <span>Next Item</span>
                                     </div>
-                                    <div>
+                                    <div className="prev_next_box_item">
                                         <span>{this.state.nextItem.title}</span>
                                     </div>
                                 </Link>
@@ -722,6 +734,10 @@ class ItemView extends Component {
                         </div>
                     </div> 
                 : null }
+                
+
+
+
             </div> 
         )
     }
@@ -739,7 +755,7 @@ class ItemView extends Component {
                     <NavigationBar navinfo={this.navInfo} title={this.state.itemInfo.title}/>    
                 : null }
 
-                <div className="main_view">
+                <div className="item_view_main_view">
                     
                     {/* {this.state.itemInfo && this.state.itemInfo.length && this.state.itemInfo.title && this.state.itemFiles.length ? */}
                     {this.state.itemInfo && this.state.itemFiles ?
