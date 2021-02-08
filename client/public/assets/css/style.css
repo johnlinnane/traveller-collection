@@ -43,10 +43,6 @@
   border-radius: 15px;
 }
 
-.subcat_list_img {
-  border-radius: 15px;
-}
-
 .item_list_add {
   cursor: pointer;
 }
@@ -148,10 +144,6 @@
   color: #cccccc;
 }
 
-.cat_view .title {
-  text-transform: uppercase;
-  margin-bottom: 1rem;
-}
 .cat_view figcaption {
   color: white;
   display: block;
@@ -173,21 +165,76 @@
   color: #addceb;
   font-size: 4rem;
 }
-.cat_view .header {
-  margin-bottom: 4rem;
-}
 .cat_view p {
   font-size: 1rem;
 }
 
+.cat_view_header_card {
+  background-color: #000;
+  text-align: left;
+  height: 100%;
+  color: white;
+  margin-bottom: 0.5rem;
+}
+@media screen and (min-width: 992px) {
+  .cat_view_header_card {
+    font-size: 1rem;
+  }
+}
+.cat_view_header_card h2 {
+  display: flex;
+  justify-content: space-between;
+  color: white;
+  font-size: 1.3rem;
+}
+@media screen and (min-width: 992px) {
+  .cat_view_header_card h2 {
+    font-size: 3rem;
+  }
+}
+.cat_view_header_card h2 span {
+  opacity: 0;
+}
+
+.cat_view_header_card_img {
+  width: 100%;
+  height: 95px;
+  display: inline-block;
+  overflow: hidden;
+}
+@media screen and (min-width: 992px) {
+  .cat_view_header_card_img {
+    height: 160px;
+  }
+}
+.cat_view_header_card_img img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.cat_view_header_card_img_text {
+  padding: 1rem 1.5rem 2rem;
+  vertical-align: top;
+  line-height: 1.3rem;
+  color: #cccccc;
+}
+.cat_view_header_card_img_text h2 {
+  text-transform: uppercase;
+}
+
 .cat_view_flex_container {
-  padding: 0 4px;
   align-items: center;
 }
 
-/* Create two equal columns that sits next to each other */
+.cat_view_subcat_card {
+  background-color: #cacaca;
+  margin-bottom: 0.5rem;
+}
+
 .cat_view_flex_column img {
-  max-height: 200px;
+  height: 100%;
+  object-fit: cover;
 }
 .cat_view_flex_column figcaption {
   text-shadow: black 0px 0px 50px;
@@ -200,8 +247,20 @@
   display: flex;
   height: 120px;
   margin: 0;
-  width: 200px;
   margin-right: 1rem;
+}
+@media screen and (min-width: 992px) {
+  .cat_view_flex_column figure {
+    height: 180px;
+  }
+}
+.cat_view_flex_column h3 {
+  font-size: 1.17rem;
+}
+@media screen and (min-width: 992px) {
+  .cat_view_flex_column h3 {
+    font-size: 1.7rem;
+  }
 }
 
 .form_input {

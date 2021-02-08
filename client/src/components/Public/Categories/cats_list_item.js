@@ -25,16 +25,7 @@ const CatItem = (props) => {
             <div className="cat_item_text">
                 <h2><b>{props.cat.title}</b><span>→</span></h2>
                 {props.cat.description ? props.cat.description : null }<br />
-
-
             </div>
-
-           
-
-
-
-
-
         </div>
     );
 };
