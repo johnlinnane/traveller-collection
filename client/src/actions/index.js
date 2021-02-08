@@ -307,6 +307,7 @@ export function getLatestItem() {
 
 
 export function getSubcat(subcatId) {
+    
     const request = axios.get(`${API_PREFIX}/get-subcat-by-id?subcatid=${subcatId}`)
         .then(response => {
                 return response.data
@@ -612,17 +613,7 @@ return {
 
 
 
-export function getSubcatById(SubcatId) {
-    const request = axios.get(`${API_PREFIX}/get-subcat-by-id?id=${SubcatId}`)
-                        .then(response => {
-                                return response.data
-                            }
-                        );
-return {
-        type:'GET_SUBCAT_BY_ID',
-        payload:request
-    }
-}
+
 
 
 export function getSubcatByCat(catId) {

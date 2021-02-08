@@ -25,7 +25,6 @@ class SubcatView  extends Component {
             subCatId: null,
             type: 'Categories'
         },
-        catDispatched: false,
 
         initLat: 53.342609,
         initLong: -7.603976,
@@ -37,7 +36,9 @@ class SubcatView  extends Component {
 
 
     componentDidMount() {
+        // console.log(this.props.match.params.id);
         this.props.dispatch(getSubcat(this.props.match.params.id))
+
         this.props.dispatch(getItemsBySubcat(this.props.match.params.id))
     }
 
@@ -56,28 +57,40 @@ class SubcatView  extends Component {
 
         
         if (prevProps !== this.props) {
-            if (this.props.subcat && !this.state.catDispatched) {
-                document.title = `${this.props.subcat.title} - Traveller Collection`
-                this.props.dispatch(getCatById(this.props.subcat.parent_cat))
-                this.setState({
-                    catDispatched: true
-                })
+
+
+            if (this.props.subcat !== prevProps.subcat) {
+                if (this.props.subcat && this.props.subcat.length) {
+
+                    document.title = `${this.props.subcat[0].title} - Traveller Collection`
+
+                    let tempNavInfo = {
+                        ...this.state.navInfo,
+                        subCatTitle: this.props.subcat[0].title,
+                        subCatId: this.props.subcat[0]._id
+                    }
+    
+                    this.setState({
+                        navInfo: tempNavInfo
+                    })
+
+                    this.props.dispatch(getCatById(this.props.subcat[0].parent_cat))
+                }
             }
 
-            if (this.props.catinfo && this.props.subcat) {
+            if (this.props.catinfo) {
 
                 let tempNavInfo = {
                     ...this.state.navInfo,
                     catTitle: this.props.catinfo.title,
                     catId: this.props.catinfo._id,
-                    subCatTitle: this.props.subcat.title,
-                    subCatId: this.props.subcat._id
                 }
 
                 this.setState({
                     navInfo: tempNavInfo
                 })
             }
+
            
             if (this.props.subcatitems !== prevProps.subcatitems) {
                 if (this.props.subcatitems && this.props.subcatitems.length) {
@@ -125,44 +138,28 @@ class SubcatView  extends Component {
 
 
 
-    renderAddItem = () => (
-        <figure 
-            className="item_list_add item_list_figure"
+    renderAddItem = (isPartOfGrid) => (
+        <div 
+
+        className={"btn-group pull-right " + (isPartOfGrid ? 'item_list_card' : 'item_list_add_card')}
             onClick={() => { if (window.confirm('Would you like to add an item to this section?')) this.addClick() }}
         >
-            <img src={`${FS_PREFIX}/assets/media/icons/add_item_icon.jpg`} 
-                id="add_img"
-                alt="Add an item to this sub-category" 
-                onError={this.addDefaultImg} />
-            <figcaption className="item_list_add_text">Add Item</figcaption>
-        </figure>
+            <div className="item_list_img">
+                <img src={`${FS_PREFIX}/assets/media/icons/add_item_icon.jpg`} 
+                    id="add_img"
+                    alt="Add an item to this sub-category" 
+                    onError={this.addDefaultImg} />
+            </div>
+            
+            <div className="item_list_text">
+                Add Item
+            </div>
+        </div>
+
+
     )
 
 
-
-    renderItems = () => {
-        return(
-                <div className="subcat_render_items">
-                    { this.props.subcatitems.map( (item, i) => (
-                        <div key={i}>
-                            <Link to={`/items/${item._id}`} key={i}>
-                                <figure key={i}  className="item_list_figure">
-                                    <img src={`${FS_PREFIX}/assets/media/items/${item._id}/sq_thumbnail/0.jpg`} 
-                                        alt={item.title} 
-                                        onError={this.addDefaultImg} />
-                                    <figcaption>{item.title}</figcaption>
-                                </figure>
-                                
-                            </Link>
-                        </div>
-                    ))}
-                    
-                    {this.renderAddItem()}
-                </div>
-                    
-        
-        )
-    }
 
     renderMap = () => (
             <Map 
@@ -206,40 +203,59 @@ class SubcatView  extends Component {
             </Map>
     )
 
+
+
+
+
     render() {
-
-
-        
-
-    
+        console.log(this.props.subcat)
         return (
             <div className="subcat_view_component">
                 <NavigationBar navinfo={this.state.navInfo}/>
                     <div className="main_view subcat_view">
                         
-                        { this.props.subcat && this.props.subcat.title ?
-                            <h2 className="title">{this.props.subcat.title}</h2>
-                        : null}
 
-                        { this.props.subcat && this.props.subcat.description ?
-                            <p className="description">{this.props.subcat.description}</p>
-                        : null}
+                        { this.props.subcatitems && this.props.subcatitems.length ?
+                            <div className="subcat_view_flex_container">
 
-                        <hr />
-                        <div className="subcat_view_flex_container">
-                            <div className="subcat_view_flex_column">
-                                { this.props.subcatitems && this.props.subcatitems.length ?
-                                    this.renderItems()
-                            
-                                : 
-                                <div>
-                                    <p className="center">There are no items in this section.</p>
-                                    
-                                    {this.renderAddItem()}
-                                </div>
-                                }
+                                { this.props.subcat && this.props.subcat.length  ?
+                                    <div className="subcat_view_title">
+                                        <h2>{this.props.subcat[0].title}</h2>
+                                    </div>
+                                : null}
+                                
+                                
+                                { this.props.subcatitems.map( (item, i) => (
+                                        <Link to={`/items/${item._id}`} key={i}>
+                                            <div className="item_list_card">
+                                                <div key={i} className="item_list_img">
+                                                    <img src={`${FS_PREFIX}/assets/media/items/${item._id}/sq_thumbnail/0.jpg`} 
+                                                        alt={item.title} 
+                                                        onError={this.addDefaultImg} />
+                                                </div>
+                                                
+                                                <div className="item_list_text">
+                                                    {item.title}
+                                                </div>
+                                            
+                                            </div>
+                                        </Link>
+                                ))}                                                                
+                                {this.renderAddItem(true)}
                             </div>
-                        </div>     
+
+                        : 
+                        
+                            <div className="subcat_view_flex_container">
+                                { this.props.subcat && this.props.subcat.length  ?
+                                    <div className="subcat_view_title">
+                                        <h2>{this.props.subcat[0].title}</h2>
+                                    </div>
+                                : null}
+                                <p className="center">There are no items in this section.</p>                                              
+                                {this.renderAddItem(false)}
+                            </div>
+                        }
 
                         {this.state.showMap ?
                             this.renderMap()

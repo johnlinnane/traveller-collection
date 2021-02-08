@@ -1061,9 +1061,6 @@ p {
 .subcat_view .title {
   text-align: center;
 }
-.subcat_view .description {
-  text-align: center;
-}
 .subcat_view img {
   clear: left;
 }
@@ -1087,38 +1084,108 @@ p {
 }
 
 .subcat_view_flex_container {
-  display: flex;
-  flex-wrap: wrap;
-  padding: 0 4px;
-  align-items: center;
+  text-align: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-gap: 1.5rem 1rem;
+}
+.subcat_view_flex_container h2 {
+  grid-column: 1/-1;
+  margin: 0;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.075em;
 }
 
-.subcat_view_flex_column {
-  flex: 50%;
+.subcat_view_title {
+  grid-column: 1/-1;
+  text-align: right;
+  margin: 0;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  letter-spacing: 0.075em;
 }
-.subcat_view_flex_column img {
-  margin-top: 8px;
-  vertical-align: middle;
-  margin: 20px;
-  max-height: 200px;
-  filter: brightness(50%) saturate(160%);
+.subcat_view_title h2 {
+  font-size: 1.75rem;
+  font-weight: 400 !important;
+  text-transform: uppercase;
 }
-.subcat_view_flex_column figcaption {
+@media screen and (min-width: 992px) {
+  .subcat_view_title h2 {
+    font-size: 2rem;
+  }
+}
+
+.item_list_card {
+  background-color: #e7e7e7;
+  text-align: left;
+  height: 100%;
   color: white;
-  display: block;
-  float: left;
-  position: absolute;
-  top: 20px;
-  left: 25px;
-  width: 150px;
-  text-shadow: black 0px 0px 50px;
-  padding: 10px;
 }
-.subcat_view_flex_column figure {
-  position: relative;
-  float: left;
-  margin-inline-start: 0px;
-  margin-inline-end: 0px;
+.item_list_card h2 {
+  color: white;
+  display: flex;
+  justify-content: space-between;
+}
+.item_list_card h2 span {
+  opacity: 0;
+}
+.item_list_card:hover h2 span {
+  opacity: 1;
+}
+.item_list_card:hover .item_list_img {
+  overflow: hidden;
+}
+.item_list_card:hover img {
+  transform: scale(1.05);
+  transition: 0.5s ease-in-out;
+}
+
+.item_list_add_card {
+  background-color: #e7e7e7;
+  text-align: left;
+  color: white;
+  width: 100px;
+  height: 100px;
+}
+.item_list_add_card h2 {
+  color: white;
+  display: flex;
+  justify-content: space-between;
+}
+.item_list_add_card h2 span {
+  opacity: 0;
+}
+.item_list_add_card:hover h2 span {
+  opacity: 1;
+}
+.item_list_add_card:hover .item_list_img {
+  overflow: hidden;
+}
+.item_list_add_card:hover img {
+  transform: scale(1.05);
+  transition: 0.5s ease-in-out;
+}
+
+.item_list_img {
+  width: 100%;
+  height: 200px;
+  display: inline-block;
+  overflow: hidden;
+}
+.item_list_img img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  transition: 0.5s ease-in-out;
+}
+
+.item_list_text {
+  padding: 1rem 1.5rem 2rem;
+  vertical-align: top;
+  line-height: 1.3rem;
+  color: #000;
 }
 
 .vert_tab {

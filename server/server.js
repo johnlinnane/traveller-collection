@@ -354,8 +354,8 @@ app.get('/api/get-cat-by-id', (req, res) => {
 
 
 app.get('/api/get-subcat-by-id', (req, res) => {
-    let value = req.query.id;
-  
+    let value = req.query.subcatid;
+    
     SubCat.find({ _id:value }).exec( (err, docs) => {
         if(err) return res.status(400).send(err);
         res.send(docs);

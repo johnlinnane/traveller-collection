@@ -1,18 +1,12 @@
-
-
 .subcat_view {
-    
-
     .title {
         text-align: center;    
     }
-    
-    .description{
-        text-align: center;
-    }
+
     img {
         clear: left;
     }
+
     figcaption {
         color: white;
         display: block;
@@ -23,6 +17,7 @@
         padding: 10px;
             
     }
+
     figure {
         position: relative;
         float: left;
@@ -36,39 +31,131 @@
 }
 
 .subcat_view_flex_container {
-    display: flex;
-    flex-wrap: wrap;
-    padding: 0 4px;
-    align-items: center;
+    text-align: center;
+    display: grid;
+    grid-template-columns: repeat( auto-fit, minmax(250px, 1fr));
+    grid-gap: 1.5rem 1rem;
+
+    h2 {
+        grid-column: 1 / -1;
+        margin: 0;
+        margin-bottom: .5rem;
+        font-size: 1rem;
+        text-transform: uppercase;
+        letter-spacing: .075em;
+    }
 }
 
-.subcat_view_flex_column {
-    flex: 50%;
+.subcat_view_title {
+    grid-column: 1 / -1;
+    text-align: right;
+    margin: 0;
+    margin-bottom: .5rem;
+    font-size: 1rem;
+    letter-spacing: .075em;
     
-    img {
-        margin-top: 8px;
-        vertical-align: middle;
-        margin: 20px;
-        max-height: 200px;
-        filter: brightness(50%) saturate(160%);
+    h2 {
+        font-size: 1.75rem;
+        font-weight: 400 !important; 
+        @include respond-to(large) {
+                font-size: 2rem;
+        }
+        text-transform: uppercase;
     }
+}
 
-    figcaption {
+
+.item_list_card {
+    background-color: rgb(231, 231, 231);
+    text-align: left;
+    height: 100%;
+    color: white;
+
+    h2 {
         color: white;
-        display: block;
-        float: left;
-        position: absolute;
-        top: 20px;
-        left: 25px;
-        width: 150px;
-        text-shadow: black 0px 0px 50px;
-        padding: 10px;
-    }
+        display: flex;
+        justify-content: space-between;
 
-    figure {
-        position: relative;
-        float: left;
-        margin-inline-start: 0px;
-        margin-inline-end: 0px;
+        span {
+            opacity: 0;
+        }
     }
+    
+    &:hover {
+        
+        h2 {
+            span {
+                opacity: 1;
+            }
+        }
+
+        .item_list_img {
+            overflow: hidden;
+        }
+
+        img {
+            transform: scale(1.05);
+            transition: .5s ease-in-out;
+        }
+    }
+}
+
+
+.item_list_add_card {
+    background-color: rgb(231, 231, 231);
+    text-align: left;
+    // height: 100%;
+    color: white;
+
+    width: 100px;
+  height: 100px;
+
+    h2 {
+        color: white;
+        display: flex;
+        justify-content: space-between;
+
+        span {
+            opacity: 0;
+        }
+    }
+    
+    &:hover {
+        
+        h2 {
+            span {
+                opacity: 1;
+            }
+        }
+
+        .item_list_img {
+            overflow: hidden;
+        }
+
+        img {
+            transform: scale(1.05);
+            transition: .5s ease-in-out;
+        }
+    }
+}
+
+.item_list_img {
+    width: 100%;
+    height: 200px;
+    display: inline-block;
+    overflow: hidden;
+
+    img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        transition: .5s ease-in-out;
+    }
+}
+
+.item_list_text {
+    padding: 1rem 1.5rem 2rem;
+    vertical-align: top;
+    line-height: 1.3rem;
+    color: #000;
 }
