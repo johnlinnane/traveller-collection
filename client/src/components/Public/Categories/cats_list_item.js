@@ -23,7 +23,7 @@ const CatItem = (props) => {
             </div>
 
             <div className="cat_item_text">
-                <h2><b>{props.cat.title}</b></h2>
+                <h2><b>{props.cat.title}</b><span>→</span></h2>
                 {props.cat.description ? props.cat.description : null }<br />
 
 

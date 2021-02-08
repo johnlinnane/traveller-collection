@@ -50,9 +50,13 @@ img:before {
 
 .main_view {
     margin: 0px 0px 50px 0px;
+    padding: 1rem;
 
     @include respond-to(large) {
-        margin: 0px 20% 50px 20%;
+        // margin: 0px 20% 50px 20%;
+        margin: 0px auto 50px auto;
+        // max-width: 850px;
+        max-width: 1200px;
     }
 }
 
@@ -66,9 +70,11 @@ p {
   
 
 .nav_bar {
-    background-color: #d3d3d3;
-    padding: 7px 20%;
-    border-bottom: 1px solid #cacaca;
+    // background-color: #d3d3d3;
+    padding: 1rem;
+    // border-bottom: 1px solid #cacaca;
+    // max-width: 1200px;
+    // margin: auto;
 
     span .nowrap{
         white-space: nowrap;

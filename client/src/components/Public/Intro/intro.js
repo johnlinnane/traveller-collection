@@ -34,16 +34,17 @@ class Intro extends Component  {
                         <div 
                             className="bg-image" 
                             style={{
-                                position: 'absolute',
+                                // position: 'absolute',
                                 background: `url(${FS_PREFIX}/assets/media/intro/intro.jpg), #333`,
                                 backgroundPosition: 'center',
                                 backgroundRepeat: 'no-repeat',
                                 backgroundSize: 'cover',
-                                width: '100%',
-                                height: '600px',
-                                zIndex: '-1',
-                                opacity: '0.8',
-                                top: '0'
+                                // width: '100%',
+                                // // height: '600px',
+                                // zIndex: '-1',
+                                // opacity: '0.8',
+                                // top: '0',
+                                // bottom: '0'
                             }}
                         >
                         </div>

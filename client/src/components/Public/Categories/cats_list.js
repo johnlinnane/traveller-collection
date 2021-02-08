@@ -47,7 +47,7 @@ class CatList extends Component {
                     
                     {/* <div className="cat_list"> */}
                     <div className="main_view cat_items_view">
-                        <h2>Categories</h2>
+                        <h2 className="cat_list_title">Categories</h2>
 
                         { cats && cats.length ?
                             cats.map( (cat, i) => (

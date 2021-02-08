@@ -1,6 +1,6 @@
 
 header {
-    padding-top: 5px;
+    // padding-top: 5px;
     background: $blue;
     position: relative;
     
@@ -12,6 +12,11 @@ header {
         border-bottom: 6px solid $dark-turq;
         display: block;
         min-height: 30px;
+        // padding: .5rem 0;
+        display: flex;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
     }
 
     .open_nav {

@@ -12,20 +12,20 @@ $off-black: #333;
 
 
 $breakpoints: (
-  "small": 576px,
-  "medium": 768px,
-  "large": 992px,
-  "widescreen": 1200px,
+    "small": 576px,
+    "medium": 768px,
+    "large": 992px,
+    "widescreen": 1200px,
 );
 
 @mixin respond-to($breakpoint) {
     @if map-has-key($breakpoints, $breakpoint) {
   
-      $breakpoint-value: map-get($breakpoints, $breakpoint);
-  
-      @media screen and (min-width: $breakpoint-value) {
-        @content;
-      }
+        $breakpoint-value: map-get($breakpoints, $breakpoint);
+    
+        @media screen and (min-width: $breakpoint-value) {
+          @content;
+        }
     }
-  }
+}
   
