@@ -328,7 +328,7 @@ class ItemView extends Component {
             )
         })
         
-        return <Slick {...settings}>{slickDivs}</Slick>;
+        return <div className="slick_div"><Slick {...settings}>{slickDivs}</Slick></div>;
     }
 
 
@@ -532,7 +532,9 @@ class ItemView extends Component {
                                             {/* : null } */}
                                         </div>
                                         ///////////////////////// SHOW MULTIPLE IMAGES ///////////////////////
-                                        : this.renderSlider(imgFiles) 
+                                    : 
+                                        this.renderSlider(imgFiles)
+                                        
                                 : null}
 
                                 {/* /////////////////////// SHOW PDF /////////////////////// */}

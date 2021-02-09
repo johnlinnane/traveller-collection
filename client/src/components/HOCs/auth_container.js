@@ -37,7 +37,7 @@ export default function foo(ComposedClass, reload) {
                 this.setState({loading:false})
 
                 // if(this.props.user.login && !this.props.user.login.isAuth) {
-                if(!this.props.user.login.isAuth) {
+                if(this.props.user && this.props.user.login && !this.props.user.login.isAuth) {
                     console.log('user is not authenticated')
                     if(reload === true) {
                         console.log('push to login')

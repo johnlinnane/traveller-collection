@@ -831,7 +831,6 @@ header .navItem span {
 }
 .featured_item a {
   position: absolute;
-  width: 100%;
   bottom: 0px;
   text-decoration: none;
   right: 0px;
@@ -846,6 +845,15 @@ header .navItem span {
 .slick_slider .slick-next:before,
 .slick_slider .slick-prev:before {
   color: #757575;
+}
+
+.slick_div {
+  width: 350px;
+}
+@media screen and (min-width: 992px) {
+  .slick_div {
+    width: 550px;
+  }
 }
 
 body {
@@ -1677,6 +1685,18 @@ td, th {
 .user_container .nfo div span {
   font-weight: 500;
   color: #02bcd4;
+}
+
+.register_button {
+  margin-top: 3rem;
+  background-color: #ADDCEB;
+  padding: 15px;
+  display: inline-block;
+  border-radius: 5px;
+  font-weight: 300;
+}
+.register_button a {
+  font-size: 17px;
 }
 
 /*# sourceMappingURL=style.css.map */

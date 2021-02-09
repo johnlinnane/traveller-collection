@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const User = (props) => {
     let user = props.user.login;
@@ -13,7 +14,14 @@ const User = (props) => {
                 <div><span>Name: </span> {user.name}</div>
                 <div><span>Lastname: </span> {user.lastname}</div>
                 <div><span>Email: </span> {user.email}</div>
+                
+                <Link to={'/register'}>
+                    <div className="register_button">
+                        Register a new user
+                    </div>
+                </Link>
             </div>
+            
         </div>
     )
 };
