@@ -235,9 +235,9 @@ class ChapterIndex extends Component { // was PureComponent
         
         this.props.dispatch(addItem(chapterItem))
         
-        setTimeout(() => {
-            this.props.history.push(`/user/edit-item/${chapterItem._id}`)
-        }, 1000)
+        // setTimeout(() => {
+        //     this.props.history.push(`/user/edit-item/${chapterItem._id}`)
+        // }, 1000)
 
     }
 
@@ -272,8 +272,8 @@ class ChapterIndex extends Component { // was PureComponent
                         this.state.formdata.pdf_page_index.map( (chapt, i) => (
                       
 
-                            <tr key={i}>
-                                <td>
+                            <div className="index_form_grid_container" key={i}>
+                                <div>
                                     <input
                                         type="number"
                                         placeholder="Page Number"
@@ -281,9 +281,9 @@ class ChapterIndex extends Component { // was PureComponent
                                         onChange={(event) => this.handleInput(event, 'page', i)}
                                         
                                     />
-                                </td>
+                                </div>
                             
-                                <td>
+                                <div>
                                     <input
                                         type="text"
                                         placeholder="Chapter Title"
@@ -291,8 +291,8 @@ class ChapterIndex extends Component { // was PureComponent
                                         onChange={(event) => this.handleInput(event, 'heading', i)}
                                     />
 
-                                </td>
-                                <td>
+                                </div>
+                                <div>
                                     <input
                                         type="text"
                                         placeholder="Chapter Description"
@@ -300,34 +300,48 @@ class ChapterIndex extends Component { // was PureComponent
                                         onChange={(event) => this.handleInput(event, 'description', i)}
                                     />
 
-                                </td>
-                                { chapt.has_child ?
-                                    <td>
+                                </div>
+                                {/* { chapt.has_child ? */}
+                                { false ?
+                                    <div className="index_form_grid_button">
                                         <Link to={`/items/${chapt.child_id}`} target='_blank'>
-                                            <button 
-                                                type="button" 
-                                                className="index_create_item" 
-                                            >
-                                                View Item
-                                            </button>
+                                            
+                                            View Item
                                         </Link>
-                                    </td>
+                                    </div>
                                 :
-                                    <td>
-                                        <button 
+                                    // <td>
+                                    //     <button 
+                                    //         type="button" 
+                                    //         className="index_create_item" 
+                                    //         onClick={() => { if (window.confirm('This will make this chapter into its own separate item.')) this.createItem(i) } }
+                                    //     >
+                                    //         Create Item
+                                    //     </button>
+
+                                    // </td>
+
+                                    <div 
+                                        onClick={() => { if (window.confirm('This will make this chapter into its own separate item.')) this.createItem(i) } }
+                                        className="index_form_grid_button"
+                                    >
+                                        {/* <button 
                                             type="button" 
                                             className="index_create_item" 
-                                            onClick={() => { if (window.confirm('This will make this chapter into its own separate archive item.')) this.createItem(i) } }
+                                            onClick={() => { if (window.confirm('This will make this chapter into its own separate item.')) this.createItem(i) } }
                                         >
-                                            Create Separate Item
-                                        </button>
+                                            Create Item
+                                        </button> */}
+                                        Create New Archive Item
 
-                                    </td>
+                                    </div>
+
+
                                 }
 
 
 
-                            </tr>
+                            </div>
 
 
                         ))
@@ -341,21 +355,20 @@ class ChapterIndex extends Component { // was PureComponent
                         
             <h2>PDF Chapter Page Index:</h2>
 
-            <table>
-            <tbody>
+            <div>
 
-                <tr>
-                    <td>Page Number</td>
-                    <td>Chapter Title</td>
-                    <td>Chapter Description</td>
-                </tr>
+                {/* <div className="index_form_grid_container">
+                    <div>Page Number</div>
+                    <div>Chapter Title</div>
+                    <div>Chapter Description</div>
+                    <div></div>
+                </div> */}
 
                 {this.state.formdata && this.state.formdata.pdf_page_index ?
                     this.renderChapters()
                 : null}
 
-            </tbody>
-            </table>
+            </div>
         </form>
     )
 
@@ -366,7 +379,7 @@ class ChapterIndex extends Component { // was PureComponent
                 
 
                 <div className="index_add_rem" onClick={() => {if (window.confirm('This will delete the Sub-Category.')) this.removeField()}}>-</div>
-                <span>Add/Remove</span>
+                <span>Add/Remove Index</span>
             </div>
 
             <button type="submit" className="half_width_l" onClick={this.onSubmit}>Save and Return</button>

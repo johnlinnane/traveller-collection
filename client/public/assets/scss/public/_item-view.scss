@@ -352,3 +352,27 @@
 
 
 
+.index_form_grid_container {
+    display: flex;
+     align-items: left;
+     justify-content: space-between;
+    flex-direction: column;
+    @include respond-to(large) {
+        flex-direction: row;
+    }
+    margin-bottom: .5rem;
+
+}
+
+.index_form_grid_button {
+    background-color: #02bcd4;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 20px;
+    padding: 10px 52px;
+    background: #02bcd4;
+    color: #fff;
+    font-weight: 300;
+    border-radius: 3px;
+}
+

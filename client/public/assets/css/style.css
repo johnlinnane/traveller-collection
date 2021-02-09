@@ -701,6 +701,31 @@ header .navItem span {
   margin-top: 0px !important;
 }
 
+.index_form_grid_container {
+  display: flex;
+  align-items: left;
+  justify-content: space-between;
+  flex-direction: column;
+  margin-bottom: 0.5rem;
+}
+@media screen and (min-width: 992px) {
+  .index_form_grid_container {
+    flex-direction: row;
+  }
+}
+
+.index_form_grid_button {
+  background-color: #02bcd4;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 20px;
+  padding: 10px 52px;
+  background: #02bcd4;
+  color: #fff;
+  font-weight: 300;
+  border-radius: 3px;
+}
+
 .item_item {
   border-bottom: 4px solid #f1f1f1;
   box-sizing: border-box;
