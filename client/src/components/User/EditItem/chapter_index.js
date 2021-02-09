@@ -235,9 +235,9 @@ class ChapterIndex extends Component { // was PureComponent
         
         this.props.dispatch(addItem(chapterItem))
         
-        // setTimeout(() => {
-        //     this.props.history.push(`/user/edit-item/${chapterItem._id}`)
-        // }, 1000)
+        setTimeout(() => {
+            this.props.history.push(`/user/edit-item/${chapterItem._id}`)
+        }, 1000)
 
     }
 
@@ -317,9 +317,9 @@ class ChapterIndex extends Component { // was PureComponent
                                         <button 
                                             type="button" 
                                             className="index_create_item" 
-                                            onClick={() => { if (window.confirm('This will make this chapter into its own separate item.')) this.createItem(i) } }
+                                            onClick={() => { if (window.confirm('This will make this chapter into its own separate archive item.')) this.createItem(i) } }
                                         >
-                                            Create Item
+                                            Create Separate Item
                                         </button>
 
                                     </td>

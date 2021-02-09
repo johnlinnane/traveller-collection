@@ -674,15 +674,17 @@ header .navItem span {
 .item_view_main_view .view_item_container .index_child {
   width: 10%;
 }
-.item_view_main_view .view_item_container .index_add_cont {
+
+.index_add_cont {
   margin: 15px 7px;
   text-align: left;
   color: #535353;
 }
-.item_view_main_view .view_item_container .index_add_cont span {
+.index_add_cont span {
   margin: 0px 10px;
 }
-.item_view_main_view .view_item_container .index_add_rem {
+
+.index_add_rem {
   text-align: center;
   width: 20px !important;
   height: 20px;
@@ -690,10 +692,12 @@ header .navItem span {
   border: 1px solid #ccc;
   display: inline-block;
 }
-.item_view_main_view .view_item_container .index_cancelled {
+
+.index_cancelled {
   margin: 30px;
 }
-.item_view_main_view .view_item_container .index_create_item {
+
+.index_create_item {
   margin-top: 0px !important;
 }
 
