@@ -73,89 +73,62 @@ class CatView  extends Component {
     }
 
 
-    renderImage = (subCat) => {
-        
-        return (
-            <img src={`${FS_PREFIX}/assets/media/cover_img_subcat/${subCat._id}.jpg`} 
-                alt={subCat.title} 
-                onError={this.addDefaultImg} 
-                className="cat_view_subcat_img"
-            />
-        )
-    }
-
-
-    renderSubcats = () => {
-        return (
-           
-                        <div className="cat_view_flex_container cat_view_flex_column">
-
-                            {this.state.theseSubcats && this.state.theseSubcats.length ?
-                                
-                                this.state.theseSubcats.map( (subcat, i) => (
-                                
-                                
-                                    <div key={i} className="cat_view_subcat_card">
-                                        <Link to={`/subcategory/${subcat._id}`} key={i}>
-                                            <figure>
-                                                {this.renderImage(subcat)}
-                                            </figure>
-                                            <h3>{subcat.title}</h3>
-                                        </Link>
-                                    </div>
-                                ))
-                            : null }
-
-
-                        </div>
-                    // </div>
-            
-        )
-    }
-
-
-
-
-
-  
 
 
     render() {
         
         return (
-            <div className="cat_view_component">
+            <div>
                 <NavigationBar navinfo={this.navInfo}/>
 
                 <div className="main_view cat_view">
 
-                        
-                        {/* { catinfo ? 
-                            <div className="header">
-                                <h2 className="title">{catinfo.title}</h2>
-                                <p className="description">{catinfo.description}</p>
+                    
+                    {this.props.catinfo ?
+                        <div className="cat_view_header_card">
+                            <div className="cat_view_header_card_img">
+                                    {this.props.catinfo._id ?
+                                        <img src={`${FS_PREFIX}/assets/media/cover_img_cat/${this.props.catinfo._id}.jpg`} alt="category cover" onError={this.addDefaultImg} />
+                                    : null}
                             </div>
-                        :null
-                        } */}
 
-                        {this.props.catinfo ?
-                            <div className="cat_view_header_card">
-                                <div className="cat_view_header_card_img">
-                                        {this.props.catinfo._id ?
-                                            <img src={`${FS_PREFIX}/assets/media/cover_img_cat/${this.props.catinfo._id}.jpg`} alt="category cover" onError={this.addDefaultImg} />
-                                        : null}
-                                </div>
-
-                                <div className="cat_view_header_card_img_text">
-                                    <h2><b>{this.props.catinfo.title}</b></h2>
-                                    {this.props.catinfo.description ? this.props.catinfo.description : null }
-                                    <br />
-                                </div>
+                            <div className="cat_view_header_card_img_text">
+                                <h2><b>{this.props.catinfo.title}</b></h2>
+                                {this.props.catinfo.description ? this.props.catinfo.description : null }
+                                <br />
                             </div>
+                        </div>
+                    : null }
+
+
+
+                    <div className="cat_view_flex_container">
+
+                        {this.state.theseSubcats && this.state.theseSubcats.length ?
+                            
+                            this.state.theseSubcats.map( (subcat, i) => (
+                            
+                            
+                                
+                                <Link to={`/subcategory/${subcat._id}`} key={i}>
+                                    <div key={i} className="cat_view_subcat_card">
+                                        <div className="cat_view_subcat_card_img">
+                                            <img src={`${FS_PREFIX}/assets/media/cover_img_subcat/${subcat._id}.jpg`} 
+                                                alt={subcat.title} 
+                                                onError={this.addDefaultImg} 
+                                            />
+                                        </div>
+                                        <div className="cat_view_subcat_card_text">
+                                            <h3>{subcat.title}</h3>
+                                        </div>
+                                    </div>
+                                </Link>
+                                
+                            ))
                         : null }
 
 
-
-                        {this.renderSubcats()}
+                    </div>
                 </div>
             </div>
         )

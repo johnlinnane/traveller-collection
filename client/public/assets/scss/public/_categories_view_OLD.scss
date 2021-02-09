@@ -74,31 +74,41 @@
 
     .cat_view_flex_container {
 
+        align-items: center;
 
 
         .cat_view_subcat_card {
-            display: grid;
-            grid-template-columns: 1fr 3fr;
-            grid-column-gap: 10px;
-
+            background-color: #cacaca;
             margin-bottom: 0.5rem;
-            background-color: rgb(231, 231, 231);
+            position: relative;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            display: flex;
+            height: 120px;
+            @include respond-to(large) {
+                height: 180px;
+            }
+            margin: 0;
+            // width: 200px;
+            margin-right: 1rem;
+
 
             .cat_view_subcat_card_img {
-                
                 img {
+                    // max-height: 200px;
+                    height: 100%;
                     object-fit: cover;
-                    width: 150px;
-                    height: 150px;
-                    @include respond-to(large) {
-                        width: 250px;
-                        height: 250px;
-                    }
                 }
             }
 
             .cat_view_subcat_card_text {
                 padding: 10px;
+                color: white;
+                display: block;
+                float: left;
+                position: absolute;
+                top: 0;
+
                 h3 {
                     font-size: 1.17rem;
                     @include respond-to(large) {

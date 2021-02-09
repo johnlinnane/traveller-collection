@@ -257,7 +257,7 @@ class AdminCat extends Component {
         setTimeout(() => {
             // this.props.history.push(`/user/edit-item-sel/${this.props.items.newitem.itemId}`);
             this.props.history.push(`/admin/0`);
-        }, 2000)
+        }, 1000)
     }
 
 

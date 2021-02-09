@@ -252,7 +252,7 @@ class SubcatView  extends Component {
                                         <h2>{this.props.subcat[0].title}</h2>
                                     </div>
                                 : null}
-                                <p className="center">There are no items in this section.</p>                                              
+                                {/* <p className="center">There are no items in this section.</p>                                               */}
                                 {this.renderAddItem(false)}
                             </div>
                         }
