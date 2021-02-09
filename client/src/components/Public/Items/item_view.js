@@ -514,8 +514,10 @@ class ItemView extends Component {
                 
                 <div className="item_view_item_details">
                     
+
+                {itemFiles && itemFiles.length ?
                     <div className="item_view_media_wrapper">
-                        {itemFiles && itemFiles.length ?
+
                             <div className="item_media">
                                 {imgFiles && imgFiles.length ?
                                     imgFiles.length === 1 ?
@@ -546,8 +548,9 @@ class ItemView extends Component {
                                     </video>
                                 : null }
                             </div>
-                        : null }
+                        
                     </div>
+                    : null }
 
 
 
@@ -746,7 +749,7 @@ class ItemView extends Component {
 
 
     render() {
-
+        console.log(this.state.imgFiles)
 
         return (
             
