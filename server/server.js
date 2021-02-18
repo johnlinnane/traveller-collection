@@ -49,7 +49,8 @@ app.use(cors({
         process.env.REACT_APP_CLIENT_PREFIX,
         process.env.REACT_APP_DB, 
         process.env.REACT_APP_CLIENT_BUILD_PREFIX,
-        process.env.REACT_APP_FILE_SERVER_PREFIX
+        process.env.REACT_APP_FILE_SERVER_PREFIX,
+        process.env.REACT_APP_PRODUCTION_PREFIX
     ]
 }));
 
