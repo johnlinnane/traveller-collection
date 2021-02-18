@@ -383,7 +383,7 @@ class ItemView extends Component {
             <div className="pdf_wrapper">
 
 
-                 <div className="pdf">
+                 <div className="pdf_document">
                     <Document
                         file={`${FS_PREFIX}/assets/media/items/${pdfId}/original/${this.state.pdfFiles[0]}`}
                         onLoadSuccess={onDocumentLoadSuccess}

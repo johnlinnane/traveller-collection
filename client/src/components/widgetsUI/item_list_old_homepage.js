@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const ItemItem = (item) => {
+const ItemListOldHomepage = (item) => {
 
 
 
@@ -39,4 +39,4 @@ const ItemItem = (item) => {
     );
 };
 
-export default ItemItem;
+export default ItemListOldHomepage;

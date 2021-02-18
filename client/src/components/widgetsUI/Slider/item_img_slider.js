@@ -27,8 +27,8 @@ const ItemImageSlider = (props) => {
                         
                         <div key={i}>
                             <p>{i}</p>
-                            <div className="featured_item">
-                                <div className="featured_image"
+                            <div className="featured_item_widgetsUI_slider">
+                                <div className="featured_image_widgetsUI_slider"
                                     style={{
                                         background: `url(${FS_PREFIX}/assets/media/items/5eb4417bf2ff151113f3e11f/thumbnail/0.jpg)`
                                     }}

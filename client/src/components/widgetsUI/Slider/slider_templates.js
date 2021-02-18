@@ -2,7 +2,6 @@ import React from 'react';
 import Slick from 'react-slick';   // uses cdn css
 import { Link } from 'react-router-dom';
 
-import style from './slider.module.css';
 
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
@@ -31,8 +30,8 @@ const SliderTemplates = (props) => {
             template = props.data.list.map( (item, i) => {
                 return(
                     <div key={i}>
-                        <div className={style.featured_item}>
-                            <div className={style.featured_image}
+                        <div className="featured_item_widgetsUI_slider">
+                            <div className="featured_image_widgetsUI_slider"
                                 style={{
                                     background: `url(${FS_PREFIX}/assets/media/items/${item._id}/thumbnail/0.jpg)`
                                 }}
@@ -40,7 +39,7 @@ const SliderTemplates = (props) => {
                             </div>
 
                             <Link to={`./items/${item._id}`}>
-                                <div className={style.featured_caption}>
+                                <div className="featured_caption_widgetsUI_slider">
                                     {item.title}
                                 </div>
                             </Link>

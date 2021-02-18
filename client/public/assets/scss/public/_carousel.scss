@@ -1,0 +1,41 @@
+
+.featured_item {
+    position: relative;
+
+    a {
+        position: absolute;
+        // width: 100%;
+        bottom: 0px;
+        text-decoration: none;
+        right: 0px;
+    }
+}
+  
+  
+  
+.featured_image {
+    height: 85vh;
+
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+}
+
+
+.slick_slider {
+    .slick-next:before,
+    .slick-prev:before {
+        color: #757575;
+    }
+}
+  
+
+
+.slick_div {
+    width: 350px;
+    @include respond-to(large) {
+        width: 550px;
+    }
+}
+
+
+

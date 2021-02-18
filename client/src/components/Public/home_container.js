@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import ItemItem from './../widgetsUI/item_item';
+import ItemListOldHomepage from './../widgetsUI/item_list_old_homepage';
 import { getItems } from '../../actions';
-import NewsSlider from './../widgetsUI/Slider/slider';
+import SlickCarouselOldHomepage from './../widgetsUI/Slider/slider';
 
 
 
@@ -17,7 +17,7 @@ class HomeContainer extends Component {
     renderItems = (items) => (
         items.list && items.list.length ?    // list is an array of previously called items!
             items.list.map( (item, i) => (
-                <ItemItem {...item} key={item._id}/>
+                <ItemListOldHomepage {...item} key={item._id}/>
             ))
         : null
     )
@@ -35,7 +35,7 @@ class HomeContainer extends Component {
 
         return (
             <div> 
-                <NewsSlider
+                <SlickCarouselOldHomepage
                     type="featured"
                     start={0}
                     amount={3}

@@ -5,7 +5,7 @@ import SliderTemplates from './slider_templates'
 import { getItems } from './../../../actions';
 
 
-class NewsSlider extends Component {
+class SlickCarouselOldHomepage extends Component {
 
 
     componentDidMount() {
@@ -31,4 +31,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(NewsSlider);
+export default connect(mapStateToProps)(SlickCarouselOldHomepage);

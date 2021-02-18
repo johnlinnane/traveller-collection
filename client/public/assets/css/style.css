@@ -220,6 +220,36 @@
   }
 }
 
+.featured_item {
+  position: relative;
+}
+.featured_item a {
+  position: absolute;
+  bottom: 0px;
+  text-decoration: none;
+  right: 0px;
+}
+
+.featured_image {
+  height: 85vh;
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
+}
+
+.slick_slider .slick-next:before,
+.slick_slider .slick-prev:before {
+  color: #757575;
+}
+
+.slick_div {
+  width: 350px;
+}
+@media screen and (min-width: 992px) {
+  .slick_div {
+    width: 550px;
+  }
+}
+
 .form_input {
   text-align: center;
 }
@@ -776,84 +806,35 @@ header .navItem span {
   cursor: pointer;
 }
 
-.pdf {
-  text-align: center;
-  display: inline-block;
-}
-
-.pdf_wrapper {
-  text-align: center;
-}
-.pdf_wrapper a {
-  color: #000dc4;
-  font-size: small;
-}
-
-.pdf_page {
-  height: 1000px;
-  width: 650px;
-  overflow-y: auto;
-}
-
-.pdf_scale {
-  cursor: pointer;
-  font-size: 22px;
-  padding: 4px;
-}
-
-.pdf_control_panel {
-  background-color: #e9e8e8;
-  width: 83%;
-  display: inline-block;
-  padding: 10px;
-}
-
-.pdf_prev_next {
-  padding-right: 20px;
-  display: inline-block;
-}
-
-.item_container p {
-  max-width: 65ch;
-}
-
-.item_pagenum {
-  max-width: none !important;
-  padding-left: 25px;
-  padding-right: 25px;
-}
-
 /*=============================
-            ITEM: SLIDER
+            ITEM: SLIDER - FROM MODULE
 ===============================*/
-.featured_item {
+.featured_item_widgetsUI_slider {
   position: relative;
 }
-.featured_item a {
+
+.featured_item_widgetsUI_slider a {
   position: absolute;
+  width: 100%;
   bottom: 0px;
   text-decoration: none;
   right: 0px;
 }
 
-.featured_image {
-  height: 85vh;
+.featured_image_widgetsUI_slider {
+  height: 330px;
   background-size: cover !important;
   background-repeat: no-repeat !important;
 }
 
-.slick_slider .slick-next:before,
-.slick_slider .slick-prev:before {
-  color: #757575;
-}
-
-.slick_div {
-  width: 350px;
-}
-@media screen and (min-width: 992px) {
-  .slick_div {
-    width: 550px;
-  }
+.featured_caption_widgetsUI_slider {
+  color: #ffffff;
+  top: 0px;
+  width: 100%;
+  padding: 20px;
+  font-weight: 300;
+  font-size: 28px;
+  box-sizing: border-box;
 }
 
 body {
@@ -1011,6 +992,61 @@ p {
   height: 750px;
   margin: auto;
   margin-top: 30px;
+}
+
+.pdf_wrapper {
+  text-align: center;
+}
+.pdf_wrapper a {
+  color: #000dc4;
+  font-size: small;
+}
+
+.pdf_document {
+  text-align: center;
+  display: inline-block;
+}
+
+.pdf_page {
+  height: 500px;
+  width: 300px;
+  overflow-y: auto;
+}
+@media screen and (min-width: 768px) {
+  .pdf_page {
+    height: 700px;
+    width: 500px;
+  }
+}
+@media screen and (min-width: 992px) {
+  .pdf_page {
+    height: 1000px;
+    width: 650px;
+  }
+}
+
+.pdf_scale {
+  cursor: pointer;
+  font-size: 22px;
+  padding: 4px;
+}
+
+.pdf_control_panel {
+  background-color: #e9e8e8;
+  width: 83%;
+  display: inline-block;
+  padding: 10px;
+}
+
+.pdf_prev_next {
+  padding-right: 20px;
+  display: inline-block;
+}
+
+.item_pagenum {
+  max-width: none !important;
+  padding-left: 25px;
+  padding-right: 25px;
 }
 
 .search_input {
