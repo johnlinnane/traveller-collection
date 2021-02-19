@@ -266,51 +266,6 @@
             margin: 0px 5px;
         }
 
-        /* PDF CHAPTER INDEX TABLE */
-
-
-
-        .index_table {
-            display:table;
-            margin: auto;         
-            width:auto;                
-            /* border:1px solid  #666666;          */
-            padding: 20px;
-        
-        }
-
-        .index_row {
-            display:table-row;
-            width:auto;
-            clear:both;
-            cursor: pointer;
-        }
-
-        .index_col {
-            float:left;
-            display:table-column;         
-            width:200px;         
-            /* border:1px solid  #ccc; */
-            background-color: #f7f7f7;
-            /* border-radius: 5px; */
-            margin: 2px;
-
-
-        }
-
-        .index_top {
-            background-color: rgb(233, 232, 232);
-            padding: 4px 0px;
-        }
-
-        .index_page {
-            width: 10%;
-        }
-
-
-        .index_child {
-            width: 10%
-        }
 
 
         

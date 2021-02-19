@@ -503,7 +503,6 @@ header .navItem span {
 .item_view_main_view .view_item_container {
   box-sizing: border-box;
   /* MAP */
-  /* PDF CHAPTER INDEX TABLE */
 }
 .item_view_main_view .view_item_container .item_view_item_details {
   display: grid;
@@ -671,38 +670,6 @@ header .navItem span {
 }
 .item_view_main_view .view_item_container .shareIcon {
   margin: 0px 5px;
-}
-.item_view_main_view .view_item_container .index_table {
-  display: table;
-  margin: auto;
-  width: auto;
-  /* border:1px solid  #666666;          */
-  padding: 20px;
-}
-.item_view_main_view .view_item_container .index_row {
-  display: table-row;
-  width: auto;
-  clear: both;
-  cursor: pointer;
-}
-.item_view_main_view .view_item_container .index_col {
-  float: left;
-  display: table-column;
-  width: 200px;
-  /* border:1px solid  #ccc; */
-  background-color: #f7f7f7;
-  /* border-radius: 5px; */
-  margin: 2px;
-}
-.item_view_main_view .view_item_container .index_top {
-  background-color: #e9e8e8;
-  padding: 4px 0px;
-}
-.item_view_main_view .view_item_container .index_page {
-  width: 10%;
-}
-.item_view_main_view .view_item_container .index_child {
-  width: 10%;
 }
 
 .index_add_cont {
@@ -996,6 +963,7 @@ p {
 
 .pdf_wrapper {
   text-align: center;
+  /* PDF CHAPTER INDEX TABLE */
 }
 .pdf_wrapper a {
   color: #000dc4;
@@ -1024,6 +992,30 @@ p {
   max-width: none !important;
   padding-left: 25px;
   padding-right: 25px;
+}
+.pdf_wrapper .pdf_index_table {
+  display: flex;
+  flex-direction: column;
+  margin: 2rem 0;
+  padding: 1rem 0;
+  background-color: #ffffff;
+  border-radius: 5px;
+  border-bottom: 1px solid black;
+}
+.pdf_wrapper .pdf_index_table .pdf_index_header {
+  background-color: #000000;
+  color: #fdfdfd;
+}
+.pdf_wrapper .pdf_index_table .pdf_index_col {
+  flex: 2;
+}
+.pdf_wrapper .pdf_index_table .pdf_index_col_1 {
+  flex: 1 !important;
+}
+.pdf_wrapper .pdf_index_table .pdf_index_row {
+  display: flex;
+  cursor: pointer;
+  padding: 0.4rem 0;
 }
 
 .search_input {

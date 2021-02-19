@@ -47,5 +47,48 @@
         }
 
     }
+
+
+
+
+
+    /* PDF CHAPTER INDEX TABLE */
+
+
+        .pdf_index_table {
+            display:flex;
+            flex-direction: column;
+            margin: 2rem 0;
+            padding: 1rem 0;
+            background-color: #ffffff;
+            border-radius: 5px;
+            border-bottom: 1px solid black ;
+
+            .pdf_index_header {
+                // border-bottom: 1px solid black ;
+                background-color: #000000;
+                color:rgb(253, 253, 253)
+            }
+
+            .pdf_index_col {
+                flex: 2;
+            }
+
+            .pdf_index_col_1 {
+                flex: 1 !important; 
+            }
+
+
+
+            .pdf_index_row {
+                display:flex;
+                cursor: pointer;
+                padding: 0.4rem 0;
+                
+            }
+
+        }
+
 }
+
 

@@ -458,49 +458,101 @@ class ItemView extends Component {
 
 
                 { this.props.items.item.pdf_page_index && this.props.items.item.pdf_page_index.length ?
-                    <div className="index_container">
-                        <div className="index_table">
-                            <div className="index_col index_top index_page">
+                    <div className="pdf_index_table">
+
+                        <div className="pdf_index_row pdf_index_header">
+                            <div className="pdf_index_col pdf_index_col_1">
                                 Page
                             </div>
-                            <div className="index_col index_top index_heading">
+                            <div className="pdf_index_col">
                                 Heading
                             </div>
-                            <div className="index_col index_top index_desc">
+                            <div className="pdf_index_col">
                                 Description
                             </div>
 
                             {this.props.items.item.has_chapter_children ?
-                                <div className="index_col index_top index_child">
+                                <div className="pdf_index_col">
                                     View Item
                                 </div>
                             :
                             null }
-                            {this.props.items.item.pdf_page_index.map( (chapt, i) => (
-                                <div key={i} className="index_row" onClick={() => this.goToIndex(chapt.page)}>
-                                    <div className="index_col index_page">
-                                        {chapt.page}
-                                    </div>
-                                    <div className="index_col index_heading">
-                                        {chapt.heading}
-                                    </div>
-                                    <div className="index_col index_desc">
-                                        {chapt.description}
-                                    </div>
-                                    {this.props.items.item.has_chapter_children ?
-                                        <div className="index_col index_child">
-                                            {chapt.has_child ? 
-                                                <Link to={`/items/${chapt.child_id}`} target='_blank'>
-                                                    View Item
-                                                </Link>
-                                            :
-                                            <span>-</span> }
-                                        </div>
-                                    : null }
-                                </div>
-                        
-                        ))}
                         </div>
+                        {this.props.items.item.pdf_page_index.map( (chapt, i) => (
+                            <div key={i} className="pdf_index_row" onClick={() => this.goToIndex(chapt.page)}>
+                                <div className="pdf_index_col pdf_index_col_1">
+                                    {chapt.page}
+                                </div>
+                                <div className="pdf_index_col">
+                                    {chapt.heading}
+                                </div>
+                                <div className="pdf_index_col">
+                                    {chapt.description}
+                                </div>
+                                {this.props.items.item.has_chapter_children ?
+                                    <div className="pdf_index_col">
+                                        {chapt.has_child ? 
+                                            <Link to={`/items/${chapt.child_id}`} target='_blank'>
+                                                View Item
+                                            </Link>
+                                        :
+                                        <span>-</span> }
+                                    </div>
+                                : null }
+                            </div>
+                        ))}
+
+
+
+
+{/* 
+<div className="pdf_index_col pdf_index_top pdf_index_page">
+                            Page
+                        </div>
+                        <div className="pdf_index_col pdf_index_top pdf_index_heading">
+                            Heading
+                        </div>
+                        <div className="pdf_index_col pdf_index_top pdf_index_desc">
+                            Description
+                        </div>
+
+                        {this.props.items.item.has_chapter_children ?
+                            <div className="pdf_index_col pdf_index_top pdf_index_child">
+                                View Item
+                            </div>
+                        :
+                        null }
+                        {this.props.items.item.pdf_page_index.map( (chapt, i) => (
+                            <div key={i} className="pdf_index_row" onClick={() => this.goToIndex(chapt.page)}>
+                                <div className="pdf_index_col pdf_index_page">
+                                    {chapt.page}
+                                </div>
+                                <div className="pdf_index_col pdf_index_heading">
+                                    {chapt.heading}
+                                </div>
+                                <div className="pdf_index_col pdf_index_desc">
+                                    {chapt.description}
+                                </div>
+                                {this.props.items.item.has_chapter_children ?
+                                    <div className="pdf_index_col pdf_index_child">
+                                        {chapt.has_child ? 
+                                            <Link to={`/items/${chapt.child_id}`} target='_blank'>
+                                                View Item
+                                            </Link>
+                                        :
+                                        <span>-</span> }
+                                    </div>
+                                : null }
+                            </div>
+                        ))} */}
+
+
+
+
+
+
+
+                        
                     </div>
                 : null }
 
