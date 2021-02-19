@@ -409,23 +409,7 @@ class ItemView extends Component {
                 </div> 
 
                 <div className="pdf_control_panel">
-                    <div className="pdf_prev_next">
-                        <button
-                            type="button"
-                            disabled={pageNumber <= 1}
-                            onClick={previousPage}
-                        >
-                            Previous
-                        </button>
-
-                        <button
-                            type="button"
-                            disabled={pageNumber >= numPages}
-                            onClick={nextPage}
-                        >
-                            Next
-                        </button>
-                    </div>
+                 
 
 
 
@@ -446,7 +430,26 @@ class ItemView extends Component {
                         
                     </span>
 
-                    <a href={`${FS_PREFIX}/assets/media/items/${pdfId}/original/${this.state.pdfFiles[0]}`}>[View Fullscreen]</a>
+
+                    <div className="pdf_prev_next">
+                        <button
+                            type="button"
+                            disabled={pageNumber <= 1}
+                            onClick={previousPage}
+                        >
+                            Previous
+                        </button>
+
+                        <button
+                            type="button"
+                            disabled={pageNumber >= numPages}
+                            onClick={nextPage}
+                        >
+                            Next
+                        </button>
+                    </div>
+
+                    <a href={`${FS_PREFIX}/assets/media/items/${pdfId}/original/${this.state.pdfFiles[0]}`}>[Fullscreen]</a>
 
 
 
