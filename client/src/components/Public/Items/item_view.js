@@ -384,23 +384,28 @@ class ItemView extends Component {
 
 
                  <div className="pdf_document">
+
                     <Document
                         file={`${FS_PREFIX}/assets/media/items/${pdfId}/original/${this.state.pdfFiles[0]}`}
                         onLoadSuccess={onDocumentLoadSuccess}
                         // onLoadError={this.setState({ pdfError: true })}
-                        
-                        
                     >   
-                        <div className="pdf_page">
                             <Page 
-                                className={"pdf_page"}
+                                size="A4"
                                 pageNumber={pageNumber}
-                                // width={Math.min(width * 0.9, 400)} 
-                                width={650} 
                                 scale={this.state.pdfScale}
                             />
-                        </div>
                     </Document>
+
+
+
+
+
+
+
+
+
+
                 </div> 
 
                 <div className="pdf_control_panel">
@@ -424,7 +429,7 @@ class ItemView extends Component {
 
 
 
-                    <FontAwesome 
+                    {/* <FontAwesome 
                         className="fa-search-minus pdf_scale"
                         onClick={scaleDown}
                     />
@@ -433,7 +438,7 @@ class ItemView extends Component {
                     <FontAwesome 
                         className="fa-search-plus pdf_scale"
                         onClick={scaleUp}
-                    />
+                    /> */}
                     
 
                     <span className="item_pagenum">
@@ -441,7 +446,7 @@ class ItemView extends Component {
                         
                     </span>
 
-                    <a href={`${FS_PREFIX}/assets/media/items/${pdfId}/original/${this.state.pdfFiles[0]}`}>[pdf]</a>
+                    <a href={`${FS_PREFIX}/assets/media/items/${pdfId}/original/${this.state.pdfFiles[0]}`}>[View Fullscreen]</a>
 
 
 
