@@ -712,7 +712,9 @@ class ItemView extends Component {
 
 
                         {itemInfo.external_link && itemInfo.external_link[0].url ?
-                            <Link to={itemInfo.external_link[0].url}  target="_blank">
+                            // <Link to={itemInfo.external_link[0].url}  target="_blank">
+                            <a target="_blank" href={itemInfo.external_link[0].url}>
+
                                 <div className="link_wrapper">
                                     <div className="link_text">
                                         <b>Visit</b><br />
@@ -725,7 +727,8 @@ class ItemView extends Component {
 
                                     
                                 </div>
-                            </Link>
+                            </a>
+                            // </Link> 
                         : null }
                     </div>
 
