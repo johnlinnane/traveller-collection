@@ -51,7 +51,7 @@ class CatList extends Component {
 
                         { cats && cats.length ?
                             cats.map( (cat, i) => (
-                                cat.catIsHidden === false ?
+                                cat.catIsHidden === true ?
                                     null
                                 : 
                                 <Link key={cat._id} to={`/category/${cat._id}`}>
