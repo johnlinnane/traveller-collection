@@ -962,7 +962,7 @@ p {
   height: 750px;
   margin: auto;
   margin-top: 30px;
-  z-index: -1;
+  z-index: 0;
 }
 
 .pdf_wrapper {
