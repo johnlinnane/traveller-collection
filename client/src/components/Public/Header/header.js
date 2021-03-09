@@ -30,6 +30,7 @@ class Header extends Component {
                     showNav={this.state.showNav}
                     // trigger a function whenever button clicked
                     onHideNav={() => this.onHideNav()}
+                    className="sidenav_menu"
 
                 />
                 <div className="search">

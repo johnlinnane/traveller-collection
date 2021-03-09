@@ -386,6 +386,9 @@ header .open_nav {
   position: absolute;
   left: 0px;
 }
+header .sidenav_menu {
+  z-index: 5;
+}
 header .search {
   position: absolute;
   right: 0px;
@@ -959,6 +962,7 @@ p {
   height: 750px;
   margin: auto;
   margin-top: 30px;
+  z-index: -1;
 }
 
 .pdf_wrapper {
