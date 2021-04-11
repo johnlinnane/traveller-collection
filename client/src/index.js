@@ -21,7 +21,6 @@ ReactDOM.render(
         <BrowserRouter>
             <Routes />
         </BrowserRouter>
-
     </Provider>
     ,document.getElementById('root')
 );
