@@ -1089,7 +1089,7 @@ app.post(
 
 
 const port = process.env.PORT || 3002;
-
+console.log('process.env.SSL_KEY: ',process.env.SSL_KEY)
 
 const options = {
     key: fs.readFileSync(process.env.SSL_KEY),
