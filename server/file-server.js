@@ -1,8 +1,8 @@
 const express = require('express');
-const http = require('http');
-
+// const http = require('http');
+const https = require('https'); // this is new
+const fs = require('fs')
 const app = express();
-const server = http.createServer(app);
 
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
@@ -15,16 +15,31 @@ app.use(bodyParser.json());
 app.use(cors({
     credentials: true,
     origin: [
-        process.env.REACT_APP_CLIENT_PREFIX,
-        process.env.REACT_APP_DB, 
-        process.env.REACT_APP_CLIENT_BUILD_PREFIX,
-        process.env.REACT_APP_FILE_SERVER_PREFIX,
-        process.env.REACT_APP_PRODUCTION_PREFIX
+        process.env.CLIENT_PREFIX,
+        process.env.DB, 
+        process.env.CLIENT_BUILD_PREFIX,
+        process.env.FILE_SERVER_PREFIX,
+        process.env.PRODUCTION_PREFIX
     ]
 }));
 
 app.use(express.static('public'));
-console.log("FILE-SERVER --- running on port 4000");
 
 
-server.listen(4000);
+// const server = http.createServer(app);
+
+const options = {
+    key: fs.readFileSync(process.env.SSL_KEY),
+    cert: fs.readFileSync(process.env.SSL_CERT)
+  };
+
+const httpsServer = https.createServer(options, app);
+
+// server.listen(4000);
+
+const port = 4000;
+
+httpsServer.listen(port, () => {
+    console.log(`FILE-SERVER RUNNING : port ${port}`)
+})
+

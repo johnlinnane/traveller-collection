@@ -1,17 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
-import axios from 'axios';
 import Slick from 'react-slick';   // uses cdn css
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
-import FontAwesome from 'react-fontawesome';
 
 import { EmailShareButton, FacebookShareButton, WhatsappShareButton } from "react-share";
 import { EmailIcon, FacebookIcon, WhatsappIcon } from "react-share";
 
 import { Document, Page, pdfjs } from 'react-pdf';
 
-import { getItemWithContributor, clearItemWithContributor, getPendItemById, getAllCats, getAllSubCats, getNextItem, getPrevItem, getParentPdf, getFilesFolder } from '../../../actions';
+import { getItemWithContributor, clearItemWithContributor, getAllCats, getAllSubCats, getNextItem, getPrevItem, getParentPdf, getFilesFolder } from '../../../actions';
 import NavigationBar from '../../widgetsUI/navigation';
 
 const IP_ADDRESS_REMOTE = process.env.REACT_APP_IP_ADDRESS_REMOTE;
@@ -90,7 +88,7 @@ class ItemView extends Component {
             }
 
 
-            if (this.props.items.item != prevProps.items.item) {
+            if (this.props.items.item !== prevProps.items.item) {
                 // console.log('PREVPROP CHANGE: itemInfo')
                 this.setState({
                     itemInfo: this.props.items.item
@@ -132,7 +130,7 @@ class ItemView extends Component {
 
             }
 
-            if (this.props.items.files != prevProps.items.files) {
+            if (this.props.items.files !== prevProps.items.files) {
                 // console.log('PREVPROP CHANGE: files')
                 if (this.props.items.files && this.props.items.files.length) {
                     let tempItemFiles = [];
@@ -178,7 +176,7 @@ class ItemView extends Component {
                 })
             }
 
-            if (this.props.user.login != prevProps.user.login) {
+            if (this.props.user.login !== prevProps.user.login) {
                 // console.log('PREVPROP CHANGE: user login')
                 
                 if (this.props.user.login.isAuth) {
@@ -361,17 +359,17 @@ class ItemView extends Component {
         }
 
 
-        const scaleDown = () => {
-            this.setState({
-                pdfScale: this.state.pdfScale - 0.2
-            })
-        }
+        // const scaleDown = () => {
+        //     this.setState({
+        //         pdfScale: this.state.pdfScale - 0.2
+        //     })
+        // }
 
-        const scaleUp = () => {
-            this.setState({
-                pdfScale: this.state.pdfScale + 0.2
-            })
-        }
+        // const scaleUp = () => {
+        //     this.setState({
+        //         pdfScale: this.state.pdfScale + 0.2
+        //     })
+        // }
 
         let pdfId = this.state.itemId; // this.props.match.params.id
         if (this.props.items.item.is_pdf_chapter === true) {
@@ -713,7 +711,7 @@ class ItemView extends Component {
 
                         {itemInfo.external_link && itemInfo.external_link[0].url ?
                             // <Link to={itemInfo.external_link[0].url}  target="_blank">
-                            <a target="_blank" href={itemInfo.external_link[0].url}>
+                            <a href={itemInfo.external_link[0].url} target="_blank" rel="noreferrer">
 
                                 <div className="link_wrapper">
                                     <div className="link_text">

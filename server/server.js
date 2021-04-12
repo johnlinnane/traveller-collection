@@ -4,7 +4,7 @@ const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 const path = require("path")
 const sharp = require('sharp');
-
+var https = require('https'); // this is new
 
 const app = express();
 
@@ -20,7 +20,7 @@ const mkdirp = require('mkdirp')
 // connect to mongo
 mongoose.Promise = global.Promise;
 
-mongoose.connect(process.env.REACT_APP_DB, { useNewUrlParser: true })
+mongoose.connect(process.env.DB, { useMongoClient: true }) // useNewUrlParser: true,
     .catch(error => console.log('MONGOOSE CONNECT ERROR: ', error));
 
 
@@ -46,11 +46,11 @@ app.use(bodyParser.json());
 app.use(cors({
     credentials: true,
     origin: [
-        process.env.REACT_APP_CLIENT_PREFIX,
-        process.env.REACT_APP_DB, 
-        process.env.REACT_APP_CLIENT_BUILD_PREFIX,
-        process.env.REACT_APP_FILE_SERVER_PREFIX,
-        process.env.REACT_APP_PRODUCTION_PREFIX
+        process.env.CLIENT_PREFIX,
+        process.env.DB, 
+        process.env.CLIENT_BUILD_PREFIX,
+        process.env.FILE_SERVER_PREFIX,
+        process.env.PRODUCTION_PREFIX
     ]
 }));
 
@@ -1090,6 +1090,19 @@ app.post(
 
 const port = process.env.PORT || 3002;
 
-app.listen(port, () => {
-    console.log(`SERVER RUNNING : port ${port}`)
+
+const options = {
+    key: fs.readFileSync(process.env.SSL_KEY),
+    cert: fs.readFileSync(process.env.SSL_CERT)
+  };
+
+const httpsServer = https.createServer(options, app);
+
+httpsServer.listen(port, () => {
+    console.log(`HTTPS SERVER RUNNING : port ${port}`)
 })
+
+
+// app.listen(port, () => {
+//     console.log(`SERVER RUNNING : port ${port}`)
+// })

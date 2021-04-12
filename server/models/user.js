@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-// const config = require('./../config/config').get(process.env.NODE_ENV);
 
 const SALT_I = 10;
 
@@ -75,7 +74,7 @@ userSchema.methods.comparePassword = function(candidatePassword, cb) {
 userSchema.methods.generateToken = function(cb) {
     let user = this;
     // generate token
-    let token = jwt.sign(user._id.toHexString(), process.env.REACT_APP_PW); // old: config.SECRET
+    let token = jwt.sign(user._id.toHexString(), process.env.PW); // old: config.SECRET
     
 
     // save all user info, with token
@@ -92,7 +91,7 @@ userSchema.statics.findByToken = function(token, cb) {
 
     // decode contains the user id
     
-    jwt.verify(token, process.env.REACT_APP_PW, function(err, decode) { // old: config.SECRET
+    jwt.verify(token, process.env.PW, function(err, decode) { // old: config.SECRET
         user.findOne({"_id":decode, "token":token}, function(err, user) {
             if(err) return cb(err);
             // return all user info if token is correct
