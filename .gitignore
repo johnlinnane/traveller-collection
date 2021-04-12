@@ -10,3 +10,4 @@
 /server/ssl
 
 .DS_Store
+.env
