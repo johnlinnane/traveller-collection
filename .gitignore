@@ -7,5 +7,6 @@
 /client/.env
 /client/.eslintcache
 /server/public/assets/media
+/server/ssl
 
 .DS_Store
