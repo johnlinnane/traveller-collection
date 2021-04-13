@@ -4,7 +4,8 @@ const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 const path = require("path")
 const sharp = require('sharp');
-var https = require('https'); // this is new
+// const https = require('https'); // this is new
+const http = require('http');
 
 const app = express();
 
@@ -1091,18 +1092,19 @@ app.post(
 const port = process.env.PORT || 3002;
 console.log('process.env.SSL_KEY: ',process.env.SSL_KEY)
 
-const options = {
-    key: fs.readFileSync(process.env.SSL_KEY),
-    cert: fs.readFileSync(process.env.SSL_CERT)
-  };
+// const options = {
+//     key: fs.readFileSync(process.env.SSL_KEY),
+//     cert: fs.readFileSync(process.env.SSL_CERT)
+//   };
 
-const httpsServer = https.createServer(options, app);
+const server = http.createServer(app);
+// const httpsServer = https.createServer(options, app);
 
-httpsServer.listen(port, () => {
-    console.log(`HTTPS SERVER RUNNING : port ${port}`)
-})
+// httpsServer.listen(port, () => {
+//     console.log(`HTTPS SERVER RUNNING : port ${port}`)
+// })
 
-
+server.listen(port);
 // app.listen(port, () => {
 //     console.log(`SERVER RUNNING : port ${port}`)
 // })

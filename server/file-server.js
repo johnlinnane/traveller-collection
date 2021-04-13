@@ -1,6 +1,6 @@
 const express = require('express');
-// const http = require('http');
-const https = require('https'); // this is new
+const http = require('http');
+// const https = require('https'); // this is new
 const fs = require('fs')
 const app = express();
 
@@ -26,20 +26,20 @@ app.use(cors({
 app.use(express.static('public'));
 
 
-// const server = http.createServer(app);
+const server = http.createServer(app);
 
-const options = {
-    key: fs.readFileSync(process.env.SSL_KEY),
-    cert: fs.readFileSync(process.env.SSL_CERT)
-  };
+// const options = {
+//     key: fs.readFileSync(process.env.SSL_KEY),
+//     cert: fs.readFileSync(process.env.SSL_CERT)
+//   };
 
-const httpsServer = https.createServer(options, app);
+// const httpsServer = https.createServer(options, app);
 
-// server.listen(4000);
+server.listen(4000);
 
-const port = 4000;
+// const port = 4000;
 
-httpsServer.listen(port, () => {
-    console.log(`FILE-SERVER RUNNING : port ${port}`)
-})
+// httpsServer.listen(port, () => {
+//     console.log(`FILE-SERVER RUNNING : port ${port}`)
+// })
 
