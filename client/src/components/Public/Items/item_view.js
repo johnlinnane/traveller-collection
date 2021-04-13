@@ -740,7 +740,7 @@ class ItemView extends Component {
                     :               
                     <div className="shareIcons">
                         <FacebookShareButton
-                            url={`http://${IP_ADDRESS_REMOTE}/items/${itemInfo._id}`}
+                            url={`${IP_ADDRESS_REMOTE}/items/${itemInfo._id}`}
                             className="shareIcon"
                             quote={itemInfo.title}
                             >
@@ -749,7 +749,7 @@ class ItemView extends Component {
 
 
                         <WhatsappShareButton
-                            url={`http://${IP_ADDRESS_REMOTE}/items/${itemInfo._id}`}
+                            url={`${IP_ADDRESS_REMOTE}/items/${itemInfo._id}`}
                             className="shareIcon"
                             title={itemInfo.title}
                             >
@@ -757,7 +757,7 @@ class ItemView extends Component {
                         </WhatsappShareButton>
 
                         <EmailShareButton
-                            url={`http://${IP_ADDRESS_REMOTE}/items/${itemInfo._id}`}
+                            url={`${IP_ADDRESS_REMOTE}/items/${itemInfo._id}`}
                             className="shareIcon"
                             subject={itemInfo.title}
                             >
