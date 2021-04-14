@@ -945,7 +945,7 @@ app.post('/api/upload-array/:id',
 // *********************** CATEGORY IMAGE ************************
 
 app.post(
-    'api/upload-cat/:id',
+    '/api/upload-cat/:id',
     function(req, res) {
         
         let catId = req.params.id;
