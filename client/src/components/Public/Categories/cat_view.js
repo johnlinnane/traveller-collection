@@ -109,20 +109,23 @@ class CatView  extends Component {
                             this.state.theseSubcats.map( (subcat, i) => (
                             
                             
+                                subcat.subCatIsHidden && subcat.subCatIsHidden === true ?
+                                    null
+                                :
+                                    <Link to={`/subcategory/${subcat._id}`} key={i}>
+                                        <div key={i} className="cat_view_subcat_card">
+                                            <div className="cat_view_subcat_card_img">
+                                                <img src={`${FS_PREFIX}/assets/media/cover_img_subcat/${subcat._id}.jpg`} 
+                                                    alt={subcat.title} 
+                                                    onError={this.addDefaultImg} 
+                                                />
+                                            </div>
+                                            <div className="cat_view_subcat_card_text">
+                                                <h3>{subcat.title}</h3>
+                                            </div>
+                                        </div>
+                                    </Link>
                                 
-                                <Link to={`/subcategory/${subcat._id}`} key={i}>
-                                    <div key={i} className="cat_view_subcat_card">
-                                        <div className="cat_view_subcat_card_img">
-                                            <img src={`${FS_PREFIX}/assets/media/cover_img_subcat/${subcat._id}.jpg`} 
-                                                alt={subcat.title} 
-                                                onError={this.addDefaultImg} 
-                                            />
-                                        </div>
-                                        <div className="cat_view_subcat_card_text">
-                                            <h3>{subcat.title}</h3>
-                                        </div>
-                                    </div>
-                                </Link>
                                 
                             ))
                         : null }

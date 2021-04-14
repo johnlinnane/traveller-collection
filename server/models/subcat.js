@@ -6,7 +6,8 @@ const subcatSchema = mongoose.Schema({
     title: String,
     description: String,
     parent_cat: String,
-    cover_item: Number
+    cover_item: Number,
+    subCatIsHidden: Boolean
 
 
 }, {timestamps:true} );
