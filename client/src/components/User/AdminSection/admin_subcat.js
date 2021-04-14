@@ -429,6 +429,7 @@ class AdminSubCat extends Component {
                                     </td>
                                     <td>
                                         <div className="admin_cat_visibility">
+                                        {/* <div> */}
                                             <input 
                                                 type="checkbox" 
                                                 checked={this.state.formdata.subCat.subCatIsHidden} 

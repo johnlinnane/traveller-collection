@@ -1357,6 +1357,10 @@ p {
   cursor: pointer;
 }
 
+.admin_cat_visibility input {
+  width: 50px;
+}
+
 /******** INTRO */
 .admin_intro {
   text-align: left;
