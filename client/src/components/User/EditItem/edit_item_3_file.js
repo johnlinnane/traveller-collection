@@ -218,9 +218,9 @@ class EditItemFile extends Component { // was PureComponent
 
 
 
-        // setTimeout(() => {
-        //     this.props.history.push(`/items/${this.state.formdata._id}`)
-        // }, 1000)
+        setTimeout(() => {
+            this.props.history.push(`/items/${this.state.formdata._id}`)
+        }, 1000)
 
 
     }
