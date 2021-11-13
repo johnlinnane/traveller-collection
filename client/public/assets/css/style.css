@@ -1085,6 +1085,9 @@ p {
 .subcat_view hr {
   width: 30%;
 }
+.subcat_view .item_list_card {
+  cursor: pointer;
+}
 
 .subcat_view_flex_container {
   text-align: center;

@@ -376,7 +376,7 @@ class EditItem extends Component { // was PureComponent
                         <td>
                             <textarea
                                 type="text"
-                                placeholder="Enter item description"
+                                placeholder="Please write as much details as you know about the item here. For example the place of origin, who made it, or owned it previously, what it was made out of, what it was used for, and any other details"
                                 defaultValue={formdata.description} 
                                 onChange={(event) => this.handleInput(event, 'description')}
                                 rows={18}

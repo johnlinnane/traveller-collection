@@ -457,7 +457,7 @@ class AdminInfo extends Component {
             <div className="admin form_input">
                 <div className="admin_info">
 
-                    <h1>Edit Info Page</h1>
+                    <h1>Edit About Page</h1>
 
                     <form onSubmit={this.submitForm}>
                         <table className="admin_info_table_section" >
@@ -471,7 +471,7 @@ class AdminInfo extends Component {
                                 
                                 <tr><td></td><td></td></tr>
 
-                                <tr>
+                                {/* <tr>
                                     <td>
                                         Add Section
                                     </td>
@@ -489,7 +489,7 @@ class AdminInfo extends Component {
 
                                 <tr>
                                     <td colSpan="2"><hr/></td>
-                                </tr>
+                                </tr> */}
 
                                 {this.renderIcons()}
 

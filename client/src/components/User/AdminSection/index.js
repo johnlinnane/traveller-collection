@@ -50,7 +50,7 @@ class Admin extends React.Component  {
                     <TabList>
                         <Tab>Categories</Tab>
                         <Tab>Sub-Categories</Tab>
-                        <Tab>Info Page</Tab>
+                        <Tab>About Page</Tab>
                         <Tab>Intro Page</Tab>
                         {/* <Tab disabled>Extra</Tab> */}
                     </TabList>
