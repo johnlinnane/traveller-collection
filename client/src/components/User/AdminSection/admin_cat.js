@@ -326,7 +326,7 @@ class AdminCat extends Component {
                                             type="text"
                                             placeholder="Enter category description"
                                             defaultValue={this.props.chosenCatInfo.description} 
-                                            onChange={(event) => this.handleCatInput(event, 'cat', 'cat_description')}
+                                            onChange={(event) => this.handleCatInput(event, 'cat_description')}
                                             rows={6}
                                         />
                                     </td>
