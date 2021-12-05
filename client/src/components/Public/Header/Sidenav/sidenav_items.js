@@ -74,7 +74,7 @@ const SidenavItems = ({user}) => {
         },
         {   type:'navItem',
             icon:'file-text-o',
-            text:'Info',
+            text:'About',
             link:'/info',
             restricted:false
         },
