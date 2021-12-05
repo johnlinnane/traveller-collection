@@ -115,23 +115,24 @@ class SubcatView  extends Component {
 
     addClick = () => {
 
-        const tempNewItemId = mongoose.Types.ObjectId().toHexString()
+        // const tempNewItemId = mongoose.Types.ObjectId().toHexString()
 
-        this.setState({
-            newItemId: tempNewItemId
-        })
+        // this.setState({
+        //     newItemId: tempNewItemId
+        // })
         
 
-        let item = {
-            _id: tempNewItemId,
-            subcategory_ref : [this.state.navInfo.subCatId],
-            category_ref: [this.state.navInfo.catId]
-        }
+        // let item = {
+        //     _id: tempNewItemId,
+        //     subcategory_ref : [this.state.navInfo.subCatId],
+        //     category_ref: [this.state.navInfo.catId]
+        // }
         
-        this.props.dispatch(addItem(item))
+        // this.props.dispatch(addItem(item))
         
         setTimeout(() => {
-            this.props.history.push(`/user/edit-item/${tempNewItemId}`)
+            // this.props.history.push(`/user/edit-item/${tempNewItemId}`);
+            this.props.history.push(`/add_item`);
         }, 1000)
 
     }
