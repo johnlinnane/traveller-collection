@@ -163,22 +163,18 @@ class ItemView extends Component {
 
 
             if (this.props.items.previtem !== prevProps.items.previtem) {
-                // console.log('PREVPROP CHANGE: previtem')
                 this.setState({
                     prevItem: this.props.items.previtem
                 })
             }
 
             if (this.props.items.nextitem !== prevProps.items.nextitem) {
-                // console.log('PREVPROP CHANGE: nextitem')
                 this.setState({
                     nextItem: this.props.items.nextitem
                 })
             }
 
             if (this.props.user.login !== prevProps.user.login) {
-                // console.log('PREVPROP CHANGE: user login')
-                
                 if (this.props.user.login.isAuth) {
                     this.setState({
                         userIsAuth: true
