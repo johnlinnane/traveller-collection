@@ -112,7 +112,6 @@ class AdminCat extends Component {
                 }
             })
             .then(res => { // then print response status
-                console.log(res);
                 toast.success('upload success')
                 alert('File uploaded successfully')
             })
@@ -142,13 +141,11 @@ class AdminCat extends Component {
 
     maxSelectFile=(event)=>{
 
-        // console.log(event);
 
         let files = event.target.files // create file object
             if (files.length > 1) { 
                const msg = 'Only 1 image can be uploaded at a time'
-               event.target.value = null // discard selected file
-               console.log(msg)
+               event.target.value = null;
               return false;
      
           }
@@ -221,7 +218,6 @@ class AdminCat extends Component {
 
 
     handleHidden() {
-        // console.log('switch switched')
         this.setState({
             formdata: {
                 ...this.state.formdata,
@@ -234,7 +230,6 @@ class AdminCat extends Component {
             }
             
         })
-        console.log('cat is hidden: ' + this.state.formdata.cat.catIsHidden)
     }
 
     addDefaultImg = (ev) => {
@@ -265,8 +260,6 @@ class AdminCat extends Component {
 
     submitForm = (e) => {
         e.preventDefault();
-        // console.log({...this.state.formdata.cat});
-        console.log(this.state.formdata.cat);
 
         this.props.dispatch(updateCat(
                 this.state.formdata.cat
@@ -293,8 +286,6 @@ class AdminCat extends Component {
 
 
     render() {
-
-        console.log(this.state.formdata.cat.catIsHidden)
 
         return (
             <div className="admin">

@@ -26,9 +26,7 @@ export default function foo(ComposedClass, reload) {
             // if(this.props.user.login && !this.props.user.login.isAuth) {
             //     this.props.dispatch(authGetCredentials()); 
             // }  
-            // console.log('authgetcredentials about to be called')
             this.props.dispatch(authGetCredentials()); // THIS IS NOT CALLED BEFORE EVERYTHING ELSE! AFTER THE FIRST RENDER
-            // console.log('authgetcredentials called')
             
         }
 
@@ -38,27 +36,20 @@ export default function foo(ComposedClass, reload) {
 
                 // if(this.props.user.login && !this.props.user.login.isAuth) {
                 if(this.props.user && this.props.user.login && !this.props.user.login.isAuth) {
-                    console.log('user is not authenticated')
                     if(reload === true) {
-                        console.log('push to login')
                         this.props.history.push('/login');
                     }
                 // else { ..
                 } else { 
-                    // console.log('user is authenticated')
                     if (reload === false) {
-                        console.log('push to user')
                         this.props.history.push('/user')
-                    } else {
-                        // console.log('Reload is null... Proceed!!')
-                    }
+                    } 
                 } 
 
             }
         }
 
         render() {
-            // console.log(this.props)
             if(this.state.loading) {
                 return <div className="loader">Loading...</div>
             }
@@ -73,7 +64,6 @@ export default function foo(ComposedClass, reload) {
     }
 
     function mapStateToProps(state) {
-        // console.log(state.user)
         return {
             user:state.user
         }

@@ -60,8 +60,6 @@ class AllItems extends Component {
 }
 
 function mapStateToProps(state) {
-
-    console.log(state);
     return {
         user:state.user,
         items:state.items

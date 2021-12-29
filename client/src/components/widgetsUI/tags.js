@@ -48,8 +48,6 @@ class Tags extends React.Component {
     
 
     handleDelete(i) {
-        console.log('handle sub');
-
         const { tags } = this.state;
         this.setState({
          tags: tags.filter((tag, index) => index !== i),
@@ -57,12 +55,10 @@ class Tags extends React.Component {
     }
  
     handleAddition(tag) {
-        console.log('handle addition');
         this.setState(state => ({ tags: [...state.tags, tag] }));
-        console.log(this.state);
         this.props.dispatch(updateItem({
             _id: this.state.id,
-            tags: ['froub']
+            tags: ['test']
             
         }
     ))
@@ -80,7 +76,6 @@ class Tags extends React.Component {
     }
  
     render() {
-        console.log(this.state)
         const { tags, suggestions } = this.state;
 
         return (

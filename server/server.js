@@ -67,8 +67,6 @@ app.use(cors({
 
 // deny access
 app.get('/api/auth-get-user-creds', authMiddleware, (req, res) => {
-    console.log('API/AUTH-GET-USER-CREDS FIRED')
-    // console.log('API/AUTH-GET-USER-CREDS REQ', req)
     res.json({
         isAuth:true,
         id:req.user._id,
@@ -252,8 +250,6 @@ app.get('/api/get-all-subcategories', (req, res) => {
 app.get('/api/get-items-by-cat', (req, res) => {
 
     let value = req.query.value;
-    console.log('GETITEMSBYCAT VALUE', value);
-  
     Item.find({ category_ref:value }).exec( (err, docs) => {
         if(err) return res.status(400).send(err);
         res.send(docs);
@@ -389,7 +385,6 @@ app.get('/api/get-info-text', (req,res) => {
 //  ******************** get documents with coordinates
 
 app.get('/api/get-items-with-coords', (req,res) => {
-    // console.log('getItemsWithCoords called')
     Item.find( { "geo.latitude": {$ne:null} }, {}, { sort: { '_id':1 } }, (err, doc) => {
         if(err) return res.status(400).send(err);
         res.send(doc);
@@ -408,14 +403,13 @@ app.get('/api/get-items-with-coords', (req,res) => {
 
 // * * * * * * * * * * * * * * * * * * * * post new item
 app.post('/api/create-item', (req, res) => {
-    const item = new Item( req.body );             // req is the data you post
+    const item = new Item( req.body );
 
-    item.save( (err, doc) =>{                      // saves the new document
-        // console.log(doc._id);
+    item.save( (err, doc) =>{
         if(err) return res.status(400).send(doc);
         res.status(200).json({
             post:true,
-            itemId:doc._id                       // gets the id from the post
+            itemId:doc._id
         })
       })
 })
@@ -424,15 +418,13 @@ app.post('/api/create-item', (req, res) => {
 
 //////////// * * * * * * * * * * * post pending item
 app.post('/api/create-item-pending', (req, res) => {
-    const pendingItem = new PendingItem( req.body );             // req is the data you post
-    console.log('ITEM-PENDING REQ.BODY: ', req.body);
+    const pendingItem = new PendingItem( req.body );
 
-    pendingItem.save( (err, doc) =>{                      // saves the new document
-        console.log('PENDING ITEM BEING SAVED: ', doc);
+    pendingItem.save( (err, doc) =>{
         if(err) return res.status(400).send(doc);
         res.status(200).json({
             post:true,
-            itemId:doc._id                       // gets the id from the post
+            itemId:doc._id
         })
       })
 })
@@ -489,13 +481,13 @@ app.post('/api/login',  (req, res) => {
 
 // * * * * * * * * * * * * * * * * * * * * post new category
 app.post('/api/add-cat', (req, res) => {
-    const cat = new Cat( req.body );             // req is the data you post
+    const cat = new Cat( req.body );
 
-    cat.save( (err, doc) =>{                      // saves the new document
+    cat.save( (err, doc) =>{
         if(err) return res.status(400).send(doc);
         res.status(200).json({
             post:true,
-            catId:doc._id                       // gets the id from the post
+            catId:doc._id
         })
       })
 })
@@ -504,14 +496,13 @@ app.post('/api/add-cat', (req, res) => {
 
 // * * * * * * * * * * * * * * * * * * * * post new subcategory
 app.post('/api/add-subcat', (req, res) => {
-    const subcat = new SubCat( req.body );             // req is the data you post
+    const subcat = new SubCat( req.body );
 
-    subcat.save( (err, doc) =>{                      // saves the new document
-        // console.log(doc._id);
+    subcat.save( (err, doc) =>{
         if(err) return res.status(400).send(doc);
         res.status(200).json({
             post:true,
-            catId:doc._id                       // gets the id from the post
+            catId:doc._id
         })
       })
 })
@@ -551,13 +542,12 @@ app.get('/api/accept-item', (req, res) => {
 
         fs.renameSync(`${itemsPath}${itemid}`, `${itemsPath}${newId}`, (err) => {
             if (err) {
-              throw err;
+                throw err;
             }
             fs.statSync(`${itemsPath}${newId}`, (error, stats) => {
-              if (error) {
-                throw error;
-              }
-              console.log(`ACCEPT-ITEM RENAME STATS: ${JSON.stringify(stats)}`);
+                if (error) {
+                    throw error;
+                }
             });
           });
 
@@ -745,22 +735,16 @@ app.post('/api/delete-file', function(req, res) {
 // get files in folder
 
 app.post('/api/get-files-folder', (req, res) => {
-    
-    console.log('API/GETFILESFOLDER CALLED');
     let query = './public/assets/media';
-
     let fullPath = query + req.body.folder
-    console.log('FS.READDIR WITH FULLPATH:', fullPath)
 
     fs.readdir(fullPath, {withFileTypes: true}, (err, files) => {
         if (err) {
-            console.log('GET-FILES-FOLDER: error finding files in folder / no files in folder')
+            console.log('Error finding files in folder / no files in folder')
         } else if (files.length && files[0].name === '.DS_Store') {
             files.shift()
         }
-        
         res.send(files)
-        console.log('GET-FILES-FOLDER FILES', files)
     })
 });
 
@@ -771,17 +755,13 @@ app.post('/api/delete-dir', function(req, res) {
 
     let section = req.body.section;
     let id = req.body.id;
-
     let dir = path.resolve(baseUrl, section, id)
-
-
-    console.log('DIR TO BE DELETED', dir);
 
     const deleteDir = (dir, subDir) => {
         fs.rmdir(subDir, () => {
-            console.log('SUBDIR BEING DELETED:', subDir);
+            // console.log('SUBDIR BEING DELETED:', subDir);
             fs.rmdir(dir, () => {
-                console.log('DIR BEING DELTED: ', dir);
+                // console.log('DIR BEING DELTED: ', dir);
             })
         })
     }
@@ -794,26 +774,18 @@ app.post('/api/delete-dir', function(req, res) {
                     if (fs.lstatSync(string).isFile()) {
                         fs.unlink(string, function (err) {
                             if (err) throw err;
-                            console.log('FILE DELETED: ', file.name);
                         })
                     }
 
                     if (fs.lstatSync(string).isDirectory()) {
                         let subDir = path.resolve(dir, file.name)
-                        console.log('SUBDIR TO BE DELETED: ', subDir);
-
                         fs.readdir(subDir, {withFileTypes: true}, (err, files) => {
                             files.forEach( file => {
                                 let subFile = path.resolve(string, file.name)
                                 if (fs.lstatSync(subFile).isFile()) {
                                     fs.unlink(subFile, function (err) {
                                         if (err) throw err;
-                                        console.log('SUB FILE DELETED: ', file.name);
-                
                                         deleteDir(dir, subDir);
-
-                                        
-
                                     })
                                 }
                             })
@@ -896,19 +868,16 @@ let uploadArray = multer({ storage: storageArray }).array('files');
 
 app.post('/api/upload-array/:id', 
     (req, res, next) => {
-        console.log('first callback')
         next()
     },
     function (req, res, next) {
         uploadArray(req, res, function (err) {
             if (err instanceof multer.MulterError) {
-                console.log(err) // A Multer error occurred when uploading.
+                console.log(err)
             } else if (err) {
-                console.log(err) // An unknown error occurred when uploading.
+                console.log(err)
             }
-    
-            
-            next(); // Everything went fine.
+            next();
         })
         
     }, 
@@ -932,7 +901,6 @@ app.post('/api/upload-array/:id',
                         }
                     })
             } else {
-                console.log('THUMB FILES: ', thumbFiles)
                 res.send("Files uploaded.");
             }
         })
@@ -949,7 +917,6 @@ app.post(
     function(req, res) {
         
         let catId = req.params.id;
-        console.log('UPLOAD-CAT REQ.FILE: ', req.file);
         let index = 0;
      
         multer({ storage: multer.diskStorage({
@@ -986,7 +953,6 @@ app.post(
     function(req, res) {
         
         let subCatId = req.params.id;
-        console.log('UPLOAD-SUBCAT REQ.FILE', req.file);
         let index = 0;
      
         multer({ storage: multer.diskStorage({
@@ -1020,10 +986,6 @@ app.post(
 app.post(
     '/api/upload-intro-img',
     function(req, res) {
-        
-        console.log('UPLOAD-INTRO-IMG REQ.FILE', req.file);
-
-     
         multer({ storage: multer.diskStorage({
             destination: function (req, file, cb) {
 
@@ -1055,9 +1017,6 @@ app.post(
     function(req, res) {
         
         let number = req.params.number;
-        console.log('UPLOAD-INFO REQ.FILE: ', req.file);
-
-     
         multer({ storage: multer.diskStorage({
             destination: function (req, file, cb) {
 
@@ -1090,21 +1049,14 @@ app.post(
 
 
 const port = process.env.PORT || 3002;
-console.log('process.env.SSL_KEY: ',process.env.SSL_KEY)
 
 const options = {
     key: fs.readFileSync(process.env.SSL_KEY),
     cert: fs.readFileSync(process.env.SSL_CERT)
   };
 
-// const server = http.createServer(app);
 const httpsServer = https.createServer(options, app);
 
 httpsServer.listen(port, () => {
     console.log(`HTTPS SERVER RUNNING : port ${port}`)
 })
-
-// server.listen(port);
-// app.listen(port, () => {
-//     console.log(`SERVER RUNNING : port ${port}`)
-// })

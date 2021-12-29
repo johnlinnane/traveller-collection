@@ -7,8 +7,6 @@ const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
 const SliderTemplates = (props) => {
 
-    console.log(props.data.list);
-
     let template = null;
 
 

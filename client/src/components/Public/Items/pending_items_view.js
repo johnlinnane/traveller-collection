@@ -47,7 +47,6 @@ class PendingItemsView extends Component {
         };
         axios.post(`${API_PREFIX}/delete-dir`, fileData  )
             .then(res => { 
-                console.log(res);
                 console.log('Media deleted successfully')
             })
             .catch(err => { 
@@ -62,14 +61,11 @@ class PendingItemsView extends Component {
 
         if (choice === 'accept') {
             this.props.dispatch(acceptItem(itemId, this.props.user.login.id))
-            console.log('Item ' + itemId + ' accepted! by ' + this.props.user.login.id)
-            // move item to items database    
         }
 
         if (choice === 'reject') {
             this.props.dispatch(deletePendItem(itemId));
             this.deleteAllMedia(itemId);
-            console.log('Item ' + itemId + ' rejected!')
         }
 
         let tempItems = this.state.items
@@ -88,10 +84,6 @@ class PendingItemsView extends Component {
 
 
     render() {
-
-        console.log(this.props)
-
-
 
         return (
             <div className="main_view p_items_view">

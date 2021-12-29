@@ -25,7 +25,6 @@ class MainMap extends Component {
 
     render() {
 
-        console.log(this.props)
 
         return (
             <div className="map_page_wrapper">

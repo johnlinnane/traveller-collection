@@ -37,7 +37,6 @@ class Login extends Component {
         if (this.props !== prevProps) {
 
             if (this.props.user.login && this.props.user.login.isAuth) {
-                console.log('pushed from login to user automatically')
                 this.props.history.push('/user')
             }
         }

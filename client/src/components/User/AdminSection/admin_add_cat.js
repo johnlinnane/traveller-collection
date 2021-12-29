@@ -59,7 +59,6 @@ class AdminAddCat extends Component {
         this.setState({
             catdata: newCatdata,
         })
-        console.log(this.state);
     }
 
     addDefaultImg = (ev) => {
@@ -100,8 +99,7 @@ class AdminAddCat extends Component {
                     })
                 }
             })
-            .then(res => { // then print response status
-                console.log(res);
+            .then(res => { 
                 toast.success('upload success')
                 alert('File uploaded successfully')
             })
@@ -121,8 +119,7 @@ class AdminAddCat extends Component {
         let files = event.target.files // create file object
             if (files.length > 1) { 
                const msg = 'Only 1 image can be uploaded at a time'
-               event.target.value = null // discard selected file
-               console.log(msg)
+               event.target.value = null;
               return false;
      
           }
@@ -140,7 +137,7 @@ class AdminAddCat extends Component {
             }
         };
 
-        for(let z = 0; z<err.length; z++) { // loop create toast massage
+        for(let z = 0; z<err.length; z++) { 
             event.target.value = null 
             toast.error(err[z])
         }
@@ -172,7 +169,6 @@ class AdminAddCat extends Component {
 
     submitForm = (e) => {
         e.preventDefault();
-        // console.log(this.state.formdata);
 
         // dispatch an action, adding updated  formdata + the user id from the redux store
         this.props.dispatch(addCat({

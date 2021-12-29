@@ -82,9 +82,6 @@ class Register extends PureComponent {
 
 
     render() {
-
-        console.log(this.props);
-
         let user = this.props.user;
 
         return (

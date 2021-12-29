@@ -216,8 +216,6 @@ class EditItem extends Component { // was PureComponent
 
 
     handleClick(e) {
-        console.log(e.latlng.lat);
-
         let lat = parseFloat(e.latlng.lat).toFixed(6);
         let lng = parseFloat(e.latlng.lng).toFixed(6);
 
@@ -239,9 +237,7 @@ class EditItem extends Component { // was PureComponent
                 ...this.state.formdata,
                 shareDisabled: !this.state.formdata.shareDisabled
             }
-            
         })
-        console.log(this.state.formdata.shareDisabled)
     }
 
     deleteAllMedia = () => {
@@ -254,8 +250,7 @@ class EditItem extends Component { // was PureComponent
         };
 
         axios.post(`${API_PREFIX}/delete-dir`, fileData  )
-            .then(res => { // then print response status
-                console.log(res);
+            .then(res => {
                 alert('Media deleted successfully')
             })
             .catch(err => { 
@@ -287,8 +282,6 @@ class EditItem extends Component { // was PureComponent
 
     submitForm = (e) => {
         e.preventDefault();
-        console.log(this.state.formdata);
-
         this.props.dispatch(updateItem({
                 ...this.state.formdata
             }
@@ -644,9 +637,6 @@ class EditItem extends Component { // was PureComponent
 
 
     render() {
-        console.log('STATE', this.state);
-        console.log('PROPS', this.props);
-
         return (
             <div className="main_view">
                 <div className="form_input item_form_input edit_page">

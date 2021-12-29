@@ -152,8 +152,6 @@ class EditItemFile extends Component { // was PureComponent
     onChangeHandler = (event) => {
 
         const file = event.target.files;
-        console.log('.FILES: ', event.target.files);
-
         let tempSelectedFiles = this.state.selectedFiles;
         tempSelectedFiles.push(file)
 
@@ -181,8 +179,6 @@ class EditItemFile extends Component { // was PureComponent
 
 
     onSubmitHandler = () => {
-        console.log('ONSUBMITHANDLER TRIGGERED for', this.state.formdata._id)
-
         if (this.props.user.login.isAuth) {
             this.props.dispatch(updateItem(
                 { 
@@ -207,7 +203,6 @@ class EditItemFile extends Component { // was PureComponent
 
             axios.post(`${API_PREFIX}/upload-array/${this.state.formdata._id}`, formdata)
                 .then(res => { // then print response status
-                    console.log(res);
                     alert('File(s) uploaded successfully')
                 })
                 .catch(err => { 
@@ -228,9 +223,8 @@ class EditItemFile extends Component { // was PureComponent
     maxSelectFile=(event)=>{
         let files = event.target.files // create file object
             if (files.length > 6) { 
-               const msg = 'Only 6 images can be uploaded at a time'
-               event.target.value = null // discard selected file
-               console.log(msg)
+                const msg = 'Only 6 images can be uploaded at a time'
+                event.target.value = null;
                 return false;
           }
         return true;
@@ -284,7 +278,6 @@ class EditItemFile extends Component { // was PureComponent
 
         axios.post(`${API_PREFIX}/delete-dir`, fileData  )
             .then(res => { 
-                console.log(res);
                 toast.success('Media deleted successfully')
                 alert('Media deleted successfully')
             })
@@ -305,18 +298,14 @@ class EditItemFile extends Component { // was PureComponent
 
 
     deleteImage =  (i) => {
-        console.log(this.state.itemFiles[i])
-
         let data = {
             path: `/items/${this.state.formdata._id}/original/${this.state.itemFiles[i]}`
         };
         
         axios.post(`${API_PREFIX}/delete-file`, data  )
             .then( res => {
-                console.log(res.data);
                 let tempItemFiles = [...this.state.itemFiles];
                 tempItemFiles.splice(i, 1);
-                console.log('FILES REMAINING: ',tempItemFiles);
                 this.setState({
                     itemFiles: tempItemFiles
                 })
@@ -360,9 +349,6 @@ class EditItemFile extends Component { // was PureComponent
 
 
     render() {
-        console.log(this.state);
-        console.log('selectedFilesImg', this.state.selectedFilesImg.length, 'selectedFilesNum', this.state.selectedFilesNum)
-
         return (
             
             <div className="main_view">

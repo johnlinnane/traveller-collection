@@ -85,12 +85,10 @@ class AdminAddSubCat extends Component {
         this.setState({
             subcatdata: newSubcatdata,
         })
-        console.log(this.state);
     }
 
 
     handleCatChange = (newValue) => {
-        console.log(newValue)
 
         let tempSubcatdata = this.state.subcatdata;
         tempSubcatdata.parent_cat = newValue.value
@@ -135,7 +133,6 @@ class AdminAddSubCat extends Component {
                 }
             })
             .then(res => { // then print response status
-                console.log(res);
                 toast.success('upload success')
                 alert('File uploaded successfully')
             })
@@ -155,8 +152,7 @@ class AdminAddSubCat extends Component {
         let files = event.target.files // create file object
             if (files.length > 1) { 
                const msg = 'Only 1 image can be uploaded at a time'
-               event.target.value = null // discard selected file
-               console.log(msg)
+               event.target.value = null;
               return false;
      
           }
@@ -227,7 +223,6 @@ class AdminAddSubCat extends Component {
 
 
     render() {
-        console.log(this.state.convertedCatsLoaded)
 
         return (
             <div className="admin">
@@ -351,8 +346,6 @@ class AdminAddSubCat extends Component {
 
 
 function mapStateToProps(state) {
-    // console.log(state);
-
     return {
         cats:state.cats.cats
         

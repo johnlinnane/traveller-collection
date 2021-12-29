@@ -42,8 +42,6 @@ export function clearItem() {
 
 export function acceptItem(itemId, userId) {
 
-    console.log('user ID: ' + userId);
-
     const request = axios.get(`${API_PREFIX}/accept-item?itemid=${itemId}&userid=${userId}`)
                         .then(response => response.data);
     
@@ -57,7 +55,6 @@ export function acceptItem(itemId, userId) {
 // ******************** USER ACTIONS ********************
 
 export function loginUser({email, password}) {
-    console.log('loginuser called')
     const request = axios.post(`${API_PREFIX}/login`, {email, password}, {withCredentials: true})
                         .then(response => response.data);
 
@@ -69,10 +66,8 @@ export function loginUser({email, password}) {
 
 
 export function authGetCredentials() {
-    // console.log('authGetCredentials executed')
     const request = axios.get(`${API_PREFIX}/auth-get-user-creds`, {withCredentials: true}) 
                         .then(response => response.data)
-                        // .then(data => console.log('HIIII'))
     return {
         type:'USER_AUTH',
         payload:request
@@ -128,9 +123,6 @@ export function getAllItems() {
                                 return response.data
                             }
                         );
-
-    // console.log(request);
-
     return {
         type:'GET_ALL_ITEMS',
         payload:request
@@ -170,8 +162,6 @@ export function getItems(
                             }
                         })
 
-    // console.log(request);
-
     return{
         type:'GET_ITEMS',
         payload:request
@@ -191,8 +181,6 @@ export function getItemWithContributor(id) {
         // get the promise, using {{{destructuring}}}
         request.then(({data}) => {
             let item = data;
-            // console.log(data);
-
             // axios.get(`${API_PREFIX}/get-contributor?id=${item._id}`)
             axios.get(`${API_PREFIX}/get-contributor?id=5e99a141fb671004505351b4`)
 
@@ -228,13 +216,8 @@ export function clearItemWithContributor() {
 
 // item arg is json data
 export function addItem(item) {
-
-    console.log(item);
-
     const request = axios.post(`${API_PREFIX}/create-item`, item)
                         .then(response => response.data);
-    
-
     return {
         type: 'CREATE_ITEM',
         payload:request
@@ -244,12 +227,8 @@ export function addItem(item) {
 
 
 export function addPendingItem(item) {
-    console.log('action triggered');
-    console.log(item);
     const request = axios.post(`${API_PREFIX}/create-item-pending`, item)
                         .then(response => response.data);
-    
-
     return {
         type: 'CREATE_PEND_ITEM',
         payload:request
@@ -298,7 +277,6 @@ export function getLatestItem() {
                 return response.data
             }    
         );
-    console.log(request);
     return {
         type: 'GET_LATEST_ITEM',
         payload: request
@@ -326,7 +304,6 @@ export function getItemsBySubcat(subcatId) {
                 return response.data
             }    
         );
-    // console.log(request);
     return {
         type: 'GET_ITEMS_BY_SUBCAT',
         payload: request
@@ -355,7 +332,6 @@ export function getItemsWithCoords() {
                 return response.data
             }    
         );
-    console.log(request);
     return {
         type: 'GET_ITEMS_W_COORDS',
         payload: request
@@ -402,10 +378,8 @@ export function getPendItemById(id) {
 
 
 export function updateItem(data) {
-    console.log('updateItem called');
     const request = axios.post(`${API_PREFIX}/item-update`, data)
                         .then(response => response.data);
-    console.log(data);
     return {
         type:'UPDATE_ITEM',
         payload:request
@@ -428,7 +402,6 @@ export function deleteChapter(parentId, title) {
                 }
             })
 
-            console.log(data)
             const request = axios.post(`${API_PREFIX}/item-update`, data)
                             .then(response => response.data);
 
@@ -448,10 +421,8 @@ export function deleteChapter(parentId, title) {
 
 /////////////////////
 export function updatePendItem(data) {
-    console.log('updatePendItem called');
     const request = axios.post(`${API_PREFIX}/item-pend-update`, data)
                         .then(response => response.data);
-    console.log(data);
     return {
         type:'UPDATE_PEND_ITEM',
         payload:request
@@ -537,10 +508,6 @@ export function getItemsWithCat(catId) {
     return (dispatch) => {
         request.then(({data}) => {
             let catInfo = data;
-            // console.log(item);
-
-            console.log(data);
-
             axios.get(`${API_PREFIX}/get-items-by-cat?value=${catInfo._id}`)
 
                 .then(({data}) => {
@@ -575,7 +542,6 @@ export function addCat(cat) {
 
 
 export function deleteCat(id) {
-    console.log('delete cat called');
     const request = axios.delete(`${API_PREFIX}/delete-cat?id=${id}`)
                         .then(response => response.data)
     return {
@@ -585,10 +551,8 @@ export function deleteCat(id) {
 }
 
 export function updateCat(data) {
-    console.log('updateCat called');
     const request = axios.post(`${API_PREFIX}/cat-update`, data)
                         .then(response => response.data);
-    // console.log(data);
     return {
         type:'UPDATE_CAT',
         payload:request
@@ -649,10 +613,8 @@ export function deleteSubcat(id) {
 }
 
 export function updateSubcat(data) {
-    console.log('updateSubcat called');
     const request = axios.post(`${API_PREFIX}/subcat-update`, data)
                         .then(response => response.data);
-    // console.log(data);
     return {
         type:'UPDATE_SUBCAT',
         payload:request
@@ -665,10 +627,8 @@ export function updateSubcat(data) {
 
 
 export function updateIntroText(data) {
-    console.log('updateIntroText called');
     const request = axios.post(`${API_PREFIX}/update-intro-text`, data)
                         .then(response => response.data);
-    // console.log(data);
     return {
         type:'UPDATE_INTRO_TEXT',
         payload:request
@@ -695,10 +655,8 @@ export function getIntroText() {
 
 
 export function updateInfoText(data) {
-    console.log('updateInfoText called');
     const request = axios.post(`${API_PREFIX}/update-info-text`, data)
                         .then(response => response.data);
-    // console.log(data);
     return {
         type:'UPDATE_INFO_TEXT',
         payload:request
@@ -707,13 +665,11 @@ export function updateInfoText(data) {
 
 
 export function getInfoText() {
-    // console.log('getInfoText called')
     const request = axios.get(`${API_PREFIX}/get-info-text`)
         .then(response => {
                 return response.data
             }    
         );
-    // console.log(request);
     return {
         type: 'GET_INFO_TEXT',
         payload: request

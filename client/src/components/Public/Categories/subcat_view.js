@@ -36,7 +36,6 @@ class SubcatView  extends Component {
 
 
     componentDidMount() {
-        // console.log(this.props.match.params.id);
         this.props.dispatch(getSubcat(this.props.match.params.id))
 
         this.props.dispatch(getItemsBySubcat(this.props.match.params.id))
@@ -209,7 +208,6 @@ class SubcatView  extends Component {
 
 
     render() {
-        console.log(this.props.subcat)
         return (
             <div className="subcat_view_component">
                 <NavigationBar navinfo={this.state.navInfo}/>

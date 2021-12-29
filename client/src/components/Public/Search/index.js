@@ -85,14 +85,7 @@ class Search extends Component {
 
   
     render() {
-
-
         let filtered = this.state.filtered;
-
-        if (this.state.noMatch) {
-            console.log('no match found')
-        }
-
         return (
             <div className="main_view">
                 <SearchHeader keywords={this.getKeyword} placeholder="Search title, creator, description, address"/>

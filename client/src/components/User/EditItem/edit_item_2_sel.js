@@ -431,7 +431,6 @@ class EditItemSel extends Component { // was PureComponent
     render() {
 
         let items = this.props.items;
-        console.log(this.props);
 
         return (
             

@@ -81,9 +81,6 @@ class AdminIntro extends Component {
                 }
             })
             .then(res => { // then print response status
-                // console.log(res.config.data.id);
-                // console.log(res.statusText);
-                console.log(res);
                 toast.success('upload success')
                 alert('File(s) uploaded successfully')
             })
@@ -98,13 +95,10 @@ class AdminIntro extends Component {
 
     maxSelectFile=(event)=>{
 
-        // console.log(event);
-
         let files = event.target.files // create file object
             if (files.length > 1) { 
                const msg = 'Only 1 image can be uploaded at a time'
-               event.target.value = null // discard selected file
-               console.log(msg)
+               event.target.value = null;
               return false;
      
           }
@@ -184,7 +178,6 @@ class AdminIntro extends Component {
         this.setState({
             introData: newIntroData
         })
-        // console.log(newFormdata);
     }
 
 
@@ -218,8 +211,6 @@ class AdminIntro extends Component {
     }
 
     render() {
-
-        console.log(this.state)
 
         return (
             <div className="admin">
@@ -323,8 +314,6 @@ class AdminIntro extends Component {
 
 
 function mapStateToProps(state) {
-    // console.log(state);
-
     return {
         text: state.intros.text
         

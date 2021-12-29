@@ -63,8 +63,6 @@ class AddItem extends Component {
 
 
     handleInput = (event, name, level) => {
-        // console.log(event.target.value);
-
         let newFormdata = {
             ...this.state.formdata
         }
@@ -87,8 +85,6 @@ class AddItem extends Component {
 
 
     handleClick(e) {
-        console.log(e.latlng.lat);
-
         let lat = parseFloat(e.latlng.lat).toFixed(6);
         let lng = parseFloat(e.latlng.lng).toFixed(6);
 
@@ -118,10 +114,6 @@ class AddItem extends Component {
 
     submitForm = (e) => {
         e.preventDefault();
-        // console.log(this.state.formdata);
-
-        // dispatch an action, adding updated  formdata + the user id from the redux store
-
         if (this.props.user.login.isAuth) {
             this.props.dispatch(addItem({
                     ...this.state.formdata,
@@ -130,7 +122,6 @@ class AddItem extends Component {
 
             
         } else {
-            console.log('done!');
             this.props.dispatch(addPendingItem({
                 
                 ...this.state.formdata,
@@ -358,8 +349,6 @@ class AddItem extends Component {
 
 
     render() {
-        // console.log(this.props);
-
         return (
             <div className="main_view">
                 <div className="form_input item_form_input edit_page">

@@ -25,7 +25,6 @@ class HomeContainer extends Component {
 
     loadmore = () => {
         let count = this.props.items.list.length;
-        // console.log(count);
         this.props.dispatch(getItems(4,count,'asc',this.props.items.list))
     }
 

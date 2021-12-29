@@ -69,7 +69,6 @@ class CatList extends Component {
 }
 
 function mapStateToProps(state) {
-    // console.log(state);
     return {
         cats: state.cats.cats,
         items: state.cats.catitems

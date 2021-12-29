@@ -82,7 +82,6 @@ class Info extends Component {
 
     
     render() {
-        console.log(this.props)
         return (
             <div className="main_view">
                 
@@ -102,7 +101,6 @@ class Info extends Component {
 
 
 function mapStateToProps(state) {
-    // console.log(state);
 
     return {
         text: state.infos.text

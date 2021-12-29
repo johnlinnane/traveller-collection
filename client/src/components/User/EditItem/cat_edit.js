@@ -39,8 +39,6 @@ class CatEdit extends Component { // was PureComponent
     // *************** UPDLOAD LOGIC ********************
 
     onChangeHandler = (id, event) => {
-        console.log(id);
-
         let files = event.target.files;
 
         if (this.maxSelectFile(event) && this.checkMimeType(event) && this.checkMimeType(event)) {  
@@ -70,9 +68,6 @@ class CatEdit extends Component { // was PureComponent
                 }
             })
             .then(res => { // then print response status
-                // console.log(res.config.data.id);
-                // console.log(res.statusText);
-                console.log(res);
                 toast.success('upload success')
                 alert('File(s) uploaded successfully')
             })
@@ -90,12 +85,10 @@ class CatEdit extends Component { // was PureComponent
 
         let files = event.target.files // create file object
             if (files.length > 6) { 
-               const msg = 'Only 6 images can be uploaded at a time'
-               event.target.value = null // discard selected file
-               console.log(msg)
-              return false;
-     
-          }
+                const msg = 'Only 6 images can be uploaded at a time'
+                event.target.value = null;
+                return false;
+            }
         return true;
      
     }

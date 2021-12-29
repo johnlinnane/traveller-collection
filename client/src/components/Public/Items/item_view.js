@@ -79,7 +79,6 @@ class ItemView extends Component {
                 this.setState({
                     itemId: this.props.match.params.id
                 })
-                // console.log('PREVPROP CHANGE: param id')
                 this.props.dispatch(getItemWithContributor(this.props.match.params.id));
                 this.props.dispatch(getAllCats());
                 this.props.dispatch(getAllSubCats());
@@ -89,7 +88,6 @@ class ItemView extends Component {
 
 
             if (this.props.items.item !== prevProps.items.item) {
-                // console.log('PREVPROP CHANGE: itemInfo')
                 this.setState({
                     itemInfo: this.props.items.item
                 })
@@ -131,7 +129,6 @@ class ItemView extends Component {
             }
 
             if (this.props.items.files !== prevProps.items.files) {
-                // console.log('PREVPROP CHANGE: files')
                 if (this.props.items.files && this.props.items.files.length) {
                     let tempItemFiles = [];
                     let tempImgFiles = [];
@@ -247,7 +244,6 @@ class ItemView extends Component {
             this.props.cats.map( cat => {
                 
                 if (cat._id === catId[0]) {
-                    // console.log(cat.title);
                     this.navInfo.catTitle = cat.title;
                     this.navInfo.catId = cat._id;
                 }
@@ -257,12 +253,10 @@ class ItemView extends Component {
     }
 
     getSubCatName = (subCatId) => {
-        // console.log(subCatId);
         if (this.props.subcats && this.props.subcats.length) {
             this.props.subcats.forEach( subcat => {
                 
                 if (subcat._id === subCatId[0]) {
-                    // console.log(cat.title);
                     this.navInfo.subCatTitle = subcat.title;
                     this.navInfo.subCatId = subcat._id;
 
@@ -296,7 +290,6 @@ class ItemView extends Component {
 
 
     renderSlider = (files) => {
-        console.log('render slider called', `${FS_PREFIX}/assets/media/items/${this.state.itemId}/original/${files[0]}`)
         const settings = {
             dots: true,
             infinite: false,
@@ -808,7 +801,6 @@ class ItemView extends Component {
 
 
     render() {
-        console.log(this.state.imgFiles)
 
         return (
             

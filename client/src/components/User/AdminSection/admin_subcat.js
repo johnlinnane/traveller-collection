@@ -96,7 +96,6 @@ class AdminSubCat extends Component {
 
 
     handleHidden() {
-        console.log('handleHidden called, subcat is hidden: ' + this.state.formdata.subCat.subCatIsHidden)
         this.setState({
             formdata: {
                 ...this.state.formdata,
@@ -109,8 +108,6 @@ class AdminSubCat extends Component {
             }
             
         })
-        setTimeout( () => {console.log('subcat is hidden: ' + this.state.formdata.subCat.subCatIsHidden)}, 1000)
-        
     }
 
     // *************** UPLOAD LOGIC ********************
@@ -151,9 +148,6 @@ class AdminSubCat extends Component {
                 }
             })
             .then(res => { // then print response status
-                // console.log(res.config.data.id);
-                // console.log(res.statusText);
-                console.log(res);
                 toast.success('upload success')
                 alert('File uploaded successfully')
             })
@@ -185,13 +179,10 @@ class AdminSubCat extends Component {
 
     maxSelectFile=(event)=>{
 
-        // console.log(event);
-
         let files = event.target.files // create file object
             if (files.length > 1) { 
                const msg = 'Only 1 image can be uploaded at a time'
-               event.target.value = null // discard selected file
-               console.log(msg)
+               event.target.value = null;
               return false;
      
           }
@@ -279,11 +270,6 @@ class AdminSubCat extends Component {
 
 
     handleCatChange = (newValue) => {
-        console.log(newValue)
-
-
-
-
         this.setState({
             formdata: {
                 ...this.state.formdata,
@@ -311,8 +297,6 @@ class AdminSubCat extends Component {
 
 
     removeSubCat = (id) => {
-
-        console.log(id)
         this.props.dispatch(deleteSubcat(id))
         this.props.history.push(`/admin/0`)
     }
@@ -321,7 +305,6 @@ class AdminSubCat extends Component {
     submitForm = (e) => {
         e.preventDefault();
 
-        console.log('formdata being submitted: ', this.state.formdata.subCat)
         this.props.dispatch(updateSubcat(
             this.state.formdata.subCat
         ))
@@ -342,8 +325,6 @@ class AdminSubCat extends Component {
 
 
     render() {
-
-        console.log('Render: subCatishidden....',this.state.formdata.subCat.subCatIsHidden)
 
         return (
             <div className="admin">

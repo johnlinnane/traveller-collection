@@ -21,7 +21,6 @@ const ItemImageSlider = (props) => {
 
 
             template = () => {
-                console.log('template');
                 for (let i = 0; i > 11; i++ ) {
                     return(
                         

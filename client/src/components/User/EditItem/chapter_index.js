@@ -87,8 +87,6 @@ class ChapterIndex extends Component { // was PureComponent
                 // code block
         }
 
-        console.log(newData);
-
         this.setState({
             formdata: {
                 ...this.state.formdata,
@@ -123,7 +121,6 @@ class ChapterIndex extends Component { // was PureComponent
         let newArray = this.state.formdata.pdf_page_index;
         newArray.pop();
 
-        console.log(newArray);
         let newFormdata = {
             ...this.state.formdata,
             pdf_page_index: newArray
@@ -183,7 +180,6 @@ class ChapterIndex extends Component { // was PureComponent
             }
         })
 
-        console.log(this.state.formdata)
         this.props.dispatch(updateItem(
             { ...this.state.formdata }
         ))
@@ -399,12 +395,6 @@ class ChapterIndex extends Component { // was PureComponent
     )
 
     render() {
-
-        console.log(this.state.formdata);
-
-
-
-
         return (
             
             <div className="main_view">
