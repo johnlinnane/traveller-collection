@@ -37,20 +37,6 @@ import Admin from './components/User/AdminSection';
 import CatEdit from './components/User/EditItem/cat_edit';
 
 
-// DEPRECATED & MISC
-import Sandbox from './components/User/Sandbox/sandbox';
-
-
-
-
-
-
-
-
-
-
-
-
 const Routes = () => {
     return (
         <Layout>
@@ -86,7 +72,6 @@ const Routes = () => {
                 
                 <Route path="/user/register" exact component={AuthContainer(Register, true)}/> 
                 <Route path="/home" exact component={AuthContainer(Home, null)}/>
-                <Route path="/sandbox" exact component={AuthContainer(Sandbox, false)}/>  {/* true */}
                 
             </Switch>
         </Layout>
