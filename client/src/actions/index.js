@@ -1,14 +1,7 @@
 import axios from 'axios';
 axios.defaults.withCredentials = true;
 
-
-
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
-
-
-
-
-// * * * * * * * * * *  GET ITEMS  BY USER* * * * * * * * * *  
 
 export function getUserItems(userId) {
     const request = axios.get(`${API_PREFIX}/user-items?user=${userId}`)
@@ -19,11 +12,6 @@ export function getUserItems(userId) {
         payload:request
     }
 }
-
-
-
-
-// * * * * * * * * * CLEAR ITEM * * * * * * 
 
 export function clearItem() {
     return {
@@ -36,34 +24,24 @@ export function clearItem() {
     }
 }
 
-
-
-///////// * * * * * * * * * ACCEPT PENDING ITEM * * * * * * 
-
 export function acceptItem(itemId, userId) {
 
     const request = axios.get(`${API_PREFIX}/accept-item?itemid=${itemId}&userid=${userId}`)
                         .then(response => response.data);
-    
-
     return {
         type: 'ACCEPT_ITEM',
         payload:request
     }
 }
 
-// ******************** USER ACTIONS ********************
-
 export function loginUser({email, password}) {
     const request = axios.post(`${API_PREFIX}/login`, {email, password}, {withCredentials: true})
                         .then(response => response.data);
-
     return {
         type:'USER_LOGIN',
         payload:request
     }
 }
-
 
 export function authGetCredentials() {
     const request = axios.get(`${API_PREFIX}/auth-get-user-creds`, {withCredentials: true}) 
@@ -72,37 +50,29 @@ export function authGetCredentials() {
         type:'USER_AUTH',
         payload:request
     }
-
 }
-
-
 
 export function getUsers() {
     const request = axios.get(`${API_PREFIX}/users`)
                         .then(response => response.data);
-
     return {
         type:'GET_USER',
         payload:request
     }
-
 }
 
 // uses thunk
 export function userRegister(user, userList) {
     const request = axios.post(`${API_PREFIX}/register`, user);
-
     return (dispatch) => {
         request.then(({data}) => {
 
             // if register is wrong, don't send new user
             let users = data.success ? [...userList, data.user] : userList;
-
             let response = {
                 success:data.success,
-                users    // result of conditional
+                users
             }
-
             dispatch({
                 type:'USER_REGISTER',
                 payload:response
@@ -114,7 +84,7 @@ export function userRegister(user, userList) {
 
 
 
-// ******************** ITEM ACTIONS ********************
+// ******************** ITEM ********************
 
 
 export function getAllItems() {
@@ -129,8 +99,6 @@ export function getAllItems() {
     }
 }
 
-
-//////////////////
 export function getAllPendItems() {
     const request = axios.get(`${API_PREFIX}/all-pend-items`)
                         .then(response => {
@@ -142,10 +110,6 @@ export function getAllPendItems() {
         payload:request
     }
 }
-
-
-
-
 
 export function getItems(
     limit = 10,
@@ -161,8 +125,7 @@ export function getItems(
                                 return response.data
                             }
                         })
-
-    return{
+    return {
         type:'GET_ITEMS',
         payload:request
     }
@@ -183,14 +146,11 @@ export function getItemWithContributor(id) {
             let item = data;
             // axios.get(`${API_PREFIX}/get-contributor?id=${item._id}`)
             axios.get(`${API_PREFIX}/get-contributor?id=5e99a141fb671004505351b4`)
-
                 .then(({data}) => {
-                
                     let response = {
                         item, 
                         contributor:data
                     }
-
                     dispatch({
                         type:'GET_ITEM_W_CONTRIBUTOR',
                         payload:response
@@ -214,7 +174,6 @@ export function clearItemWithContributor() {
     }
 }
 
-// item arg is json data
 export function addItem(item) {
     const request = axios.post(`${API_PREFIX}/create-item`, item)
                         .then(response => response.data);
@@ -223,8 +182,6 @@ export function addItem(item) {
         payload:request
     }
 }
-
-
 
 export function addPendingItem(item) {
     const request = axios.post(`${API_PREFIX}/create-item-pending`, item)
@@ -243,8 +200,6 @@ export function clearNewItem() {
     }
 }
 
-
-
 export function getNextItem(oldId) {
     const request = axios.get(`${API_PREFIX}/get-next-item?oldId=${oldId}`)
                         .then(response => {
@@ -256,7 +211,6 @@ export function getNextItem(oldId) {
         payload:request
     }
 }
-
 
 export function getPrevItem(oldId) {
     const request = axios.get(`${API_PREFIX}/get-prev-item?oldId=${oldId}`)
@@ -270,7 +224,6 @@ export function getPrevItem(oldId) {
     }
 }
 
-
 export function getLatestItem() {
     const request = axios.get(`${API_PREFIX}/get-latest-item`)
         .then(response => {
@@ -282,7 +235,6 @@ export function getLatestItem() {
         payload: request
     }
 }
-
 
 export function getSubcat(subcatId) {
     
@@ -297,7 +249,6 @@ export function getSubcat(subcatId) {
     }
 }
 
-
 export function getItemsBySubcat(subcatId) {
     const request = axios.get(`${API_PREFIX}/get-items-by-subcat?subcatid=${subcatId}`)
         .then(response => {
@@ -309,7 +260,6 @@ export function getItemsBySubcat(subcatId) {
         payload: request
     }
 }
-
 
 // not used
 export function getFirstItemBySubcat(catId, subcatId) {
@@ -323,8 +273,6 @@ export function getFirstItemBySubcat(catId, subcatId) {
         payload: request
     }
 }
-
-
 
 export function getItemsWithCoords() {
     const request = axios.get(`${API_PREFIX}/get-items-with-coords`)
@@ -340,42 +288,34 @@ export function getItemsWithCoords() {
 
 
 
-
 // * * * * * * * * * *  EDIT ITEMS * * * * * * * * * *  
 
 export function getItemById(id) {
     const request = axios.get(`${API_PREFIX}/get-item-by-id?id=${id}`)
                         .then(response => response.data);
-
     return {
         type:'GET_ITEM',
         payload:request
     }
 }
 
-
 export function getParentPdf(id) {
     const request = axios.get(`${API_PREFIX}/get-parent-pdf?id=${id}`)
                         .then(response => response.data);
-
     return {
         type:'GET_PARENT_PDF',
         payload:request
     }
 }
 
-
-////////////////////////
 export function getPendItemById(id) {
     const request = axios.get(`${API_PREFIX}/get-pend-item-by-id?id=${id}`)
                         .then(response => response.data);
-
     return {
         type:'GET_PEND_ITEM',
         payload:request
     }
 }
-
 
 export function updateItem(data) {
     const request = axios.post(`${API_PREFIX}/item-update`, data)
@@ -386,40 +326,26 @@ export function updateItem(data) {
     }
 }
 
-
-
 export function deleteChapter(parentId, title) {
     const request = axios.get(`${API_PREFIX}/get-item-by-id?id=${parentId}`)
-
     return (dispatch) => {
         request.then(({data}) => {
-
             data.pdf_page_index.forEach( (chapt, i) => {
-
                 if (chapt.heading === title && chapt.has_child === true) {
                     data.pdf_page_index[i].has_child = false;
                     data.pdf_page_index[i].child_id = null
                 }
             })
-
             const request = axios.post(`${API_PREFIX}/item-update`, data)
                             .then(response => response.data);
-
                             return {
                                 type:'DELETE_CHAPT',
                                 payload:request
                             }
-
         })
     }
-
 }
 
-
-
-
-
-/////////////////////
 export function updatePendItem(data) {
     const request = axios.post(`${API_PREFIX}/item-pend-update`, data)
                         .then(response => response.data);
@@ -438,7 +364,6 @@ export function deleteItem(id) {
     }
 }
 
-////////////////////
 export function deletePendItem(id) {
     const request = axios.delete(`${API_PREFIX}/del-pend-item?id=${id}`)
                         .then(response => response.data)
@@ -447,7 +372,6 @@ export function deletePendItem(id) {
         payload:request
     }
 }
-
 
 export function getFilesFolder(data) {
     const request = axios.post(`${API_PREFIX}/get-files-folder`, data)
@@ -460,7 +384,7 @@ export function getFilesFolder(data) {
 
 
 
-// ******************** CATEGORIES ACTIONS ********************
+// ******************** CATEGORIES ********************
 
 
 export function getAllCats() {
@@ -501,24 +425,17 @@ export function getItemsByCat(catId) {
     }
 }
 
-
 export function getItemsWithCat(catId) {
     const request = axios.get(`${API_PREFIX}/get-cat-by-id?id=${catId}`)
-
     return (dispatch) => {
         request.then(({data}) => {
             let catInfo = data;
             axios.get(`${API_PREFIX}/get-items-by-cat?value=${catInfo._id}`)
-
                 .then(({data}) => {
-                
                     let response = {
                         catInfo, 
                         catItems:data
                     }
-
-
-
                     dispatch({
                         type:'GET_ITEMS_W_CAT',
                         payload:response
@@ -531,15 +448,11 @@ export function getItemsWithCat(catId) {
 export function addCat(cat) {
     const request = axios.post(`${API_PREFIX}/add-cat`, cat)
                         .then(response => response.data);
-    
-
     return {
         type: 'ADD_CAT',
         payload:request
     }
 }
-
-
 
 export function deleteCat(id) {
     const request = axios.delete(`${API_PREFIX}/delete-cat?id=${id}`)
@@ -560,7 +473,7 @@ export function updateCat(data) {
 }
 
 
-// ******************** SUB-CATEGORIES ACTIONS ********************
+// ******************** SUB-CATEGORIES ********************
 
 
 export function getAllSubCats() {
@@ -575,11 +488,6 @@ return {
     }
 }
 
-
-
-
-
-
 export function getSubcatByCat(catId) {
     const request = axios.get(`${API_PREFIX}/get-subcat-by-cat?catid=${catId}`)
                         .then(response => {
@@ -592,7 +500,6 @@ return {
     }
 }
 
-
 export function addSubcat(subCat) {
     const request = axios.post(`${API_PREFIX}/add-subcat`, subCat)
                         .then(response => response.data);
@@ -601,7 +508,6 @@ export function addSubcat(subCat) {
         payload:request
     }
 }
-
 
 export function deleteSubcat(id) {
     const request = axios.delete(`${API_PREFIX}/delete-subcat?id=${id}`)
@@ -622,7 +528,7 @@ export function updateSubcat(data) {
 }
 
 
-// ******************** INTRO ACTIONS ********************
+// ******************** INTRO ********************
 
 
 
@@ -634,7 +540,6 @@ export function updateIntroText(data) {
         payload:request
     }
 }
-
 
 export function getIntroText() {
     const request = axios.get(`${API_PREFIX}/get-intro-text`)
@@ -649,10 +554,7 @@ export function getIntroText() {
 }
 
 
-
-// ******************** INFO ACTIONS ********************
-
-
+// ******************** INFO ********************
 
 export function updateInfoText(data) {
     const request = axios.post(`${API_PREFIX}/update-info-text`, data)
@@ -662,7 +564,6 @@ export function updateInfoText(data) {
         payload:request
     }
 }
-
 
 export function getInfoText() {
     const request = axios.get(`${API_PREFIX}/get-info-text`)
