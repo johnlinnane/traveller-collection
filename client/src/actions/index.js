@@ -135,28 +135,57 @@ export function getItems(
 
 
 export function getItemWithContributor(id) {
-
     // reduxthunk's dispatched function sends payload to reducers whenever we are ready
-    const request = axios.get(`${API_PREFIX}/get-item-by-id?id=${id}`)
-
     return (dispatch) => {
+        axios.get(`${API_PREFIX}/get-item-by-id?id=${id}`)
+        
+        .then(res => {
+            if (res.data.length !== 0) {
+                var contributorId = (res.data.contributor) ? res.data.contributor : '5e99a141fb671004505351b4';
 
-        // get the promise, using {{{destructuring}}}
-        request.then(({data}) => {
-            let item = data;
-            // axios.get(`${API_PREFIX}/get-contributor?id=${item._id}`)
-            axios.get(`${API_PREFIX}/get-contributor?id=5e99a141fb671004505351b4`)
-                .then(({data}) => {
-                    let response = {
-                        item, 
-                        contributor:data
-                    }
-                    dispatch({
-                        type:'GET_ITEM_W_CONTRIBUTOR',
-                        payload:response
+                axios.get(`${API_PREFIX}/get-contributor?id=${contributorId}`)
+                    .then(({contributorData}) => {
+                        let response = {
+                            item:res.data, 
+                            contributor:contributorData,
+                            getItemWithCReturned: true,
+                        }
+                        dispatch({
+                            type:'GET_ITEM_W_CONTRIBUTOR',
+                            payload:response
+                        });
                     })
-                })
+            } else {
+                axios.get(`${API_PREFIX}/get-pend-item-by-id?id=${id}`)
+                    .then(({data}) => {
+                        if (data.length !== 0) {
+                            let response = {
+                                item:data, 
+                                pendingItemFound: true
+                            }
+                            dispatch({
+                                type:'GET_ITEM_W_CONTRIBUTOR',
+                                payload:response
+                            });
+                        } else {
+                            let response = {
+                                noPendingItemFound: true
+                            }
+                            dispatch({
+                                type:'GET_ITEM_W_CONTRIBUTOR',
+                                payload:response
+                            });
+                        }
+                    })
+            }
         })
+        .catch(err => {
+            dispatch({
+                type:'GET_ITEM_W_CONTRIBUTOR',
+                payload:{error: true}
+            });
+        })
+        
     }
 }
 

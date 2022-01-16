@@ -49,7 +49,7 @@ export default function foo(state={}, action) {
                 ...state,
                 item:action.payload.item,
                 contributor:action.payload.contributor,
-                itemReceived: true
+                getItemWithCReturned: action.payload.getItemWithCReturned,
             };
         
         case 'CLEAR_ITEM_W_CONTRIBUTOR': 

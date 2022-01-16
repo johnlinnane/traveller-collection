@@ -9,14 +9,13 @@ import { EmailIcon, FacebookIcon, WhatsappIcon } from "react-share";
 
 import { Document, Page, pdfjs } from 'react-pdf';
 
-import { getItemWithContributor, clearItemWithContributor, getAllCats, getAllSubCats, getNextItem, getPrevItem, getParentPdf, getFilesFolder } from '../../../actions';
+import { getItemWithContributor, clearItemWithContributor, getAllCats, getAllSubCats, getNextItem, getPrevItem, getParentPdf, getFilesFolder, getPendItemById } from '../../../actions';
 import NavigationBar from '../../widgetsUI/navigation';
 
 const IP_ADDRESS_REMOTE = process.env.REACT_APP_IP_ADDRESS_REMOTE;
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
-
 
 
 class ItemView extends Component {
@@ -30,7 +29,6 @@ class ItemView extends Component {
         setNumPages: null,  // not used
         pageNumber: 1,      // page currently displayed
         setPageNumber: 1,   // not used
-
         pdfPageNumber: 0,   // not used
         pdfScale: 1,
 
@@ -40,7 +38,6 @@ class ItemView extends Component {
         isPending: false,
 
         // getParentCalled: false,
-        // getItemWithCCalled: false,
 
         itemFiles: [],
         imgFiles: [],
@@ -48,32 +45,17 @@ class ItemView extends Component {
         vidFiles: []
     }
 
-    getItemWithCCalled = false;
-    
     componentDidMount() {
-        // if (!this.state.getItemWithCCalled) {
-            this.props.dispatch(getItemWithContributor(this.state.itemId));
-        //     this.setState({
-        //         getItemWithCCalled: true
-        //     })
-        // }
+        this.props.dispatch(getItemWithContributor(this.state.itemId));
         this.props.dispatch(getAllCats());
         this.props.dispatch(getAllSubCats());
         this.props.dispatch(getNextItem(this.state.itemId));
         this.props.dispatch(getPrevItem(this.state.itemId));
-
         this.props.dispatch(getFilesFolder({folder: `/items/${this.props.match.params.id}/original`}))
     }
 
-
-
-
     componentDidUpdate(prevProps, prevState) {
-
-        
-
         if (this.props !== prevProps) {
-
 
             if (this.props.match.params.id !== prevProps.match.params.id) { //  && !this.state.stateCleared
                 this.setState({
@@ -99,33 +81,24 @@ class ItemView extends Component {
                     if (item.title) {
                         document.title = `${item.title}`
                     }
-
                     if (item.category_ref ) {
                         this.getCatName(item.category_ref)
                     }
-
                     if (item.subcategory_ref ) {
                         this.getSubCatName(item.subcategory_ref)
                     }
 
-
-
                     if (item.is_pdf_chapter && item.pdf_item_pages && item.pdf_item_pages.start) {
-                    
                         // if (!this.state.getParentCalled) {
                             this.props.dispatch(getParentPdf(item.pdf_item_parent_id))
                             this.props.dispatch(getFilesFolder({folder: `/items/${item.pdf_item_parent_id}/original`}))
                         // }
-
                         this.setState({
                             pageNumber: parseInt(item.pdf_item_pages.start),
                             // getParentCalled: true
                         })
                     }
                 }
-
-
-
             }
 
             if (this.props.items.files !== prevProps.items.files) {
@@ -152,9 +125,6 @@ class ItemView extends Component {
                         pdfFiles: tempPdfFiles, 
                         vidFiles: tempVidFiles 
                     })
-
-
-
                 }
             }
 
@@ -182,44 +152,13 @@ class ItemView extends Component {
                     })
                 }
             }
-            
-            
-            
-            if (this.state.itemInfo ) { // this.props.items.item
-                
-                
-
-                
-                
-            } 
-            
-            // if (this.props.items.itemReceived && !this.props.items.item.ownerId === 'guest' && !this.props.items.item.title && this.state.getItemWithCCalled && !this.state.getPendItemCalled) {
-            if (this.props.items.itemReceived && !this.props.items.item) {
-                // this.props.dispatch(getPendItemById(this.props.match.params.id)); // to avoid re-render
-                this.setState({
-                    // getPendItemCalled: true,
-                    isPending: true
-                })
-            } else {
-                this.setState({
-                    // getPendItemCalled: true,
-                    isPending: false
-                })
-            }
         }
     }
-
-
-
-
-
 
     componentWillUnmount() {
         this.props.dispatch(clearItemWithContributor());
         document.title = `Traveller Collection`
     }
-    
-
 
     navInfo = {
         catTitle: null,
@@ -228,8 +167,6 @@ class ItemView extends Component {
         subCatId: null,
         type: 'Categories'
     }
-
-
 
     addDefaultImg = (ev) => {
         const newImg = '/assets/media/default/default.jpg';
@@ -271,7 +208,6 @@ class ItemView extends Component {
         })
 
     }
-
     
     renderField = (text, ref) => {
         if (ref) {
@@ -284,10 +220,6 @@ class ItemView extends Component {
             )
         } 
     }
-
-
-
-
 
     renderSlider = (files) => {
         const settings = {
@@ -314,11 +246,8 @@ class ItemView extends Component {
                 </div>
             )
         })
-        
         return <div className="slick_div"><Slick {...settings}>{slickDivs}</Slick></div>;
     }
-
-
 
 
     // ****************************************** RENDER PDF ******************************************
@@ -368,10 +297,7 @@ class ItemView extends Component {
         
         return (
             <div className="pdf_wrapper">
-
-
-                 <div className="pdf_document">
-
+                <div className="pdf_document">
                     <Document
                         file={`${FS_PREFIX}/assets/media/items/${pdfId}/original/${this.state.pdfFiles[0]}`}
                         onLoadSuccess={onDocumentLoadSuccess}
@@ -384,39 +310,21 @@ class ItemView extends Component {
                             />
                     </Document>
 
-
-
-
-
-
-
-
-
-
                 </div> 
 
                 <div className="pdf_control_panel">
-                 
-
-
-
                     {/* <FontAwesome 
                         className="fa-search-minus pdf_scale"
                         onClick={scaleDown}
                     />
-
-
                     <FontAwesome 
                         className="fa-search-plus pdf_scale"
                         onClick={scaleUp}
                     /> */}
-                    
 
                     <span className="item_pagenum">
                         Page {pageNumber || (numPages ? 1 : '--')} of {numPages || '--'}
-                        
                     </span>
-
 
                     <div className="pdf_prev_next">
                         <button
@@ -437,12 +345,7 @@ class ItemView extends Component {
                     </div>
 
                     <a href={`${FS_PREFIX}/assets/media/items/${pdfId}/original/${this.state.pdfFiles[0]}`}>[Fullscreen]</a>
-
-
-
-
                 </div>
-
 
                 { this.props.items.item.pdf_page_index && this.props.items.item.pdf_page_index.length ?
                     <div className="pdf_index_table">
@@ -488,63 +391,8 @@ class ItemView extends Component {
                                 : null }
                             </div>
                         ))}
-
-
-
-
-{/* 
-<div className="pdf_index_col pdf_index_top pdf_index_page">
-                            Page
-                        </div>
-                        <div className="pdf_index_col pdf_index_top pdf_index_heading">
-                            Heading
-                        </div>
-                        <div className="pdf_index_col pdf_index_top pdf_index_desc">
-                            Description
-                        </div>
-
-                        {this.props.items.item.has_chapter_children ?
-                            <div className="pdf_index_col pdf_index_top pdf_index_child">
-                                View Item
-                            </div>
-                        :
-                        null }
-                        {this.props.items.item.pdf_page_index.map( (chapt, i) => (
-                            <div key={i} className="pdf_index_row" onClick={() => this.goToIndex(chapt.page)}>
-                                <div className="pdf_index_col pdf_index_page">
-                                    {chapt.page}
-                                </div>
-                                <div className="pdf_index_col pdf_index_heading">
-                                    {chapt.heading}
-                                </div>
-                                <div className="pdf_index_col pdf_index_desc">
-                                    {chapt.description}
-                                </div>
-                                {this.props.items.item.has_chapter_children ?
-                                    <div className="pdf_index_col pdf_index_child">
-                                        {chapt.has_child ? 
-                                            <Link to={`/items/${chapt.child_id}`} target='_blank'>
-                                                View Item
-                                            </Link>
-                                        :
-                                        <span>-</span> }
-                                    </div>
-                                : null }
-                            </div>
-                        ))} */}
-
-
-
-
-
-
-
-                        
                     </div>
                 : null }
-
-
-                
             </div> 
         )
     }
@@ -558,13 +406,10 @@ class ItemView extends Component {
 
         return ( 
             <div className="view_item_container">
-                
                 <div className="item_view_item_details">
-                    
 
-                {itemFiles && itemFiles.length ?
-                    <div className="item_view_media_wrapper">
-
+                    {itemFiles && itemFiles.length ?
+                        <div className="item_view_media_wrapper">
                             <div className="item_media">
                                 {imgFiles && imgFiles.length ?
                                     imgFiles.length === 1 ?
@@ -597,11 +442,8 @@ class ItemView extends Component {
                                     </video>
                                 : null }
                             </div>
-                        
-                    </div>
+                        </div>
                     : null }
-
-
 
                     <div className="item_view_text">
                         <h1>{itemInfo.title}</h1>
@@ -610,19 +452,13 @@ class ItemView extends Component {
                             <div className="item_field item_creator item_view"><p><b>Creator </b></p><h5>{itemInfo.creator}</h5></div>
                         : null }
 
-
-
                         <div className="item_contributor ">
                             <span className="item_field">
                                 { itemInfo.contributor && itemInfo.contributor.name && itemInfo.contributor.lastname ?
                                     <span>Submitted by: {itemInfo.contributor.name} {itemInfo.contributor.lastname} - </span>
                                 : null }
-                                
-                                
                             </span>
                         </div>
-                    
-
 
                         <div className="item_view item_body">
 
@@ -655,7 +491,6 @@ class ItemView extends Component {
                                 </div>
                                 
                             : null}
-
 
                             {itemInfo.geo && itemInfo.geo.latitude && itemInfo.geo.longitude ? 
                                 <div>
@@ -699,7 +534,6 @@ class ItemView extends Component {
 
 
                         {itemInfo.external_link && itemInfo.external_link[0].url ?
-                            // <Link to={itemInfo.external_link[0].url}  target="_blank">
                             <a href={itemInfo.external_link[0].url} target="_blank" rel="noreferrer">
 
                                 <div className="link_wrapper">
@@ -707,22 +541,14 @@ class ItemView extends Component {
                                         <b>Visit</b><br />
                                         {itemInfo.external_link[0].text}
                                     </div>
-                                    
                                     <div className="link_img">
                                         <img src='/assets/media/icons/ext_link.png' className="ext_link" alt='external link'/>
                                     </div>
-
-                                    
                                 </div>
                             </a>
-                            // </Link> 
                         : null }
                     </div>
-
                 </div>
-                
-
-
 
                 {itemInfo.shareDisabled ?
                     null
@@ -789,41 +615,25 @@ class ItemView extends Component {
                         </div>
                     </div> 
                 : null }
-                
-
-
-
             </div> 
         )
     }
 
-    // *************************************************************************************************************
-
-
     render() {
-
         return (
             
             <div className="item_view_component">
                 { this.state.itemInfo && this.navInfo.catTitle  ?
                     <NavigationBar navinfo={this.navInfo} title={this.state.itemInfo.title}/>    
                 : null }
-
                 <div className="item_view_main_view">
-                    
-                    {/* {this.state.itemInfo && this.state.itemInfo.length && this.state.itemInfo.title && this.state.itemFiles.length ? */}
                     {this.state.itemInfo && this.state.itemFiles ?
-
                         this.renderItem(this.state.itemInfo, this.state.itemFiles, this.state.imgFiles, this.state.pdfFiles, this.state.vidFiles)
-                    
-                    // : this.renderItem(this.state.itemInfo, [], [], [], []) }
                     : null }
-                
                 </div>
             </div>
         );
     }
-
 }
 
 function mapStateToProps(state) {
@@ -834,9 +644,7 @@ function mapStateToProps(state) {
         nextitem: state.items.nextitem,
         previtem: state.items.previtem,
         parentpdf: state.items.parentpdf
-
     }
 }
-
 
 export default withRouter(connect(mapStateToProps)(ItemView))
