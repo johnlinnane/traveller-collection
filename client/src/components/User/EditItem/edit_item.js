@@ -10,7 +10,7 @@ import { getItemById, updateItem, clearItem, deleteItem, getParentPdf, deleteCha
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
-class EditItem extends Component { // was PureComponent
+class EditItem extends Component {
 
     state = {
         formdata:{
@@ -71,19 +71,15 @@ class EditItem extends Component { // was PureComponent
         this.props.dispatch(getFilesFolder({folder: `/items/${this.props.match.params.id}/original`}));
     }
 
-
     componentWillUnmount() {
         this.props.dispatch(clearItem())
         document.title = `Traveller Collection`
     }
 
     componentDidUpdate(prevProps) {
-
         if (this.props.items.item) {
             let item = this.props.items.item;
-
             if (this.props.items !== prevProps.items) {
-
                 let newFormdata = {
                     ...this.state.formdata,
                     _id:item._id,
@@ -112,7 +108,6 @@ class EditItem extends Component { // was PureComponent
                     pdf_item_parent_id: item.pdf_item_parent_id,
                     shareDisabled: item.shareDisabled
                 }
-
                 let newLatLng = this.state.initMap;
 
                 if (item.external_link && item.external_link.length) {
@@ -128,8 +123,6 @@ class EditItem extends Component { // was PureComponent
                         }
                     }
                 } 
-
-
 
                 if (item.geo) {
                     if (item.geo.address || item.geo.latitude || item.geo.longitude ) {
@@ -161,9 +154,6 @@ class EditItem extends Component { // was PureComponent
                         }
                     }
                 }
-
-
-
                 
                 this.setState({
                     formdata: newFormdata,
@@ -181,9 +171,7 @@ class EditItem extends Component { // was PureComponent
                 }
             }
         }
-
     }
-
 
     handleInput = (event, name, level) => {
 
@@ -206,14 +194,10 @@ class EditItem extends Component { // was PureComponent
         } else {
             newFormdata[name] = event.target.value;
         }
-
         this.setState({
             formdata: newFormdata
-
         })
     }
-
-
 
     handleClick(e) {
         let lat = parseFloat(e.latlng.lat).toFixed(6);
@@ -248,7 +232,6 @@ class EditItem extends Component { // was PureComponent
             fileName: null,
             deleteAll: true
         };
-
         axios.post(`${API_PREFIX}/delete-dir`, fileData  )
             .then(res => {
                 alert('Media deleted successfully')
@@ -256,8 +239,6 @@ class EditItem extends Component { // was PureComponent
             .catch(err => { 
                 alert('No media deleted')
             });
-
-        
     }
 
     deleteThisItem = () => {
@@ -279,18 +260,15 @@ class EditItem extends Component { // was PureComponent
         this.props.history.push(`/items/${this.props.match.params.id}`)
     }
 
-
     submitForm = (e) => {
         e.preventDefault();
         this.props.dispatch(updateItem({
                 ...this.state.formdata
             }
         ))
-
         this.setState({
             saved: true
         })
-
         setTimeout(() => {
             this.props.history.push(`/user/edit-item-sel/${this.props.items.item._id}`)
         }, 1000)
@@ -316,7 +294,6 @@ class EditItem extends Component { // was PureComponent
         )
     }
 
-
     addDefaultImg = (ev) => {
         const newImg = '/assets/media/default/default.jpg';
         if (ev.target.src !== newImg) {
@@ -324,317 +301,267 @@ class EditItem extends Component { // was PureComponent
         }  
     } 
 
-
     renderForm = () => {
-
         const formdata = this.state.formdata;
-
         return (
             <div>
-
-            <form onSubmit={this.submitForm}>
-                
-                <div className="edit_item_container">
-                    <Link to={`/items/${this.state.formdata._id}`} target="_blank" >
-                        <div className="container">
-                            <div className="img_back">
-                                
-
-                                { this.props.items.files && this.props.items.files.length ?
-                                    <div>
-                                    <img src={`${FS_PREFIX}/assets/media/items/${formdata._id}/original/${this.props.items.files[0].name}`} alt="item main " className="edit_main_img" onError={this.addDefaultImg} />
-                                    </div>
-                                : <img src={'/assets/media/default/default.jpg'} alt='default'/> }
-                                
-
+                <form onSubmit={this.submitForm}>
+                    <div className="edit_item_container">
+                        <Link to={`/items/${this.state.formdata._id}`} target="_blank" >
+                            <div className="container">
+                                <div className="img_back">
+                                    { this.props.items.files && this.props.items.files.length ?
+                                        <div>
+                                            <img src={`${FS_PREFIX}/assets/media/items/${formdata._id}/original/${this.props.items.files[0].name}`} alt="item main " className="edit_main_img" onError={this.addDefaultImg} />
+                                        </div>
+                                    : <img src={'/assets/media/default/default.jpg'} alt='default'/> }
+                                </div>
+                                <div className="centered edit_img_text"><h2>{formdata.title}</h2></div>
                             </div>
-                            <div className="centered edit_img_text"><h2>{formdata.title}</h2></div>
-                        </div>
-                    </Link>
-                </div>
-
-                <h2>Edit Item Details</h2>
-
-                <table>
-                <tbody>
-
-                    {this.createTextInput(formdata.title,'title', "Enter title", "Title")}
-                    {this.createTextInput(formdata.creator,'creator', "Enter creator", "Creator")}
-                    {this.createTextInput(formdata.subject,'subject', "General subject matter", "Subject")}
-
-                    <tr>
-                        <td className="label">
-                            Description
-                        </td>
-                        <td>
-                            <textarea
-                                type="text"
-                                placeholder="Please write as much details as you know about the item here. For example the place of origin, who made it, or owned it previously, what it was made out of, what it was used for, and any other details"
-                                defaultValue={formdata.description} 
-                                onChange={(event) => this.handleInput(event, 'description')}
-                                rows={18}
-                            />
-                        </td>
-                    </tr>
-
-
-                    
-
-                    {this.createTextInput(formdata.source,'source', "Sources of information about the item", "Source")}
-                    {this.createTextInput(formdata.date_created,'date_created', "Date item was created", "Date")}
-                    
-                    {formdata.is_pdf_chapter ? 
-                        <React.Fragment>
-                            <tr><td></td><td></td></tr>
-                            <tr><td colSpan="2"><hr /></td></tr>
-                            <tr><td></td><td></td></tr>
-
-
-                            <tr>
-                                <td>
-                                    Parent Item
-                                </td>
-                                <td>
-                                    <Link to={`/items/${formdata.pdf_item_parent_id}`} target="_blank" >
-                                        
-                                            {this.props.parentpdf ?
-                                            <u>{this.props.parentpdf.title}</u>
-                                            : 
-                                            <u>Link</u>
-                                            }
+                        </Link>
+                    </div>
+                    <h2>Edit Item Details</h2>
+                    <table>
+                    <tbody>
+                        {this.createTextInput(formdata.title,'title', "Enter title", "Title")}
+                        {this.createTextInput(formdata.creator,'creator', "Enter creator", "Creator")}
+                        {this.createTextInput(formdata.subject,'subject', "General subject matter", "Subject")}
+                        <tr>
+                            <td className="label">
+                                Description
+                            </td>
+                            <td>
+                                <textarea
+                                    type="text"
+                                    placeholder="Please write as much details as you know about the item here. For example the place of origin, who made it, or owned it previously, what it was made out of, what it was used for, and any other details"
+                                    defaultValue={formdata.description} 
+                                    onChange={(event) => this.handleInput(event, 'description')}
+                                    rows={18}
+                                />
+                            </td>
+                        </tr>
+                        {this.createTextInput(formdata.source,'source', "Sources of information about the item", "Source")}
+                        {this.createTextInput(formdata.date_created,'date_created', "Date item was created", "Date")}
+                        {formdata.is_pdf_chapter ? 
+                            <React.Fragment>
+                                <tr><td></td><td></td></tr>
+                                <tr><td colSpan="2"><hr /></td></tr>
+                                <tr><td></td><td></td></tr>
+                                <tr>
+                                    <td>
+                                        Parent Item
+                                    </td>
+                                    <td>
+                                        <Link to={`/items/${formdata.pdf_item_parent_id}`} target="_blank" >
                                             
+                                                {this.props.parentpdf ?
+                                                <u>{this.props.parentpdf.title}</u>
+                                                : 
+                                                <u>Link</u>
+                                                }
+                                        </Link>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td className="label">
+                                        PDF Page Start
+                                    </td>
+                                    <td>
+                                        <div className="form_element">
+                                            <input
+                                                type="number"
+                                                placeholder="Start page from parent item's PDF"
+                                                defaultValue={formdata.pdf_item_pages.start} 
+                                                onChange={(event) => this.handleInput(event, 'start', 'pdf_item_pages')}
+                                            />
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td className="label">
+                                        PDF Page End
+                                    </td>
+                                    <td>
+                                        <div className="form_element">
+                                            <input
+                                                type="number"
+                                                placeholder="End page from parent item's PDF"
+                                                defaultValue={formdata.pdf_item_pages.end} 
+                                                onChange={(event) => this.handleInput(event, 'end', 'pdf_item_pages')}
+                                            />
+                                        </div>
+                                    </td>
+                                </tr>
+                            </React.Fragment>
+                        :
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <Link to={`/user/chapter-index/${this.state.formdata._id}`} target="_blank" >
+                                        <button type="button" className="half_width_l">Add Chapter Index (PDF)</button>
                                     </Link>
                                 </td>
                             </tr>
-
-                            <tr>
-                                <td className="label">
-                                    PDF Page Start
-                                </td>
-                                <td>
-                                    <div className="form_element">
-                                        <input
-                                            type="number"
-                                            placeholder="Start page from parent item's PDF"
-                                            defaultValue={formdata.pdf_item_pages.start} 
-                                            onChange={(event) => this.handleInput(event, 'start', 'pdf_item_pages')}
-                                        />
-                                    </div>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td className="label">
-                                    PDF Page End
-                                </td>
-                                <td>
-                                    <div className="form_element">
-                                        <input
-                                            type="number"
-                                            placeholder="End page from parent item's PDF"
-                                            defaultValue={formdata.pdf_item_pages.end} 
-                                            onChange={(event) => this.handleInput(event, 'end', 'pdf_item_pages')}
-                                        />
-                                    </div>
-                                </td>
-                            </tr>
-
-
-                        </React.Fragment>
-                    :
+                        }
+                        <tr><td></td><td></td></tr>
+                        <tr><td colSpan="2"><hr /></td></tr>
+                        <tr><td></td><td></td></tr>
+                        <tr></tr>
+                        {this.createTextInput(formdata.location,'location', "The item's general location ie. Cashel", "Location")}
+                        {this.createTextInput(formdata.geo.address,'address', "Where is the item currently located", "Exact Address", 'geo')}
                         <tr>
-                            <td></td>
+                            <td>Geo-location</td>
                             <td>
-                                <Link to={`/user/chapter-index/${this.state.formdata._id}`} target="_blank" >
-                                    <button type="button" className="half_width_l">Add Chapter Index (PDF)</button>
-                                </Link>
+                                <Map 
+                                    className="edit_map"
+                                    center={[this.state.initMap.initLat, this.state.initMap.initLong]} 
+                                    zoom={this.state.initMap.initZoom} 
+                                    onClick={(e) => { this.handleClick(e)}}
+                                    // style={{ height: this.state.showMap ? '350px' : '0px'}}
+                                >
+                                    <TileLayer
+                                        attribution='&copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                                    />
+                                    { this.state.formdata.geo.latitude && this.state.formdata.geo.longitude ?
+                                        <Marker 
+                                            position={[this.state.formdata.geo.latitude, this.state.formdata.geo.longitude]} 
+                                        />
+                                    : null }
+                                </Map>
+                                <br/>
+                                Click on the map to set geolocation
                             </td>
                         </tr>
-                    }
-
-
-
-
-                    <tr><td></td><td></td></tr>
-                    <tr><td colSpan="2"><hr /></td></tr>
-                    <tr><td></td><td></td></tr>
-
-                    <tr></tr>
-                    {this.createTextInput(formdata.location,'location', "The item's general location ie. Cashel", "Location")}
-                    {this.createTextInput(formdata.geo.address,'address', "Where is the item currently located", "Exact Address", 'geo')}
-
-                    <tr>
-                        <td>Geo-location</td>
-                        <td>
-                            <Map 
-                                className="edit_map"
-                                center={[this.state.initMap.initLat, this.state.initMap.initLong]} 
-                                zoom={this.state.initMap.initZoom} 
-                                onClick={(e) => { this.handleClick(e)}}
-                                // style={{ height: this.state.showMap ? '350px' : '0px'}}
-                            >
-                                <TileLayer
-                                    attribution='&copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                                />
-
-                                { this.state.formdata.geo.latitude && this.state.formdata.geo.longitude ?
-                                    
-                                    <Marker 
-                                        position={[this.state.formdata.geo.latitude, this.state.formdata.geo.longitude]} 
+                        <tr>
+                            <td className="label">
+                                Latitude
+                            </td>
+                            <td>
+                                <div className="form_element">
+                                    <input
+                                        type="number"
+                                        placeholder="Geo-location latitude ie. 52.232269"
+                                        defaultValue={formdata.geo.latitude} 
+                                        onChange={(event) => this.handleInput(event, 'latitude', 'geo')}
+                                        className="input_latlng"
                                     />
-                                : null }
-                            </Map>
-                            <br/>
-                            Click on the map to set geolocation
-                        </td>
-                    </tr>
-                    
-                    
-                    <tr>
-                        <td className="label">
-                            Latitude
-                        </td>
-                        <td>
-                            <div className="form_element">
-                                <input
-                                    type="number"
-                                    placeholder="Geo-location latitude ie. 52.232269"
-                                    defaultValue={formdata.geo.latitude} 
-                                    onChange={(event) => this.handleInput(event, 'latitude', 'geo')}
-                                    className="input_latlng"
-                                />
-                            </div>
-                        </td>
-                    </tr>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td className="label">
+                                Longitude
+                            </td>
+                            <td>
+                                <div className="form_element">
+                                    <input
+                                        type="number"
+                                        placeholder="Geo-location longitude ie. -8.670860"
+                                        defaultValue={formdata.geo.longitude} 
+                                        onChange={(event) => this.handleInput(event, 'longitude', 'geo')}
+                                        className="input_latlng"
+                                    />
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr><td></td><td></td></tr>
+                        <tr><td colSpan="2"><hr /></td></tr>
+                        <tr><td></td><td></td></tr>
 
 
-                    <tr>
-                        <td className="label">
-                            Longitude
-                        </td>
-                        <td>
-                            <div className="form_element">
-                                <input
-                                    type="number"
-                                    placeholder="Geo-location longitude ie. -8.670860"
-                                    defaultValue={formdata.geo.longitude} 
-                                    onChange={(event) => this.handleInput(event, 'longitude', 'geo')}
-                                    className="input_latlng"
-                                />
-                            </div>
-                        </td>
-                    </tr>
+                        {this.createTextInput(formdata.rights,'rights', "Rights", "Rights")}
+                        {this.createTextInput(formdata.further_info,'further_info', "Enter any further info, resources..", "Further Info")}
+                        {this.createTextInput(formdata.external_link[0].url,'url', "External link URL ie. https://www...", "External Link", 'external_link')}
+                        {this.createTextInput(formdata.external_link[0].text,'text', "Description of the link", '', "external_link")}
 
+                        <tr><td></td><td></td></tr>
+                        <tr><td colSpan="2"><hr /></td></tr>
+                        <tr><td></td><td></td></tr>
+    
+                        {this.createTextInput(formdata.item_format,'item_format', "The item's format", "Format")}
+                        {this.createTextInput(formdata.materials,'materials', "The materials used in the item", "Materials")}
+                        {this.createTextInput(formdata.physical_dimensions,'physical_dimensions', "Physical dimensions", "Dimensions")}
+                        
+                        <tr><td></td><td></td></tr>
+                        <tr><td colSpan="2"><hr /></td></tr>
+                        <tr><td></td><td></td></tr>
 
-                    <tr><td></td><td></td></tr>
-                    <tr><td colSpan="2"><hr /></td></tr>
-                    <tr><td></td><td></td></tr>
+                        {this.createTextInput(formdata.editor,'editor', "Editor's name(s)", "Editor")}
+                        {this.createTextInput(formdata.publisher,'publisher', "Publisher", "Publisher")}
+                        {this.createTextInput(formdata.language,'language', "ie. Cant, Gammon, Romani", "Language")}
 
+                        <tr>
+                            <td className="label">
+                                Pages
+                            </td>
+                            <td>
+                                <div className="form_element">
+                                    <input
+                                        type="number"
+                                        placeholder="Enter number of pages"
+                                        defaultValue={formdata.pages} 
+                                        onChange={(event) => this.handleInput(event, 'pages')}
+                                    />
+                                </div>
+                            </td>
+                        </tr>
 
-                    {this.createTextInput(formdata.rights,'rights', "Rights", "Rights")}
-                    {this.createTextInput(formdata.further_info,'further_info', "Enter any further info, resources..", "Further Info")}
-                    {this.createTextInput(formdata.external_link[0].url,'url', "External link URL ie. https://www...", "External Link", 'external_link')}
-                    {this.createTextInput(formdata.external_link[0].text,'text', "Description of the link", '', "external_link")}
+                        {this.createTextInput(formdata.reference,'reference', "Reference code", "Ref")}
 
+                        <tr>
+                            <td className="label">
+                                Allow sharing
+                            </td>
+                            <td>
+                                <div className="form_element share_toggle">
+                                    <input 
+                                        type="checkbox" 
+                                        // className="share_toggle"
+                                        checked={!this.state.formdata.shareDisabled} 
+                                        onChange={(event) => this.handleSwitch(event)}
+                                    />
+                                </div>
+                            </td>
+                        </tr>
 
-                    <tr><td></td><td></td></tr>
-                    <tr><td colSpan="2"><hr /></td></tr>
-                    <tr><td></td><td></td></tr>
-                   
- 
-                    {this.createTextInput(formdata.item_format,'item_format', "The item's format", "Format")}
-                    {this.createTextInput(formdata.materials,'materials', "The materials used in the item", "Materials")}
-                    {this.createTextInput(formdata.physical_dimensions,'physical_dimensions', "Physical dimensions", "Dimensions")}
+                        <tr><td></td><td></td></tr>
+                        <tr><td colSpan="2"><hr /></td></tr>
+                        <tr><td></td><td></td></tr>
 
-                    
-                    <tr><td></td><td></td></tr>
-                    <tr><td colSpan="2"><hr /></td></tr>
-                    <tr><td></td><td></td></tr>
+                        {this.createTextInput(formdata.contributor,'contributor', "Add your name here", "Contributor")}
 
-
-                    {this.createTextInput(formdata.editor,'editor', "Editor's name(s)", "Editor")}
-                    {this.createTextInput(formdata.publisher,'publisher', "Publisher", "Publisher")}
-                    {this.createTextInput(formdata.language,'language', "ie. Cant, Gammon, Romani", "Language")}
-
-                    <tr>
-                        <td className="label">
-                            Pages
-                        </td>
-                        <td>
-                            <div className="form_element">
-                                <input
-                                    type="number"
-                                    placeholder="Enter number of pages"
-                                    defaultValue={formdata.pages} 
-                                    onChange={(event) => this.handleInput(event, 'pages')}
-                                />
-                            </div>
-                        </td>
-                    </tr>
-
-                    {this.createTextInput(formdata.reference,'reference', "Reference code", "Ref")}
-
-
-                    <tr>
-                        <td className="label">
-                            Allow sharing
-                        </td>
-                        <td>
-                            <div className="form_element share_toggle">
-                                <input 
-                                    type="checkbox" 
-                                    // className="share_toggle"
-                                    checked={!this.state.formdata.shareDisabled} 
-                                    onChange={(event) => this.handleSwitch(event)}
-                                />
+                        <tr>
+                            <td colSpan="2">
                                 
-                            </div>
-                        </td>
-                    </tr>
+                                <button 
+                                    type="button" 
+                                    className="delete"
+                                    onClick={(e) => { if (window.confirm('Are you sure you wish to permanently delete this item?')) this.deleteThisItem(e) } }
+                                >
+                                    Delete item
+                                </button>
+                            </td>
+                        </tr>
 
-          
+                        <tr className="half_width">
+                            <td colSpan="2" >
+                                <button type="button" className="half_width_l" onClick={(e) => { if (window.confirm('Are you sure you wish to cancel? All data entered will be lost!')) this.cancel(e) }}>Cancel</button>
+                                <button type="submit" className="half_width_r">Save and Continue</button>
+                            </td>
+                        </tr>  
 
-                    <tr><td></td><td></td></tr>
-                    <tr><td colSpan="2"><hr /></td></tr>
-                    <tr><td></td><td></td></tr>
-
-
-                    {this.createTextInput(formdata.contributor,'contributor', "Add your name here", "Contributor")}
-
-                    <tr>
-                        <td colSpan="2">
-                            
-                            <button 
-                                type="button" 
-                                className="delete"
-                                onClick={(e) => { if (window.confirm('Are you sure you wish to permanently delete this item?')) this.deleteThisItem(e) } }
-                            >
-                                Delete item
-                            </button>
-                        </td>
-                    </tr>
-
-
-                    <tr className="half_width">
-                        <td colSpan="2" >
-                            <button type="button" className="half_width_l" onClick={(e) => { if (window.confirm('Are you sure you wish to cancel? All data entered will be lost!')) this.cancel(e) }}>Cancel</button>
-                            <button type="submit" className="half_width_r">Save and Continue</button>
-                        </td>
-                    </tr>  
-
-                </tbody>
-                </table>
-
-                {this.state.saved ?
+                    </tbody>
+                    </table>
+                    {this.state.saved ?
                         <p className="message center">Information saved!</p>
-                : null}
-
-            </form>
+                    : null}
+                </form>
             </div>
         )
     }
-
 
     render() {
         return (
@@ -643,7 +570,6 @@ class EditItem extends Component { // was PureComponent
                         {this.renderForm()}
                 </div>
             </div>
-            
         );
     }
 }
