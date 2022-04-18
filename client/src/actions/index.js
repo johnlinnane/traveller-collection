@@ -131,61 +131,102 @@ export function getItems(
     }
 }
 
+// // not used
+// export function getItemWithContributor(id) {
+//     return (dispatch) => {
+//         axios.get(`${API_PREFIX}/get-item-by-id?id=${id}`)
+//             .then(res => {
+//                 if (res.data.length !== 0) {
+//                     var contributorId = (res.data.contributor) ? res.data.contributor : '5e99a141fb671004505351b4';
 
+//                     axios.get(`${API_PREFIX}/get-contributor?id=${contributorId}`)
+//                         .then(({contributorData}) => {
+//                             let response = {
+//                                 item:res.data, 
+//                                 contributor:contributorData,
+//                                 getItemWithCReturned: true,
+//                             }
+//                             dispatch({
+//                                 type:'GET_ITEM_W_CONTRIBUTOR',
+//                                 payload:response
+//                             });
+//                         })
+//                 } else {
+//                     axios.get(`${API_PREFIX}/get-pend-item-by-id?id=${id}`)
+//                         .then(({data}) => {
+//                             if (data.length !== 0) {
+//                                 let response = {
+//                                     item:data, 
+//                                     pendingItemFound: true
+//                                 }
+//                                 dispatch({
+//                                     type:'GET_ITEM_W_CONTRIBUTOR',
+//                                     payload:response
+//                                 });
+//                             } else {
+//                                 let response = {
+//                                     noPendingItemFound: true
+//                                 }
+//                                 dispatch({
+//                                     type:'GET_ITEM_W_CONTRIBUTOR',
+//                                     payload:response
+//                                 });
+//                             }
+//                         })
+//                 }
+//             })
+//             .catch(err => {
+//                 dispatch({
+//                     type:'GET_ITEM_W_CONTRIBUTOR',
+//                     payload:{error: true}
+//                 });
+//             })
+//     }
+// }
 
-
-export function getItemWithContributor(id) {
+export function getItemOrPending(id) {
     // reduxthunk's dispatched function sends payload to reducers whenever we are ready
     return (dispatch) => {
         axios.get(`${API_PREFIX}/get-item-by-id?id=${id}`)
-        
-        .then(res => {
-            if (res.data.length !== 0) {
-                var contributorId = (res.data.contributor) ? res.data.contributor : '5e99a141fb671004505351b4';
-
-                axios.get(`${API_PREFIX}/get-contributor?id=${contributorId}`)
-                    .then(({contributorData}) => {
-                        let response = {
-                            item:res.data, 
-                            contributor:contributorData,
-                            getItemWithCReturned: true,
-                        }
-                        dispatch({
-                            type:'GET_ITEM_W_CONTRIBUTOR',
-                            payload:response
-                        });
-                    })
-            } else {
-                axios.get(`${API_PREFIX}/get-pend-item-by-id?id=${id}`)
-                    .then(({data}) => {
-                        if (data.length !== 0) {
-                            let response = {
-                                item:data, 
-                                pendingItemFound: true
+            .then(res => {
+                if (res.data.length !== 0) {
+                    let response = {
+                        item:res.data, 
+                    }
+                    dispatch({
+                        type:'GET_ITEM_OR_PENDING',
+                        payload:response
+                    });
+                } else {
+                    axios.get(`${API_PREFIX}/get-pend-item-by-id?id=${id}`)
+                        .then(({data}) => {
+                            if (data.length !== 0) {
+                                let response = {
+                                    item:data, 
+                                    pendingItemFound: true
+                                }
+                                dispatch({
+                                    type:'GET_ITEM_OR_PENDING',
+                                    payload:response
+                                });
+                            } else {
+                                let response = {
+                                    noPendingItemFound: true
+                                }
+                                dispatch({
+                                    type:'GET_ITEM_OR_PENDING',
+                                    payload:response
+                                });
                             }
-                            dispatch({
-                                type:'GET_ITEM_W_CONTRIBUTOR',
-                                payload:response
-                            });
-                        } else {
-                            let response = {
-                                noPendingItemFound: true
-                            }
-                            dispatch({
-                                type:'GET_ITEM_W_CONTRIBUTOR',
-                                payload:response
-                            });
-                        }
-                    })
-            }
-        })
-        .catch(err => {
-            dispatch({
-                type:'GET_ITEM_W_CONTRIBUTOR',
-                payload:{error: true}
-            });
-        })
-        
+                        })
+                }
+            })
+            .catch(err => {
+                dispatch({
+                    type:'GET_ITEM_OR_PENDING',
+                    payload:{error: true}
+                });
+            })
     }
 }
 

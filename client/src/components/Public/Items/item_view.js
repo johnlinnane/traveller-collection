@@ -9,7 +9,7 @@ import { EmailIcon, FacebookIcon, WhatsappIcon } from "react-share";
 
 import { Document, Page, pdfjs } from 'react-pdf';
 
-import { getItemWithContributor, clearItemWithContributor, getAllCats, getAllSubCats, getNextItem, getPrevItem, getParentPdf, getFilesFolder, getPendItemById } from '../../../actions';
+import { getItemOrPending, clearItemWithContributor, getAllCats, getAllSubCats, getNextItem, getPrevItem, getParentPdf, getFilesFolder, getPendItemById } from '../../../actions';
 import NavigationBar from '../../widgetsUI/navigation';
 
 const IP_ADDRESS_REMOTE = process.env.REACT_APP_IP_ADDRESS_REMOTE;
@@ -46,7 +46,7 @@ class ItemView extends Component {
     }
 
     componentDidMount() {
-        this.props.dispatch(getItemWithContributor(this.state.itemId));
+        this.props.dispatch(getItemOrPending(this.state.itemId));
         this.props.dispatch(getAllCats());
         this.props.dispatch(getAllSubCats());
         this.props.dispatch(getNextItem(this.state.itemId));
@@ -61,7 +61,7 @@ class ItemView extends Component {
                 this.setState({
                     itemId: this.props.match.params.id
                 })
-                this.props.dispatch(getItemWithContributor(this.props.match.params.id));
+                this.props.dispatch(getItemOrPending(this.props.match.params.id));
                 this.props.dispatch(getAllCats());
                 this.props.dispatch(getAllSubCats());
                 this.props.dispatch(getNextItem(this.props.match.params.id));
@@ -452,13 +452,13 @@ class ItemView extends Component {
                             <div className="item_field item_creator item_view"><p><b>Creator </b></p><h5>{itemInfo.creator}</h5></div>
                         : null }
 
-                        <div className="item_contributor ">
+                        {/* <div className="item_contributor ">
                             <span className="item_field">
                                 { itemInfo.contributor && itemInfo.contributor.name && itemInfo.contributor.lastname ?
                                     <span>Submitted by: {itemInfo.contributor.name} {itemInfo.contributor.lastname} - </span>
                                 : null }
                             </span>
-                        </div>
+                        </div> */}
 
                         <div className="item_view item_body">
 

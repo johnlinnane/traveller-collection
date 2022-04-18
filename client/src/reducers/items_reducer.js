@@ -44,12 +44,18 @@ export default function foo(state={}, action) {
             };
 
 
-        case 'GET_ITEM_W_CONTRIBUTOR':
+        // case 'GET_ITEM_W_CONTRIBUTOR': // not used
+        //     return {
+        //         ...state,
+        //         item:action.payload.item,
+        //         contributor:action.payload.contributor,
+        //         getItemWithCReturned: action.payload.getItemWithCReturned
+        //     };
+
+        case 'GET_ITEM_OR_PENDING':
             return {
                 ...state,
-                item:action.payload.item,
-                contributor:action.payload.contributor,
-                getItemWithCReturned: action.payload.getItemWithCReturned,
+                item:action.payload.item
             };
         
         case 'CLEAR_ITEM_W_CONTRIBUTOR': 
