@@ -15,7 +15,6 @@ class CatEdit extends Component { // was PureComponent
         catInfo: null,
         selectedFile: null,
         loaded: 0
-    
     }
 
     componentDidMount() {
@@ -48,11 +47,8 @@ class CatEdit extends Component { // was PureComponent
         }
     }
 
-
-
     onSubmitHandler = () => {
         const data = new FormData() 
-        
         if (this.state.selectedFile) {
             for(let x = 0; x<this.state.selectedFile.length; x++) {
                 data.append('file', this.state.selectedFile[x])
@@ -76,21 +72,16 @@ class CatEdit extends Component { // was PureComponent
             })
         }
         this.redirectUser(`/category/${this.props.match.params.id}`)
-
-
     }
 
     maxSelectFile=(event)=>{
-
-
-        let files = event.target.files // create file object
-            if (files.length > 6) { 
-                const msg = 'Only 6 images can be uploaded at a time'
-                event.target.value = null;
-                return false;
-            }
+        let files = event.target.files; // create file object
+        if (files.length > 6) { 
+            // const msg = 'Only 6 images can be uploaded at a time';
+            event.target.value = null;
+            return false;
+        }
         return true;
-     
     }
 
     checkMimeType=(event)=>{
@@ -126,11 +117,9 @@ class CatEdit extends Component { // was PureComponent
             event.target.value = null
         }
         return true;
-   
     }    
 
     // ****************************************************
-
 
     redirectUser = (url) => {
         setTimeout(() => {
@@ -138,33 +127,24 @@ class CatEdit extends Component { // was PureComponent
         }, 1000)
     }
 
-
     render() {
-
-
         return (
             
             <div className="main_view">
                 <div className="form_input item_form_input edit_page">
-                        
                     <h3>Change Category Image:</h3>
-
                     <div className="form_element sel_cat">
                         { this.state.catInfo ?
-                            
-                                <div>
-                                    <h3>{this.state.catInfo.title}</h3>
-                                    <img src={`${FS_PREFIX}/assets/media/cover_img_cat/${this.state.catInfo._id}.jpg`} alt='cat cover'/>
-                                    <br/>
-                                    <input type="file" className="form-control" name="file" accept="image/*" onChange={(e) => this.onChangeHandler(this.state.catInfo._id, e)} />
-                                    
-                                </div>
+                            <div>
+                                <h3>{this.state.catInfo.title}</h3>
+                                <img src={`${FS_PREFIX}/assets/media/cover_img_cat/${this.state.catInfo._id}.jpg`} alt='cat cover'/>
+                                <br/>
+                                <input type="file" className="form-control" name="file" accept="image/*" onChange={(e) => this.onChangeHandler(this.state.catInfo._id, e)} />
+                                
+                            </div>
                         : null}
-                        
                         <button type="button" className="btn btn-success btn-block" onClick={this.onSubmitHandler}>Finish</button> 
                     </div>
-
-
                     <div className="form-group">
                         <Progress max="100" color="success" value={this.state.loaded} >
                             { this.state.loaded ?
@@ -175,7 +155,6 @@ class CatEdit extends Component { // was PureComponent
                             :null}
                         </Progress>
                     </div>
-
                 </div>
             </div>
         );
@@ -185,11 +164,7 @@ class CatEdit extends Component { // was PureComponent
 function mapStateToProps(state) {
     return {
         cats:state.cats.cats
-
     }
 }
 
-
-export default connect(mapStateToProps)(CatEdit)
-
-
+export default connect(mapStateToProps)(CatEdit);

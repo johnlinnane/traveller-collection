@@ -140,15 +140,12 @@ class AdminCat extends Component {
     }
 
     maxSelectFile=(event)=>{
-
-
-        let files = event.target.files // create file object
-            if (files.length > 1) { 
-               const msg = 'Only 1 image can be uploaded at a time'
-               event.target.value = null;
-              return false;
-     
-          }
+        let files = event.target.files; // create file object
+        if (files.length > 1) { 
+            // const msg = 'Only 1 image can be uploaded at a time'
+            event.target.value = null;
+            return false;
+        }
         return true;
      
     }

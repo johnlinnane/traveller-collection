@@ -9,7 +9,7 @@ import { EmailIcon, FacebookIcon, WhatsappIcon } from "react-share";
 
 import { Document, Page, pdfjs } from 'react-pdf';
 
-import { getItemOrPending, clearItemWithContributor, getAllCats, getAllSubCats, getNextItem, getPrevItem, getParentPdf, getFilesFolder, getPendItemById } from '../../../actions';
+import { getItemOrPending, clearItemWithContributor, getAllCats, getAllSubCats, getNextItem, getPrevItem, getParentPdf, getFilesFolder } from '../../../actions';
 import NavigationBar from '../../widgetsUI/navigation';
 
 const IP_ADDRESS_REMOTE = process.env.REACT_APP_IP_ADDRESS_REMOTE;
@@ -647,4 +647,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default withRouter(connect(mapStateToProps)(ItemView))
+export default withRouter(connect(mapStateToProps)(ItemView));

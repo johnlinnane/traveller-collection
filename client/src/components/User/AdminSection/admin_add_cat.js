@@ -22,12 +22,6 @@ class AdminAddCat extends Component {
         imgSrc: '/assets/media/default/default.jpg'
     }
 
-
-
-    
-
-
-
     addDefaultImg = (ev) => {
         const newImg = '/assets/media/default/default.jpg';
         if (ev.target.src !== newImg) {
@@ -107,24 +101,18 @@ class AdminAddCat extends Component {
                 toast.error('upload fail')
             })
         }
-
-
         this.props.history.push(`/admin/${this.props.index}`);
         
     }
 
     maxSelectFile=(event)=>{
-
-
-        let files = event.target.files // create file object
-            if (files.length > 1) { 
-               const msg = 'Only 1 image can be uploaded at a time'
-               event.target.value = null;
-              return false;
-     
-          }
+        let files = event.target.files; // create file object
+        if (files.length > 1) { 
+            // const msg = 'Only 1 image can be uploaded at a time';
+            event.target.value = null;
+            return false;
+        }
         return true;
-     
     }
 
     checkMimeType=(event)=>{
@@ -281,12 +269,10 @@ class AdminAddCat extends Component {
     }
 }
 
-
 function mapStateToProps(state) {
     return {
         // xxx: state.xxx.xxxx
     }
 }
-
 
 export default withRouter(connect(mapStateToProps)(AdminAddCat));

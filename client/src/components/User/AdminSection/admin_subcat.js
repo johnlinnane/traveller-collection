@@ -14,7 +14,6 @@ const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
 class AdminSubCat extends Component {
 
-
     state = {
         formdata: {
             
@@ -84,16 +83,13 @@ class AdminSubCat extends Component {
                     subCatIsHidden: this.props.chosenSubCatInfo.subCatIsHidden || false
                 })
             }
-
         }
-    
     }
 
     // not used
     handleTabIndex = () => {
         this.props.getTabIndex(this.props.index)
     }
-
 
     handleHidden() {
         this.setState({
@@ -102,31 +98,23 @@ class AdminSubCat extends Component {
                 subCat: {
                     ...this.state.formdata.subCat,
                     subCatIsHidden: !this.state.formdata.subCat.subCatIsHidden
-
                 }
-                
             }
-            
         })
     }
 
     // *************** UPLOAD LOGIC ********************
 
     onImgChange = (event) => {
-
-
         let files = event.target.files;
-
         if (this.maxSelectFile(event) && this.checkMimeType(event) && this.checkMimeType(event)) {  
             this.setState({
                 selectedFile: files
             })
         }
-
         this.setState({
             imgSrc: URL.createObjectURL(event.target.files[0])
         })
-
     }
 
 
@@ -156,12 +144,6 @@ class AdminSubCat extends Component {
             })
         }
 
-
-
-
-
-
-
         this.setState({
             imgSrc : this.state.imgSrc + '?' + Math.random()
         });
@@ -170,24 +152,16 @@ class AdminSubCat extends Component {
         this.handleTabIndex();
 
         this.props.history.push(`/admin/${this.props.index}`);
-
-
-
-
-        
     }
 
     maxSelectFile=(event)=>{
-
-        let files = event.target.files // create file object
-            if (files.length > 1) { 
-               const msg = 'Only 1 image can be uploaded at a time'
-               event.target.value = null;
-              return false;
-     
-          }
+        let files = event.target.files; // create file object
+        if (files.length > 1) { 
+            // const msg = 'Only 1 image can be uploaded at a time';
+            event.target.value = null;
+            return false;
+        }
         return true;
-     
     }
 
     checkMimeType=(event)=>{
@@ -229,12 +203,9 @@ class AdminSubCat extends Component {
             event.target.value = null
         }
         return true;
-   
     }    
 
     // ****************************************************
-
-
 
     addDefaultImg = (ev) => {
         const newImg = '/assets/media/default/default.jpg';
@@ -243,12 +214,8 @@ class AdminSubCat extends Component {
         }  
     }
 
-
-
     handleSubCatInput(event, field) {
-
         let tempSubcat = this.state.formdata.subCat;
-
         switch (field) {
                     case 'title':
                         tempSubcat.title = event.target.value;
@@ -264,10 +231,7 @@ class AdminSubCat extends Component {
                 subCat: tempSubcat
             }
         })
-
-
     }
-
 
     handleCatChange = (newValue) => {
         this.setState({
@@ -282,47 +246,34 @@ class AdminSubCat extends Component {
     }
 
     deleteImage = () => {
-
         let data = {
             path: `/cover_img_subcat/${this.state.formdata.subCat._id}.jpg`
         };
-        
         axios.post(`${API_PREFIX}/delete-file`, data  )
-
         this.setState({
             imgSrc: '/assets/media/default/default.jpg'
         })
     }
-
-
 
     removeSubCat = (id) => {
         this.props.dispatch(deleteSubcat(id))
         this.props.history.push(`/admin/0`)
     }
 
-
     submitForm = (e) => {
         e.preventDefault();
-
         this.props.dispatch(updateSubcat(
             this.state.formdata.subCat
         ))
-
         this.onSubmitHandler();
-
-
         setTimeout(() => {
             this.props.history.push(`/admin/${this.props.index}`);
         }, 2000)
-        
     }
 
     cancel = () => {
         this.props.history.push(`/admin/0`)
     }
-
-
 
     render() {
 
@@ -333,9 +284,6 @@ class AdminSubCat extends Component {
                         <form onSubmit={this.submitForm}>
                             <table className="form_input">
                             <tbody>
-                                
-
-
                                 <tr>
                                     <td>
                                         <h3>Title</h3>
@@ -349,8 +297,6 @@ class AdminSubCat extends Component {
                                         />
                                     </td>
                                 </tr>
-
-
                                 <tr>
                                     <td>
                                         <h3>Description</h3>
@@ -364,8 +310,6 @@ class AdminSubCat extends Component {
                                         />
                                     </td>
                                 </tr>
-
-
                                 <tr>
                                     <td>
                                         <h3>Sub-Category Image</h3>
@@ -400,9 +344,6 @@ class AdminSubCat extends Component {
                                         </button> 
                                     </td>
                                 </tr>
-
-
-
                                 <tr>
 
                                     <td>
@@ -421,9 +362,6 @@ class AdminSubCat extends Component {
                                         
                                     </td>
                                 </tr>
-
-
-
                                 <tr>
                                     <td>
                                         <h3>Parent Category</h3>
@@ -441,17 +379,9 @@ class AdminSubCat extends Component {
                                                     classNamePrefix="select"
                                                     onChange={this.handleCatChange}
                                                 />
-
-
-
                                             </td>
                                     : null}
                                 </tr>
-
-                         
-
-                                
-
                                 <tr>
                                     <td colSpan="2">
                                         <button type="button" 
@@ -460,14 +390,8 @@ class AdminSubCat extends Component {
                                         >
                                             Delete Sub-Category
                                         </button>
-
                                     </td>
                                 </tr>
-
-
-
-
-
 
                                 <tr className="spacer"></tr>
 
@@ -483,14 +407,9 @@ class AdminSubCat extends Component {
                                 </tr>
 
                                 <tr className="spacer"></tr>
-
-
                             </tbody>
                             </table>
-                            
                         </form>
-
-                        
 
                         {this.state.catDeleted ?
                             <p className="message">Category deleted!</p>
@@ -499,13 +418,9 @@ class AdminSubCat extends Component {
                         {this.state.saved ?
                             <p className="message">All changes saved!</p>
                         : null}
-                        
                     </div>
                 : null }
             </div>
-    
-                
-
         )
     }
 }

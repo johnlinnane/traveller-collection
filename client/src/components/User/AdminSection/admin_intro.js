@@ -20,28 +20,21 @@ class AdminIntro extends Component {
         imgSrc: `${FS_PREFIX}/assets/media/intro/intro.jpg`
     }
 
-
     componentDidMount() {
         this.props.dispatch(getIntroText());
     }
 
     componentDidUpdate(prevProps, prevState) {
         if (this.props !== prevProps) {
-            
-            
             let introData = {
                 title: this.props.text.title,
                 body: this.props.text.body
             }
-            
-
-
             this.setState({
                 introData
             })
         }
     }
-
 
     // *************** UPLOAD LOGIC ********************
 
@@ -72,7 +65,6 @@ class AdminIntro extends Component {
             }
             
             axios.post(`${API_PREFIX}/upload-intro-img`, data, { 
-                
                 // receive two parameter endpoint url ,form data 
                 onUploadProgress: ProgressEvent => {
                     this.setState({
@@ -89,21 +81,16 @@ class AdminIntro extends Component {
             })
         }
         // this.redirectUser(`/items/${this.props.items.item._id}`)
-
-
     }
 
     maxSelectFile=(event)=>{
-
-        let files = event.target.files // create file object
-            if (files.length > 1) { 
-               const msg = 'Only 1 image can be uploaded at a time'
-               event.target.value = null;
-              return false;
-     
-          }
+        let files = event.target.files; // create file object
+        if (files.length > 1) { 
+            // const msg = 'Only 1 image can be uploaded at a time';
+            event.target.value = null;
+            return false;
+        }
         return true;
-     
     }
 
     checkMimeType=(event)=>{
@@ -145,11 +132,9 @@ class AdminIntro extends Component {
             event.target.value = null
         }
         return true;
-   
     }    
 
     // ****************************************************
-
 
     addDefaultImg = (ev) => {
         const newImg = '/assets/media/default/default.jpg';
@@ -158,14 +143,10 @@ class AdminIntro extends Component {
         }  
     }
 
-
-
     handleInput = (event, field) => {
-
         const newIntroData = {
             ...this.state.introData
         }
-
 
         if (field === 'title') {
             newIntroData.title = event.target.value;
@@ -180,13 +161,8 @@ class AdminIntro extends Component {
         })
     }
 
-
-
     submitForm = (e) => {
         e.preventDefault();
-
-
-
         this.props.dispatch(updateIntroText(
             this.state.introData
         ))
@@ -201,17 +177,14 @@ class AdminIntro extends Component {
             // this.props.history.push(`/user/edit-item-sel/${this.props.items.newitem.itemId}`);
             this.props.history.push(`/admin/0`);
         }, 2000)
-        
         // this.props.history.push(`/admin/0`)
     }
-
 
     cancel = () => {
         this.props.history.push(`/admin/0`)
     }
 
     render() {
-
         return (
             <div className="admin">
                 <div className="admin_intro">
@@ -221,9 +194,6 @@ class AdminIntro extends Component {
                     <form onSubmit={this.submitForm}>
                         <table>
                             <tbody>
-                    
-                                
-
                                 <tr>
                                     <td>
                                         <p>
@@ -231,8 +201,6 @@ class AdminIntro extends Component {
                                         </p>
                                     </td>
                                 </tr>
-
-
                                 <tr>
                                     <td>
                                         <textarea
@@ -244,7 +212,6 @@ class AdminIntro extends Component {
                                         />
                                     </td>
                                 </tr>
-
                                 <tr>
                                     <td>
                                         <p>
@@ -252,7 +219,6 @@ class AdminIntro extends Component {
                                         </p>
                                     </td>
                                 </tr>
-
                                 <tr>
                                     <td>
                                         <textarea
@@ -264,21 +230,16 @@ class AdminIntro extends Component {
                                         />
                                     </td>
                                 </tr>
-
                                 <tr>
                                     <td>
                                         <p>Change Image</p>
                                     </td>
                                 </tr>
-
                                 <tr>
                                     <td>
                                         <img src={this.state.imgSrc} onError={this.addDefaultImg} alt='intro main'/>
                                     </td>
                                 </tr>
-
-
-
                                 <tr>
                                     <td>
                                         <div className="form_element">
@@ -287,38 +248,28 @@ class AdminIntro extends Component {
                                         </div>
                                     </td>
                                 </tr>
-
                                 <tr className="intro_buttons">
                                     <td>
                                         <button type="submit">Save Changes</button>
                                         <button type="button" onClick={this.cancel}>Cancel</button>
                                     </td>
                                 </tr>  
-
                             </tbody>
                         </table>
                     </form>
-
-                    
-
                 </div>
-                
                 {this.state.saved ?
                     <p className="message">Introduction page updated!</p>
                 : null}
-
             </div>
         );
     }
 }
 
-
 function mapStateToProps(state) {
     return {
         text: state.intros.text
-        
     }
 }
-
 
 export default withRouter(connect(mapStateToProps)(AdminIntro));

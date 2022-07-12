@@ -68,11 +68,6 @@ class AdminInfo extends Component {
         }
     }
 
-
-
-
-
-
     // *************** UPLOAD LOGIC ********************
 
     onChangeHandler = (event, i, name) => {
@@ -176,23 +171,19 @@ class AdminInfo extends Component {
 
 
     maxSelectFile=(event)=>{
-
-
-        let files = event.target.files // create file object
-            if (files.length > 1) { 
-               const msg = 'Only 1 image can be uploaded at a time'
-               event.target.value = null;
-              return false;
-     
-          }
+        let files = event.target.files; // create file object
+        if (files.length > 1) { 
+            // const msg = 'Only 1 image can be uploaded at a time';
+            event.target.value = null;
+            return false;
+        }
         return true;
-     
     }
 
     checkMimeType=(event)=>{
-        let files = event.target.files 
-        let err = ''
-        const types = ['image/png', 'image/jpeg', 'image/gif']
+        let files = event.target.files;
+        let err = '';
+        const types = ['image/png', 'image/jpeg', 'image/gif'];
         for(let x = 0; x < files.length; x++) {
             if (types.every(type => files[x].type !== type)) {
                 err += files[x].type+' is not a supported format\n';
@@ -200,15 +191,15 @@ class AdminInfo extends Component {
         };
 
         for(let z = 0; z<err.length; z++) { // loop create toast massage
-            event.target.value = null 
-            toast.error(err[z])
+            event.target.value = null;
+            toast.error(err[z]);
         }
         return true;
     }
 
     checkFileSize=(event)=>{
-        let files = event.target.files
-        let size = 15000 
+        let files = event.target.files;
+        let size = 15000;
         let err = ""; 
 
         for(let x = 0; x<files.length; x++) {
@@ -218,27 +209,23 @@ class AdminInfo extends Component {
         };
 
         for(let z = 0; z<err.length; z++) {
-            toast.error(err[z])
-            event.target.value = null
+            toast.error(err[z]);
+            event.target.value = null;
         }
         return true;
-   
     }    
 
     // ****************************************************
 
-
-
-
     addDefaultImg = (ev) => {
         const newImg = '/assets/media/default/default.jpg';
         if (ev.target.src !== newImg) {
-            ev.target.src = newImg
+            ev.target.src = newImg;
         }  
     }
 
     cancel = () => {
-        this.props.history.push(`/admin/0`)
+        this.props.history.push(`/admin/0`);
     }
 
 
@@ -251,15 +238,15 @@ class AdminInfo extends Component {
 
 
         if (field === 'heading') {
-            newFormdata.sections[i].heading = event.target.value
+            newFormdata.sections[i].heading = event.target.value;
         }
 
         if (field === 'paragraph') {
-            newFormdata.sections[i].paragraph = event.target.value
+            newFormdata.sections[i].paragraph = event.target.value;
         }
 
         if (field === 'icons') {
-            newFormdata.iconsCaption = event.target.value
+            newFormdata.iconsCaption = event.target.value;
         }
 
 
@@ -313,12 +300,12 @@ class AdminInfo extends Component {
 
         if (this.state.selectedFiles && this.state.selectedFiles.length) {
             this.state.selectedFiles.forEach( (file, i) => {
-                this.onSubmitHandler(i)
+                this.onSubmitHandler(i);
             })
         }
 
         if (this.state.selectedIconImg) {
-            this.uploadIconsImg('icons')
+            this.uploadIconsImg('icons');
         }
         
    
@@ -335,19 +322,12 @@ class AdminInfo extends Component {
 
 
     renderRows = () => (
-        
-
         this.state.formdata.sections.map( (section, i) => (
-
-
-
             <React.Fragment key={section.item_id}>
-
                 <tr>
                     <td>
                         Paragraph {i+1} Heading
                     </td>
-
                     <td>
                         <input
                             key={`heading${i}`}
@@ -358,8 +338,6 @@ class AdminInfo extends Component {
                         />
                     </td>
                 </tr>
-
-                
                 <tr>
                     <td>
                         Paragraph {i + 1} Body
@@ -456,15 +434,10 @@ class AdminInfo extends Component {
                     <form onSubmit={this.submitForm}>
                         <table className="admin_info_table_section" >
                             <tbody>
-
-
                                 {this.state.formdata.sections ?
                                     this.renderRows()
                                 : null }
-
-                                
                                 <tr><td></td><td></td></tr>
-
                                 {/* <tr>
                                     <td>
                                         Add Section
@@ -484,11 +457,7 @@ class AdminInfo extends Component {
                                 <tr>
                                     <td colSpan="2"><hr/></td>
                                 </tr> */}
-
                                 {this.renderIcons()}
-
-                                
-
                                 <tr>
                                     <td>
                                         <button type="submit">Save Changes</button>
@@ -506,8 +475,6 @@ class AdminInfo extends Component {
                     {this.state.saved ?
                         <p className="message center">Information page updated!</p>
                     : null}
-
-                    
                 </div>
             </div>
         );
@@ -515,15 +482,9 @@ class AdminInfo extends Component {
 }
 
 function mapStateToProps(state) {
-
     return {
         infotext: state.infos.text
-        
     }
 }
 
-
 export default withRouter(connect(mapStateToProps)(AdminInfo));
-
-
-

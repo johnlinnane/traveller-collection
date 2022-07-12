@@ -216,17 +216,15 @@ class EditItemFile extends Component { // was PureComponent
         setTimeout(() => {
             this.props.history.push(`/items/${this.state.formdata._id}`)
         }, 1000)
-
-
     }
 
     maxSelectFile=(event)=>{
-        let files = event.target.files // create file object
-            if (files.length > 6) { 
-                const msg = 'Only 6 images can be uploaded at a time'
-                event.target.value = null;
-                return false;
-          }
+        let files = event.target.files; // create file object
+        if (files.length > 6) { 
+            // const msg = 'Only 6 images can be uploaded at a time';
+            event.target.value = null;
+            return false;
+        }
         return true;
     }
 
@@ -310,14 +308,9 @@ class EditItemFile extends Component { // was PureComponent
                     itemFiles: tempItemFiles
                 })
             })
-
-
     }
 
-
-
     cancelInput = (i) => {
-        
         let tempSelectedFiles = this.state.selectedFiles;
         tempSelectedFiles.splice(i, 1);
 
@@ -338,7 +331,6 @@ class EditItemFile extends Component { // was PureComponent
         })
     }
 
-
     addDefaultImg = (ev) => {
         const newImg = '/assets/media/default/default.jpg';
         if (ev.target.src !== newImg) {
@@ -346,28 +338,21 @@ class EditItemFile extends Component { // was PureComponent
         }  
     } 
 
-
-
     render() {
         return (
-            
             <div className="main_view">
                 <div className="form_input item_form_input edit_page">
                         
-                        <Link to={`/items/${this.state.formdata._id}`} target="_blank" >
-
-                            <div className="container">
-                                <div className="img_back">
-                                    <img src={`${FS_PREFIX}/assets/media/items/${this.state.formdata._id}/original/${this.state.itemFiles[0]}`} alt="item main"  onError={this.addDefaultImg} />
-                                </div>
-                                
-                                <div className="centered edit_img_text">
-                                    <h2>{this.state.formdata.title}</h2>
-                                </div>
-                                
-
+                    <Link to={`/items/${this.state.formdata._id}`} target="_blank" >
+                        <div className="container">
+                            <div className="img_back">
+                                <img src={`${FS_PREFIX}/assets/media/items/${this.state.formdata._id}/original/${this.state.itemFiles[0]}`} alt="item main"  onError={this.addDefaultImg} />
                             </div>
-                        </Link>
+                            <div className="centered edit_img_text">
+                                <h2>{this.state.formdata.title}</h2>
+                            </div>
+                        </div>
+                    </Link>
 
                     <h2>Upload Media File(s)</h2>
 
@@ -414,8 +399,6 @@ class EditItemFile extends Component { // was PureComponent
                             </div>
                         ))
                     : null }
-                    
-
 
                     <div 
                         className="edit_3_card"
@@ -485,10 +468,7 @@ class EditItemFile extends Component { // was PureComponent
                         </div>
                     </div>
                     
-
-
                     <div className="form_element">
-
                         { this.props.user.login.isAuth ?
                             <div className="center">
                                 <button 
@@ -505,9 +485,6 @@ class EditItemFile extends Component { // was PureComponent
                             <button type="button" className="btn btn-success btn-block edit_page_3_finish" onClick={this.onSubmitHandler}>Save and Finish</button> 
                         </div>
                     </div>
-
-                  
-
 
                     <div className="form-group">
                         <Progress max="100" color="success" value={this.state.loaded} >
@@ -532,7 +509,4 @@ function mapStateToProps(state) {
     }
 }
 
-
-export default connect(mapStateToProps)(EditItemFile)
-
-
+export default connect(mapStateToProps)(EditItemFile);
