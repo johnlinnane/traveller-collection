@@ -22,7 +22,7 @@
 .container {
   position: relative;
   text-align: center;
-  color: #dddbdb;
+  color: rgb(221, 219, 219);
   padding: 15px;
 }
 
@@ -141,7 +141,7 @@
   padding: 1rem 1.5rem 2rem;
   vertical-align: top;
   line-height: 1.3rem;
-  color: #cccccc;
+  color: hsl(0deg, 0%, 80%);
 }
 
 .cat_view .cat_view_header_card {
@@ -176,7 +176,7 @@
   padding: 1rem 1.5rem 2rem;
   vertical-align: top;
   line-height: 1.3rem;
-  color: #cccccc;
+  color: hsl(0deg, 0%, 80%);
 }
 .cat_view .cat_view_header_card .cat_view_header_card_img_text h2 {
   text-transform: uppercase;
@@ -195,7 +195,7 @@
   grid-template-columns: 1fr 3fr;
   grid-column-gap: 10px;
   margin-bottom: 0.5rem;
-  background-color: #e7e7e7;
+  background-color: rgb(231, 231, 231);
 }
 .cat_view .cat_view_flex_container .cat_view_subcat_card .cat_view_subcat_card_img img {
   object-fit: cover;
@@ -345,23 +345,19 @@
   width: 100%;
 }
 
-::-webkit-input-placeholder {
-  /* Chrome/Opera/Safari */
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
   color: #d8d8d8;
 }
 
-::-moz-placeholder {
-  /* Firefox 19+ */
+::-moz-placeholder { /* Firefox 19+ */
   color: #d8d8d8;
 }
 
-:-ms-input-placeholder {
-  /* IE 10+ */
+:-ms-input-placeholder { /* IE 10+ */
   color: #d8d8d8;
 }
 
-:-moz-placeholder {
-  /* Firefox 18- */
+:-moz-placeholder { /* Firefox 18- */
   color: #d8d8d8;
 }
 
@@ -622,7 +618,7 @@ header .navItem span {
   padding-bottom: 1em;
 }
 .item_view_main_view .view_item_container .item_field a {
-  color: #4e7096;
+  color: rgb(78, 112, 150);
 }
 .item_view_main_view .view_item_container .item_field b {
   margin-bottom: 20px;
@@ -731,7 +727,7 @@ header .navItem span {
   box-sizing: border-box;
   padding: 10px 20px;
   display: block;
-  background: #bb494978;
+  background: rgba(187, 73, 73, 0.4705882353);
 }
 .item_item .widget_item_header h2 {
   font-size: 20px;
@@ -978,7 +974,7 @@ p {
   height: auto !important;
 }
 .pdf_wrapper .pdf_control_panel {
-  background-color: #e9e8e8;
+  background-color: rgb(233, 232, 232);
   width: 100%;
   display: inline-block;
   padding: 10px 0;
@@ -1008,7 +1004,7 @@ p {
 }
 .pdf_wrapper .pdf_index_table .pdf_index_header {
   background-color: #000000;
-  color: #fdfdfd;
+  color: rgb(253, 253, 253);
 }
 .pdf_wrapper .pdf_index_table .pdf_index_col {
   flex: 2;
@@ -1124,7 +1120,7 @@ p {
 }
 
 .item_list_card {
-  background-color: #e7e7e7;
+  background-color: rgb(231, 231, 231);
   text-align: left;
   height: 100%;
   color: white;
@@ -1150,7 +1146,7 @@ p {
 }
 
 .item_list_add_card {
-  background-color: #e7e7e7;
+  background-color: rgb(231, 231, 231);
   text-align: left;
   height: 100%;
   color: white;
@@ -1490,7 +1486,7 @@ p {
 .edit_page table, .edit_page tr, .edit_page td {
   border: none;
   background: none;
-  background-color: white;
+  background-color: rgb(255, 255, 255);
 }
 .edit_page .label {
   width: 25%;
@@ -1588,7 +1584,7 @@ input[type=number] {
 .edit_3_label div:hover {
   cursor: pointer;
   border: 1px solid #CCC;
-  background: #e77f7f;
+  background: rgb(231, 127, 127);
 }
 
 .edit_page_3_finish {
