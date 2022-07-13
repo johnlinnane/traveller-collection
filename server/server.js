@@ -65,8 +65,6 @@ app.get('/api/logout', authMiddleware, (req, res) => {
     })
 }) 
 
-
-
 // * * * * * * * * * * * * * * * * * * * * getItemById
 app.get('/api/get-item-by-id', (req,res) => {
     let id = req.query.id;
@@ -110,7 +108,7 @@ app.get('/api/search-item', (req,res) => {
 
 
 // * * * * * * * * * * * * * * * * * * * * get all items TEST
-app.get('/api/allItems', (req, res) => {
+app.get('/api/all-items', (req, res) => {
     // empty object returns all
     Item.find({}, (err, items) => {
         if(err) return res.status(400).send(err);

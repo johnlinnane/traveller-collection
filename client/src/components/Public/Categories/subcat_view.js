@@ -38,6 +38,17 @@ class SubcatView  extends Component {
 
     componentDidUpdate(prevProps, prevState) {
         if (prevProps !== this.props) {
+            if (this.props.catinfo) {
+                let tempNavInfo = {
+                    ...this.state.navInfo,
+                    catTitle: this.props.catinfo.title,
+                    catId: this.props.catinfo._id,
+                }
+                this.setState({
+                    navInfo: tempNavInfo
+                })
+            }
+
             if (this.props.subcat !== prevProps.subcat) {
                 if (this.props.subcat && this.props.subcat.length) {
                     document.title = `${this.props.subcat[0].title} - Traveller Collection`
@@ -52,18 +63,6 @@ class SubcatView  extends Component {
                     this.props.dispatch(getCatById(this.props.subcat[0].parent_cat))
                 }
             }
-
-            if (this.props.catinfo) {
-                let tempNavInfo = {
-                    ...this.state.navInfo,
-                    catTitle: this.props.catinfo.title,
-                    catId: this.props.catinfo._id,
-                }
-                this.setState({
-                    navInfo: tempNavInfo
-                })
-            }
-
            
             if (this.props.subcatitems !== prevProps.subcatitems) {
                 if (this.props.subcatitems && this.props.subcatitems.length) {

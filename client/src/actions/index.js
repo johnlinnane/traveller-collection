@@ -88,7 +88,7 @@ export function userRegister(user, userList) {
 
 
 export function getAllItems() {
-    const request = axios.get(`${API_PREFIX}/allItems`)
+    const request = axios.get(`${API_PREFIX}/all-items`)
                         .then(response => {
                                 return response.data
                             }
