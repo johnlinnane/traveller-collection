@@ -3,15 +3,12 @@ import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import Slick from 'react-slick';   // uses cdn css
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
-
 import { EmailShareButton, FacebookShareButton, WhatsappShareButton } from "react-share";
 import { EmailIcon, FacebookIcon, WhatsappIcon } from "react-share";
-
 import { Document, Page, pdfjs } from 'react-pdf';
-
 import { getItemOrPending, clearItemWithContributor, getAllCats, getAllSubCats, getNextItem, getPrevItem, getParentPdf, getFilesFolder } from '../../../actions';
 import NavigationBar from '../../widgetsUI/navigation';
-
+import config from "../../../config";
 const IP_ADDRESS_REMOTE = process.env.REACT_APP_IP_ADDRESS_REMOTE;
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
@@ -157,7 +154,7 @@ class ItemView extends Component {
 
     componentWillUnmount() {
         this.props.dispatch(clearItemWithContributor());
-        document.title = `Traveller Collection`
+        document.title = config.defaultTitle;
     }
 
     navInfo = {

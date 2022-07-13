@@ -5,14 +5,12 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import {Progress} from 'reactstrap';
 import Select from 'react-select';
-
 import { getItemById, getPendItemById, updateItem, updatePendItem, getFilesFolder } from '../../../actions';
-
+import config from "../../../config";
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
 class EditItemFile extends Component { // was PureComponent
-
     state = {
         formdata:{
             _id:this.props.match.params.id,
@@ -87,9 +85,8 @@ class EditItemFile extends Component { // was PureComponent
     }
 
     componentWillUnmount() {
-        document.title = `Traveller Collection`
+        document.title = config.defaultTitle;
     }
-
 
     componentDidUpdate(prevProps, prevState) {
 
@@ -144,11 +141,7 @@ class EditItemFile extends Component { // was PureComponent
         }
     }
 
-
-
-
     // *************** UPLOAD LOGIC ********************
-
     onChangeHandler = (event) => {
 
         const file = event.target.files;
@@ -162,9 +155,6 @@ class EditItemFile extends Component { // was PureComponent
             tempSelectedFilesImg.push(URL.createObjectURL(file[0]));
         }
 
-
-        
-
         if (this.maxSelectFile(event) && this.checkMimeType(event) && this.checkMimeType(event)) {  
             this.setState({
                 selectedFilesNum: this.state.selectedFilesNum + 1,
@@ -175,8 +165,6 @@ class EditItemFile extends Component { // was PureComponent
             })
         }
     }
-
-
 
     onSubmitHandler = () => {
         if (this.props.user.login.isAuth) {
@@ -193,7 +181,6 @@ class EditItemFile extends Component { // was PureComponent
             ))
         }
 
-
         if (this.state.selectedFiles.length) {
             let formdata = new FormData() 
 
@@ -209,9 +196,6 @@ class EditItemFile extends Component { // was PureComponent
                     console.error('UPLOAD ERROR: ', err)
                 })
         }
-
-
-
 
         setTimeout(() => {
             this.props.history.push(`/items/${this.state.formdata._id}`)
@@ -292,8 +276,6 @@ class EditItemFile extends Component { // was PureComponent
             this.props.history.push(`/user/edit-item-file/${this.state.formdata._id}`)
         }, 1000)
     }
-
-
 
     deleteImage =  (i) => {
         let data = {

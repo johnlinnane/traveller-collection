@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
 import { loginUser } from '../../../actions';
-
+import config from "../../../config";
 
 class Login extends Component {
     
@@ -27,7 +26,7 @@ class Login extends Component {
     }
     
     componentWillUnmount() {
-        document.title = `Traveller Collection`
+        document.title = config.defaultTitle;
     }
 
 

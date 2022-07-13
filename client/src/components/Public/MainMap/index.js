@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
-
 import { getItemsWithCoords } from '../../../actions';
-
+import config from "../../../config";
 
 class MainMap extends Component {
 
@@ -20,7 +19,7 @@ class MainMap extends Component {
     }
 
     componentWillUnmount() {
-        document.title = `Traveller Collection`
+        document.title = config.defaultTitle;
     }
 
     render() {

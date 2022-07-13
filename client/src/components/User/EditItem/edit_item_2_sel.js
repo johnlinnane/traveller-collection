@@ -3,18 +3,14 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Select from 'react-select';
 import CreatableSelect from 'react-select/creatable';
-
 import { getItemById, getPendItemById, updateItem, updatePendItem, clearItem, getFilesFolder } from '../../../actions';
 import { getAllCats, getAllSubCats  } from '../../../actions';
-
+import config from "../../../config";
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
-
 
 class EditItemSel extends Component { // was PureComponent
 
-
     state = {
-
         dataToUpdate: {
             _id: null,
             category_ref: [],
@@ -31,10 +27,7 @@ class EditItemSel extends Component { // was PureComponent
         saved: false,
 
         tagsDisabled: true
-       
-
     }
-
 
     componentDidMount() {
         document.title = "Edit Item - Traveller Collection"
@@ -51,7 +44,7 @@ class EditItemSel extends Component { // was PureComponent
 
     componentWillUnmount() {
         this.props.dispatch(clearItem())
-        document.title = `Traveller Collection`
+        document.title = config.defaultTitle;
     }
 
 
@@ -104,11 +97,6 @@ class EditItemSel extends Component { // was PureComponent
                     // }
                 }
 
-
-
-
-
-
                 let existsForState = {
                     _id: this.props.items.item._id,
                     category_ref: this.props.items.item.category_ref,
@@ -120,10 +108,6 @@ class EditItemSel extends Component { // was PureComponent
                 if (!tagsForState) {
                     tagsForState = []
                 }
-
-
-                
-
 
                 // GET OPTIONS
                 this.getCatOptions()
@@ -140,8 +124,6 @@ class EditItemSel extends Component { // was PureComponent
         } 
     }
 
-
-
     addDefaultImg = (ev) => {
         const newImg = '/assets/media/default/default.jpg';
         if (ev.target.src !== newImg) {
@@ -154,7 +136,6 @@ class EditItemSel extends Component { // was PureComponent
             this.props.history.push(url)
         }, 1000)
     }
-
 
     handleInputTags = (newValue) => {
        
@@ -179,7 +160,6 @@ class EditItemSel extends Component { // was PureComponent
             })
         }
     }
-
 
     handleInputCats = (newValue) => {
         let catArray = [];
@@ -233,9 +213,6 @@ class EditItemSel extends Component { // was PureComponent
         })
     }
 
-
-
-
     onSubmit = (e) => {
         e.preventDefault();
         if (this.props.user.login.isAuth) {
@@ -247,8 +224,6 @@ class EditItemSel extends Component { // was PureComponent
                 { ...this.state.dataToUpdate }
             ))
         }
-        
-
 
         this.setState({
             saved: true
@@ -259,9 +234,6 @@ class EditItemSel extends Component { // was PureComponent
         }, 1000)
 
     }
-
-
-
 
     getCatOptions = () => {
         let catList = [];
@@ -274,17 +246,10 @@ class EditItemSel extends Component { // was PureComponent
         this.setState({
             catList
         })
-
-        
     }
 
-
-
     getSubcatOptions = () => {
-        
-
         let subcatList = this.state.subcatList;
-
         // make reformatted list of all subcats
         if (!this.state.subcatsInitialised) {
             if (this.props.items.item.category_ref && this.props.items.item.category_ref.length) {
@@ -304,7 +269,6 @@ class EditItemSel extends Component { // was PureComponent
                     })
                 })
             }
-
             this.setState({
                 subcatList,
                 subcatsInitialised: true
@@ -312,131 +276,113 @@ class EditItemSel extends Component { // was PureComponent
         }
     }
 
-
-
-
     renderForm = () => (
         <form onSubmit={this.onSubmit}>
-                        
+            <div className="edit_item_container">
+                <Link to={`/items/${this.state.dataToUpdate._id}`} target="_blank" >
+                    <div className="container">
 
-                        <div className="edit_item_container">
-                            <Link to={`/items/${this.state.dataToUpdate._id}`} target="_blank" >
+                        <div className="img_back">
 
-                                <div className="container">
-
-                                    <div className="img_back">
-
-                                        { this.props.items.files && this.props.items.files.length ?
-                                            <div>
-                                            <img src={`${FS_PREFIX}/assets/media/items/${this.props.match.params.id}/original/${this.props.items.files[0].name}`} alt="item main" className="edit_main_img" onError={this.addDefaultImg} />
-                                            </div>
-                                        : <img src={'/assets/media/default/default.jpg'} alt='default'/> }
-
-                                    </div>
-                                    {this.props.items && this.props.items.item ?
-                                        <div className="centered edit_img_text"><h2>{this.props.items.item.title}</h2></div>
-                                    : null}
-
+                            { this.props.items.files && this.props.items.files.length ?
+                                <div>
+                                <img src={`${FS_PREFIX}/assets/media/items/${this.props.match.params.id}/original/${this.props.items.files[0].name}`} alt="item main" className="edit_main_img" onError={this.addDefaultImg} />
                                 </div>
-                            </Link>
+                            : <img src={'/assets/media/default/default.jpg'} alt='default'/> }
+
                         </div>
+                        {this.props.items && this.props.items.item ?
+                            <div className="centered edit_img_text"><h2>{this.props.items.item.title}</h2></div>
+                        : null}
 
+                    </div>
+                </Link>
+            </div>
 
-                        <h2>Edit Item Categories</h2>
-                       
-                        <table>
-                        <tbody>
-                            
-                            {this.state.tagsDisabled === true ?
-                                null
-                            :
-                                <tr>
-                                    <td>
-                                        Tags
-                                    </td>
-                                    <td>
-                                        <div className="form_element select">
-                                            <CreatableSelect
-                                                defaultValue={this.state.tagsConverted}
-                                                isMulti
-                                                onChange={this.handleInputTags}
-                                                options={this.state.tagsConverted}
-                                            />
-                                        </div>
-                                    </td>
-                                </tr>
-                            }
-                          
-                           
+            <h2>Edit Item Categories</h2>
+            
+            <table>
+            <tbody>
+                
+                {this.state.tagsDisabled === true ?
+                    null
+                :
+                    <tr>
+                        <td>
+                            Tags
+                        </td>
+                        <td>
+                            <div className="form_element select">
+                                <CreatableSelect
+                                    defaultValue={this.state.tagsConverted}
+                                    isMulti
+                                    onChange={this.handleInputTags}
+                                    options={this.state.tagsConverted}
+                                />
+                            </div>
+                        </td>
+                    </tr>
+                }
 
+                <tr>
+                    <td>
+                        Category
+                    </td>
+                    <td>
+                        <div className="form_element select">
+                            <Select
+                                key={`cat_${this.props.items.item._id}`}
+                                defaultValue={this.state.catsConverted}
+                                isMulti
+                                name="colors"
+                                options={this.state.catList}
+                                className="basic-multi-select"
+                                classNamePrefix="select"
+                                onChange={this.handleInputCats}
+                            />
+                        </div>
+                    </td>
+                </tr>  
+                
+                { this.state.catsConverted ?
+                    <tr>
+                        <td>
+                            Sub-categories 
+                        </td>
+                        <td>
 
-                            <tr>
-                                <td>
-                                    Category
-                                </td>
-                                <td>
-                                    <div className="form_element select">
-                                        <Select
-                                            key={`cat_${this.props.items.item._id}`}
-                                            defaultValue={this.state.catsConverted}
-                                            isMulti
-                                            name="colors"
-                                            options={this.state.catList}
-                                            className="basic-multi-select"
-                                            classNamePrefix="select"
-                                            onChange={this.handleInputCats}
-                                        />
-                                    </div>
-                                </td>
-                            </tr>  
+                            <div className="form_element select">
+                                <Select
+                                    key={`cat_${this.props.items.item._id}`}
+                                    defaultValue={this.state.subcatsConverted}
+                                    isMulti
+                                    name="colors"
+                                    options={this.state.subcatList}
+                                    className="basic-multi-select"
+                                    classNamePrefix="select"
+                                    onChange={this.handleInputSubcats}
+                                />
+                            </div>
+                        </td>
+                    </tr>
+                : null }
 
-                           
-                            { this.state.catsConverted ?
-                                <tr>
-                                    <td>
-                                        Sub-categories 
-                                    </td>
-                                    <td>
-
-                                        <div className="form_element select">
-                                            <Select
-                                                key={`cat_${this.props.items.item._id}`}
-                                                defaultValue={this.state.subcatsConverted}
-                                                isMulti
-                                                name="colors"
-                                                options={this.state.subcatList}
-                                                className="basic-multi-select"
-                                                classNamePrefix="select"
-                                                onChange={this.handleInputSubcats}
-                                            />
-                                        </div>
-                                    </td>
-                                </tr>
-                            : null }
-
-                                <tr>
-                                    
-                                    <td colSpan="2" className="center">
-                                        <button type="submit" className="edit_page_2_save">Save and Continue</button>
-                                    </td>
-                                </tr>
-                            
-                            
-                        </tbody>
-                        </table>
-
-                    </form>
+                <tr>
+                    
+                    <td colSpan="2" className="center">
+                        <button type="submit" className="edit_page_2_save">Save and Continue</button>
+                    </td>
+                </tr>
+            </tbody>
+            </table>
+        </form>
     )
 
     render() {
-
         let items = this.props.items;
-
         return (
-            
             <div className="main_view">
                 <div className="form_input item_form_input edit_page">
-
                     {
                         items.itemDeleted ?
                             <div className="red_tag">
@@ -446,17 +392,14 @@ class EditItemSel extends Component { // was PureComponent
 
                         : null
                     }
-                    
+
                     {this.state.tagsConverted && this.state.catsConverted && this.state.subcatsConverted ?
-                    
                         this.renderForm()
                     : null }
 
                     {this.state.saved ?
                         <p className="message center">Information saved!</p>
                     : null}
-
-                        
                 </div>
             </div>
             
@@ -472,4 +415,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps)(EditItemSel)
+export default connect(mapStateToProps)(EditItemSel);

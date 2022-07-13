@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-
+import config from "../../../config";
 import { getItemsByCat, getCatById, getAllSubCats } from '../../../actions';
 import NavigationBar from '../../widgetsUI/navigation';
 
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
-class CatView  extends Component {
+class CatView extends Component {
     
     componentDidMount() {
         let catId = this.props.match.params.id
@@ -30,8 +30,6 @@ class CatView  extends Component {
         type: 'Categories'
     }
 
- 
-
     addDefaultImg = (ev) => {
         const newImg = '/assets/media/default/default.jpg';
         if (ev.target.src !== newImg) {
@@ -39,50 +37,36 @@ class CatView  extends Component {
         }  
     }
 
-
-
-
     componentDidUpdate(prevProps, prevState) {
         if (this.props.subcats !== prevProps.subcats) {
-
             let theseSubcats = this.state.theseSubcats;
-
             this.props.subcats.forEach( subcat => {
                 if (subcat.parent_cat === this.props.match.params.id) {
                     theseSubcats.push(subcat)
                 }
             })
-
             this.setState({
                 theseSubcats
               
             })
         }
-
         if (this.props.catinfo ) {
             document.title = `${this.props.catinfo.title} - Traveller Collection`
            
             this.navInfo.catTitle = this.props.catinfo.title;
             this.navInfo.catId = this.props.catinfo._id;
-                
-            
         }
     }
+
     componentWillUnmount() {
-        document.title = `Traveller Collection`
+        document.title = config.defaultTitle;
     }
 
-
-
-
     render() {
-        
         return (
             <div>
                 <NavigationBar navinfo={this.navInfo}/>
-
                 <div className="main_view cat_view">
-
                     
                     {this.props.catinfo ?
                         <div className="cat_view_header_card">
@@ -100,15 +84,9 @@ class CatView  extends Component {
                         </div>
                     : null }
 
-
-
                     <div className="cat_view_flex_container">
-
                         {this.state.theseSubcats && this.state.theseSubcats.length ?
-                            
                             this.state.theseSubcats.map( (subcat, i) => (
-                            
-                            
                                 subcat.subCatIsHidden && subcat.subCatIsHidden === true ?
                                     null
                                 :
@@ -125,32 +103,21 @@ class CatView  extends Component {
                                             </div>
                                         </div>
                                     </Link>
-                                
-                                
                             ))
                         : null }
-
-
                     </div>
                 </div>
             </div>
         )
     }
-
-
 }
 
-
 function mapStateToProps(state) {
-    
-
     return {
         catinfo: state.cats.catinfo,
         subcats: state.cats.subcats,
         catitems: state.cats.catitems
-        
     }
 }
-
 
 export default connect(mapStateToProps)(CatView)

@@ -1,14 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
-
 import { getAllPendItems, deletePendItem, acceptItem } from '../../../actions';
-
-
 import PendingItemCard from './pending_item_card'
-
+import config from "../../../config";
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
-
 
 class PendingItemsView extends Component {
 
@@ -24,7 +20,7 @@ class PendingItemsView extends Component {
     }
 
     componentWillUnmount() {
-        document.title = `Traveller Collection`
+        document.title = config.defaultTitle;
     }
 
     componentDidUpdate(prevProps, prevState) {

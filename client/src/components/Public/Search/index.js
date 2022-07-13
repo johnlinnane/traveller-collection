@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import SearchHeader from './search_header';
 import SearchList from './news_list';
 import { getAllItems } from '../../../actions';
-
+import config from "../../../config";
 
 
 
@@ -23,7 +23,7 @@ class Search extends Component {
     }
     
     componentWillUnmount() {
-        document.title = `Traveller Collection`
+        document.title = config.defaultTitle;
     }
 
     getKeyword = (event) => {

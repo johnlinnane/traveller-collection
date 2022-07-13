@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-
-
+import config from "../../../config";
 
 import NavigationBar from '../../widgetsUI/navigation';
 import { getAllCats } from '../../../actions';
@@ -25,7 +24,7 @@ class CatList extends Component {
 
     }
     componentWillUnmount() {
-        document.title = `Traveller Collection`
+        document.title = config.defaultTitle;
     }
 
     navInfo = {

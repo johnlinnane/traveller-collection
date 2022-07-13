@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
 import { getSubcat, getItemsBySubcat, getCatById } from '../../../actions';
 import NavigationBar from '../../widgetsUI/navigation';
-
+import config from "../../../config";
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
 class SubcatView  extends Component {
@@ -83,7 +83,7 @@ class SubcatView  extends Component {
         }
     }
     componentWillUnmount() {
-        document.title = `Traveller Collection`
+        document.title = config.defaultTitle;
     }
 
     addClick = () => {

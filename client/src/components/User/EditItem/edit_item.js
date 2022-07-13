@@ -3,10 +3,8 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Map, TileLayer, Marker } from 'react-leaflet'
 import axios from 'axios';
-
-
 import { getItemById, updateItem, clearItem, deleteItem, getParentPdf, deleteChapter, getFilesFolder } from '../../../actions';
-
+import config from "../../../config";
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
@@ -73,7 +71,7 @@ class EditItem extends Component {
 
     componentWillUnmount() {
         this.props.dispatch(clearItem())
-        document.title = `Traveller Collection`
+        document.title = config.defaultTitle;
     }
 
     componentDidUpdate(prevProps) {
