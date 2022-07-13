@@ -141,17 +141,6 @@ app.get('/api/items', (req,res) => {
     })
 })
 
-app.get('/api/get-contributor', (req, res) => {
-    let id = req.query.id;
-    User.findById(id, (err, doc) => {
-        if(err) return res.status(400).send(err);
-        res.json({
-            name:doc.name,
-            lastname:doc.lastname
-        })
-    })
-})
-
 app.get('/api/users', (req, res) => {
     User.find({}, (err, users) => {
         if(err) return res.status(400).send(err);
@@ -206,43 +195,9 @@ app.get('/api/get-prev-item', (req,res) => {
     })
 })
 
-app.get('/api/get-latest-item', (req,res) => {
-    Item.findOne({}, {}, { sort: { '_id':-1 } }, (err, doc) => {
-        if(err) return res.status(400).send(err);
-        res.send(doc);
-    })
-})
-
-// not used?? replaced by get-subcat-by-id??? 
-app.get('/api/get-subcat', (req,res) => {
-    let subcatId = req.query.subcatid;
-    SubCat.findOne({ _id: subcatId}, {}, { sort: { '_id':1 } }, (err, doc) => {
-        if(err) return res.status(400).send(err);
-        res.send(doc);
-    })
-})
-
 app.get('/api/get-items-by-subcat', (req,res) => {
     let subcatId = req.query.subcatid;
     Item.find({ subcategory_ref: subcatId}, {}, { sort: { '_id':1 } }, (err, doc) => {
-        if(err) return res.status(400).send(err);
-        res.send(doc);
-    })
-})
-
-// not used
-app.get('/api/get-first-item-by-subcat', (req,res) => {
-    let catId = req.query.catid;
-    let subcatId = req.query.subcatid;
-    Item.findOne({category_ref: catId, subcategory_ref: subcatId}, {}, { sort: { '_id':1 } }, (err, doc) => {
-        if(err) return res.status(400).send(err);
-        res.send(doc);
-    })
-})
-
-app.get('/api/get-subcat-by-cat', (req,res) => {
-    let catId = req.query.catid;
-    SubCat.find({ parent_cat: catId}, {}, { sort: { '_id':1 } }, (err, doc) => {
         if(err) return res.status(400).send(err);
         res.send(doc);
     })

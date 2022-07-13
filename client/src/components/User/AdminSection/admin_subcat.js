@@ -165,22 +165,16 @@ class AdminSubCat extends Component {
     }
 
     checkMimeType=(event)=>{
-        //getting file object
         let files = event.target.files 
-        //define message container
-        let err = ''
-        // list allow mime type
+        let err = '';
         const types = ['image/png', 'image/jpeg', 'image/gif']
-        // loop access array
-        for(let x = 0; x<files.length; x++) {
-         // compare file type find doesn't matach
+        for(let x = 0; x < files.length; x++) {
             if (types.every(type => files[x].type !== type)) {
-                // create error message and assign to container   
                 err += files[x].type+' is not a supported format\n';
             }
         };
 
-        for(let z = 0; z<err.length; z++) { // loop create toast massage
+        for(let z = 0; z<err.length; z++) {
             event.target.value = null 
             toast.error(err[z])
         }

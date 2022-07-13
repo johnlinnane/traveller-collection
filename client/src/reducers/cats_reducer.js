@@ -28,13 +28,6 @@ export default function foo(state={}, action) {
                 ...state, 
                 subcats:action.payload 
             };
-
-        case 'GET_FIRST_ITEM_SUBCAT':
-            return {
-                ...state,
-                firstitem: action.payload
-            }
-
         case 'GET_ITEMS_BY_SUBCAT':
             return {
                 ...state,
@@ -45,12 +38,6 @@ export default function foo(state={}, action) {
                 ...state,
                 subcat: action.payload
             }
-        case 'GET_SUBCAT_BY_CAT':
-            return {
-                ...state,
-                subcatsbycat: action.payload
-            }
-
         case 'ADD_CAT':
             return {
                 ...state,

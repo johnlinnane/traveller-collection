@@ -5,14 +5,10 @@ import ItemListOldHomepage from './../widgetsUI/item_list_old_homepage';
 import { getItems } from '../../actions';
 import SlickCarouselOldHomepage from './../widgetsUI/Slider/slider';
 
-
-
 class HomeContainer extends Component {
-
     componentDidMount() {
         this.props.dispatch(getItems(4,0,'asc'));
     }
-
 
     renderItems = (items) => (
         items.list && items.list.length ?    // list is an array of previously called items!
@@ -22,16 +18,12 @@ class HomeContainer extends Component {
         : null
     )
 
-
     loadmore = () => {
         let count = this.props.items.list.length;
         this.props.dispatch(getItems(4,count,'asc',this.props.items.list))
     }
-
     
     render() {
-
-
         return (
             <div> 
                 <SlickCarouselOldHomepage
@@ -48,18 +40,15 @@ class HomeContainer extends Component {
                     className="loadmore"
                     onClick={this.loadmore}
                 >Load More</div>
-
             </div>
         );
     }
 }
-
 
 function mapStateToProps(state) {
     return {
         items:state.items
     }
 }
-
 
 export default connect(mapStateToProps)(HomeContainer);

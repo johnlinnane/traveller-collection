@@ -1,14 +1,10 @@
 import React from 'react';
 import Slick from 'react-slick';   // uses cdn css
 import { Link } from 'react-router-dom';
-
-
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
 const SliderTemplates = (props) => {
-
     let template = null;
-
 
     const settings = {
         dots: false,
@@ -20,11 +16,8 @@ const SliderTemplates = (props) => {
         ...props.settings
     }
 
-
-
     switch(props.type) {
         case 'featured' :
-
             template = props.data.list.map( (item, i) => {
                 return(
                     <div key={i}>
@@ -45,14 +38,10 @@ const SliderTemplates = (props) => {
                     </div>
                 )
             })
-
-
         break;
-        
         default: 
             template = null;
     }
-
 
     return(
         <Slick {...settings}>

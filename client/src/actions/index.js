@@ -131,59 +131,6 @@ export function getItems(
     }
 }
 
-// // not used
-// export function getItemWithContributor(id) {
-//     return (dispatch) => {
-//         axios.get(`${API_PREFIX}/get-item-by-id?id=${id}`)
-//             .then(res => {
-//                 if (res.data.length !== 0) {
-//                     var contributorId = (res.data.contributor) ? res.data.contributor : '5e99a141fb671004505351b4';
-
-//                     axios.get(`${API_PREFIX}/get-contributor?id=${contributorId}`)
-//                         .then(({contributorData}) => {
-//                             let response = {
-//                                 item:res.data, 
-//                                 contributor:contributorData,
-//                                 getItemWithCReturned: true,
-//                             }
-//                             dispatch({
-//                                 type:'GET_ITEM_W_CONTRIBUTOR',
-//                                 payload:response
-//                             });
-//                         })
-//                 } else {
-//                     axios.get(`${API_PREFIX}/get-pend-item-by-id?id=${id}`)
-//                         .then(({data}) => {
-//                             if (data.length !== 0) {
-//                                 let response = {
-//                                     item:data, 
-//                                     pendingItemFound: true
-//                                 }
-//                                 dispatch({
-//                                     type:'GET_ITEM_W_CONTRIBUTOR',
-//                                     payload:response
-//                                 });
-//                             } else {
-//                                 let response = {
-//                                     noPendingItemFound: true
-//                                 }
-//                                 dispatch({
-//                                     type:'GET_ITEM_W_CONTRIBUTOR',
-//                                     payload:response
-//                                 });
-//                             }
-//                         })
-//                 }
-//             })
-//             .catch(err => {
-//                 dispatch({
-//                     type:'GET_ITEM_W_CONTRIBUTOR',
-//                     payload:{error: true}
-//                 });
-//             })
-//     }
-// }
-
 export function getItemOrPending(id) {
     // reduxthunk's dispatched function sends payload to reducers whenever we are ready
     return (dispatch) => {
@@ -294,20 +241,7 @@ export function getPrevItem(oldId) {
     }
 }
 
-export function getLatestItem() {
-    const request = axios.get(`${API_PREFIX}/get-latest-item`)
-        .then(response => {
-                return response.data
-            }    
-        );
-    return {
-        type: 'GET_LATEST_ITEM',
-        payload: request
-    }
-}
-
 export function getSubcat(subcatId) {
-    
     const request = axios.get(`${API_PREFIX}/get-subcat-by-id?subcatid=${subcatId}`)
         .then(response => {
                 return response.data
@@ -327,19 +261,6 @@ export function getItemsBySubcat(subcatId) {
         );
     return {
         type: 'GET_ITEMS_BY_SUBCAT',
-        payload: request
-    }
-}
-
-// not used
-export function getFirstItemBySubcat(catId, subcatId) {
-    const request = axios.get(`${API_PREFIX}/get-first-item-by-subcat?catid=${catId}&subcatid=${subcatId}`)
-        .then(response => {
-                return response.data
-            }    
-        );
-    return {
-        type: 'GET_FIRST_ITEM_SUBCAT',
         payload: request
     }
 }
@@ -554,18 +475,6 @@ export function getAllSubCats() {
                         );
 return {
         type:'GET_ALL_SUBCATS',
-        payload:request
-    }
-}
-
-export function getSubcatByCat(catId) {
-    const request = axios.get(`${API_PREFIX}/get-subcat-by-cat?catid=${catId}`)
-                        .then(response => {
-                                return response.data
-                            }
-                        );
-return {
-        type:'GET_SUBCAT_BY_CAT',
         payload:request
     }
 }
