@@ -4,44 +4,35 @@ const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 const path = require("path")
 const sharp = require('sharp');
-const https = require('https'); // this is new
-// const http = require('http');
+const https = require('https');
 
 const app = express();
 
 require('dotenv').config({path: '../.env'})
 
-// file upload
 const cors = require('cors');
 const multer = require('multer');
 const fs = require('fs')
 const mkdirp = require('mkdirp')
 
-
-// connect to mongo
 mongoose.Promise = global.Promise;
-
-mongoose.connect(process.env.DB, { useMongoClient: true }) // useNewUrlParser: true,
+mongoose.connect(process.env.DB, { useMongoClient: true }) 
     .catch(error => console.log('MONGOOSE CONNECT ERROR: ', error));
 
 
-
-// bring in mongo model
 const { User } = require('./models/user');
 const { Item, PendingItem } = require('./models/item');
-
 const { Cat } = require('./models/cat');
 const { SubCat } = require('./models/subcat');
 const { Intro } = require('./models/intro');
 const { Info } = require('./models/info');
 
 
-
 const { authMiddleware } = require('./middleware/auth_middleware');
 const { fileURLToPath } = require('url');
 
 
-// set middleware
+// middleware
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(cors({
@@ -55,17 +46,8 @@ app.use(cors({
     ]
 }));
 
-
-
-// *************************************************************
 // **************************** GET ****************************
-// *************************************************************
 
-
-
-
-
-// deny access
 app.get('/api/auth-get-user-creds', authMiddleware, (req, res) => {
     res.json({
         isAuth:true,
@@ -76,18 +58,12 @@ app.get('/api/auth-get-user-creds', authMiddleware, (req, res) => {
     })
 })
 
-
-
-// check if user is logged in, auth is middleware
 app.get('/api/logout', authMiddleware, (req, res) => {
-    //delete user's cookie info in the db
     req.user.deleteToken(req.token, (err, user) => {
         if(err) return res.status(400).send(err);
         res.sendStatus(200)
     })
-
 }) 
-
 
 
 
@@ -99,7 +75,6 @@ app.get('/api/get-item-by-id', (req,res) => {
         res.send(doc);
     })
 })
-
 
 //////// * * * * * * * * * * * * * * * * * * * * getPendItemById
 app.get('/api/get-pend-item-by-id', (req,res) => {
@@ -119,7 +94,6 @@ app.get('/api/get-parent-pdf', (req,res) => {
     })
 })
 
-
 // * * * * * * * * * * * * * * * * * * * * searchItem // unused???
 app.get('/api/search-item', (req,res) => {
     let queryKey = req.query.key;
@@ -133,7 +107,6 @@ app.get('/api/search-item', (req,res) => {
         res.send(doc);
     })
 })
-
 
 
 // * * * * * * * * * * * * * * * * * * * * get all items TEST
@@ -155,12 +128,6 @@ app.get('/api/all-pend-items', (req, res) => {
     })
 })
 
-
-
-
-
-
-
 // * * * * * * * * * * * * * * * * * * * * get multiple items
 app.get('/api/items', (req,res) => {
     // query should look like this: localhost:3002/api/items?skip=3?limit=2&order=asc
@@ -174,18 +141,8 @@ app.get('/api/items', (req,res) => {
     })
 })
 
-
-
-
-
-
-
-
-
-// * * * * * * * * * * * * * * * * * * * * get contributor by id
 app.get('/api/get-contributor', (req, res) => {
     let id = req.query.id;
-
     User.findById(id, (err, doc) => {
         if(err) return res.status(400).send(err);
         res.json({
@@ -195,17 +152,12 @@ app.get('/api/get-contributor', (req, res) => {
     })
 })
 
-
-// get users
 app.get('/api/users', (req, res) => {
-    // empty object returns all
     User.find({}, (err, users) => {
         if(err) return res.status(400).send(err);
         res.status(200).send(users);
     })
 })
-
-
 
 app.get('/api/user-items', (req, res) => {
     Item.find({ownerId:req.query.user}).exec( (err, docs) => {
@@ -214,25 +166,12 @@ app.get('/api/user-items', (req, res) => {
     })
 })
 
-
-
-
-
-
-
-
-// * * * * * * * * * * * * * * * * * * * * get all categories
-
 app.get('/api/get-all-categories', (req, res) => {
     Cat.find({}, (err, items) => {
         if(err) return res.status(400).send(err);
         res.status(200).send(items);
     })
 })
-
-
-
-// * * * * * * * * * * * * * * * * * * * * get all sub-categories
 
 app.get('/api/get-all-subcategories', (req, res) => {
     SubCat.find({}, (err, items) => {
@@ -241,14 +180,7 @@ app.get('/api/get-all-subcategories', (req, res) => {
     })
 })
 
-
-
-
-// * * * * * * * * * * * * * * * * * * * * get item by category
-
-
 app.get('/api/get-items-by-cat', (req, res) => {
-
     let value = req.query.value;
     Item.find({ category_ref:value }).exec( (err, docs) => {
         if(err) return res.status(400).send(err);
@@ -256,9 +188,6 @@ app.get('/api/get-items-by-cat', (req, res) => {
     })
 })
 
-
-
-// * * * * * * * * * * * * * * * * * * * * getNextItem
 app.get('/api/get-next-item', (req,res) => {
     let oldId = req.query.oldId;
     let query = {_id: {$gt: oldId}}
@@ -268,8 +197,6 @@ app.get('/api/get-next-item', (req,res) => {
     })
 })
 
-
-// * * * * * * * * * * * * * * * * * * * * getPrevItem
 app.get('/api/get-prev-item', (req,res) => {
     let oldId = req.query.oldId;
     // let query = {_id: {$lt: oldId}}, null, { sort: { '_id':-1 } };
@@ -279,99 +206,70 @@ app.get('/api/get-prev-item', (req,res) => {
     })
 })
 
-
-// * * * * * * * * * * * * * * * * * * * * get latest item
 app.get('/api/get-latest-item', (req,res) => {
-
     Item.findOne({}, {}, { sort: { '_id':-1 } }, (err, doc) => {
         if(err) return res.status(400).send(err);
         res.send(doc);
     })
 })
 
-
-
-// * * * * * * * * * * * * * * * * * * * * get subcat info 
-// * * * * * * * * * * * * * * * * * * * * not used?? replaced by get-subcat-by-id??? 
+// not used?? replaced by get-subcat-by-id??? 
 app.get('/api/get-subcat', (req,res) => {
     let subcatId = req.query.subcatid;
-
     SubCat.findOne({ _id: subcatId}, {}, { sort: { '_id':1 } }, (err, doc) => {
         if(err) return res.status(400).send(err);
         res.send(doc);
     })
 })
 
-
-// * * * * * * * * * * * * * * * * * * * * get items by subcat
 app.get('/api/get-items-by-subcat', (req,res) => {
     let subcatId = req.query.subcatid;
-
     Item.find({ subcategory_ref: subcatId}, {}, { sort: { '_id':1 } }, (err, doc) => {
         if(err) return res.status(400).send(err);
         res.send(doc);
     })
 })
 
-
-
 // not used
-// * * * * * * * * * * * * * * * * * * * * get first item by subcat and cat
 app.get('/api/get-first-item-by-subcat', (req,res) => {
     let catId = req.query.catid;
     let subcatId = req.query.subcatid;
-
     Item.findOne({category_ref: catId, subcategory_ref: subcatId}, {}, { sort: { '_id':1 } }, (err, doc) => {
         if(err) return res.status(400).send(err);
         res.send(doc);
     })
 })
 
-// * * * * * * * * * * * * * * * * * * * * get subcats by cat
 app.get('/api/get-subcat-by-cat', (req,res) => {
     let catId = req.query.catid;
-
     SubCat.find({ parent_cat: catId}, {}, { sort: { '_id':1 } }, (err, doc) => {
         if(err) return res.status(400).send(err);
         res.send(doc);
     })
 })
 
-
-// * * * * * * * * * * * * * * * * * * * * GET CAT / SUBCAT / COLL BY ID!
-
-
 app.get('/api/get-cat-by-id', (req, res) => {
     let value = req.query.id;
-  
     Cat.findOne({ _id:value }).exec( (err, docs) => {
         if(err) return res.status(400).send(err);
         res.send(docs);
     })
 })
 
-
 app.get('/api/get-subcat-by-id', (req, res) => {
     let value = req.query.subcatid;
-    
     SubCat.find({ _id:value }).exec( (err, docs) => {
         if(err) return res.status(400).send(err);
         res.send(docs);
     })
 })
 
-// ******************** get intro text
-
 app.get('/api/get-intro-text', (req,res) => {
-
     Intro.findOne({}, {}, { sort: { '_id':1 } }, (err, doc) => {
         if(err) return res.status(400).send(err);
         res.send(doc);
     })
 })
-
-
-//  ******************** get info text
 
 app.get('/api/get-info-text', (req,res) => {
     Info.findOne({}, {}, { sort: { '_id':1 } }, (err, doc) => {
@@ -380,10 +278,6 @@ app.get('/api/get-info-text', (req,res) => {
     })
 })
 
-
-
-//  ******************** get documents with coordinates
-
 app.get('/api/get-items-with-coords', (req,res) => {
     Item.find( { "geo.latitude": {$ne:null} }, {}, { sort: { '_id':1 } }, (err, doc) => {
         if(err) return res.status(400).send(err);
@@ -391,20 +285,10 @@ app.get('/api/get-items-with-coords', (req,res) => {
     })
 })
 
-
-
-
-
-// *******************************************************
 // ********************* POST ****************************
-// *******************************************************
 
-
-
-// * * * * * * * * * * * * * * * * * * * * post new item
 app.post('/api/create-item', (req, res) => {
     const item = new Item( req.body );
-
     item.save( (err, doc) =>{
         if(err) return res.status(400).send(doc);
         res.status(200).json({
@@ -414,12 +298,8 @@ app.post('/api/create-item', (req, res) => {
       })
 })
 
-
-
-//////////// * * * * * * * * * * * post pending item
 app.post('/api/create-item-pending', (req, res) => {
     const pendingItem = new PendingItem( req.body );
-
     pendingItem.save( (err, doc) =>{
         if(err) return res.status(400).send(doc);
         res.status(200).json({
@@ -429,12 +309,8 @@ app.post('/api/create-item-pending', (req, res) => {
       })
 })
 
-
-// register user
 app.post('/api/register', (req, res) => {
-    // create new user document (user)
     const user = new User(req.body);
-
     user.save((err, doc) => {
         if(err) return res.json({success:false});
         res.status(200).json({
@@ -444,30 +320,20 @@ app.post('/api/register', (req, res) => {
     })
 })
 
-
-
-// create the login
 app.post('/api/login',  (req, res) => {
     User.findOne({'email':req.body.email}, (err, user) => {
-        
         if(!user) {
-            return res.json({isAuth:false, message:'Auth failed, email not found'})
+            return res.json({isAuth:false, message:'Incorrect username and password combination'})
         };
-
         user.comparePassword(req.body.password, (err, isMatch) => {
-            
-
             if(!isMatch) {
                 return res.json({
                     isAuth:false,
-                    message:'Wrong password'
+                    message:'Incorrect username and password combination'
                 })
             };
-            // generate token
             user.generateToken((err, user) => {
-                    
                 if(err) return res.status(400).send(err);
-
                 res.cookie('tc_auth_cookie', user.token, { sameSite: 'lax', secure: false }).send({
                     isAuth:true,
                     id:user._id,
@@ -478,11 +344,8 @@ app.post('/api/login',  (req, res) => {
     });
 });
 
-
-// * * * * * * * * * * * * * * * * * * * * post new category
 app.post('/api/add-cat', (req, res) => {
     const cat = new Cat( req.body );
-
     cat.save( (err, doc) =>{
         if(err) return res.status(400).send(doc);
         res.status(200).json({
@@ -492,12 +355,8 @@ app.post('/api/add-cat', (req, res) => {
       })
 })
 
-
-
-// * * * * * * * * * * * * * * * * * * * * post new subcategory
 app.post('/api/add-subcat', (req, res) => {
     const subcat = new SubCat( req.body );
-
     subcat.save( (err, doc) =>{
         if(err) return res.status(400).send(doc);
         res.status(200).json({
@@ -507,14 +366,10 @@ app.post('/api/add-subcat', (req, res) => {
       })
 })
 
-
-//////////////////////
 app.get('/api/accept-item', (req, res) => {
     let itemid = req.query.itemid;
     let userid = req.query.userid;
-
     let newId = mongoose.Types.ObjectId();
-
     const itemsPath = './public/assets/media/items/';
 
     PendingItem.findOne({ _id: itemid }, function(err, pendItem) {
@@ -524,7 +379,6 @@ app.get('/api/accept-item', (req, res) => {
             ownerId: userid,
             accepted: true,
         }
-
         let newItem = new Item(data);
         pendItem.remove()
         newItem.save( (err, doc) =>{
@@ -534,12 +388,9 @@ app.get('/api/accept-item', (req, res) => {
                 itemId:doc._id
             })
         })
-    
     })
 
-
     if (fs.existsSync(`${itemsPath}${itemid}`)) {
-
         fs.renameSync(`${itemsPath}${itemid}`, `${itemsPath}${newId}`, (err) => {
             if (err) {
                 throw err;
@@ -549,31 +400,13 @@ app.get('/api/accept-item', (req, res) => {
                     throw error;
                 }
             });
-          });
-
+        });
     }
-
 })
 
-
-
-
-
-
-// ****************************************************************
 // **************************** UPDATE ****************************
-// ****************************************************************
 
-
-
-
-
-
-
-
-// * * * * * * * * * * * * * * * * * * * * update item
 app.post('/api/item-update', (req, res) => {
-    // new:true allows upsert
     Item.findByIdAndUpdate(req.body._id, req.body, {new:true}, (err, doc) => {
         if(err) return res.status(400).send(err);
         res.json({
@@ -583,10 +416,7 @@ app.post('/api/item-update', (req, res) => {
     })
 })
 
-
-///////////////// * * * * * * * * * * update pending item
 app.post('/api/item-pend-update', (req, res) => {
-    // new:true allows upsert
     PendingItem.findByIdAndUpdate(req.body._id, req.body, {new:true}, (err, doc) => {
         if(err) return res.status(400).send(err);
         res.json({
@@ -596,11 +426,7 @@ app.post('/api/item-pend-update', (req, res) => {
     })
 })
 
-
-
-// * * * * * * * * * * * * * * * * * * * * update cat
 app.post('/api/cat-update', (req, res) => {
-    // new:true allows upsert
     Cat.findByIdAndUpdate(req.body._id, req.body, {new:true}, (err, doc) => {
         if(err) return res.status(400).send(err);
         res.json({
@@ -610,10 +436,7 @@ app.post('/api/cat-update', (req, res) => {
     })
 })
 
-
-// * * * * * * * * * * * * * * * * * * * * update subcat
 app.post('/api/subcat-update', (req, res) => {
-    // new:true allows upsert
     SubCat.findByIdAndUpdate(req.body._id, req.body, {new:true}, (err, doc) => {
         if(err) return res.status(400).send(err);
         res.json({
@@ -623,11 +446,7 @@ app.post('/api/subcat-update', (req, res) => {
     })
 })
 
-
-
-// * * * * * * * * * * * * * * * * * * * * update intro text
 app.post('/api/update-intro-text', (req, res) => {
-    // new:true allows upsert
     Intro.findOneAndUpdate({}, req.body, { sort: { '_id':1 } }, (err, doc) => {
         if(err) return res.status(400).send(err);
         res.json({
@@ -637,10 +456,7 @@ app.post('/api/update-intro-text', (req, res) => {
     })
 })
 
-
-// * * * * * * * * * * * * * * * * * * * * update info text
 app.post('/api/update-info-text', (req, res) => {
-    // new:true allows upsert
     Info.findOneAndUpdate({}, req.body, { sort: { '_id':1 } }, (err, doc) => {
         if(err) return res.status(400).send(err);
         res.json({
@@ -650,54 +466,34 @@ app.post('/api/update-info-text', (req, res) => {
     })
 })
 
-
-
-
-// ****************************************************************
 //  **************************** DELETE ***************************
-// ****************************************************************
 
-
-
-
-// * * * * * * * * * * * * * * * * * * * *  delete item
 app.delete('/api/delete-item', (req, res) => {
     let id = req.query.id;
-
     Item.findByIdAndRemove(id, (err, doc) => {
         if(err) return res.status(400).send(err);
         res.json(true);
     })
 })
 
-
-
-/////////////////// * * * * * * * * * * * * * * * * * * * *  delete item
 app.delete('/api/del-pend-item', (req, res) => {
     let id = req.query.id;
-
     PendingItem.findByIdAndRemove(id, (err, doc) => {
         if(err) return res.status(400).send(err);
         res.json(true);
     })
 })
 
-
-// * * * * * * * * * * * * * * * * * * * *  delete cat
 app.delete('/api/delete-cat', (req, res) => {
     let id = req.query.id;
-
     Cat.findByIdAndRemove(id, (err, doc) => {
         if(err) return res.status(400).send(err);
         res.json(true);
     })
 })
 
-
-// * * * * * * * * * * * * * * * * * * * *  delete subcat
 app.delete('/api/delete-subcat', (req, res) => {
     let id = req.query.id;
-
     SubCat.findByIdAndRemove(id, (err, doc) => {
         if(err) return res.status(400).send(err);
         res.json(true);
@@ -706,38 +502,26 @@ app.delete('/api/delete-subcat', (req, res) => {
 
 
 
-//  ************************************************************
 //  ************ FS ********************************************
-//  ************************************************************
 
+// const isDirEmpty = (dirname) => {
+//     return fs.promises.readdir(dirname).then(files => {
+//         return files.length === 0;
+//     });
+// }
 
-const isDirEmpty = (dirname) => {
-    return fs.promises.readdir(dirname).then(files => {
-        return files.length === 0;
-    });
-}
-
-
-
-// delete file
 app.post('/api/delete-file', function(req, res) {
     let query = './public/assets/media';
-
     let fullPath = query + req.body.path
-
     fs.unlink(fullPath, function (err) {
         if (err) throw err;
         res.send('File deleted!');
     })
 });
 
-
-// get files in folder
-
 app.post('/api/get-files-folder', (req, res) => {
     let query = './public/assets/media';
     let fullPath = query + req.body.folder
-
     fs.readdir(fullPath, {withFileTypes: true}, (err, files) => {
         if (err) {
             console.log('Error finding files in folder / no files in folder')
@@ -748,15 +532,12 @@ app.post('/api/get-files-folder', (req, res) => {
     })
 });
 
-
-// remove directory recursively
 app.post('/api/delete-dir', function(req, res) {
     const baseUrl = './public/assets/media';
 
     let section = req.body.section;
     let id = req.body.id;
     let dir = path.resolve(baseUrl, section, id)
-
     const deleteDir = (dir, subDir) => {
         fs.rmdir(subDir, () => {
             // console.log('SUBDIR BEING DELETED:', subDir);
@@ -776,7 +557,6 @@ app.post('/api/delete-dir', function(req, res) {
                             if (err) throw err;
                         })
                     }
-
                     if (fs.lstatSync(string).isDirectory()) {
                         let subDir = path.resolve(dir, file.name)
                         fs.readdir(subDir, {withFileTypes: true}, (err, files) => {
@@ -822,22 +602,6 @@ app.post('/api/delete-dir', function(req, res) {
 //     return res.status(200)
 // })
 
-
-
-
-
-
-// *********************** FILE SERVER ************************
-
-
-
-////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////
-/////////////////////// UPLOAD ITEM IMAGES /////////////////////////////
-////////////////////////////////////////////////////////////////////////
-
-
 let storageArray = multer.diskStorage({
     destination: function (req, file, cb) {
         const path = `./public/assets/media/items/${req.params.id}/original`
@@ -865,7 +629,6 @@ let storageArray = multer.diskStorage({
 
 let uploadArray = multer({ storage: storageArray }).array('files');
 
-
 app.post('/api/upload-array/:id', 
     (req, res, next) => {
         next()
@@ -879,14 +642,10 @@ app.post('/api/upload-array/:id',
             }
             next();
         })
-        
     }, 
-
     (req, res, next) => {
         let thumbPath = `./public/assets/media/items/${req.params.id}/sq_thumbnail`;
-
         mkdirp.sync(thumbPath);
-
         fs.readdir(thumbPath, function(err, thumbFiles) {
             thumbFiles = thumbFiles.filter(item => !(/(^|\/)\.[^\/\.]/g).test(item));
             if (!thumbFiles.length) {
@@ -907,21 +666,12 @@ app.post('/api/upload-array/:id',
     }
 )
 
-
-
-
-// *********************** CATEGORY IMAGE ************************
-
-app.post(
-    '/api/upload-cat/:id',
+app.post('/api/upload-cat/:id',
     function(req, res) {
-        
         let catId = req.params.id;
         let index = 0;
-     
         multer({ storage: multer.diskStorage({
             destination: function (req, file, cb) {
-
                 let dest = `./public/assets/media/cover_img_cat`;
                 mkdirp.sync(dest);
                 cb(null, dest)
@@ -938,53 +688,37 @@ app.post(
             } else if (err) {
                 return res.status(500).json(err)
             }
-
         return res.status(200).send(req.file)
     })
 
 });
 
-
-// *********************** SUBCATEGORY IMAGE ************************
-
-
-app.post(
-    '/api/upload-subcat/:id',
+app.post('/api/upload-subcat/:id',
     function(req, res) {
-        
         let subCatId = req.params.id;
         let index = 0;
-     
         multer({ storage: multer.diskStorage({
             destination: function (req, file, cb) {
-
                 let dest = `./public/assets/media/cover_img_subcat`;
                 mkdirp.sync(dest);
                 cb(null, dest)
-                
             },
             filename: function (req, file, cb) {
                 cb(null, `${subCatId}.jpg` );
                 index++;
             }
         }) }).array('file')(req, res, function (err) {
-            
             if (err instanceof multer.MulterError) {
                 return res.status(500).json(err)
             } else if (err) {
                 return res.status(500).json(err)
             }
-
         return res.status(200).send(req.file)
     })
 
 });
 
-
-// *********************** INTRO IMAGE ************************
-
-app.post(
-    '/api/upload-intro-img',
+app.post('/api/upload-intro-img',
     function(req, res) {
         multer({ storage: multer.diskStorage({
             destination: function (req, file, cb) {
@@ -1004,59 +738,40 @@ app.post(
             } else if (err) {
                 return res.status(500).json(err)
             }
-
         return res.status(200).send(req.file)
     })
 
 });
 
-// *********************** INFORMATION IMAGE ************************
-
-app.post(
-    '/api/upload-info/:number',
+app.post('/api/upload-info/:number',
     function(req, res) {
-        
         let number = req.params.number;
         multer({ storage: multer.diskStorage({
             destination: function (req, file, cb) {
-
                 let dest = `./public/assets/media/info`;
                 mkdirp.sync(dest);
                 cb(null, dest)
-                
             },
             filename: function (req, file, cb) {
                 cb(null, `${number}.jpg` );
             }
         }) }).single('file')(req, res, function (err) {
-            
             if (err instanceof multer.MulterError) {
                 return res.status(500).json(err)
             } else if (err) {
                 return res.status(500).json(err)
             }
-
         return res.status(200).send(req.file)
     })
-
 });
 
-
-
-
-
 //  ********************************************************
-
-
 const port = process.env.PORT || 3002;
-
 const options = {
     key: fs.readFileSync(process.env.SSL_KEY),
     cert: fs.readFileSync(process.env.SSL_CERT)
-  };
-
+};
 const httpsServer = https.createServer(options, app);
-
 httpsServer.listen(port, () => {
     console.log(`HTTPS SERVER RUNNING : port ${port}`)
 })

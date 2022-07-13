@@ -3,19 +3,11 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import config from "../../../config";
 
-import NavigationBar from '../../widgetsUI/navigation';
+import Breadcrumb from '../../widgetsUI/breadcrumb';
 import { getAllCats } from '../../../actions';
-// import { getItemsByCat } from '../../../actions';
-
 import CatItem from './cats_list_item';
 
-
-
-
-
 class CatList extends Component {
-
-
     componentDidMount() {
         document.title = "Categories - Traveller Collection"
         this.props.dispatch(getAllCats());
@@ -35,34 +27,25 @@ class CatList extends Component {
         type: 'Categories'
     }
 
-
     render() {
         let cats = this.props.cats;
-
         return (
             <div className="cats_list_wrapper">
-                <NavigationBar navinfo={this.navInfo}/>
-                {/* <div className="main_view"> */}
-                    
-                    {/* <div className="cat_list"> */}
-                    <div className="main_view cat_items_view">
-                        <h2 className="cat_list_title">Categories</h2>
-
-                        { cats && cats.length ?
-                            cats.map( (cat, i) => (
-                                cat.catIsHidden === true ?
-                                    null
-                                : 
-                                <Link key={cat._id} to={`/category/${cat._id}`}>
-                                    <CatItem cat={cat}/>
-                                </Link>
-                            ))
-                        : null }
-                    </div>
-                {/* </div> */}
+                <Breadcrumb navinfo={this.navInfo}/>
+                <div className="main_view cat_items_view">
+                    <h2 className="cat_list_title">Categories</h2>
+                    { cats && cats.length ?
+                        cats.map( (cat, i) => (
+                            cat.catIsHidden === true ?
+                                null
+                            : 
+                            <Link key={cat._id} to={`/category/${cat._id}`}>
+                                <CatItem cat={cat}/>
+                            </Link>
+                        ))
+                    : null }
+                </div>
             </div>
-
-            
         );
     }
 }
@@ -74,5 +57,4 @@ function mapStateToProps(state) {
     }
 }
 
-
-export default connect(mapStateToProps)(CatList)
+export default connect(mapStateToProps)(CatList);

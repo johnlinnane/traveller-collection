@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import config from "../../../config";
 import { getItemsByCat, getCatById, getAllSubCats } from '../../../actions';
-import NavigationBar from '../../widgetsUI/navigation';
+import Breadcrumb from '../../widgetsUI/breadcrumb';
 
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
@@ -65,7 +65,7 @@ class CatView extends Component {
     render() {
         return (
             <div>
-                <NavigationBar navinfo={this.navInfo}/>
+                <Breadcrumb navinfo={this.navInfo}/>
                 <div className="main_view cat_view">
                     
                     {this.props.catinfo ?

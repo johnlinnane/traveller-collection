@@ -64,7 +64,7 @@ class Intro extends Component  {
                         background: '#aeddeb'
                     }}
                 >
-                    This collection includes descriptionns and links to descriptions and representations of Travellers that may be factually inaccurate, offensive and otherwise inappropriate. Part of the work of compiling this collection involves adressing discrimatory legacies and we ask for your help in identifiying images or data that cause offence or harm, your feedback and suggestions are very welcome and can be sent to info@TravellerCollection.ie.
+                    This collection includes descriptions and links to descriptions and representations of Travellers that may be factually inaccurate, offensive and otherwise inappropriate. Part of the work of compiling this collection involves adressing discrimatory legacies and we ask for your help in identifiying images or data that cause offence or harm, your feedback and suggestions are very welcome and can be sent to info@TravellerCollection.ie.
                 </div>
             </div>
         );

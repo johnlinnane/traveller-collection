@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
 import { getSubcat, getItemsBySubcat, getCatById } from '../../../actions';
-import NavigationBar from '../../widgetsUI/navigation';
+import Breadcrumb from '../../widgetsUI/breadcrumb';
 import config from "../../../config";
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
@@ -161,7 +161,7 @@ class SubcatView  extends Component {
     render() {
         return (
             <div className="subcat_view_component">
-                <NavigationBar navinfo={this.state.navInfo}/>
+                <Breadcrumb navinfo={this.state.navInfo}/>
                 <div className="main_view subcat_view">
                     { this.props.subcatitems && this.props.subcatitems.length ?
                         <div className="subcat_view_flex_container">

@@ -7,7 +7,7 @@ import { EmailShareButton, FacebookShareButton, WhatsappShareButton } from "reac
 import { EmailIcon, FacebookIcon, WhatsappIcon } from "react-share";
 import { Document, Page, pdfjs } from 'react-pdf';
 import { getItemOrPending, clearItemWithContributor, getAllCats, getAllSubCats, getNextItem, getPrevItem, getParentPdf, getFilesFolder } from '../../../actions';
-import NavigationBar from '../../widgetsUI/navigation';
+import Breadcrumb from '../../widgetsUI/breadcrumb';
 import config from "../../../config";
 const IP_ADDRESS_REMOTE = process.env.REACT_APP_IP_ADDRESS_REMOTE;
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
@@ -621,7 +621,7 @@ class ItemView extends Component {
             
             <div className="item_view_component">
                 { this.state.itemInfo && this.navInfo.catTitle  ?
-                    <NavigationBar navinfo={this.navInfo} title={this.state.itemInfo.title}/>    
+                    <Breadcrumb navinfo={this.navInfo} title={this.state.itemInfo.title}/>    
                 : null }
                 <div className="item_view_main_view">
                     {this.state.itemInfo && this.state.itemFiles ?

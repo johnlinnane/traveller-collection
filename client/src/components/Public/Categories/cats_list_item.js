@@ -1,10 +1,7 @@
 import React from 'react';
-
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
 const CatItem = (props) => {
-    
-
     const addDefaultImg = (ev) => {
         const newImg = '/assets/media/default/default.jpg';
         if (ev.target.src !== newImg) {
@@ -13,9 +10,6 @@ const CatItem = (props) => {
         
     } 
 
-    
-
-    
     return (
         <div className="cat_item_card">
             <div className="cat_item_img">

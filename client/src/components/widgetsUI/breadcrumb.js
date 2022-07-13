@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 
-const NavigationBar = (props) => {
+const Breadcrumb = (props) => {
 
     return (
         <div className="nav_bar">
@@ -41,4 +41,4 @@ const NavigationBar = (props) => {
     );
 };
 
-export default NavigationBar;
+export default Breadcrumb;
