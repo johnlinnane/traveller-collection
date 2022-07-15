@@ -14,11 +14,9 @@ const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
-
 class ItemView extends Component {
 
     state = {
-
         itemId: this.props.match.params.id,
 
         pdfError: false,
@@ -34,8 +32,6 @@ class ItemView extends Component {
 
         isPending: false,
 
-        // getParentCalled: false,
-
         itemFiles: [],
         imgFiles: [],
         pdfFiles: [],
@@ -48,13 +44,13 @@ class ItemView extends Component {
         this.props.dispatch(getAllSubCats());
         this.props.dispatch(getNextItem(this.state.itemId));
         this.props.dispatch(getPrevItem(this.state.itemId));
-        this.props.dispatch(getFilesFolder({folder: `/items/${this.props.match.params.id}/original`}))
+        this.props.dispatch(getFilesFolder({folder: `/items/${this.props.match.params.id}/original`}));
     }
 
     componentDidUpdate(prevProps, prevState) {
         if (this.props !== prevProps) {
 
-            if (this.props.match.params.id !== prevProps.match.params.id) { //  && !this.state.stateCleared
+            if (this.props.match.params.id !== prevProps.match.params.id) {
                 this.setState({
                     itemId: this.props.match.params.id
                 })
@@ -70,8 +66,6 @@ class ItemView extends Component {
                 this.setState({
                     itemInfo: this.props.items.item
                 })
-
-                // *************************** DERIVE CAT NAME FROM REF ***************************
 
                 if (this.props.items.item) {
                     const item = this.props.items.item; 
@@ -247,50 +241,37 @@ class ItemView extends Component {
     }
 
 
-    // ****************************************** RENDER PDF ******************************************
-
     renderPDF = () => {
-        // ************* PDF STUFF *************
-
         const { pageNumber, numPages } = this.state;
-
         const onDocumentLoadSuccess = ({ numPages }) => {
             this.setState({ numPages });
             if (!this.props.items.item.is_pdf_chapter === true) {
                 this.setState({ pageNumber: 1 });
             }
         }
-        
         const changePage = (offset) => {
             this.setState({ pageNumber: pageNumber + offset});
         }
-        
         const previousPage = () => {
             changePage(-1);
         }
-        
         const nextPage = () => {
             changePage(1);
         }
-
-
         // const scaleDown = () => {
         //     this.setState({
         //         pdfScale: this.state.pdfScale - 0.2
         //     })
         // }
-
         // const scaleUp = () => {
         //     this.setState({
         //         pdfScale: this.state.pdfScale + 0.2
         //     })
         // }
-
         let pdfId = this.state.itemId; // this.props.match.params.id
         if (this.props.items.item.is_pdf_chapter === true) {
             pdfId = this.props.items.item.pdf_item_parent_id;
         }
-
         
         return (
             <div className="pdf_wrapper">
@@ -394,46 +375,32 @@ class ItemView extends Component {
         )
     }
 
-    // *********************************** RENDER ITEM **************************************************************
-
-
-
-
     renderItem = (itemInfo, itemFiles, imgFiles, pdfFiles, vidFiles) => {
-
         return ( 
             <div className="view_item_container">
                 <div className="item_view_item_details">
-
                     {itemFiles && itemFiles.length ?
                         <div className="item_view_media_wrapper">
                             <div className="item_media">
                                 {imgFiles && imgFiles.length ?
                                     imgFiles.length === 1 ?
-                                        /////////////////////// SHOW SINGLE IMAGE ///////////////////////
                                         <div>
-                                                <div className="item_img">
-                                                    <img src={`${FS_PREFIX}/assets/media/items/${itemInfo._id}/original/${itemFiles[0]}`} 
-                                                    className="item_main_img"
-                                                    alt="Item" 
-                                                    onError={i => i.target.style.display='none'}/>
-                                                </div>
-                                            {/* : null } */}
+                                            <div className="item_img">
+                                                <img src={`${FS_PREFIX}/assets/media/items/${itemInfo._id}/original/${itemFiles[0]}`} 
+                                                className="item_main_img"
+                                                alt="Item" 
+                                                onError={i => i.target.style.display='none'}/>
+                                            </div>
                                         </div>
-                                        ///////////////////////// SHOW MULTIPLE IMAGES ///////////////////////
                                     : 
                                         this.renderSlider(imgFiles)
-                                        
                                 : null}
 
-                                {/* /////////////////////// SHOW PDF /////////////////////// */}
                                 { ( pdfFiles.length ) || (itemInfo.is_pdf_chapter === true) ? 
                                     this.renderPDF()
                                 : null }
 
-                                {/* /////////////////////// SHOW VIDEO /////////////////////// */}
                                 {vidFiles && vidFiles.length ?
-                                    
                                     <video className="video" controls name="media">
                                         <source src={`${FS_PREFIX}/assets/media/items/${itemInfo._id}/original/${vidFiles[0]}`} type="video/mp4"/>
                                     </video>
@@ -510,7 +477,6 @@ class ItemView extends Component {
                                                 attribution='&copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                                                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                                             />
-
                                             <Marker 
                                                 position={[itemInfo.geo.latitude, itemInfo.geo.longitude]} 
                                                 // key={incident['incident_number']} 
@@ -528,7 +494,6 @@ class ItemView extends Component {
                                 </div>
                             : null}
                         </div> 
-
 
                         {itemInfo.external_link && itemInfo.external_link[0].url ?
                             <a href={itemInfo.external_link[0].url} target="_blank" rel="noreferrer">
