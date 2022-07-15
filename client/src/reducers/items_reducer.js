@@ -38,7 +38,8 @@ export default function foo(state={}, action) {
         case 'GET_ITEM_OR_PENDING':
             return {
                 ...state,
-                item:action.payload.item
+                item:action.payload.item,
+                error:action.payload.error
             };
         case 'CLEAR_ITEM_W_CONTRIBUTOR': 
             return {

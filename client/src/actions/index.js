@@ -158,7 +158,8 @@ export function getItemOrPending(id) {
                                 });
                             } else {
                                 let response = {
-                                    noPendingItemFound: true
+                                    noPendingItemFound: true,
+                                    error: true
                                 }
                                 dispatch({
                                     type:'GET_ITEM_OR_PENDING',

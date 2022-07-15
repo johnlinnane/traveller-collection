@@ -17,8 +17,6 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 class ItemView extends Component {
 
     state = {
-        itemId: this.props.match.params.id,
-
         pdfError: false,
         numPages: null,     // total number of pages??
         setNumPages: null,  // not used
@@ -39,28 +37,28 @@ class ItemView extends Component {
     }
 
     componentDidMount() {
-        this.props.dispatch(getItemOrPending(this.state.itemId));
+        this.props.dispatch(getItemOrPending(this.props.match.params.id));
         this.props.dispatch(getAllCats());
         this.props.dispatch(getAllSubCats());
-        this.props.dispatch(getNextItem(this.state.itemId));
-        this.props.dispatch(getPrevItem(this.state.itemId));
+        this.props.dispatch(getNextItem(this.props.match.params.id));
+        this.props.dispatch(getPrevItem(this.props.match.params.id));
         this.props.dispatch(getFilesFolder({folder: `/items/${this.props.match.params.id}/original`}));
     }
 
     componentDidUpdate(prevProps, prevState) {
         if (this.props !== prevProps) {
+            if (this.props.items !== prevProps.items && this.props.items.error) {
+                this.props.history.push('/');
+            }
 
             if (this.props.match.params.id !== prevProps.match.params.id) {
-                this.setState({
-                    itemId: this.props.match.params.id
-                })
                 this.props.dispatch(getItemOrPending(this.props.match.params.id));
                 this.props.dispatch(getAllCats());
                 this.props.dispatch(getAllSubCats());
                 this.props.dispatch(getNextItem(this.props.match.params.id));
                 this.props.dispatch(getPrevItem(this.props.match.params.id));
+                this.props.dispatch(getFilesFolder({folder: `/items/${this.props.match.params.id}/original`}));
             }
-
 
             if (this.props.items.item !== prevProps.items.item) {
                 this.setState({
@@ -230,7 +228,7 @@ class ItemView extends Component {
                 <div key={i} className="featured_item"> 
                     <div className="featured_image"
                          style={{
-                            background: `url(${FS_PREFIX}/assets/media/items/${this.state.itemId}/original/${files[i]}), url(/assets/media/default/default.jpg)`
+                            background: `url(${FS_PREFIX}/assets/media/items/${this.props.match.params.id}/original/${files[i]}), url(/assets/media/default/default.jpg)`
                          }}
                     >
                     </div>
@@ -268,7 +266,7 @@ class ItemView extends Component {
         //         pdfScale: this.state.pdfScale + 0.2
         //     })
         // }
-        let pdfId = this.state.itemId; // this.props.match.params.id
+        let pdfId = this.props.match.params.id;
         if (this.props.items.item.is_pdf_chapter === true) {
             pdfId = this.props.items.item.pdf_item_parent_id;
         }
