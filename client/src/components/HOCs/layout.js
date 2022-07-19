@@ -1,9 +1,7 @@
 import React from 'react';
-
 import Header from '../Public/Header/header'
 
-
-const Layout = (props) => {
+export default function Layout(props) {
     return (
         <section className="layoutjs_wrapper">
             <Header />
@@ -11,5 +9,3 @@ const Layout = (props) => {
         </section>
     );
 };
-
-export default Layout;

@@ -13,11 +13,7 @@ const SearchItem = ({item}) => {
     } 
 
     return(
-      
-        // INSERT LINK HERE
         <Link to={`/items/${item._id}`}>
-
-
             <div className="search_container news_item item_grey">
               <div className="search_item_image">
                   <img src={`${FS_PREFIX}/assets/media/items/${item._id}/original/0.jpg`} 
@@ -26,7 +22,6 @@ const SearchItem = ({item}) => {
                       className="search_item_img"/>
                   
               </div>
-              
               <div className="search_item_info">
                   <h3>{item.title}</h3>
                   
@@ -43,5 +38,3 @@ const SearchItem = ({item}) => {
 }
 
 export default SearchItem;
-
-

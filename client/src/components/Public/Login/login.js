@@ -1,102 +1,79 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { loginUser } from '../../../actions';
 import config from "../../../config";
 
-class Login extends Component {
-    
-    state = {
-        email:'',
-        password:'',
-        error:'',
-        success:false
+function Login(props) {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error] = useState('');
+    const [success] = useState(false);
+
+
+    const handleInputEmail = (event) => {
+        setEmail(event.target.value);
     }
 
-
-    handleInputEmail = (event) => {
-        this.setState({email:event.target.value})
+    const handleInputPassword = (event) => {
+        setPassword(event.target.value);
     }
 
-    handleInputPassword = (event) => {
-        this.setState({password:event.target.value})
-    }
-
-    componentDidMount() {
-        document.title = "Login - Traveller Collection";
-    }
-    
-    componentWillUnmount() {
-        document.title = config.defaultTitle;
-    }
-
-
-    // redirect to user screen when login
-    componentDidUpdate(prevProps, prevState) {
-
-        if (this.props !== prevProps) {
-
-            if (this.props.user.login && this.props.user.login.isAuth) {
-                this.props.history.push('/user')
-            }
+    useEffect(() => {
+        document.title = `Login - ${config.defaultTitle}`;
+        return () => {
+            document.title = config.defaultTitle;
         }
-    }
+    }, []);
 
+    useEffect(() => {
+        if (props.user.login && props.user.login.isAuth) {
+            props.history.push('/user');
+        }
+    }, [props]);
 
-    submitForm = (e) => {
+    const submitForm = (e) => {
         e.preventDefault();
-        // login and set cookie
-        this.props.dispatch(loginUser(this.state))
+        props.dispatch(loginUser({
+            email,
+            password,
+            error,
+            success
+        }))
     }
-    
-    
-    render() {
-        let user = this.props.user;
 
-
-        return (
-            <div className="form_input">
-                <form onSubmit={this.submitForm}>
-                    <h2>Log in here</h2>
-
-                    <div className="form_element">
-                        <input 
-                            type="email"
-                            placeholder="Enter your email"
-                            value={this.state.email}
-                            onChange={this.handleInputEmail}
-                            autoComplete="off"
-                        />
-                    </div>
-
-
-                    <div className="form_element">
-                        <input 
-                            type="password"
-                            placeholder="Enter your password"
-                            value={this.state.password}
-                            onChange={this.handleInputPassword}
-                            autoComplete="off"
-                        />
-                    </div>
-
-                    <button type="submit">Log in</button>
-
-                    <div className="error">
-                        {
-                            user.login ?
-                                <div>{user.login.message}</div>
-                            : null
-                        }
-                    </div>    
-                    
-
-                </form>
-
-
-
-            </div>
-        );
-    }
+    return (
+        <div className="form_input">
+            <form onSubmit={submitForm}>
+                <h2>Log in here</h2>
+                <div className="form_element">
+                    <input 
+                        type="email"
+                        placeholder="Enter your email"
+                        value={email}
+                        onChange={handleInputEmail}
+                        autoComplete="off"
+                    />
+                </div>
+                <div className="form_element">
+                    <input 
+                        type="password"
+                        placeholder="Enter your password"
+                        value={password}
+                        onChange={handleInputPassword}
+                        autoComplete="off"
+                    />
+                </div>
+                <button type="submit">Log in</button>
+                <div className="error">
+                    {
+                        props.user.login ?
+                            <div>{props.user.login.message}</div>
+                        : null
+                    }
+                </div>    
+            </form>
+        </div>
+    );
 }
 
 function mapStateToProps(state) {

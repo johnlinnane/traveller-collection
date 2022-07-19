@@ -3,8 +3,7 @@ import { Link } from 'react-router-dom';
 import FontAwesome from 'react-fontawesome';
 import { connect } from 'react-redux';
 
-
-const SidenavItems = ({user}) => {
+function SidenavItems({user}) {
     const items = [
         {   type:'navItem',
             icon:'home',
@@ -93,7 +92,6 @@ const SidenavItems = ({user}) => {
         }
     ]
 
-
     const element = (item, i) => (
         <div key={i} className={item.type}>
             <Link to={item.link}>
@@ -103,13 +101,10 @@ const SidenavItems = ({user}) => {
         </div>
     )
 
-    // the first time the component renders, it will not have the user info
     const showItems = () => {
         return(
             user.login ?
                 items.map((item, i) => {
-                
-                    //check if user is authenticated
                     if (user.login.isAuth) {
                         return !item.exclude ?
                             element(item, i)
@@ -124,7 +119,6 @@ const SidenavItems = ({user}) => {
         )
     }
 
-
     return (
         <div>
             {showItems()}
@@ -132,14 +126,10 @@ const SidenavItems = ({user}) => {
     );
 };
 
-
-
-
 function mapStateToProps(state) {
     return {
         user:state.user
     }
 }
-
 
 export default connect(mapStateToProps)(SidenavItems)

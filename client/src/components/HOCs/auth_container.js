@@ -1,43 +1,36 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { authGetCredentials } from '../../actions';
 import { withRouter } from "react-router-dom";
 
 export default function foo(ComposedClass, reload) {
+    const AuthenticationCheck = props => {
+        const [loading, setLoading] = useState(false);
 
-    class AuthenticationCheck extends Component {
+        useEffect(() => {
+            props.dispatch(authGetCredentials()); 
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+        }, []);
 
-        state = {
-            loading:false
-        }
-
-        componentDidMount() {
-            this.props.dispatch(authGetCredentials()); 
-        }
-
-        componentDidUpdate(prevProps, prevState) {
-            if (this.props !== prevProps) {
-                this.setState({loading:false})
-                if(this.props.user && this.props.user.login && !this.props.user.login.isAuth) {
-                    if(reload === true) {
-                        this.props.history.push('/login');
-                    }
-                } else { 
-                    if (reload === false) {
-                        this.props.history.push('/user')
-                    } 
+        useEffect(() => {
+            setLoading(false);
+            if(props.user && props.user.login && !props.user.login.isAuth) {
+                if(reload === true) {
+                    props.history.push('/login');
+                }
+            } else { 
+                if (reload === false) {
+                    props.history.push('/user')
                 } 
-            }
-        }
+            } 
+        }, [props]);
 
-        render() {
-            if(this.state.loading) {
-                return <div className="loader">Loading...</div>
-            }
-            return(
-                <ComposedClass {...this.props} user={this.props.user}/>
-            )
+        if(loading) {
+            return <div className="loader">Loading...</div>
         }
+        return(
+            <ComposedClass {...props} user={props.user}/>
+        )
     }
 
     function mapStateToProps(state) {

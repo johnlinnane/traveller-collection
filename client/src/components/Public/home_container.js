@@ -1,48 +1,47 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import ItemListOldHomepage from './../widgetsUI/item_list_old_homepage';
 import { getItems } from '../../actions';
 import SlickCarouselOldHomepage from './../widgetsUI/Slider/slider';
 
-class HomeContainer extends Component {
-    componentDidMount() {
-        this.props.dispatch(getItems(4,0,'asc'));
-    }
+function HomeContainer(props) {
 
-    renderItems = (items) => (
-        items.list && items.list.length ?    // list is an array of previously called items!
-            items.list.map( (item, i) => (
+    useEffect(() => {
+        props.dispatch(getItems(4,0,'asc'));
+    });
+
+    const renderItems = () => (
+        props.items.list && props.items.list.length ? 
+            props.items.list.map( (item, i) => (
                 <ItemListOldHomepage {...item} key={item._id}/>
             ))
         : null
     )
 
-    loadmore = () => {
-        let count = this.props.items.list.length;
-        this.props.dispatch(getItems(4,count,'asc',this.props.items.list))
+    const loadmore = () => {
+        let count = props.items.list.length;
+        props.dispatch(getItems(4,count,'asc',props.items.list))
     }
     
-    render() {
-        return (
-            <div> 
-                <SlickCarouselOldHomepage
-                    type="featured"
-                    start={0}
-                    amount={3}
-                    settings={{
-                    dots: false
-                    }}
-                />
-                {this.renderItems(this.props.items)}
+    return (
+        <div> 
+            <SlickCarouselOldHomepage
+                type="featured"
+                start={0}
+                amount={3}
+                settings={{
+                dots: false
+                }}
+            />
+            {renderItems(props.items)}
 
-                <div 
-                    className="loadmore"
-                    onClick={this.loadmore}
-                >Load More</div>
-            </div>
-        );
-    }
+            <div 
+                className="loadmore"
+                onClick={loadmore}
+            >Load More</div>
+        </div>
+    );
 }
 
 function mapStateToProps(state) {

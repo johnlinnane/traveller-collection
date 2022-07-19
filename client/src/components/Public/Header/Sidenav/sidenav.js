@@ -1,8 +1,8 @@
-import React from 'react';
 import SideNav from 'react-simple-sidenav';
+import React from 'react';
 import SidenavItems from './sidenav_items';
 
-const Nav = (props) => {
+export default function Nav(props) {
     return (
         <SideNav
             showNav={props.showNav}
@@ -16,5 +16,3 @@ const Nav = (props) => {
         </SideNav>
     );
 };
-
-export default Nav;

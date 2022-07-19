@@ -11,17 +11,13 @@ import Routes from './routes';
 
 require('dotenv').config({path: '../../.env'})
 
-// apply middleware and create store
 const createStoreWithMiddleware = applyMiddleware(promiseMiddleware, ReduxThunk)(createStore)
-
-
 
 ReactDOM.render(
     <Provider store={createStoreWithMiddleware(reducers)}>
         <BrowserRouter>
             <Routes />
         </BrowserRouter>
-    </Provider>
-    ,document.getElementById('root')
+    </Provider>,
+    document.getElementById('root')
 );
-

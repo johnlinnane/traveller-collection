@@ -1,112 +1,78 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-
 import { getInfoText } from '../../../actions';
-
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
-class Info extends Component {
+const Info = props => {
 
-    componentDidMount() {
-        this.props.dispatch(getInfoText());
-    }
+    useEffect(() => {
+        props.dispatch(getInfoText());
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
-    
-
-    renderInfo = () => {
-
-        const text = this.props.text;
-
-
-
+    function renderInfo() {
         return (
-
             <div className="info_page">
-                {text && text.sections ?
-                    text.sections.map( (section, i) => (
+                {props.text && props.text.sections ?
+                    props.text.sections.map( (section, i) => (
                         <div key={i} className="info_section">
                             { section.heading ?
                                 <div className="info_heading">
                                     <h3>{section.heading}</h3>
                                 </div>
                             : null}
-
                             <div className="img_and_para">
-                                {/* <div> */}
-                                    <img src={`${FS_PREFIX}/assets/media/info/${i+1}.jpg`} 
-                                        alt="Item" 
-                                        onError={i => i.target.style.display='none'}/
-                                    >
-                                {/* </div> */}
+                                <img src={`${FS_PREFIX}/assets/media/info/${i+1}.jpg`} 
+                                    alt="Item" 
+                                    onError={i => i.target.style.display='none'}/
+                                >
 
-                                    { section.paragraph ?
-                                        <div className="para">
-                                            {section.paragraph}
-                                        </div>
-                                    : null }
-                                
+                                { section.paragraph ?
+                                    <div className="para">
+                                        {section.paragraph}
+                                    </div>
+                                : null }
                             </div>
                         </div>
                     ) )
                 : null }
-                
                 <hr />
-
-                {text.iconsCaption ?
-                    this.renderIcons(text)
+                {props.text.iconsCaption ?
+                    renderIcons(props.text)
                 : null }
-
             </div>
-
         )
     }
 
-    renderIcons = (text) => (
-        <div className="info_icons">
-            <div className="info_heading">
-                <h3>{text.iconsCaption}</h3>
-            </div>
-            
-            <img src={`${FS_PREFIX}/assets/media/info/icons.jpg`} 
-                className="info_icons_img"
-                alt="Item" 
-                onError={i => i.target.style.display='none'}/
-            >
-        </div>
-    )
-
-      
-
-
-    
-
-    
-    render() {
+    function renderIcons(text) {
         return (
-            <div className="main_view">
+            <div className="info_icons">
+                <div className="info_heading">
+                    <h3>{text.iconsCaption}</h3>
+                </div>
                 
-                    {this.props.text ?
-                        this.renderInfo()
-                        
-                    :null }
-                   
-
-                    
-
-                
+                <img src={`${FS_PREFIX}/assets/media/info/icons.jpg`} 
+                    className="info_icons_img"
+                    alt="Item" 
+                    onError={i => i.target.style.display='none'}/
+                >
             </div>
-        );
+        )
     }
-}
 
+    return (
+        <div className="main_view">
+            {props.text ?
+                renderInfo()
+            :null }
+        </div>
+    );
+}
 
 function mapStateToProps(state) {
-
     return {
         text: state.infos.text
-        
     }
 }
-
 
 export default connect(mapStateToProps)(Info)

@@ -276,13 +276,13 @@ app.post('/api/register', (req, res) => {
 app.post('/api/login',  (req, res) => {
     User.findOne({'email':req.body.email}, (err, user) => {
         if(!user) {
-            return res.json({isAuth:false, message:'Incorrect username and password combination'})
+            return res.json({isAuth:false, message:'Incorrect username or password'})
         };
         user.comparePassword(req.body.password, (err, isMatch) => {
             if(!isMatch) {
                 return res.json({
                     isAuth:false,
-                    message:'Incorrect username and password combination'
+                    message:'Incorrect username or password'
                 })
             };
             user.generateToken((err, user) => {

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import config from "../../../config";
@@ -7,109 +7,104 @@ import Breadcrumb from '../../widgetsUI/breadcrumb';
 
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
-class CatView extends Component {
+const CatView = props => {
     
-    componentDidMount() {
-        let catId = this.props.match.params.id
-        this.props.dispatch(getItemsByCat(catId));
-        this.props.dispatch(getCatById(catId));
-        this.props.dispatch(getAllSubCats(catId));
-    }
+    let catId = props.match.params.id
 
-    state = {
-        info: [],
-        theseSubcats: []
-        // subcatsUsed: []
-    }
+    useEffect(() => {
+        props.dispatch(getItemsByCat(catId));
+        props.dispatch(getCatById(catId));
+        props.dispatch(getAllSubCats(catId));
+        return () => {
+            document.title = config.defaultTitle;            
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    const [theseSubcats, setTheseSubcats] = useState([]);
     
-    navInfo = {
+    const [navInfo] = useState({
         catTitle: null,
         catId: null,
         subCatTitle: null,
         subCatId: null,
         type: 'Categories'
-    }
+    });
 
-    addDefaultImg = (ev) => {
+    const addDefaultImg = (ev) => {
         const newImg = '/assets/media/default/default.jpg';
         if (ev.target.src !== newImg) {
             ev.target.src = newImg
         }  
     }
 
-    componentDidUpdate(prevProps, prevState) {
-        if (this.props.subcats !== prevProps.subcats) {
-            let theseSubcats = this.state.theseSubcats;
-            this.props.subcats.forEach( subcat => {
-                if (subcat.parent_cat === this.props.match.params.id) {
-                    theseSubcats.push(subcat)
+    useEffect(() => {
+        if (props.subcats && props.subcats.length ) {
+            let tempTheseSubcats = [];
+            props.subcats.forEach( subcat => {
+                if (subcat.parent_cat === props.match.params.id) {
+                    tempTheseSubcats.push(subcat)
                 }
             })
-            this.setState({
-                theseSubcats
-              
-            })
+            setTheseSubcats(tempTheseSubcats);
         }
-        if (this.props.catinfo ) {
-            document.title = `${this.props.catinfo.title} - Traveller Collection`
-           
-            this.navInfo.catTitle = this.props.catinfo.title;
-            this.navInfo.catId = this.props.catinfo._id;
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [props.subcats]);
+
+    useEffect(() => {
+        if (props.catinfo ) {
+            document.title = `${props.catinfo.title} - Traveller Collection`
+            navInfo.catTitle = props.catinfo.title;
+            navInfo.catId = props.catinfo._id;
         }
-    }
-
-    componentWillUnmount() {
-        document.title = config.defaultTitle;
-    }
-
-    render() {
-        return (
-            <div>
-                <Breadcrumb navinfo={this.navInfo}/>
-                <div className="main_view cat_view">
-                    
-                    {this.props.catinfo ?
-                        <div className="cat_view_header_card">
-                            <div className="cat_view_header_card_img">
-                                    {this.props.catinfo._id ?
-                                        <img src={`${FS_PREFIX}/assets/media/cover_img_cat/${this.props.catinfo._id}.jpg`} alt="category cover" onError={this.addDefaultImg} />
-                                    : null}
-                            </div>
-
-                            <div className="cat_view_header_card_img_text">
-                                <h2><b>{this.props.catinfo.title}</b></h2>
-                                {this.props.catinfo.description ? this.props.catinfo.description : null }
-                                <br />
-                            </div>
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [props.subcats]);
+    
+    return (
+        <div>
+            <Breadcrumb navinfo={navInfo}/>
+            <div className="main_view cat_view">
+                
+                {props.catinfo ?
+                    <div className="cat_view_header_card">
+                        <div className="cat_view_header_card_img">
+                                {props.catinfo._id ?
+                                    <img src={`${FS_PREFIX}/assets/media/cover_img_cat/${props.catinfo._id}.jpg`} alt="category cover" onError={addDefaultImg} />
+                                : null}
                         </div>
-                    : null }
-
-                    <div className="cat_view_flex_container">
-                        {this.state.theseSubcats && this.state.theseSubcats.length ?
-                            this.state.theseSubcats.map( (subcat, i) => (
-                                subcat.subCatIsHidden && subcat.subCatIsHidden === true ?
-                                    null
-                                :
-                                    <Link to={`/subcategory/${subcat._id}`} key={i}>
-                                        <div key={i} className="cat_view_subcat_card">
-                                            <div className="cat_view_subcat_card_img">
-                                                <img src={`${FS_PREFIX}/assets/media/cover_img_subcat/${subcat._id}.jpg`} 
-                                                    alt={subcat.title} 
-                                                    onError={this.addDefaultImg} 
-                                                />
-                                            </div>
-                                            <div className="cat_view_subcat_card_text">
-                                                <h3>{subcat.title}</h3>
-                                            </div>
-                                        </div>
-                                    </Link>
-                            ))
-                        : null }
+                        <div className="cat_view_header_card_img_text">
+                            <h2><b>{props.catinfo.title}</b></h2>
+                            {props.catinfo.description ? props.catinfo.description : null }
+                            <br />
+                        </div>
                     </div>
+                : null }
+
+                <div className="cat_view_flex_container">
+                    {theseSubcats && theseSubcats.length ?
+                        theseSubcats.map( (subcat, i) => (
+                            subcat.subCatIsHidden && subcat.subCatIsHidden === true ?
+                                null
+                            :
+                                <Link to={`/subcategory/${subcat._id}`} key={i}>
+                                    <div key={i} className="cat_view_subcat_card">
+                                        <div className="cat_view_subcat_card_img">
+                                            <img src={`${FS_PREFIX}/assets/media/cover_img_subcat/${subcat._id}.jpg`} 
+                                                alt={subcat.title} 
+                                                onError={addDefaultImg} 
+                                            />
+                                        </div>
+                                        <div className="cat_view_subcat_card_text">
+                                            <h3>{subcat.title}</h3>
+                                        </div>
+                                    </div>
+                                </Link>
+                        ))
+                    : null }
                 </div>
             </div>
-        )
-    }
+        </div>
+    )
 }
 
 function mapStateToProps(state) {
