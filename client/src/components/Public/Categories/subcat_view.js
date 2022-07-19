@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
@@ -7,85 +7,78 @@ import Breadcrumb from '../../widgetsUI/breadcrumb';
 import config from "../../../config";
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
-class SubcatView  extends Component {
-    state = {
-        newItemId: null,
-        
-        navInfo: {
-            catTitle: null,
-            catId: null,
-            subCatTitle: null,
-            subCatId: null,
-            type: 'Categories'
-        },
-        initLat: 53.342609,
-        initLong: -7.603976,
-        initZoom: 8,
-        showMap: false
-    }
+const SubcatView = props => {
+    
+    // const [newItemId, setNewItemId] = useState(null);
+    const [navInfo, setNavInfo] = useState({
+        catTitle: null,
+        catId: null,
+        subCatTitle: null,
+        subCatId: null,
+        type: 'Categories'
+    });
+    const [showMap, setShowMap] = useState(false);
 
-    componentDidMount() {
-        this.props.dispatch(getSubcat(this.props.match.params.id))
-        this.props.dispatch(getItemsBySubcat(this.props.match.params.id))
-    }
+    const initLat = 53.342609;
+    const initLong = -7.603976
+    const initZoom = 8;
 
-    addDefaultImg = (ev) => {
+    useEffect(() => {
+        props.dispatch(getSubcat(props.match.params.id))
+        props.dispatch(getItemsBySubcat(props.match.params.id))
+        return () => {
+            document.title = config.defaultTitle;
+        } // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    useEffect(() => {
+        if (props.catinfo) {
+            let tempNavInfo = {
+                ...navInfo,
+                catTitle: props.catinfo.title,
+                catId: props.catinfo._id,
+            }
+            setNavInfo(tempNavInfo);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [props]);
+
+    useEffect(() => {
+        if (props.subcat && props.subcat.length) {
+            document.title = `${props.subcat[0].title} - Traveller Collection`
+            let tempNavInfo = {
+                ...navInfo,
+                subCatTitle: props.subcat[0].title,
+                subCatId: props.subcat[0]._id
+            }
+            setNavInfo(tempNavInfo);
+            props.dispatch(getCatById(props.subcat[0].parent_cat))
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [props.subcat]);
+
+    useEffect(() => {
+        if (props.subcatitems && props.subcatitems.length) {
+            let hasMapCount = 0;
+            props.subcatitems.forEach( (item, i) => {
+                if (item.geo && item.geo.latitude && item.geo.longitude) {
+                    hasMapCount++;
+                }
+            } )
+            if (hasMapCount) {
+                setShowMap(true);
+            }
+        }
+    }, [props.subcatitems]);
+
+    const addDefaultImg = (ev) => {
         const newImg = '/assets/media/default/default.jpg';
         if (ev.target.src !== newImg) {
             ev.target.src = newImg
         }  
     }
 
-    componentDidUpdate(prevProps, prevState) {
-        if (prevProps !== this.props) {
-            if (this.props.catinfo) {
-                let tempNavInfo = {
-                    ...this.state.navInfo,
-                    catTitle: this.props.catinfo.title,
-                    catId: this.props.catinfo._id,
-                }
-                this.setState({
-                    navInfo: tempNavInfo
-                })
-            }
-
-            if (this.props.subcat !== prevProps.subcat) {
-                if (this.props.subcat && this.props.subcat.length) {
-                    document.title = `${this.props.subcat[0].title} - Traveller Collection`
-                    let tempNavInfo = {
-                        ...this.state.navInfo,
-                        subCatTitle: this.props.subcat[0].title,
-                        subCatId: this.props.subcat[0]._id
-                    }
-                    this.setState({
-                        navInfo: tempNavInfo
-                    })
-                    this.props.dispatch(getCatById(this.props.subcat[0].parent_cat))
-                }
-            }
-           
-            if (this.props.subcatitems !== prevProps.subcatitems) {
-                if (this.props.subcatitems && this.props.subcatitems.length) {
-                    let hasMapCount = 0;
-                    this.props.subcatitems.forEach( (item, i) => {
-                        if (item.geo && item.geo.latitude && item.geo.longitude) {
-                            hasMapCount++;
-                        }
-                    } )
-                    if (hasMapCount) {
-                        this.setState({
-                            showMap: true
-                        })
-                    }
-                }
-            }
-        }
-    }
-    componentWillUnmount() {
-        document.title = config.defaultTitle;
-    }
-
-    addClick = () => {
+    const addClick = () => {
         // const tempNewItemId = mongoose.Types.ObjectId().toHexString()
         // this.setState({
         //     newItemId: tempNewItemId
@@ -98,20 +91,20 @@ class SubcatView  extends Component {
         // this.props.dispatch(addItem(item))
         setTimeout(() => {
             // this.props.history.push(`/user/edit-item/${tempNewItemId}`);
-            this.props.history.push(`/add_item`);
+            props.history.push(`/add_item`);
         }, 1000)
     }
 
-    renderAddItem = (isPartOfGrid) => (
+    const renderAddItem = (isPartOfGrid) => (
         <div 
             className={"btn-group pull-right " + (isPartOfGrid ? 'item_list_card' : 'item_list_add_card')}
-            onClick={() => { if (window.confirm('Would you like to add an item to this section?')) this.addClick() }}
+            onClick={() => { if (window.confirm('Would you like to add an item to this section?')) addClick() }}
         >
             <div className="item_list_img">
                 <img src={`/assets/media/icons/add_item_icon.jpg`} 
                     id="add_img"
                     alt="Add an item to this sub-category" 
-                    onError={this.addDefaultImg} />
+                    onError={addDefaultImg} />
             </div>
             <div className="item_list_text">
                 Add An Item
@@ -119,19 +112,19 @@ class SubcatView  extends Component {
         </div>
     )
 
-    renderMap = () => (
+    const renderMap = () => (
         <Map 
             className="main_map"
-            center={[this.state.initLat, this.state.initLong]} 
-            zoom={this.state.initZoom} 
+            center={[initLat, initLong]} 
+            zoom={initZoom} 
         >
             <TileLayer
                 attribution='&copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
 
-            {this.props.subcatitems && this.props.subcatitems.length ?
-                this.props.subcatitems.map( (item, i) => (
+            {props.subcatitems && props.subcatitems.length ?
+                props.subcatitems.map( (item, i) => (
                     item.geo && item.geo.latitude && item.geo.longitude ?
                         <Marker 
                             position={[item.geo.latitude, item.geo.longitude]} 
@@ -157,55 +150,53 @@ class SubcatView  extends Component {
         </Map>
     )
 
-    render() {
-        return (
-            <div className="subcat_view_component">
-                <Breadcrumb navinfo={this.state.navInfo}/>
-                <div className="main_view subcat_view">
-                    { this.props.subcatitems && this.props.subcatitems.length ?
-                        <div className="subcat_view_flex_container">
-                            { this.props.subcat && this.props.subcat.length  ?
-                                <div className="subcat_view_title">
-                                    <h2>{this.props.subcat[0].title}</h2>
-                                </div>
-                            : null}
-                            { this.props.subcatitems.map( (item, i) => (
-                                    <Link to={`/items/${item._id}`} key={i}>
-                                        <div className="item_list_card">
-                                            <div key={i} className="item_list_img">
-                                                <img src={`${FS_PREFIX}/assets/media/items/${item._id}/sq_thumbnail/0.jpg`} 
-                                                    alt={item.title} 
-                                                    onError={this.addDefaultImg} />
-                                            </div>
-                                            
-                                            <div className="item_list_text">
-                                                {item.title}
-                                            </div>
-                                        
+    return (
+        <div className="subcat_view_component">
+            <Breadcrumb navinfo={navInfo}/>
+            <div className="main_view subcat_view">
+                { props.subcatitems && props.subcatitems.length ?
+                    <div className="subcat_view_flex_container">
+                        { props.subcat && props.subcat.length  ?
+                            <div className="subcat_view_title">
+                                <h2>{props.subcat[0].title}</h2>
+                            </div>
+                        : null}
+                        { props.subcatitems.map( (item, i) => (
+                                <Link to={`/items/${item._id}`} key={i}>
+                                    <div className="item_list_card">
+                                        <div key={i} className="item_list_img">
+                                            <img src={`${FS_PREFIX}/assets/media/items/${item._id}/sq_thumbnail/0.jpg`} 
+                                                alt={item.title} 
+                                                onError={addDefaultImg} />
                                         </div>
-                                    </Link>
-                            ))}                                                                
-                            {this.renderAddItem(true)}
-                        </div>
-                    : 
-                        <div className="subcat_view_flex_container">
-                            { this.props.subcat && this.props.subcat.length  ?
-                                <div className="subcat_view_title">
-                                    <h2>{this.props.subcat[0].title}</h2>
-                                </div>
-                            : null}
-                            {/* <p className="center">There are no items in this section.</p>                                               */}
-                            {this.renderAddItem(false)}
-                        </div>
-                    }
+                                        
+                                        <div className="item_list_text">
+                                            {item.title}
+                                        </div>
+                                    
+                                    </div>
+                                </Link>
+                        ))}                                                                
+                        {renderAddItem(true)}
+                    </div>
+                : 
+                    <div className="subcat_view_flex_container">
+                        { props.subcat && props.subcat.length  ?
+                            <div className="subcat_view_title">
+                                <h2>{props.subcat[0].title}</h2>
+                            </div>
+                        : null}
+                        {/* <p className="center">There are no items in this section.</p>                                               */}
+                        {renderAddItem(false)}
+                    </div>
+                }
 
-                    {this.state.showMap ?
-                        this.renderMap()
-                    : null }
-                </div>
+                {showMap ?
+                    renderMap()
+                : null }
             </div>
-        )
-    }
+        </div>
+    )
 }
 
 function mapStateToProps(state) {

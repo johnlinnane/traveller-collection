@@ -1,12 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-
 const Breadcrumb = (props) => {
-
     return (
         <div className="nav_bar">
-
             <Link to={`/`}>
                 <span>Home</span>
             </Link>
@@ -17,26 +14,21 @@ const Breadcrumb = (props) => {
                 </Link>
             : null }
 
-
-
             {props.navinfo && props.navinfo.catTitle ?
                 <Link to={`/category/${props.navinfo.catId}`}>
                     <span>  /  {props.navinfo.catTitle}</span>
                 </Link>
             : null}
-
         
             {props.navinfo && props.navinfo.subCatTitle ?
                 <Link to={`/subcategory/${props.navinfo.subCatId}`}>
                     <span>  /  {props.navinfo.subCatTitle}</span>
                 </Link>
             : null} 
-        
 
             {props.title ? 
                 <span className="wrap">  /  {props.title}</span>
             : null}
-            
         </div>
     );
 };

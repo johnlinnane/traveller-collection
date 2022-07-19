@@ -1,13 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Map, TileLayer, Marker } from 'react-leaflet'
-
-
 import '../../../../node_modules/react-toastify/dist/ReactToastify.css';
 
-
 import { addItem, addPendingItem, clearNewItem } from '../../../actions';
-
 
 class AddItem extends Component {
 
@@ -61,12 +57,10 @@ class AddItem extends Component {
         this.props.dispatch(clearNewItem())
     }
 
-
     handleInput = (event, name, level) => {
         let newFormdata = {
             ...this.state.formdata
         }
-
         if (level === 'external_link') {
             newFormdata.external_link[0][name] = event.target.value;
         } else if (level === 'geo') {
@@ -77,26 +71,23 @@ class AddItem extends Component {
         } else {
             newFormdata[name] = event.target.value;
         }
-
         this.setState({
             formdata: newFormdata
         })
     }
 
-
     handleClick(e) {
         let lat = parseFloat(e.latlng.lat).toFixed(6);
         let lng = parseFloat(e.latlng.lng).toFixed(6);
-
         this.setState({
-                formdata: {
-                    ...this.state.formdata,
-                    geo: {
-                        ...this.state.formdata.geo,
-                        latitude: lat,
-                        longitude: lng
-                    }
+            formdata: {
+                ...this.state.formdata,
+                geo: {
+                    ...this.state.formdata.geo,
+                    latitude: lat,
+                    longitude: lng
                 }
+            }
         })
     }
 
@@ -104,13 +95,11 @@ class AddItem extends Component {
         this.props.history.push(`/user/all-items`)
     }
 
-
     redirectUser = (url) => {
         setTimeout(() => {
             this.props.history.push(url)
         }, 1000)
     }
-
 
     submitForm = (e) => {
         e.preventDefault();
@@ -119,28 +108,19 @@ class AddItem extends Component {
                     ...this.state.formdata,
                     ownerId:this.props.user.login.id
             }));
-
-            
         } else {
             this.props.dispatch(addPendingItem({
-                
                 ...this.state.formdata,
                 ownerId:'guest'
             }))
-            
         }
-
         this.setState({
             saved: true
         })
-
         setTimeout(() => {
             this.props.history.push(`/user/edit-item-sel/${this.props.items.newitem.itemId}`);
         }, 2000)
-
-        
     }
-
 
     createTextInput = (existing, name, placeholder, inputLabel, level) => {
         return (
@@ -162,20 +142,14 @@ class AddItem extends Component {
         )
     }
 
-
-
     renderForm = () => {
         const formdata = this.state.formdata;
-
         return (
-
             <form onSubmit={this.submitForm}>
-                        
                 <h2>Add an Item</h2>
-
                 <table>
                 <tbody>
-                
+
                     {this.createTextInput(formdata.title,'title', "Enter title", "Title")}
                     {this.createTextInput(formdata.creator,'creator', "Enter creator", "Creator")}
                     {this.createTextInput(formdata.subject,'subject', "General subject matter", "Subject")}
@@ -198,12 +172,10 @@ class AddItem extends Component {
 
                     {this.createTextInput(formdata.source,'source', "Sources of information about the item", "Source")}
                     {this.createTextInput(formdata.date_created,'date_created', "Date item was created", "Date")}
-                        
 
                     <tr><td></td><td></td></tr>
                     <tr><td colSpan="2"><hr /></td></tr>
                     <tr><td></td><td></td></tr>
-
 
                     {this.createTextInput(formdata.location,'location', "The item's general location ie. Cashel", "Location")}
                     {this.createTextInput(formdata.geo.address,'address', "Where is the item currently located", "Exact Address", 'geo')}
@@ -234,7 +206,6 @@ class AddItem extends Component {
                             Click on the map to set geolocation
                         </td>
                     </tr>
-                    
                     
                     <tr>
                         <td className="label">
@@ -284,17 +255,14 @@ class AddItem extends Component {
                     <tr><td></td><td></td></tr>
                     <tr><td colSpan="2"><hr /></td></tr>
                     <tr><td></td><td></td></tr>
-                   
  
                     {this.createTextInput(formdata.item_format,'item_format', "The item's format", "Format")}
                     {this.createTextInput(formdata.materials,'materials', "The materials used in the item", "Materials")}
                     {this.createTextInput(formdata.physical_dimensions,'physical_dimensions', "Physical dimensions", "Dimensions")}
-
                     
                     <tr><td></td><td></td></tr>
                     <tr><td colSpan="2"><hr /></td></tr>
                     <tr><td></td><td></td></tr>
-
 
                     {this.createTextInput(formdata.editor,'editor', "Editor's name(s)", "Editor")}
                     {this.createTextInput(formdata.publisher,'publisher', "Publisher", "Publisher")}
@@ -334,19 +302,15 @@ class AddItem extends Component {
 
                         </td>
                     </tr>  
-
                 </tbody>
                 </table>
 
                 {this.state.saved ?
                         <p className="message center">Information saved!</p>
                 : null}
-
             </form>
         )
     }
-
-
 
     render() {
         return (

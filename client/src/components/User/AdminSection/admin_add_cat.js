@@ -1,97 +1,69 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from "react-router-dom";
 import axios from 'axios';
 import { toast } from 'react-toastify';
-
 
 import { addCat } from '../../../actions';
 
 const mongoose = require('mongoose');
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 
-class AdminAddCat extends Component {
+const AdminAddCat = props => {
 
-    state = {
-        catdata: {
-            _id: mongoose.Types.ObjectId().toHexString(),
-            title: '',
-            description: ''
-        },
-        saved: false,
-        imgSrc: '/assets/media/default/default.jpg'
-    }
+    const [catdata, setCatdata] = useState({
+        _id: mongoose.Types.ObjectId().toHexString(),
+        title: '',
+        description: ''
+    });
+    const [saved, setSaved] = useState(false);
+    const [imgSrc, setImgSrc] = useState('/assets/media/default/default.jpg');
+    const [selectedFile, setSelectedFile] = useState(null);
+    // const [loaded, setLoaded] = useState(null);
 
-    addDefaultImg = (ev) => {
+
+    const addDefaultImg = (ev) => {
         const newImg = '/assets/media/default/default.jpg';
         if (ev.target.src !== newImg) {
             ev.target.src = newImg
         }  
     }
 
-    cancel = () => {
-        this.props.history.push(`/admin/0`)
+    const cancel = () => {
+        props.history.push(`/admin/0`)
     }
 
-
-    handleInput = (event, field, i) => {
-
+    const handleInput = (event, field, i) => {
         const newCatdata = {
-            ...this.state.catdata
+            ...catdata
         }
-
         if (field === 'title') {
             newCatdata.title = event.target.value;
-
         } 
-        
         if (field === 'description') {
             newCatdata.description = event.target.value;
         } 
-
-        // copy it back to state
-        this.setState({
-            catdata: newCatdata,
-        })
+        setCatdata(newCatdata);
     }
 
-    addDefaultImg = (ev) => {
-        const newImg = '/assets/media/default/default.jpg';
-        if (ev.target.src !== newImg) {
-            ev.target.src = newImg
-        }  
-    }
-
-    // *************** UPLOAD LOGIC ********************
-
-    onImgChange = (event) => {
+    const onImgChange = (event) => {
         let files = event.target.files;
-
-        if (this.maxSelectFile(event) && this.checkMimeType(event) && this.checkMimeType(event)) {  
-            this.setState({
-                selectedFile: files
-            })
+        if (maxSelectFile(event) && checkMimeType(event) && checkMimeType(event)) {  
+            setSelectedFile(files)
         }
-
-        this.setState({
-            imgSrc: URL.createObjectURL(event.target.files[0])
-        })
+        setImgSrc(URL.createObjectURL(event.target.files[0]));
     }
 
-
-    onSubmitHandler = () => {
+    const onSubmitHandler = () => {
         const data = new FormData();
-        
-        if (this.state.selectedFile) {
-            for(let x = 0; x<this.state.selectedFile.length; x++) {
-                data.append('file', this.state.selectedFile[x])
+        if (selectedFile) {
+            for(let x = 0; x < selectedFile.length; x++) {
+                data.append('file', selectedFile[x])
             }
-            axios.post(`${API_PREFIX}/upload-cat/${this.state.catdata._id}`, data, { 
-                onUploadProgress: ProgressEvent => {
-                    this.setState({
-                        loaded: (ProgressEvent.loaded / ProgressEvent.total*100)
-                    })
-                }
+            axios.post(`${API_PREFIX}/upload-cat/${catdata._id}`, data, { 
+                // onUploadProgress: ProgressEvent => {
+                //     setLoaded((ProgressEvent.loaded / ProgressEvent.total*100));
+                // }
             })
             .then(res => { 
                 toast.success('upload success')
@@ -101,12 +73,11 @@ class AdminAddCat extends Component {
                 toast.error('upload fail')
             })
         }
-        this.props.history.push(`/admin/${this.props.index}`);
-        
+        props.history.push(`/admin/${props.index}`);
     }
 
-    maxSelectFile=(event)=>{
-        let files = event.target.files; // create file object
+    const maxSelectFile = event => {
+        let files = event.target.files;
         if (files.length > 1) { 
             // const msg = 'Only 1 image can be uploaded at a time';
             event.target.value = null;
@@ -115,7 +86,7 @@ class AdminAddCat extends Component {
         return true;
     }
 
-    checkMimeType=(event)=>{
+    const checkMimeType = event =>{
         let files = event.target.files 
         let err = ''
         const types = ['image/png', 'image/jpeg', 'image/gif']
@@ -124,7 +95,6 @@ class AdminAddCat extends Component {
                 err += files[x].type+' is not a supported format\n';
             }
         };
-
         for(let z = 0; z<err.length; z++) { 
             event.target.value = null 
             toast.error(err[z])
@@ -132,141 +102,105 @@ class AdminAddCat extends Component {
         return true;
     }
 
-    checkFileSize=(event)=>{
-        let files = event.target.files
-        let size = 15000 
-        let err = ""; 
+    // const checkFileSize = event => {
+    //     let files = event.target.files
+    //     let size = 15000 
+    //     let err = ""; 
+    //     for(let x = 0; x<files.length; x++) {
+    //         if (files[x].size > size) {
+    //             err += files[x].type+'is too large, please pick a smaller file\n';
+    //         }
+    //     };
+    //     for(let z = 0; z<err.length; z++) {
+    //         toast.error(err[z])
+    //         event.target.value = null
+    //     }
+    //     return true;
+    // }    
 
-        for(let x = 0; x<files.length; x++) {
-            if (files[x].size > size) {
-                err += files[x].type+'is too large, please pick a smaller file\n';
-            }
-        };
-
-        for(let z = 0; z<err.length; z++) {
-            toast.error(err[z])
-            event.target.value = null
-        }
-        return true;
-   
-    }    
-
-    // ****************************************************
-
-
-
-    submitForm = (e) => {
+    const submitForm = (e) => {
         e.preventDefault();
-
-        // dispatch an action, adding updated  formdata + the user id from the redux store
-        this.props.dispatch(addCat({
-                ...this.state.catdata,
+        props.dispatch(addCat({
+            ...catdata,
         }));
-
-        this.onSubmitHandler();
-
-        this.setState({
-            saved: true
-        })
-
+        onSubmitHandler();
+        setSaved(true);
         setTimeout(() => {
-            // this.props.history.push(`/user/edit-item-sel/${this.props.items.newitem.itemId}`);
-            this.props.history.push(`/admin/0`);
+            // props.history.push(`/user/edit-item-sel/${props.items.newitem.itemId}`);
+            props.history.push(`/admin/0`);
         }, 2000)
     }
 
+    return (
+        <div className="admin">
+            <div>
+                <form onSubmit={submitForm}>
+                    <table>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <h3>Title</h3>
+                            </td>
+                            <td>
+                                <input
+                                    type="text"
+                                    placeholder={"Enter title"}
+                                    defaultValue={catdata.title} 
+                                    onChange={(event) => handleInput(event, 'title')}
+                                />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <h3>Description</h3>
+                            </td>
+                            <td>
+                                <textarea
+                                    type="text"
+                                    placeholder="Enter category description"
+                                    defaultValue={catdata.description} 
+                                    onChange={(event) => handleInput(event, 'description')}
+                                    rows={6}
+                                />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <img 
+                                    className="change_cat_img" 
+                                    src={imgSrc} 
+                                    onError={addDefaultImg}
+                                    alt='cat cover'
+                                />
+                            </td>
+                            <td>
+                                <div className="form_element">
+                                    <input type="file" className="form-control" multiple name="file" accept="image/*" onChange={onImgChange}/>
+                                    <br />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr className="spacer"></tr>
+                        <tr className="spacer"></tr>
+                        <tr>
+                            <td>
+                                <button type="submit">Add Category</button>
+                            </td>
+                            <td>
+                                <button type="button" onClick={cancel}>Cancel</button>
+                            </td>
+                        </tr>
+                        <tr className="spacer"></tr>
+                    </tbody>
+                    </table>
+                </form>
 
-    render() {
-
-        return (
-            <div className="admin">
-                    <div>
-                        <form onSubmit={this.submitForm}>
-                            <table>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <h3>Title</h3>
-                                    </td>
-                                    <td>
-
-                                        <input
-                                            type="text"
-                                            placeholder={"Enter title"}
-                                            defaultValue={this.state.catdata.title} 
-                                            onChange={(event) => this.handleInput(event, 'title')}
-                                        />
-
-                                    </td>
-                                </tr>
-
-
-                                <tr>
-                                    <td>
-                                        <h3>Description</h3>
-                                    </td>
-                                    <td>
-                                        <textarea
-                                            type="text"
-                                            placeholder="Enter category description"
-                                            defaultValue={this.state.catdata.description} 
-                                            onChange={(event) => this.handleInput(event, 'description')}
-                                            rows={6}
-                                        />
-                                    </td>
-                                </tr>
-
-
-
-                                <tr>
-                                    <td>
-                                        <img 
-                                            className="change_cat_img" 
-                                            src={this.state.imgSrc} 
-                                            onError={this.addDefaultImg}
-                                            alt='cat cover'
-                                        />
-                                    </td>
-                                    <td>
-                                        <div className="form_element">
-                                            <input type="file" className="form-control" multiple name="file" accept="image/*" onChange={this.onImgChange}/>
-                                            <br />
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr className="spacer"></tr>
-
-                                
-
-                                <tr className="spacer"></tr>
-
-                                <tr>
-                                    <td>
-                                        <button type="submit">Add Category</button>
-                                    </td>
-
-                                    <td>
-                                        <button type="button" onClick={this.cancel}>Cancel</button>
-                                    </td>
-                                    
-                                </tr>
-
-                                <tr className="spacer"></tr>
-
-
-                            </tbody>
-                            </table>
-                            
-                        </form>
-
-                        {this.state.saved ?
-                            <p className="message">Sucessfully added new category!</p>
-                        : null}
-                        
-                    </div>
+                {saved ?
+                    <p className="message">Sucessfully added new category!</p>
+                : null}
             </div>
-        );
-    }
+        </div>
+    );
 }
 
 function mapStateToProps(state) {

@@ -48,15 +48,12 @@ class AdminSubCat extends Component {
     }
 
     componentDidUpdate(prevProps) {
-    
         if (this.props !== prevProps) {
-
             if (this.props.chosenSubCatInfo) {
                 this.setState({
                     imgSrc: `${FS_PREFIX}/assets/media/cover_img_subcat/${this.props.chosenSubCatInfo._id}.jpg`
                 })
             }
-
 
             if (this.props.cats && this.props.cats.length) {
                 let tempAllCatsConverted = [];
@@ -74,7 +71,6 @@ class AdminSubCat extends Component {
                         }
                     }
                 })
-
                 this.setState({
                     allCats: this.props.cats,
                     allCatsConverted: tempAllCatsConverted,
@@ -103,8 +99,6 @@ class AdminSubCat extends Component {
         })
     }
 
-    // *************** UPLOAD LOGIC ********************
-
     onImgChange = (event) => {
         let files = event.target.files;
         if (this.maxSelectFile(event) && this.checkMimeType(event) && this.checkMimeType(event)) {  
@@ -117,22 +111,18 @@ class AdminSubCat extends Component {
         })
     }
 
-
     onSubmitHandler = () => {
-
         const data = new FormData();
-        
         if (this.state.selectedFile) {
             for(let x = 0; x<this.state.selectedFile.length; x++) {
                 data.append('file', this.state.selectedFile[x])
             }
-
             axios.post(`${API_PREFIX}/upload-subcat/${this.props.chosenSubCatInfo._id}`, data, { 
                 // receive two parameter endpoint url ,form data 
                 onUploadProgress: ProgressEvent => {
-                    this.setState({
-                        loaded: (ProgressEvent.loaded / ProgressEvent.total*100)
-                    })
+                    // this.setState({
+                    //     loaded: (ProgressEvent.loaded / ProgressEvent.total*100)
+                    // })
                 }
             })
             .then(res => { // then print response status
@@ -143,19 +133,16 @@ class AdminSubCat extends Component {
                 toast.error('upload fail')
             })
         }
-
         this.setState({
             imgSrc : this.state.imgSrc + '?' + Math.random()
         });
 
-        // not used
-        this.handleTabIndex();
-
+        this.handleTabIndex(); // not used
         this.props.history.push(`/admin/${this.props.index}`);
     }
 
     maxSelectFile=(event)=>{
-        let files = event.target.files; // create file object
+        let files = event.target.files;
         if (files.length > 1) { 
             // const msg = 'Only 1 image can be uploaded at a time';
             event.target.value = null;
@@ -173,7 +160,6 @@ class AdminSubCat extends Component {
                 err += files[x].type+' is not a supported format\n';
             }
         };
-
         for(let z = 0; z<err.length; z++) {
             event.target.value = null 
             toast.error(err[z])
@@ -198,8 +184,6 @@ class AdminSubCat extends Component {
         }
         return true;
     }    
-
-    // ****************************************************
 
     addDefaultImg = (ev) => {
         const newImg = '/assets/media/default/default.jpg';
@@ -270,7 +254,6 @@ class AdminSubCat extends Component {
     }
 
     render() {
-
         return (
             <div className="admin">
                 { this.props.chosenSubCatInfo ? 
@@ -339,7 +322,6 @@ class AdminSubCat extends Component {
                                     </td>
                                 </tr>
                                 <tr>
-
                                     <td>
                                         <h3>Visibility</h3>
                                     </td>
@@ -386,20 +368,15 @@ class AdminSubCat extends Component {
                                         </button>
                                     </td>
                                 </tr>
-
                                 <tr className="spacer"></tr>
-
                                 <tr>
                                     <td>
                                         <button type="submit">Save Changes</button>
                                     </td>
-
                                     <td>
                                         <button type="button" onClick={this.cancel}>Cancel</button>
                                     </td>
-                                    
                                 </tr>
-
                                 <tr className="spacer"></tr>
                             </tbody>
                             </table>

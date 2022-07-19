@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import config from "../../../config";
@@ -7,47 +7,41 @@ import Breadcrumb from '../../widgetsUI/breadcrumb';
 import { getAllCats } from '../../../actions';
 import CatItem from './cats_list_item';
 
-class CatList extends Component {
-    componentDidMount() {
-        document.title = "Categories - Traveller Collection"
-        this.props.dispatch(getAllCats());
-        // this.props.dispatch(getItemsByCat(this.props.catInfo.cat_id));
-        // this.props.dispatch(getItemsWithCat(this.props.catInfo.cat_id));
-
-    }
-    componentWillUnmount() {
-        document.title = config.defaultTitle;
-    }
-
-    navInfo = {
+const CatList = props => {
+    const navInfo ={
         catTitle: null,
         catId: null,
         subCatTitle: null,
         subCatId: null,
         type: 'Categories'
-    }
+    };
 
-    render() {
-        let cats = this.props.cats;
-        return (
-            <div className="cats_list_wrapper">
-                <Breadcrumb navinfo={this.navInfo}/>
-                <div className="main_view cat_items_view">
-                    <h2 className="cat_list_title">Categories</h2>
-                    { cats && cats.length ?
-                        cats.map( (cat, i) => (
-                            cat.catIsHidden === true ?
-                                null
-                            : 
-                            <Link key={cat._id} to={`/category/${cat._id}`}>
-                                <CatItem cat={cat}/>
-                            </Link>
-                        ))
-                    : null }
-                </div>
+    useEffect(() => {
+        document.title = `Categories - ${config.defaultTitle}`
+        props.dispatch(getAllCats());
+        return () => {
+            document.title = config.defaultTitle;
+        } // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    return (
+        <div className="cats_list_wrapper">
+            <Breadcrumb navinfo={navInfo}/>
+            <div className="main_view cat_items_view">
+                <h2 className="cat_list_title">Categories</h2>
+                { props.cats && props.cats.length ?
+                    props.cats.map( (cat, i) => (
+                        cat.catIsHidden === true ?
+                            null
+                        : 
+                        <Link key={cat._id} to={`/category/${cat._id}`}>
+                            <CatItem cat={cat}/>
+                        </Link>
+                    ))
+                : null }
             </div>
-        );
-    }
+        </div>
+    );
 }
 
 function mapStateToProps(state) {

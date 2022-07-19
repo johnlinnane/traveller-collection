@@ -1,29 +1,24 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-
 import SliderTemplates from './slider_templates'
 import { getItems } from './../../../actions';
 
 
-class SlickCarouselOldHomepage extends Component {
+const SlickCarouselOldHomepage = props => {
 
+    useEffect(() => {
+        props.dispatch(getItems(4,0,'asc'));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
-    componentDidMount() {
-        this.props.dispatch(getItems(4,0,'asc'));
-    }
-
-    render() {
-        return(
-            <div>
-                {this.props.items.list ?
-                    <SliderTemplates data={this.props.items} type={this.props.type} settings={this.props.settings}/>
-                      
-                : null}
-            </div>
-        )
-    }
+    return(
+        <div>
+            {props.items.list ?
+                <SliderTemplates data={props.items} type={props.type} settings={props.settings}/>
+            : null}
+        </div>
+    )
 }
-
 
 function mapStateToProps(state) {
   return {

@@ -3,8 +3,6 @@ import { connect } from 'react-redux';
 import { WithContext as ReactTags } from 'react-tag-input';
 import { updateItem } from '../actions';
  
-
-
 const KeyCodes = {
   comma: 188,
   enter: 13,
@@ -34,18 +32,13 @@ class Tags extends React.Component {
         this.handleAddition = this.handleAddition.bind(this);
         this.handleDrag = this.handleDrag.bind(this);
     }
- 
-  
 
     static getDerivedStateFromProps(nextProps, prevState) {
         return {
             tags: nextProps.tags,
             id: nextProps.id,
-
         };
     }
-
-    
 
     handleDelete(i) {
         const { tags } = this.state;
@@ -59,25 +52,19 @@ class Tags extends React.Component {
         this.props.dispatch(updateItem({
             _id: this.state.id,
             tags: ['test']
-            
-        }
-    ))
+        }))
     }
  
     handleDrag(tag, currPos, newPos) {
         const tags = [...this.state.tags];
         const newTags = tags.slice();
- 
         newTags.splice(currPos, 1);
         newTags.splice(newPos, 0, tag);
- 
-        // re-render
         this.setState({ tags: newTags });
     }
  
     render() {
         const { tags, suggestions } = this.state;
-
         return (
             <div>
                 <ReactTags tags={tags}
@@ -88,8 +75,7 @@ class Tags extends React.Component {
                     delimiters={delimiters} 
                     placeholder={'Enter some keywords here'}
                 />
-                
-             </div>
+            </div>
         )
     }
 };
@@ -99,4 +85,3 @@ const mapDispatchToProps = dispatch => ({
  })
 
 export default connect(null, mapDispatchToProps)(Tags);
-

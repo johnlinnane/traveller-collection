@@ -1,166 +1,132 @@
-import React, { PureComponent } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { connect } from 'react-redux';
 import { getUsers, userRegister } from '../../../actions';
 
-class Register extends PureComponent {
+const Register = props => {
 
+    const [name, setName] = useState('');
+    const [lastname, setLastname] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
 
-    state = {
-        name:'', 
-        lastname:'',
-        email:'',
-        password:'',
-        error:''
+    useEffect(() => {
+        props.dispatch(getUsers());
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    const handleInputEmail = event => {
+        setEmail(event.target.value);
     }
 
-
-    componentDidMount() {
-        this.props.dispatch(getUsers())
-    } 
-
-    handleInputEmail = (event) => {
-        this.setState({email:event.target.value})
+    const handleInputPassword = event => {
+        setPassword(event.target.value);
     }
 
-    handleInputPassword = (event) => {
-        this.setState({password:event.target.value})
+    const handleInputName = event => {
+        setName(event.target.value);
     }
 
-    handleInputName = (event) => {
-        this.setState({name:event.target.value})
+    const handleInputLastname = event => {
+        setLastname(event.target.value);
     }
 
-    handleInputLastname = (event) => {
-        this.setState({lastname:event.target.value})
-    }
-
-
-    // reset the state when form is submitted
-    componentDidUpdate(prevProps, prevState) {
-        if (this.props !== prevProps) {
-            if(this.props.user.register === false) {
-                this.setState({error:'Error, try again'})
-            } else {
-                this.setState({
-                    name:'', 
-                    lastname:'',
-                    email:'',
-                    password:''
-                })
-            }
+    useEffect(() => {
+        if (props.user.register === false) {
+            setError('Error, try again');
+        } else {
+            setName(''); 
+            setLastname('');
+            setEmail('');
+            setPassword('');
         }
-    }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
-
-    submitForm = (e) => {
+    const submitForm = e => {
         e.preventDefault();
-        this.setState({error:''});
+        setError('');
 
-        this.props.dispatch(userRegister({
-            email:this.state.email,
-            password:this.state.password,
-            name:this.state.name,
-            lastname:this.state.lastname,
-        }, this.props.user.users))
-
-
+        props.dispatch(userRegister({
+            email: email,
+            password: password,
+            name: name,
+            lastname: lastname,
+        }, props.user.users))
     }
 
-    showUsers = (user) => (
+    const showUsers = user => (
         user.users ?
             user.users.map(item => (
                 <tr key={item._id}>
                     <td>{item.name}</td>
                     <td>{item.lastname}</td>
                     <td>{item.email}</td>
-                    
                 </tr>
             )) 
         : null
     )
 
-
-    render() {
-        let user = this.props.user;
-
-        return (
-            <div className="form_input">
-
-                <form onSubmit={this.submitForm}>
-                    <h2>Add user</h2>
-
-                    <div className="form_element">
-                        <input
-                            type="text"
-                            placeholder="Enter name"
-                            value={this.state.name}
-                            onChange={this.handleInputName}
-                        />
-                    </div>
-
-                    <div className="form_element">
-                        <input
-                            type="text"
-                            placeholder="Enter Lastname"
-                            value={this.state.lastname}
-                            onChange={this.handleInputLastname}
-                        />
-                    </div>
-
-                    <div className="form_element">
-                        <input
-                            type="email"
-                            placeholder="Enter Email"
-                            value={this.state.email}
-                            onChange={this.handleInputEmail}
-                        />
-                    </div>
-
-                    <div className="form_element">
-                        <input
-                            type="password"
-                            placeholder="Enter password"
-                            value={this.state.password}
-                            onChange={this.handleInputPassword}
-                        />
-                    </div>
-
-                    <button type="submit">Add user</button>
-
-                    <div className="error">
-                        {this.state.error}
-                    </div>
-
-
-                </form>
-
-
-                <div className="current_users">
-                    <h4>Current users:</h4>
-
-                    <table>
-                        
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Lastname</th>
-                                <th>Email</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            {this.showUsers(user)}
-                        </tbody>
-
-                    </table>
-
+    return (
+        <div className="form_input">
+            <form onSubmit={submitForm}>
+                <h2>Add user</h2>
+                <div className="form_element">
+                    <input
+                        type="text"
+                        placeholder="Enter name"
+                        value={name}
+                        onChange={handleInputName}
+                    />
                 </div>
+                <div className="form_element">
+                    <input
+                        type="text"
+                        placeholder="Enter Lastname"
+                        value={lastname}
+                        onChange={handleInputLastname}
+                    />
+                </div>
+                <div className="form_element">
+                    <input
+                        type="email"
+                        placeholder="Enter Email"
+                        value={email}
+                        onChange={handleInputEmail}
+                    />
+                </div>
+                <div className="form_element">
+                    <input
+                        type="password"
+                        placeholder="Enter password"
+                        value={password}
+                        onChange={handleInputPassword}
+                    />
+                </div>
+                <button type="submit">Add user</button>
+                <div className="error">
+                    {error}
+                </div>
+            </form>
 
-
+            <div className="current_users">
+                <h4>Current users:</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Lastname</th>
+                            <th>Email</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {showUsers(props.user)}
+                    </tbody>
+                </table>
             </div>
-        );
-    }
+        </div>
+    );
 }
 
 function mapStateToProps(state) {
@@ -168,6 +134,5 @@ function mapStateToProps(state) {
         user:state.user
     }
 }
-
 
 export default connect(mapStateToProps)(Register)

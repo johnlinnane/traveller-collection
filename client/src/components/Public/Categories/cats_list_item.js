@@ -7,7 +7,6 @@ const CatItem = (props) => {
         if (ev.target.src !== newImg) {
             ev.target.src = newImg
         }  
-        
     } 
 
     return (
@@ -15,7 +14,6 @@ const CatItem = (props) => {
             <div className="cat_item_img">
                     <img src={`${FS_PREFIX}/assets/media/cover_img_cat/${props.cat._id}.jpg`} alt="category cover" onError={addDefaultImg} />
             </div>
-
             <div className="cat_item_text">
                 <h2><b>{props.cat.title}</b><span>→</span></h2>
                 {props.cat.description ? props.cat.description : null }<br />

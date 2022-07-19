@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const User = (props) => {
+const User = props => {
     let user = props.user.login;
 
     return (

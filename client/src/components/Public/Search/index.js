@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { useEffect, useState} from 'react';
 import { connect } from 'react-redux';
 
 import SearchHeader from './search_header';
@@ -6,31 +6,23 @@ import SearchList from './news_list';
 import { getAllItems } from '../../../actions';
 import config from "../../../config";
 
+const Search = props => {
+    const [filtered, setFiltered] = useState([]);
+    const [noMatch, setNoMatch] = useState(null);
 
+    useEffect(() => {
+        document.title = `Search - ${config.defaultTitle}`;
+        props.dispatch(getAllItems());
+        return () => {
+            document.title = config.defaultTitle;
+        } // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
-
-class Search extends Component {
-
-    state = {
-        filtered: [],
-        noMatch: null
-    }
-
-    componentDidMount() {
-        document.title = `Search - Traveller Collection`
-        this.props.dispatch(getAllItems());
-
-    }
-    
-    componentWillUnmount() {
-        document.title = config.defaultTitle;
-    }
-
-    getKeyword = (event) => {
+    const getKeyword = (event) => {
         let keyword = event.target.value.toLowerCase();
         let matchFound = false;
 
-        let filteredByKeyword = this.props.items.items.filter( (item) => {
+        let filteredByKeyword = props.items.items.filter( (item) => {
             let isMatch = false;
 
             if (item.title) {
@@ -59,53 +51,34 @@ class Search extends Component {
             }
             if (isMatch) {
                 matchFound = true;
-                this.setState({
-                    noMatch: false
-                })
+                setNoMatch(false);
                 return true;
             } 
             return false;
         });
         if (!matchFound) {
-            this.setState({
-                noMatch: true
-            })
+            setNoMatch(true);
         }
         if (keyword !== '') {
-            this.setState({
-                filtered: filteredByKeyword
-            })
+            setFiltered(filteredByKeyword);
         } else {
-            this.setState({
-                filtered: []
-            })
+            setFiltered([]);
         }
     }
-
-
   
-    render() {
-        let filtered = this.state.filtered;
-        return (
-            <div className="main_view">
-                <SearchHeader keywords={this.getKeyword} placeholder="Search title, creator, description, address"/>
-
-                { !this.state.noMatch ?
-                    <SearchList news={filtered.length === 0 ? null : filtered} />
-                : <p className="center">No matches found</p>}
-            </div>
-
-        )
-    }
+    return (
+        <div className="main_view">
+            <SearchHeader keywords={getKeyword} placeholder="Search title, creator, description, address"/>
+            { !noMatch ?
+                <SearchList news={filtered.length === 0 ? null : filtered} />
+            : <p className="center">No matches found</p> }
+        </div>
+    )
 }
-
-
 
 function mapStateToProps(state) {
   return {
       items:state.items
-
-
   }
 }
 

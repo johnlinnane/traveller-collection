@@ -22,7 +22,7 @@ function Login(props) {
         document.title = `Login - ${config.defaultTitle}`;
         return () => {
             document.title = config.defaultTitle;
-        }
+        } // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {

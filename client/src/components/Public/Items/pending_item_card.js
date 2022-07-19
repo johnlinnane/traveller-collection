@@ -1,22 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
-
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
 const PendingItemCard = (props) => {
-    
 
     const addDefaultImg = (ev) => {
         const newImg = '/assets/media/default/default.jpg';
         if (ev.target.src !== newImg) {
             ev.target.src = newImg
         }  
-        
     } 
-
-
-    
     
     return (
         <div className="p_item_card">
@@ -25,14 +18,10 @@ const PendingItemCard = (props) => {
                     <img src={`${FS_PREFIX}/assets/media/items/${props.item._id}/sq_thumbnail/0.jpg`} alt={props.item.name} onError={addDefaultImg} />
                 </Link>
             </div>
-
             <div className="p_item_text">
                 <b>Title:</b> {props.item.title}<br />
                 <b>Creator:</b> {props.item.creator}<br />
-
-
             </div>
-
             <div className="p_item_accept">
                 <button 
                     type="button" 
@@ -40,7 +29,6 @@ const PendingItemCard = (props) => {
                 >
                     Accept
                 </button>
-                
                 <button 
                     type="button" 
                     onClick={() =>  { if (window.confirm('Are you sure you wish to permanently delete this item and all associated media?')) props.handleChoicePass(props.item._id, 'reject') } }
@@ -48,11 +36,6 @@ const PendingItemCard = (props) => {
                     Reject
                 </button>
             </div>
-
-
-
-
-
         </div>
     );
 };

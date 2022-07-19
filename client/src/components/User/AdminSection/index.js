@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
-
  
 import { getAllCats, getAllSubCats  } from '../../../actions';
 import AdminCat from './admin_cat';
@@ -12,159 +11,111 @@ import AdminInfo from './admin_info';
 import AdminAddCat from './admin_add_cat';
 import AdminAddSubCat from './admin_add_subcat';
 
-
-class Admin extends React.Component  {
+const Admin = props => {
+    const [tabIndexTop, setTabIndexTop] = useState(0);
+    const [tabIndexSide, setTabIndexSide] = useState(parseInt(props.match.params.tab));
     
-
-    state = {
-        tabIndexTop: 0,
-        tabIndexSide: parseInt(this.props.match.params.tab)
-   
-
-    }
-
-    componentDidMount() {
-        this.props.dispatch(getAllCats());
-        this.props.dispatch(getAllSubCats());
-    }
-
-   
+    useEffect(() => {
+        props.dispatch(getAllCats());
+        props.dispatch(getAllSubCats());
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
     
-    setTabIndex = (index) => {
-        this.setState({
-            tabIndexSide: index
-        })
+    const setTabIndex = (index) => {
+        setTabIndexSide(index);
     }
 
+    return (
+        <div className="main_view admin_view">
+            <Tabs selectedIndex={tabIndexTop} onSelect={tabIndexTop => setTabIndexTop(tabIndexTop)}>
 
-    render() {
+                {/******** TOP TABS ***********/}
+                <TabList>
+                    <Tab>Categories</Tab>
+                    <Tab>Sub-Categories</Tab>
+                    <Tab>About Page</Tab>
+                    <Tab>Intro Page</Tab>
+                    {/* <Tab disabled>Extra</Tab> */}
+                </TabList>
 
+                {/******** CATEGORIES ***********/}
+                <TabPanel>
+                    <h2>Categories</h2> 
 
-        return (
-            <div className="main_view admin_view">
-                <Tabs selectedIndex={this.state.tabIndexTop} onSelect={tabIndexTop => this.setState({ tabIndexTop })}>
-                    
-
-                    {/******** TOP TABS ***********/}
-
-                    <TabList>
-                        <Tab>Categories</Tab>
-                        <Tab>Sub-Categories</Tab>
-                        <Tab>About Page</Tab>
-                        <Tab>Intro Page</Tab>
-                        {/* <Tab disabled>Extra</Tab> */}
-                    </TabList>
-                
-
-
-                    {/******** CATEGORIES ***********/}
-
-                    <TabPanel>
-                        
-                        <h2>Categories</h2> 
-                        
-
-                        {/******** SIDE TABS ***********/}
-
-                        <Tabs className="vert_tab" 
-                            selectedIndex={this.state.tabIndexSide} 
-                            onSelect={tabIndexSide => this.setState({ tabIndexSide })}
-                        >
-                            {this.props.cats ?
-                                <TabList className="vert_tab_list">
-                                    {this.props.cats.map( (cat, i) => (
-                                        <Tab key={i}>{cat.title}</Tab>
-                                    ))}
-                                    <Tab  className="add_cat_tab">Add Category</Tab>
-                                </TabList>
-                            : null }
+                    {/******** SIDE TABS ***********/}
+                    <Tabs className="vert_tab" 
+                        selectedIndex={tabIndexSide} 
+                        onSelect={tabIndexSide => setTabIndexSide(tabIndexSide)}
+                    >
+                        {props.cats ?
+                            <TabList className="vert_tab_list">
+                                {props.cats.map( (cat, i) => (
+                                    <Tab key={i}>{cat.title}</Tab>
+                                ))}
+                                <Tab  className="add_cat_tab">Add Category</Tab>
+                            </TabList>
+                        : null }
 
 
-                            {/******** EACH SIDE TAB CONTENT ***********/}
-                            { this.props.cats ?
-                                this.props.cats.map( (cat, i) => (
-                                    <TabPanel key={i}>
+                        {/******** EACH SIDE TAB CONTENT ***********/}
+                        { props.cats ?
+                            props.cats.map( (cat, i) => (
+                                <TabPanel key={i}>
 
-                                        <AdminCat chosenCatInfo={cat} index={i} getTabIndex={this.setTabIndex}/>
-                                    </TabPanel>
-                                ))
-                            : null }
+                                    <AdminCat chosenCatInfo={cat} index={i} getTabIndex={setTabIndex}/>
+                                </TabPanel>
+                            ))
+                        : null }
+                        <TabPanel>
+                            <AdminAddCat />
+                        </TabPanel>
+                    </Tabs>
+                </TabPanel>
 
-                            <TabPanel>
-                                <AdminAddCat />
-                            </TabPanel>
+                {/******** SUB CATEGORIES ***********/}
+                <TabPanel>
+                    <h2>Sub-Categories</h2> 
 
-                        </Tabs>
+                    {/******** SIDE TABS ***********/}
+                    <Tabs className="vert_tab" 
+                        selectedIndex={tabIndexSide} 
+                        onSelect={tabIndexSide => setTabIndexSide(tabIndexSide)}
+                    >
+                        {props.subcats ?
+                            <TabList className="vert_tab_list">
+                                {props.subcats.map( (subcats, i) => (
+                                    <Tab key={i}>{subcats.title}</Tab>
+                                ))}
+                                <Tab  className="add_cat_tab">Add Sub-Category</Tab>
+                            </TabList>
+                        : null }
+                        { props.subcats ?
+                            props.subcats.map( (subcat, i) => (
+                                <TabPanel key={i}>
 
-                    </TabPanel>
+                                    <AdminSubCat chosenSubCatInfo={subcat} index={i} getTabIndex={setTabIndex}/>
+                                </TabPanel>
+                            ))
+                        : null }
+                        <TabPanel>
+                            <AdminAddSubCat />
+                        </TabPanel>
+                    </Tabs>
+                </TabPanel>
 
+                {/******** INFO ***********/}
+                <TabPanel>
+                    <AdminInfo />
+                </TabPanel>
 
-                    {/******** SUB CATEGORIES ***********/}
-
-                    <TabPanel>
-                        
-                        <h2>Sub-Categories</h2> 
-                        
-
-                        {/******** SIDE TABS ***********/}
-
-                        <Tabs className="vert_tab" 
-                            selectedIndex={this.state.tabIndexSide} 
-                            onSelect={tabIndexSide => this.setState({ tabIndexSide })}
-                        >
-                            {this.props.subcats ?
-                                <TabList className="vert_tab_list">
-                                    {this.props.subcats.map( (subcats, i) => (
-                                        <Tab key={i}>{subcats.title}</Tab>
-                                    ))}
-                                    <Tab  className="add_cat_tab">Add Sub-Category</Tab>
-                                </TabList>
-                            : null }
-
-
-                            { this.props.subcats ?
-                                this.props.subcats.map( (subcat, i) => (
-                                    <TabPanel key={i}>
-
-                                        <AdminSubCat chosenSubCatInfo={subcat} index={i} getTabIndex={this.setTabIndex}/>
-                                    </TabPanel>
-                                ))
-                            : null }
-
-                            <TabPanel>
-                                <AdminAddSubCat />
-                            </TabPanel>
-
-                        </Tabs>
-                    </TabPanel>
-
-
-                    {/******** INFO ***********/}
-
-                    <TabPanel>
-                        
-                        <AdminInfo />
-                    </TabPanel>
-
-
-
-                    {/******** INTRO ***********/}
-
-
-                    <TabPanel>
-                        <AdminIntro />
-                    </TabPanel>
-
-
-            
-
-                </Tabs>
-            </div>
-        )
-    }
-        
+                {/******** INTRO ***********/}
+                <TabPanel>
+                    <AdminIntro />
+                </TabPanel>
+            </Tabs>
+        </div>
+    )
 }
-          
 
 function mapStateToProps(state) {
     return {
@@ -174,6 +125,3 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(Admin)
-
-
-
