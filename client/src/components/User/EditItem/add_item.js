@@ -1,65 +1,62 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Map, TileLayer, Marker } from 'react-leaflet'
 import '../../../../node_modules/react-toastify/dist/ReactToastify.css';
-
+import config from "../../../config";
 import { addItem, addPendingItem, clearNewItem } from '../../../actions';
 
-class AddItem extends Component {
+const AddItem = props => {
 
-    state = {
-        formdata:{
-            title: '',
-            creator: '',
-            subject: '',
-            description: '',
-            source: '',
-            date_created: '',
-            
-            contributor: '',
-            item_format: '',
-            materials: '',
-            physical_dimensions: '',
-            pages: '',        
-            editor: '',
-            publisher: '',
-            further_info: '',
-            language: '',
-            reference: '',
-            rights: '',
-            external_link: [
-                {
-                    url: '',
-                    text: ''
-                }
-            ],
-            geo: {
-                address: '',
-                latitude: null,
-                longitude: null
-            },
-            location: ''
+    const [formdata, setFormdata] = useState({
+        title: '',
+        creator: '',
+        subject: '',
+        description: '',
+        source: '',
+        date_created: '',
+        
+        contributor: '',
+        item_format: '',
+        materials: '',
+        physical_dimensions: '',
+        pages: '',        
+        editor: '',
+        publisher: '',
+        further_info: '',
+        language: '',
+        reference: '',
+        rights: '',
+        external_link: [
+            {
+                url: '',
+                text: ''
+            }
+        ],
+        geo: {
+            address: '',
+            latitude: null,
+            longitude: null
         },
-        initMap: {
-            initLat: 53.342609,
-            initLong: -7.603976,
-            initZoom: 6.5
-        },
-        saved: false
+        location: ''
+    });
+    const [saved, setSaved] = useState(false);
+    const initMap = {
+        initLat: 53.342609,
+        initLong: -7.603976,
+        initZoom: 6.5
     }
 
-    componentDidMount() {
-        document.title = "Add Item - Traveller Collection"
-    }
+    useEffect(() => {
+        document.title = `Add Item - ${config.defaultTitle}`;
+        return () => {
+            document.title = config.defaultTitle;
+            props.dispatch(clearNewItem())
+        } // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
-    // clear success message 
-    componentWillUnmount() {
-        this.props.dispatch(clearNewItem())
-    }
-
-    handleInput = (event, name, level) => {
+    const handleInput = (event, name, level) => {
         let newFormdata = {
-            ...this.state.formdata
+            ...formdata
         }
         if (level === 'external_link') {
             newFormdata.external_link[0][name] = event.target.value;
@@ -71,58 +68,52 @@ class AddItem extends Component {
         } else {
             newFormdata[name] = event.target.value;
         }
-        this.setState({
-            formdata: newFormdata
-        })
+        setFormdata(newFormdata);
     }
 
-    handleClick(e) {
+    const handleClick = e => {
         let lat = parseFloat(e.latlng.lat).toFixed(6);
         let lng = parseFloat(e.latlng.lng).toFixed(6);
-        this.setState({
-            formdata: {
-                ...this.state.formdata,
-                geo: {
-                    ...this.state.formdata.geo,
-                    latitude: lat,
-                    longitude: lng
-                }
+        setFormdata({
+            ...formdata,
+            geo: {
+                ...formdata.geo,
+                latitude: lat,
+                longitude: lng
             }
-        })
+        });
     }
 
-    cancel = () => {
-        this.props.history.push(`/user/all-items`)
+    const cancel = () => {
+        props.history.push(`/user/all-items`)
     }
 
-    redirectUser = (url) => {
+    const redirectUser = url => {
         setTimeout(() => {
-            this.props.history.push(url)
+            props.history.push(url)
         }, 1000)
     }
 
-    submitForm = (e) => {
+    const submitForm = e => {
         e.preventDefault();
-        if (this.props.user.login.isAuth) {
-            this.props.dispatch(addItem({
-                    ...this.state.formdata,
-                    ownerId:this.props.user.login.id
+        if (props.user.login.isAuth) {
+            props.dispatch(addItem({
+                    ...formdata,
+                    ownerId:props.user.login.id
             }));
         } else {
-            this.props.dispatch(addPendingItem({
-                ...this.state.formdata,
+            props.dispatch(addPendingItem({
+                ...formdata,
                 ownerId:'guest'
             }))
         }
-        this.setState({
-            saved: true
-        })
+        setSaved(true);
         setTimeout(() => {
-            this.props.history.push(`/user/edit-item-sel/${this.props.items.newitem.itemId}`);
+            props.history.push(`/user/edit-item-sel/${props.items.newitem.itemId}`);
         }, 2000)
     }
 
-    createTextInput = (existing, name, placeholder, inputLabel, level) => {
+    const createTextInput = (existing, name, placeholder, inputLabel, level) => {
         return (
             <tr>
                 <td>
@@ -134,7 +125,7 @@ class AddItem extends Component {
                             type="text"
                             placeholder={placeholder}
                             value={existing} 
-                            onChange={(event) => this.handleInput(event, name, level)}
+                            onChange={(event) => handleInput(event, name, level)}
                         />
                     </div>
                 </td>
@@ -142,17 +133,16 @@ class AddItem extends Component {
         )
     }
 
-    renderForm = () => {
-        const formdata = this.state.formdata;
+    const renderForm = () => {
         return (
-            <form onSubmit={this.submitForm}>
+            <form onSubmit={submitForm}>
                 <h2>Add an Item</h2>
                 <table>
                 <tbody>
 
-                    {this.createTextInput(formdata.title,'title', "Enter title", "Title")}
-                    {this.createTextInput(formdata.creator,'creator', "Enter creator", "Creator")}
-                    {this.createTextInput(formdata.subject,'subject', "General subject matter", "Subject")}
+                    {createTextInput(formdata.title,'title', "Enter title", "Title")}
+                    {createTextInput(formdata.creator,'creator', "Enter creator", "Creator")}
+                    {createTextInput(formdata.subject,'subject', "General subject matter", "Subject")}
 
                     <tr>
                         <td className="label">
@@ -163,42 +153,42 @@ class AddItem extends Component {
                                 type="text"
                                 placeholder="Please write as much details as you know about the item here. For example the place of origin, who made it, or owned it previously, what it was made out of, what it was used for, and any other details"
                                 defaultValue={formdata.description} 
-                                onChange={(event) => this.handleInput(event, 'description')}
+                                onChange={(event) => handleInput(event, 'description')}
                                 rows={18}
                             />
                             
                         </td>
                     </tr>
 
-                    {this.createTextInput(formdata.source,'source', "Sources of information about the item", "Source")}
-                    {this.createTextInput(formdata.date_created,'date_created', "Date item was created", "Date")}
+                    {createTextInput(formdata.source,'source', "Sources of information about the item", "Source")}
+                    {createTextInput(formdata.date_created,'date_created', "Date item was created", "Date")}
 
                     <tr><td></td><td></td></tr>
                     <tr><td colSpan="2"><hr /></td></tr>
                     <tr><td></td><td></td></tr>
 
-                    {this.createTextInput(formdata.location,'location', "The item's general location ie. Cashel", "Location")}
-                    {this.createTextInput(formdata.geo.address,'address', "Where is the item currently located", "Exact Address", 'geo')}
+                    {createTextInput(formdata.location,'location', "The item's general location ie. Cashel", "Location")}
+                    {createTextInput(formdata.geo.address,'address', "Where is the item currently located", "Exact Address", 'geo')}
                     
                     <tr>
                         <td>Geo-location</td>
                         <td>
                             <Map 
                                 className="edit_map"
-                                center={[this.state.initMap.initLat, this.state.initMap.initLong]} 
-                                zoom={this.state.initMap.initZoom} 
-                                onClick={(e) => { this.handleClick(e)}}
-                                // style={{ height: this.state.showMap ? '350px' : '0px'}}
+                                center={[initMap.initLat, initMap.initLong]} 
+                                zoom={initMap.initZoom} 
+                                onClick={(e) => { handleClick(e)}}
+                                // style={{ height: showMap ? '350px' : '0px'}}
                             >
                                 <TileLayer
                                     attribution='&copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                                 />
 
-                                { this.state.formdata.geo.latitude && this.state.formdata.geo.longitude ?
+                                { formdata.geo.latitude && formdata.geo.longitude ?
                                     
                                     <Marker 
-                                        position={[this.state.formdata.geo.latitude, this.state.formdata.geo.longitude]} 
+                                        position={[formdata.geo.latitude, formdata.geo.longitude]} 
                                     />
                                 : null }
                             </Map>
@@ -217,7 +207,7 @@ class AddItem extends Component {
                                     type="number"
                                     placeholder="Geo-location latitude ie. 52.232269"
                                     defaultValue={formdata.geo.latitude} 
-                                    onChange={(event) => this.handleInput(event, 'latitude', 'geo')}
+                                    onChange={(event) => handleInput(event, 'latitude', 'geo')}
                                     className="input_latlng"
                                 />
                             </div>
@@ -234,7 +224,7 @@ class AddItem extends Component {
                                     type="number"
                                     placeholder="Geo-location longitude ie. -8.670860"
                                     defaultValue={formdata.geo.longitude} 
-                                    onChange={(event) => this.handleInput(event, 'longitude', 'geo')}
+                                    onChange={(event) => handleInput(event, 'longitude', 'geo')}
                                     className="input_latlng"
                                 />
                             </div>
@@ -245,28 +235,26 @@ class AddItem extends Component {
                     <tr><td colSpan="2"><hr /></td></tr>
                     <tr><td></td><td></td></tr>
 
-
-                    {this.createTextInput(formdata.rights,'rights', "Rights", "Rights")}
-                    {this.createTextInput(formdata.further_info,'further_info', "Enter any further info, resources..", "Further Info")}
-                    {this.createTextInput(formdata.external_link[0].url,'url', "External link URL ie. https://www...", "External Link", 'external_link')}
-                    {this.createTextInput(formdata.external_link[0].text,'text', "Description of the link", '', "external_link")}
-
+                    {createTextInput(formdata.rights,'rights', "Rights", "Rights")}
+                    {createTextInput(formdata.further_info,'further_info', "Enter any further info, resources..", "Further Info")}
+                    {createTextInput(formdata.external_link[0].url,'url', "External link URL ie. https://www...", "External Link", 'external_link')}
+                    {createTextInput(formdata.external_link[0].text,'text', "Description of the link", '', "external_link")}
 
                     <tr><td></td><td></td></tr>
                     <tr><td colSpan="2"><hr /></td></tr>
                     <tr><td></td><td></td></tr>
  
-                    {this.createTextInput(formdata.item_format,'item_format', "The item's format", "Format")}
-                    {this.createTextInput(formdata.materials,'materials', "The materials used in the item", "Materials")}
-                    {this.createTextInput(formdata.physical_dimensions,'physical_dimensions', "Physical dimensions", "Dimensions")}
+                    {createTextInput(formdata.item_format,'item_format', "The item's format", "Format")}
+                    {createTextInput(formdata.materials,'materials', "The materials used in the item", "Materials")}
+                    {createTextInput(formdata.physical_dimensions,'physical_dimensions', "Physical dimensions", "Dimensions")}
                     
                     <tr><td></td><td></td></tr>
                     <tr><td colSpan="2"><hr /></td></tr>
                     <tr><td></td><td></td></tr>
 
-                    {this.createTextInput(formdata.editor,'editor', "Editor's name(s)", "Editor")}
-                    {this.createTextInput(formdata.publisher,'publisher', "Publisher", "Publisher")}
-                    {this.createTextInput(formdata.language,'language', "ie. Cant, Gammon, Romani", "Language")}
+                    {createTextInput(formdata.editor,'editor', "Editor's name(s)", "Editor")}
+                    {createTextInput(formdata.publisher,'publisher', "Publisher", "Publisher")}
+                    {createTextInput(formdata.language,'language', "ie. Cant, Gammon, Romani", "Language")}
 
                     <tr>
                         <td className="label">
@@ -278,26 +266,24 @@ class AddItem extends Component {
                                     type="number"
                                     placeholder="Enter number of pages"
                                     defaultValue={formdata.pages} 
-                                    onChange={(event) => this.handleInput(event, 'pages')}
+                                    onChange={(event) => handleInput(event, 'pages')}
                                 />
                             </div>
                         </td>
                     </tr>
 
-                    {this.createTextInput(formdata.reference,'reference', "Reference code", "Ref")}
-
+                    {createTextInput(formdata.reference,'reference', "Reference code", "Ref")}
 
                     <tr><td></td><td></td></tr>
                     <tr><td colSpan="2"><hr /></td></tr>
                     <tr><td></td><td></td></tr>
 
-
-                    {this.createTextInput(formdata.contributor,'contributor', "Add your name here", "Contributor")}
+                    {createTextInput(formdata.contributor,'contributor', "Add your name here", "Contributor")}
 
                     <tr className="half_width">
                         <td colSpan="2" >
                        
-                            <button type="button" className="half_width_l" onClick={(e) => { if (window.confirm('Are you sure you wish to cancel? All data entered will be lost!')) this.cancel(e) }}>Cancel</button>
+                            <button type="button" className="half_width_l" onClick={(e) => { if (window.confirm('Are you sure you wish to cancel? All data entered will be lost!')) cancel(e) }}>Cancel</button>
                             <button type="submit" className="half_width_r">Save and Continue</button>
 
                         </td>
@@ -305,22 +291,20 @@ class AddItem extends Component {
                 </tbody>
                 </table>
 
-                {this.state.saved ?
+                {saved ?
                         <p className="message center">Information saved!</p>
                 : null}
             </form>
         )
     }
 
-    render() {
-        return (
-            <div className="main_view">
-                <div className="form_input item_form_input edit_page">
-                    {this.renderForm()}
-                </div>
+    return (
+        <div className="main_view">
+            <div className="form_input item_form_input edit_page">
+                {renderForm()}
             </div>
-        );
-    }
+        </div>
+    );
 }
 
 function mapStateToProps(state) {

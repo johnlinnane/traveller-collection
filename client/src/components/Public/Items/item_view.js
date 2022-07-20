@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import Slick from 'react-slick';   // uses cdn css
@@ -14,142 +14,127 @@ const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
-class ItemView extends Component {
+const ItemView = props => {
+    const [numPages, setNumPages] = useState(null);             // total number of pages??
+    const [pageNumber, setPageNumber] = useState(1);            // page currently displayed
+    const [pdfError, setPdfError] = useState(false);            // commented out
+    // const [setNumPages, setSetNumPages] = useState(null);    // not used
+    // const [setPageNumber, setSetPageNumber] = useState(1);   // not used
+    // const [pdfPageNumber, setPdfPageNumber] = useState(0);   // not used
+    const [pdfScale, setPdfScale] = useState(1);
 
-    state = {
-        pdfError: false,
-        numPages: null,     // total number of pages??
-        setNumPages: null,  // not used
-        pageNumber: 1,      // page currently displayed
-        setPageNumber: 1,   // not used
-        pdfPageNumber: 0,   // not used
-        pdfScale: 1,
+    const [showMap, setShowMap] = useState(false);
+    const [mapZoom, setMapZoom] = useState(12);
 
-        showMap: false,
-        mapZoom: 12,
+    const [isPending, setIsPending] = useState(false);
 
-        isPending: false,
+    const [itemFiles, setItemFiles] = useState([]);
+    const [imgFiles, setImgFiles] = useState([]);
+    const [pdfFiles, setPdfFiles] = useState([]);
+    const [vidFiles, setVidFiles] = useState([]);
+    const [prevItem, setPrevItem] = useState(null);
+    const [nextItem, setNextItem] = useState(null);
+    const [userIsAuth, setUserIsAuth] = useState(null);
+    const [itemInfo, setItemInfo] = useState(null);
 
-        itemFiles: [],
-        imgFiles: [],
-        pdfFiles: [],
-        vidFiles: []
-    }
+    useEffect(() => {
+        props.dispatch(getItemOrPending(props.match.params.id));
+        props.dispatch(getAllCats());
+        props.dispatch(getAllSubCats());
+        props.dispatch(getNextItem(props.match.params.id));
+        props.dispatch(getPrevItem(props.match.params.id));
+        props.dispatch(getFilesFolder({folder: `/items/${props.match.params.id}/original`}));
+        return () => {
+            props.dispatch(clearItemWithContributor());
+            document.title = config.defaultTitle;
+        } // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
-    componentDidMount() {
-        this.props.dispatch(getItemOrPending(this.props.match.params.id));
-        this.props.dispatch(getAllCats());
-        this.props.dispatch(getAllSubCats());
-        this.props.dispatch(getNextItem(this.props.match.params.id));
-        this.props.dispatch(getPrevItem(this.props.match.params.id));
-        this.props.dispatch(getFilesFolder({folder: `/items/${this.props.match.params.id}/original`}));
-    }
+    useEffect(() => {
+        if (props.items.error) {
+            props.history.push('/');
+        } // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [props.items]);
 
-    componentDidUpdate(prevProps, prevState) {
-        if (this.props !== prevProps) {
-            if (this.props.items !== prevProps.items && this.props.items.error) {
-                this.props.history.push('/');
+    useEffect(() => {
+        if (props.match.params.id) {
+            props.dispatch(getItemOrPending(props.match.params.id));
+            props.dispatch(getAllCats());
+            props.dispatch(getAllSubCats());
+            props.dispatch(getNextItem(props.match.params.id));
+            props.dispatch(getPrevItem(props.match.params.id));
+            props.dispatch(getFilesFolder({folder: `/items/${props.match.params.id}/original`}));
+        } // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [props.match.params.id]);
+
+    useEffect(() => {
+        setItemInfo(props.items.item);
+        if (props.items.item) {
+            const item = props.items.item; 
+            if (item.title) {
+                document.title = `${item.title}`
             }
-
-            if (this.props.match.params.id !== prevProps.match.params.id) {
-                this.props.dispatch(getItemOrPending(this.props.match.params.id));
-                this.props.dispatch(getAllCats());
-                this.props.dispatch(getAllSubCats());
-                this.props.dispatch(getNextItem(this.props.match.params.id));
-                this.props.dispatch(getPrevItem(this.props.match.params.id));
-                this.props.dispatch(getFilesFolder({folder: `/items/${this.props.match.params.id}/original`}));
+            if (item.category_ref ) {
+                getCatName(item.category_ref)
             }
+            if (item.subcategory_ref ) {
+                getSubCatName(item.subcategory_ref)
+            }
+            if (item.is_pdf_chapter && item.pdf_item_pages && item.pdf_item_pages.start) {
+                // if (!getParentCalled) {
+                    props.dispatch(getParentPdf(item.pdf_item_parent_id))
+                    props.dispatch(getFilesFolder({folder: `/items/${item.pdf_item_parent_id}/original`}))
+                // }
+                setPageNumber(parseInt(item.pdf_item_pages.start));
+                // setGetParentCalled(true);
+            }
+        } // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [props.items.item]);
 
-            if (this.props.items.item !== prevProps.items.item) {
-                this.setState({
-                    itemInfo: this.props.items.item
-                })
-
-                if (this.props.items.item) {
-                    const item = this.props.items.item; 
-                    if (item.title) {
-                        document.title = `${item.title}`
-                    }
-                    if (item.category_ref ) {
-                        this.getCatName(item.category_ref)
-                    }
-                    if (item.subcategory_ref ) {
-                        this.getSubCatName(item.subcategory_ref)
-                    }
-
-                    if (item.is_pdf_chapter && item.pdf_item_pages && item.pdf_item_pages.start) {
-                        // if (!this.state.getParentCalled) {
-                            this.props.dispatch(getParentPdf(item.pdf_item_parent_id))
-                            this.props.dispatch(getFilesFolder({folder: `/items/${item.pdf_item_parent_id}/original`}))
-                        // }
-                        this.setState({
-                            pageNumber: parseInt(item.pdf_item_pages.start),
-                            // getParentCalled: true
-                        })
-                    }
+    useEffect(() => {
+        if (props.items.files && props.items.files.length) {
+            let tempItemFiles = [];
+            let tempImgFiles = [];
+            let tempPdfFiles = [];
+            let tempVidFiles = [];
+            props.items.files.forEach( item => {
+                tempItemFiles.push(item.name)
+                if (item.name.includes(".jpg")) {
+                    tempImgFiles.push(item.name)
+                } else if (item.name.includes(".pdf")) {
+                    tempPdfFiles.push(item.name)
+                } else if (item.name.includes(".mp4")) {
+                    tempVidFiles.push(item.name)
                 }
-            }
+            })
+            setItemFiles(tempItemFiles);
+            setImgFiles(tempImgFiles);
+            setPdfFiles(tempPdfFiles);
+            setVidFiles(tempVidFiles) ;
+        } // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [props.items.files]);
 
-            if (this.props.items.files !== prevProps.items.files) {
-                if (this.props.items.files && this.props.items.files.length) {
-                    let tempItemFiles = [];
-                    let tempImgFiles = [];
-                    let tempPdfFiles = [];
-                    let tempVidFiles = [];
+    useEffect(() => {
+        if (props.items.previtem) {
+            setPrevItem(props.items.previtem);
+        } // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [props.items.previtem]);
 
-                    this.props.items.files.forEach( item => {
-                        tempItemFiles.push(item.name)
+    useEffect(() => {
+        if (props.items.nextitem) {
+            setNextItem(props.items.nextitem);
+        } // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [props.items.nextitem]);
 
-                        if (item.name.includes(".jpg")) {
-                            tempImgFiles.push(item.name)
-                        } else if (item.name.includes(".pdf")) {
-                            tempPdfFiles.push(item.name)
-                        } else if (item.name.includes(".mp4")) {
-                            tempVidFiles.push(item.name)
-                        }
-                    })
-                    this.setState({
-                        itemFiles: tempItemFiles,
-                        imgFiles: tempImgFiles, 
-                        pdfFiles: tempPdfFiles, 
-                        vidFiles: tempVidFiles 
-                    })
-                }
-            }
+    useEffect(() => {
+        if (props.user.login.isAuth) {
+            setUserIsAuth(true);
+        } else {
+            setUserIsAuth(false);
+        } // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [props.user.login]);
 
-
-            if (this.props.items.previtem !== prevProps.items.previtem) {
-                this.setState({
-                    prevItem: this.props.items.previtem
-                })
-            }
-
-            if (this.props.items.nextitem !== prevProps.items.nextitem) {
-                this.setState({
-                    nextItem: this.props.items.nextitem
-                })
-            }
-
-            if (this.props.user.login !== prevProps.user.login) {
-                if (this.props.user.login.isAuth) {
-                    this.setState({
-                        userIsAuth: true
-                    })
-                } else {
-                    this.setState({
-                        userIsAuth: false
-                    })
-                }
-            }
-        }
-    }
-
-    componentWillUnmount() {
-        this.props.dispatch(clearItemWithContributor());
-        document.title = config.defaultTitle;
-    }
-
-    navInfo = {
+    const navInfo = {
         catTitle: null,
         catId: null,
         subCatTitle: null,
@@ -157,60 +142,52 @@ class ItemView extends Component {
         type: 'Categories'
     }
 
-    addDefaultImg = (ev) => {
-        const newImg = '/assets/media/default/default.jpg';
-        if (ev.target.src !== newImg) {
-            ev.target.src = newImg
-        }  
-        
-    } 
+    // const addDefaultImg = ev => {
+    //     const newImg = '/assets/media/default/default.jpg';
+    //     if (ev.target.src !== newImg) {
+    //         ev.target.src = newImg
+    //     }  
+    // } 
 
-    getCatName = (catId) => {
-        if (this.props.cats && this.props.cats.length) {
-            this.props.cats.map( cat => {
-                
+    const getCatName = catId => {
+        if (props.cats && props.cats.length) {
+            props.cats.map( cat => {
                 if (cat._id === catId[0]) {
-                    this.navInfo.catTitle = cat.title;
-                    this.navInfo.catId = cat._id;
+                    navInfo.catTitle = cat.title;
+                    navInfo.catId = cat._id;
                 }
                 return null;
             })
         }
     }
 
-    getSubCatName = (subCatId) => {
-        if (this.props.subcats && this.props.subcats.length) {
-            this.props.subcats.forEach( subcat => {
-                
+    const getSubCatName = subCatId => {
+        if (props.subcats && props.subcats.length) {
+            props.subcats.forEach( subcat => {
                 if (subcat._id === subCatId[0]) {
-                    this.navInfo.subCatTitle = subcat.title;
-                    this.navInfo.subCatId = subcat._id;
-
+                    navInfo.subCatTitle = subcat.title;
+                    navInfo.subCatId = subcat._id;
                 }
             })
         }
     }
 
-    goToIndex = (pageNum) => {
-        this.setState({
-            pageNumber: parseInt(pageNum)
-        })
-
+    const goToIndex = pageNum => {
+        setPageNumber(parseInt(pageNum));
     }
     
-    renderField = (text, ref) => {
+    const renderField = (text, ref) => {
         if (ref) {
             return (
                 <div className="item_field link_blue">
                     <p><b>{text}</b></p>
-                    
                     <span dangerouslySetInnerHTML={{__html:  ref}}></span>
                 </div>
             )
         } 
     }
 
-    renderSlider = (files) => {
+    const renderSlider = files => {
         const settings = {
             dots: true,
             infinite: false,
@@ -228,7 +205,7 @@ class ItemView extends Component {
                 <div key={i} className="featured_item"> 
                     <div className="featured_image"
                          style={{
-                            background: `url(${FS_PREFIX}/assets/media/items/${this.props.match.params.id}/original/${files[i]}), url(/assets/media/default/default.jpg)`
+                            background: `url(${FS_PREFIX}/assets/media/items/${props.match.params.id}/original/${files[i]}), url(/assets/media/default/default.jpg)`
                          }}
                     >
                     </div>
@@ -239,16 +216,15 @@ class ItemView extends Component {
     }
 
 
-    renderPDF = () => {
-        const { pageNumber, numPages } = this.state;
+    const renderPDF = () => {
         const onDocumentLoadSuccess = ({ numPages }) => {
-            this.setState({ numPages });
-            if (!this.props.items.item.is_pdf_chapter === true) {
-                this.setState({ pageNumber: 1 });
+            setNumPages(numPages);
+            if (!props.items.item.is_pdf_chapter === true) {
+                setPageNumber(1);
             }
         }
         const changePage = (offset) => {
-            this.setState({ pageNumber: pageNumber + offset});
+            setPageNumber(pageNumber + offset);
         }
         const previousPage = () => {
             changePage(-1);
@@ -257,32 +233,28 @@ class ItemView extends Component {
             changePage(1);
         }
         // const scaleDown = () => {
-        //     this.setState({
-        //         pdfScale: this.state.pdfScale - 0.2
-        //     })
+        //     setPdfScale(pdfScale - 0.2);
         // }
         // const scaleUp = () => {
-        //     this.setState({
-        //         pdfScale: this.state.pdfScale + 0.2
-        //     })
+        //     setPdfScale(pdfScale + 0.2);
         // }
-        let pdfId = this.props.match.params.id;
-        if (this.props.items.item.is_pdf_chapter === true) {
-            pdfId = this.props.items.item.pdf_item_parent_id;
+        let pdfId = props.match.params.id;
+        if (props.items.item.is_pdf_chapter === true) {
+            pdfId = props.items.item.pdf_item_parent_id;
         }
         
         return (
             <div className="pdf_wrapper">
                 <div className="pdf_document">
                     <Document
-                        file={`${FS_PREFIX}/assets/media/items/${pdfId}/original/${this.state.pdfFiles[0]}`}
+                        file={`${FS_PREFIX}/assets/media/items/${pdfId}/original/${pdfFiles[0]}`}
                         onLoadSuccess={onDocumentLoadSuccess}
-                        // onLoadError={this.setState({ pdfError: true })}
+                        // onLoadError={setPdfError(true)}
                     >   
                             <Page 
                                 size="A4"
                                 pageNumber={pageNumber}
-                                scale={this.state.pdfScale}
+                                scale={pdfScale}
                             />
                     </Document>
 
@@ -320,10 +292,10 @@ class ItemView extends Component {
                         </button>
                     </div>
 
-                    <a href={`${FS_PREFIX}/assets/media/items/${pdfId}/original/${this.state.pdfFiles[0]}`}>[Fullscreen]</a>
+                    <a href={`${FS_PREFIX}/assets/media/items/${pdfId}/original/${pdfFiles[0]}`}>[Fullscreen]</a>
                 </div>
 
-                { this.props.items.item.pdf_page_index && this.props.items.item.pdf_page_index.length ?
+                { props.items.item.pdf_page_index && props.items.item.pdf_page_index.length ?
                     <div className="pdf_index_table">
 
                         <div className="pdf_index_row pdf_index_header">
@@ -337,15 +309,15 @@ class ItemView extends Component {
                                 Description
                             </div>
 
-                            {this.props.items.item.has_chapter_children ?
+                            {props.items.item.has_chapter_children ?
                                 <div className="pdf_index_col">
                                     View Item
                                 </div>
                             :
                             null }
                         </div>
-                        {this.props.items.item.pdf_page_index.map( (chapt, i) => (
-                            <div key={i} className="pdf_index_row" onClick={() => this.goToIndex(chapt.page)}>
+                        {props.items.item.pdf_page_index.map( (chapt, i) => (
+                            <div key={i} className="pdf_index_row" onClick={() => goToIndex(chapt.page)}>
                                 <div className="pdf_index_col pdf_index_col_1">
                                     {chapt.page}
                                 </div>
@@ -355,7 +327,7 @@ class ItemView extends Component {
                                 <div className="pdf_index_col">
                                     {chapt.description}
                                 </div>
-                                {this.props.items.item.has_chapter_children ?
+                                {props.items.item.has_chapter_children ?
                                     <div className="pdf_index_col">
                                         {chapt.has_child ? 
                                             <Link to={`/items/${chapt.child_id}`} target='_blank'>
@@ -373,7 +345,7 @@ class ItemView extends Component {
         )
     }
 
-    renderItem = (itemInfo, itemFiles, imgFiles, pdfFiles, vidFiles) => {
+    const renderItem = (itemInfo, itemFiles, imgFiles, pdfFiles, vidFiles) => {
         return ( 
             <div className="view_item_container">
                 <div className="item_view_item_details">
@@ -391,11 +363,11 @@ class ItemView extends Component {
                                             </div>
                                         </div>
                                     : 
-                                        this.renderSlider(imgFiles)
+                                        renderSlider(imgFiles)
                                 : null}
 
                                 { ( pdfFiles.length ) || (itemInfo.is_pdf_chapter === true) ? 
-                                    this.renderPDF()
+                                    renderPDF()
                                 : null }
 
                                 {vidFiles && vidFiles.length ?
@@ -424,52 +396,48 @@ class ItemView extends Component {
 
                         <div className="item_view item_body">
 
-                            {this.renderField('Subject', itemInfo.subject)}
-                            {this.renderField('Description', itemInfo.description)}
-                            {this.renderField('Source', itemInfo.source)}
-                            {this.renderField('Date Created', itemInfo.date_created)}
-                            {this.renderField('Contributor', itemInfo.contributor)}
-                            {this.renderField('Item Format', itemInfo.item_format)}
-                            {this.renderField('Materials', itemInfo.materials)}
-                            {this.renderField('Physical Dimensions', itemInfo.physical_dimensions)}
-                            {this.renderField('Pages', itemInfo.pages)}
-                            {this.renderField('Editor', itemInfo.editor)}
-                            {this.renderField('Publisher', itemInfo.publisher)}
-                            {this.renderField('Further Info', itemInfo.further_info)}
-                            
-                            
+                            {renderField('Subject', itemInfo.subject)}
+                            {renderField('Description', itemInfo.description)}
+                            {renderField('Source', itemInfo.source)}
+                            {renderField('Date Created', itemInfo.date_created)}
+                            {renderField('Contributor', itemInfo.contributor)}
+                            {renderField('Item Format', itemInfo.item_format)}
+                            {renderField('Materials', itemInfo.materials)}
+                            {renderField('Physical Dimensions', itemInfo.physical_dimensions)}
+                            {renderField('Pages', itemInfo.pages)}
+                            {renderField('Editor', itemInfo.editor)}
+                            {renderField('Publisher', itemInfo.publisher)}
+                            {renderField('Further Info', itemInfo.further_info)}
 
                             {itemInfo.geo && itemInfo.geo.address ?
-                                this.renderField('Address', itemInfo.geo.address)
+                                renderField('Address', itemInfo.geo.address)
                             : null }
 
-
-                            {itemInfo.pdf_item_parent_id && this.props.parentpdf ?
+                            {itemInfo.pdf_item_parent_id && props.parentpdf ?
                                 <div className="item_field link_blue">
                                     <p><b>Source Document Item</b></p>
-                                    <Link to={`/items/${this.props.parentpdf._id}`} target="_blank">
-                                        <span>{this.props.parentpdf.title}</span>
+                                    <Link to={`/items/${props.parentpdf._id}`} target="_blank">
+                                        <span>{props.parentpdf.title}</span>
                                     </Link>
                                 </div>
-                                
                             : null}
 
                             {itemInfo.geo && itemInfo.geo.latitude && itemInfo.geo.longitude ? 
                                 <div>
-                                    <div className="item_map_heading" onClick={() => this.setState({showMap: !this.state.showMap})}>
+                                    <div className="item_map_heading" onClick={() => setShowMap(!showMap)}>
                                         <p>
                                             <b>View on Map </b> 
-                                            {this.state.showMap ?
+                                            {showMap ?
                                                 <i className="fa fa-angle-up"></i>
                                             : <i className="fa fa-angle-down"></i>}
                                         </p>
                                     </div>
-                                    {this.state.showMap ?
+                                    {showMap ?
                                         <Map 
                                             className="item_map"
                                             center={[itemInfo.geo.latitude, itemInfo.geo.longitude]} 
-                                            zoom={this.state.mapZoom} 
-                                            style={{ height: this.state.showMap ? '350px' : '0px'}}
+                                            zoom={mapZoom} 
+                                            style={{ height: showMap ? '350px' : '0px'}}
                                         >
                                             <TileLayer
                                                 attribution='&copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -541,34 +509,33 @@ class ItemView extends Component {
                     </div>
                 }
 
-                {this.state.userIsAuth && !this.state.isPending === true ?
-                    <Link to={`/user/edit-item/${this.props.match.params.id}`} className="item_view_edit_link">Edit</Link>
+                {userIsAuth && !isPending === true ?
+                    <Link to={`/user/edit-item/${props.match.params.id}`} className="item_view_edit_link">Edit</Link>
                 : null }
 
-
-                {this.state.isPending === false ?
+                {isPending === false ?
                     <div className="item_box">
                         <div className="left">
-                            {this.state.prevItem ?
-                                <Link to={`/items/${this.state.prevItem._id}`}>
+                            {prevItem ?
+                                <Link to={`/items/${prevItem._id}`}>
                                     <div className="prev_next_box_header">
                                         <span>Previous Item</span>
                                     </div>
                                     <div className="prev_next_box_item">
-                                        <span>{this.state.prevItem.title}</span>
+                                        <span>{prevItem.title}</span>
                                     </div>
                                 </Link>
                             : null }
                         </div>
 
                         <div className="right">
-                            {this.state.nextItem ?
-                                <Link to={`/items/${this.state.nextItem._id}`}>
+                            {nextItem ?
+                                <Link to={`/items/${nextItem._id}`}>
                                     <div className="prev_next_box_header">
                                         <span>Next Item</span>
                                     </div>
                                     <div className="prev_next_box_item">
-                                        <span>{this.state.nextItem.title}</span>
+                                        <span>{nextItem.title}</span>
                                     </div>
                                 </Link>
                             : null }
@@ -579,21 +546,18 @@ class ItemView extends Component {
         )
     }
 
-    render() {
-        return (
-            
-            <div className="item_view_component">
-                { this.state.itemInfo && this.navInfo.catTitle  ?
-                    <Breadcrumb navinfo={this.navInfo} title={this.state.itemInfo.title}/>    
+    return (
+        <div className="item_view_component">
+            { itemInfo && navInfo.catTitle  ?
+                <Breadcrumb navinfo={navInfo} title={itemInfo.title}/>    
+            : null }
+            <div className="item_view_main_view">
+                {itemInfo && itemFiles ?
+                    renderItem(itemInfo, itemFiles, imgFiles, pdfFiles, vidFiles)
                 : null }
-                <div className="item_view_main_view">
-                    {this.state.itemInfo && this.state.itemFiles ?
-                        this.renderItem(this.state.itemInfo, this.state.itemFiles, this.state.imgFiles, this.state.pdfFiles, this.state.vidFiles)
-                    : null }
-                </div>
             </div>
-        );
-    }
+        </div>
+    );
 }
 
 function mapStateToProps(state) {

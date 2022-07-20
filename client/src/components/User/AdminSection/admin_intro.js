@@ -25,12 +25,13 @@ const AdminIntro = props => {
     }, []);
 
     useEffect(() => {
-        let introData = {
-            title: props.text.title,
-            body: props.text.body
-        }
-        setIntroData(introData);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        if (props.text) {
+            let introData = {
+                title: props.text.title,
+                body: props.text.body
+            }
+            setIntroData(introData);
+        } // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props]);
 
     const onImgChange = event => {

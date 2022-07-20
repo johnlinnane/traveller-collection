@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from "react-router-dom";
 import axios from 'axios';
@@ -12,115 +12,101 @@ import { deleteSubcat, updateSubcat  }  from '../../../actions';
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
-class AdminSubCat extends Component {
+const AdminSubCat = props => {
 
-    state = {
-        formdata: {
-            
-            subCat: {
-                _id: this.props.chosenSubCatInfo._id,
-                title: this.props.chosenSubCatInfo.title,
-                description: this.props.chosenSubCatInfo.description,
-                parent_cat: this.props.chosenSubCatInfo.parent_cat,
-                subCatIsHidden: this.props.chosenSubCatInfo.subCatIsHidden || false
+    const [formdata, setFormdata] = useState({
+        subCat: {
+            _id: props.chosenSubCatInfo._id,
+            title: props.chosenSubCatInfo.title,
+            description: props.chosenSubCatInfo.description,
+            parent_cat: props.chosenSubCatInfo.parent_cat,
+            subCatIsHidden: props.chosenSubCatInfo.subCatIsHidden || false
 
-            }
-        },
-        allCats: [],
-        allSubcats: [],
-        selectedCatConverted: {
-            value: '',
-            label: ''
-        },
-        allCatsConverted: [],
+        }
+    });
+    const [allCats, setAllCats] = useState([]);
+    const [allSubcats, setAllSubcats] = useState([]);
+    const [selectedCatConverted, setSelectedCatConverted] = useState({
+        value: '',
+        label: ''
+    });
+    const [allCatsConverted, setAllCatsConverted] = useState([]);
+    const [imgSrc, setImgSrc] = useState(`${FS_PREFIX}/assets/media/cover_img_cat/${props.chosenSubCatInfo._id}.jpg`);
+    const [saved, setSaved] = useState(false);
+    const [catDeleted, setCatDeleted] = useState(false);
+    const [selectedSubFiles, setSelectedSubFiles] = useState([]);
+    const [selectedCatsLoaded, setSelectedCatsLoaded] = useState(false);
+    const [subCatIsHidden, setSubCatIsHidden] = useState(null);
+    const [selectedFile, setSelectedFile] = useState(null);
+    
+    useEffect(() => {
+        props.dispatch(getAllCats());
+        props.dispatch(getAllSubCats());
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
-        imgSrc: `${FS_PREFIX}/assets/media/cover_img_cat/${this.props.chosenSubCatInfo._id}.jpg`,
-        saved: false,
-        catDeleted: false,
+    useEffect(() => {
+        if (props.chosenSubCatInfo) {
+            setImgSrc(`${FS_PREFIX}/assets/media/cover_img_subcat/${props.chosenSubCatInfo._id}.jpg`);
+        }
 
-        selectedSubFiles: [],
-        selectedCatsLoaded: false
-    }
-
-    componentDidMount() {
-        this.props.dispatch(getAllCats());
-        this.props.dispatch(getAllSubCats());
-    }
-
-    componentDidUpdate(prevProps) {
-        if (this.props !== prevProps) {
-            if (this.props.chosenSubCatInfo) {
-                this.setState({
-                    imgSrc: `${FS_PREFIX}/assets/media/cover_img_subcat/${this.props.chosenSubCatInfo._id}.jpg`
+        if (props.cats && props.cats.length) {
+            let tempAllCatsConverted = [];
+            let tempSelectedCatConverted;
+            props.cats.forEach( cat => {
+                tempAllCatsConverted.push({
+                    value: cat._id,
+                    label: cat.title
                 })
-            }
 
-            if (this.props.cats && this.props.cats.length) {
-                let tempAllCatsConverted = [];
-                let tempSelectedCatConverted;
-                this.props.cats.forEach( cat => {
-                    tempAllCatsConverted.push({
+                if (cat._id === props.chosenSubCatInfo.parent_cat) {
+                    tempSelectedCatConverted = {
                         value: cat._id,
                         label: cat.title
-                    })
-
-                    if (cat._id === this.props.chosenSubCatInfo.parent_cat) {
-                        tempSelectedCatConverted = {
-                            value: cat._id,
-                            label: cat.title
-                        }
                     }
-                })
-                this.setState({
-                    allCats: this.props.cats,
-                    allCatsConverted: tempAllCatsConverted,
-                    selectedCatConverted: tempSelectedCatConverted,
-                    selectedCatsLoaded: true,
-                    subCatIsHidden: this.props.chosenSubCatInfo.subCatIsHidden || false
-                })
-            }
-        }
-    }
-
-    // not used
-    handleTabIndex = () => {
-        this.props.getTabIndex(this.props.index)
-    }
-
-    handleHidden() {
-        this.setState({
-            formdata: {
-                ...this.state.formdata,
-                subCat: {
-                    ...this.state.formdata.subCat,
-                    subCatIsHidden: !this.state.formdata.subCat.subCatIsHidden
                 }
-            }
-        })
-    }
-
-    onImgChange = (event) => {
-        let files = event.target.files;
-        if (this.maxSelectFile(event) && this.checkMimeType(event) && this.checkMimeType(event)) {  
-            this.setState({
-                selectedFile: files
             })
+            setAllCats(props.cats);
+            setAllCatsConverted(tempAllCatsConverted);
+            setSelectedCatConverted(tempSelectedCatConverted);
+            setSelectedCatsLoaded(true);
+            setSubCatIsHidden(props.chosenSubCatInfo.subCatIsHidden || false);
         }
-        this.setState({
-            imgSrc: URL.createObjectURL(event.target.files[0])
-        })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [props]);
+
+    const handleTabIndex = () => {
+        props.getTabIndex(props.index)
     }
 
-    onSubmitHandler = () => {
-        const data = new FormData();
-        if (this.state.selectedFile) {
-            for(let x = 0; x<this.state.selectedFile.length; x++) {
-                data.append('file', this.state.selectedFile[x])
+    const handleHidden = () => {
+        setFormdata({
+            ...formdata,
+            subCat: {
+                ...formdata.subCat,
+                subCatIsHidden: !formdata.subCat.subCatIsHidden
             }
-            axios.post(`${API_PREFIX}/upload-subcat/${this.props.chosenSubCatInfo._id}`, data, { 
+        });
+    }
+
+    const onImgChange = event => {
+        let files = event.target.files;
+        if (maxSelectFile(event) && checkMimeType(event) && checkMimeType(event)) {  
+            setSelectedFile(files);
+        }
+        setImgSrc(URL.createObjectURL(event.target.files[0]));
+    }
+
+    const onSubmitHandler = () => {
+        const data = new FormData();
+        if (selectedFile) {
+            for(let x = 0; x<selectedFile.length; x++) {
+                data.append('file', selectedFile[x])
+            }
+            axios.post(`${API_PREFIX}/upload-subcat/${props.chosenSubCatInfo._id}`, data, { 
                 // receive two parameter endpoint url ,form data 
                 onUploadProgress: ProgressEvent => {
-                    // this.setState({
+                    // setState({
                     //     loaded: (ProgressEvent.loaded / ProgressEvent.total*100)
                     // })
                 }
@@ -133,15 +119,12 @@ class AdminSubCat extends Component {
                 toast.error('upload fail')
             })
         }
-        this.setState({
-            imgSrc : this.state.imgSrc + '?' + Math.random()
-        });
-
-        this.handleTabIndex(); // not used
-        this.props.history.push(`/admin/${this.props.index}`);
+        setImgSrc(imgSrc + '?' + Math.random());
+        handleTabIndex();
+        props.history.push(`/admin/${props.index}`);
     }
 
-    maxSelectFile=(event)=>{
+    const maxSelectFile = event => {
         let files = event.target.files;
         if (files.length > 1) { 
             // const msg = 'Only 1 image can be uploaded at a time';
@@ -151,7 +134,7 @@ class AdminSubCat extends Component {
         return true;
     }
 
-    checkMimeType=(event)=>{
+    const checkMimeType = event => {
         let files = event.target.files 
         let err = '';
         const types = ['image/png', 'image/jpeg', 'image/gif']
@@ -167,7 +150,7 @@ class AdminSubCat extends Component {
         return true;
     }
 
-    checkFileSize=(event)=>{
+    const checkFileSize = event => {
         let files = event.target.files
         let size = 15000 
         let err = ""; 
@@ -185,15 +168,15 @@ class AdminSubCat extends Component {
         return true;
     }    
 
-    addDefaultImg = (ev) => {
+    const addDefaultImg = ev => {
         const newImg = '/assets/media/default/default.jpg';
         if (ev.target.src !== newImg) {
             ev.target.src = newImg
         }  
     }
 
-    handleSubCatInput(event, field) {
-        let tempSubcat = this.state.formdata.subCat;
+    const handleSubCatInput = (event, field) => {
+        let tempSubcat = formdata.subCat;
         switch (field) {
                     case 'title':
                         tempSubcat.title = event.target.value;
@@ -203,197 +186,189 @@ class AdminSubCat extends Component {
                         break;
                     default:
                 }
-        this.setState({
-            formdata: {
-                ...this.state.formdata,
-                subCat: tempSubcat
-            }
-        })
+        setFormdata({
+            ...formdata,
+            subCat: tempSubcat
+        });
     }
 
-    handleCatChange = (newValue) => {
-        this.setState({
-            formdata: {
-                ...this.state.formdata,
-                subCat: {
-                    ...this.state.formdata.subCat,
-                    parent_cat: newValue.value
-                }
+    const handleCatChange = newValue => {
+        setFormdata({
+            ...formdata,
+            subCat: {
+                ...formdata.subCat,
+                parent_cat: newValue.value
             }
-        })
+        });
     }
 
-    deleteImage = () => {
+    const deleteImage = () => {
         let data = {
-            path: `/cover_img_subcat/${this.state.formdata.subCat._id}.jpg`
+            path: `/cover_img_subcat/${formdata.subCat._id}.jpg`
         };
         axios.post(`${API_PREFIX}/delete-file`, data  )
-        this.setState({
-            imgSrc: '/assets/media/default/default.jpg'
-        })
+        setImgSrc('/assets/media/default/default.jpg');
     }
 
-    removeSubCat = (id) => {
-        this.props.dispatch(deleteSubcat(id))
-        this.props.history.push(`/admin/0`)
+    const removeSubCat = id => {
+        props.dispatch(deleteSubcat(id))
+        props.history.push(`/admin/0`)
     }
 
-    submitForm = (e) => {
+    const submitForm = e => {
         e.preventDefault();
-        this.props.dispatch(updateSubcat(
-            this.state.formdata.subCat
+        props.dispatch(updateSubcat(
+            formdata.subCat
         ))
-        this.onSubmitHandler();
+        onSubmitHandler();
         setTimeout(() => {
-            this.props.history.push(`/admin/${this.props.index}`);
+            props.history.push(`/admin/${props.index}`);
         }, 2000)
     }
 
-    cancel = () => {
-        this.props.history.push(`/admin/0`)
+    const cancel = () => {
+        props.history.push(`/admin/0`)
     }
 
-    render() {
-        return (
-            <div className="admin">
-                { this.props.chosenSubCatInfo ? 
-                    <div>
-                        <form onSubmit={this.submitForm}>
-                            <table className="form_input">
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <h3>Title</h3>
-                                    </td>
-                                    <td>
-                                        <input
-                                            type="text"
-                                            placeholder='Title'
-                                            defaultValue={this.props.chosenSubCatInfo.title} 
-                                            onChange={(event) => this.handleSubCatInput(event, 'title')}
+    return (
+        <div className="admin">
+            { props.chosenSubCatInfo ? 
+                <div>
+                    <form onSubmit={submitForm}>
+                        <table className="form_input">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <h3>Title</h3>
+                                </td>
+                                <td>
+                                    <input
+                                        type="text"
+                                        placeholder='Title'
+                                        defaultValue={props.chosenSubCatInfo.title} 
+                                        onChange={(event) => handleSubCatInput(event, 'title')}
+                                    />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h3>Description</h3>
+                                </td>
+                                <td>
+                                    <textarea
+                                        type="text"
+                                        placeholder="Description"
+                                        defaultValue={props.chosenSubCatInfo.description} 
+                                        onChange={(event) => handleSubCatInput(event, 'description')}
+                                    />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h3>Sub-Category Image</h3>
+                                </td>
+                                <td>
+                                    <img 
+                                        className="change_cat_img" 
+                                        src={imgSrc} 
+                                        onError={addDefaultImg}
+                                        alt='sub category cover'
+                                    />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <div className="form_element">
+                                        <input type="file" className="admin_cat_img_input form-control" multiple name="file" accept="image/*" onChange={onImgChange}/>
+                                        <br />
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <button 
+                                        type="button" 
+                                        className="btn btn-success btn-block delete" 
+                                        onClick={(e) => { if (window.confirm('Are you sure you wish to delete this image?')) deleteImage() }}
+                                    >
+                                        Delete Image
+                                    </button> 
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h3>Visibility</h3>
+                                </td>
+                                <td>
+                                    <div className="admin_cat_visibility">
+                                    {/* <div> */}
+                                        <input 
+                                            type="checkbox" 
+                                            checked={formdata.subCat.subCatIsHidden} 
+                                            onChange={(event) => handleHidden(event)}
                                         />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <h3>Description</h3>
-                                    </td>
-                                    <td>
-                                        <textarea
-                                            type="text"
-                                            placeholder="Description"
-                                            defaultValue={this.props.chosenSubCatInfo.description} 
-                                            onChange={(event) => this.handleSubCatInput(event, 'description')}
-                                        />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <h3>Sub-Category Image</h3>
-                                    </td>
-                                    <td>
-                                        <img 
-                                            className="change_cat_img" 
-                                            src={this.state.imgSrc} 
-                                            onError={this.addDefaultImg}
-                                            alt='sub category cover'
-                                        />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td>
-                                        <div className="form_element">
-                                            <input type="file" className="admin_cat_img_input form-control" multiple name="file" accept="image/*" onChange={this.onImgChange}/>
-                                            <br />
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td>
-                                        <button 
-                                            type="button" 
-                                            className="btn btn-success btn-block delete" 
-                                            onClick={(e) => { if (window.confirm('Are you sure you wish to delete this image?')) this.deleteImage() }}
-                                        >
-                                            Delete Image
-                                        </button> 
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <h3>Visibility</h3>
-                                    </td>
-                                    <td>
-                                        <div className="admin_cat_visibility">
-                                        {/* <div> */}
-                                            <input 
-                                                type="checkbox" 
-                                                checked={this.state.formdata.subCat.subCatIsHidden} 
-                                                onChange={(event) => this.handleHidden(event)}
+                                        <span>Hide this subcategory.</span>
+                                    </div>
+                                    
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h3>Parent Category</h3>
+                                </td>
+                                {selectedCatsLoaded ?
+                                        <td>
+                                            <Select
+                                                // key={`cat_${props.items.item._id}`}
+                                                defaultValue={selectedCatConverted}
+                                                // isMulti
+                                                // name="colors"
+                                                options={allCatsConverted}
+                                                // className="basic-multi-select"
+                                                className="basic-single"
+                                                classNamePrefix="select"
+                                                onChange={handleCatChange}
                                             />
-                                            <span>Hide this subcategory.</span>
-                                        </div>
-                                        
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <h3>Parent Category</h3>
-                                    </td>
-                                    {this.state.selectedCatsLoaded ?
-                                            <td>
-                                                <Select
-                                                    // key={`cat_${this.props.items.item._id}`}
-                                                    defaultValue={this.state.selectedCatConverted}
-                                                    // isMulti
-                                                    // name="colors"
-                                                    options={this.state.allCatsConverted}
-                                                    // className="basic-multi-select"
-                                                    className="basic-single"
-                                                    classNamePrefix="select"
-                                                    onChange={this.handleCatChange}
-                                                />
-                                            </td>
-                                    : null}
-                                </tr>
-                                <tr>
-                                    <td colSpan="2">
-                                        <button type="button" 
-                                            className="delete" 
-                                            onClick={(e) => { if (window.confirm('Are you sure you wish to delete this sub-category?')) this.removeSubCat(this.props.chosenSubCatInfo._id) } }
-                                        >
-                                            Delete Sub-Category
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr className="spacer"></tr>
-                                <tr>
-                                    <td>
-                                        <button type="submit">Save Changes</button>
-                                    </td>
-                                    <td>
-                                        <button type="button" onClick={this.cancel}>Cancel</button>
-                                    </td>
-                                </tr>
-                                <tr className="spacer"></tr>
-                            </tbody>
-                            </table>
-                        </form>
+                                        </td>
+                                : null}
+                            </tr>
+                            <tr>
+                                <td colSpan="2">
+                                    <button type="button" 
+                                        className="delete" 
+                                        onClick={(e) => { if (window.confirm('Are you sure you wish to delete this sub-category?')) removeSubCat(props.chosenSubCatInfo._id) } }
+                                    >
+                                        Delete Sub-Category
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr className="spacer"></tr>
+                            <tr>
+                                <td>
+                                    <button type="submit">Save Changes</button>
+                                </td>
+                                <td>
+                                    <button type="button" onClick={cancel}>Cancel</button>
+                                </td>
+                            </tr>
+                            <tr className="spacer"></tr>
+                        </tbody>
+                        </table>
+                    </form>
 
-                        {this.state.catDeleted ?
-                            <p className="message">Category deleted!</p>
-                        : null}
+                    {catDeleted ?
+                        <p className="message">Category deleted!</p>
+                    : null}
 
-                        {this.state.saved ?
-                            <p className="message">All changes saved!</p>
-                        : null}
-                    </div>
-                : null }
-            </div>
-        )
-    }
+                    {saved ?
+                        <p className="message">All changes saved!</p>
+                    : null}
+                </div>
+            : null }
+        </div>
+    )
 }
 
 function mapStateToProps(state) {

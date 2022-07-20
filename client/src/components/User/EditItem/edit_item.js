@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Map, TileLayer, Marker } from 'react-leaflet'
@@ -8,78 +8,71 @@ import config from "../../../config";
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
-class EditItem extends Component {
-
-    state = {
-        formdata:{
-            _id:this.props.match.params.id,
-            title: '',
-            creator: '',
-            subject: '',
-            description: '',
-            source: '',
-            date_created: '',
-            contributor: '',
-            item_format: '',
-            materials: '',
-            physical_dimensions: '',
-            pages: '',        
-            editor: '',
-            publisher: '',
-            further_info: '',
-            language: '',
-            reference: '',
-            rights: '',
-            external_link: [
-                {
-                    url: '',
-                    text: ''
-                }
-            ],
-            geo: {
-                address: '',
-                latitude: null,
-                longitude: null
-            },
-            location: '',
-
-            is_pdf_chapter: null,
-            pdf_item_pages: {
-                start: null,
-                end: null
-            },
-            pdf_item_parent_id: '',
-
-            shareDisabled: false
+const EditItem = props => {
+    const [formdata, setFormdata] = useState({
+        _id:props.match.params.id,
+        title: '',
+        creator: '',
+        subject: '',
+        description: '',
+        source: '',
+        date_created: '',
+        contributor: '',
+        item_format: '',
+        materials: '',
+        physical_dimensions: '',
+        pages: '',        
+        editor: '',
+        publisher: '',
+        further_info: '',
+        language: '',
+        reference: '',
+        rights: '',
+        external_link: [
+            {
+                url: '',
+                text: ''
+            }
+        ],
+        geo: {
+            address: '',
+            latitude: null,
+            longitude: null
         },
-        initMap: {
-            initLat: 53.342609,
-            initLong: -7.603976,
-            initZoom: 6.5
+        location: '',
+
+        is_pdf_chapter: null,
+        pdf_item_pages: {
+            start: null,
+            end: null
         },
-        saved: false,
-        getParentCalled: false
-        
-    }
+        pdf_item_parent_id: '',
 
+        shareDisabled: false
+    });
+    const [initMap, setInitMap] = useState({
+        initLat: 53.342609,
+        initLong: -7.603976,
+        initZoom: 6.5
+    });
+    const [saved, setSaved] = useState(false);
+    const [getParentCalled, setGetParentCalled] = useState(false);
 
-    componentDidMount() {
-        this.props.dispatch(getItemById(this.props.match.params.id));
-        document.title = "Edit Item - Traveller Collection";
-        this.props.dispatch(getFilesFolder({folder: `/items/${this.props.match.params.id}/original`}));
-    }
+    useEffect(() => {
+        props.dispatch(getItemById(props.match.params.id));
+        document.title = `Edit Item - ${config.defaultTitle}`;
+        props.dispatch(getFilesFolder({folder: `/items/${props.match.params.id}/original`}));
+        return () => {
+            props.dispatch(clearItem());
+            document.title = config.defaultTitle;
+        } // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
-    componentWillUnmount() {
-        this.props.dispatch(clearItem())
-        document.title = config.defaultTitle;
-    }
-
-    componentDidUpdate(prevProps) {
-        if (this.props.items.item) {
-            let item = this.props.items.item;
-            if (this.props.items !== prevProps.items) {
+    useEffect(() => {
+        if (props.items.item) {
+            let item = props.items.item;
                 let newFormdata = {
-                    ...this.state.formdata,
+                    ...formdata,
                     _id:item._id,
                     title:item.title,
                     creator:item.creator,
@@ -106,7 +99,7 @@ class EditItem extends Component {
                     pdf_item_parent_id: item.pdf_item_parent_id,
                     shareDisabled: item.shareDisabled
                 }
-                let newLatLng = this.state.initMap;
+                let newLatLng = initMap;
 
                 if (item.external_link && item.external_link.length) {
                     if (item.external_link[0].url || item.external_link[0].text) {
@@ -147,36 +140,28 @@ class EditItem extends Component {
                     newFormdata = {
                         ...newFormdata,
                         pdf_item_pages: {
-                            start: item.pdf_item_pages.start || this.state.formdata.pdf_item_pages.start,
-                            end: item.pdf_item_pages.end || this.state.formdata.pdf_item_pages.end
+                            start: item.pdf_item_pages.start || formdata.pdf_item_pages.start,
+                            end: item.pdf_item_pages.end || formdata.pdf_item_pages.end
                         }
                     }
                 }
                 
-                this.setState({
-                    formdata: newFormdata,
-                    initMap: newLatLng
-                })
+                setFormdata(newFormdata);
+                setInitMap(newLatLng);
                 
-                if (this.props.items.item.is_pdf_chapter ) {
+                if (props.items.item.is_pdf_chapter ) {
                         
-                    if (!this.state.getParentCalled) {
-                        this.props.dispatch(getParentPdf(this.props.items.item.pdf_item_parent_id))
+                    if (!getParentCalled) {
+                        props.dispatch(getParentPdf(props.items.item.pdf_item_parent_id))
                     }
-                    this.setState({
-                        getParentCalled: true
-                    })
+                    setGetParentCalled(true);
                 }
-            }
         }
-    }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [props]);
 
-    handleInput = (event, name, level) => {
-
-        let newFormdata = {
-            ...this.state.formdata
-        }
-
+    const handleInput = (event, name, level) => {
+        let newFormdata = {...formdata}
         if (level === 'external_link') {
                 newFormdata.external_link[0][name] = event.target.value;
         } else if (level === 'geo') {
@@ -192,40 +177,33 @@ class EditItem extends Component {
         } else {
             newFormdata[name] = event.target.value;
         }
-        this.setState({
-            formdata: newFormdata
-        })
+        setFormdata(newFormdata);
     }
 
-    handleClick(e) {
+    const handleClick = e => {
         let lat = parseFloat(e.latlng.lat).toFixed(6);
         let lng = parseFloat(e.latlng.lng).toFixed(6);
-
-        this.setState({
-                formdata: {
-                    ...this.state.formdata,
-                    geo: {
-                        ...this.state.formdata.geo,
-                        latitude: lat,
-                        longitude: lng
-                    }
-                }
-        })
-    }
-
-    handleSwitch() {
-        this.setState({
-            formdata: {
-                ...this.state.formdata,
-                shareDisabled: !this.state.formdata.shareDisabled
+        setFormdata({
+            ...formdata,
+            geo: {
+                ...formdata.geo,
+                latitude: lat,
+                longitude: lng
             }
-        })
+        });
     }
 
-    deleteAllMedia = () => {
+    const handleSwitch = () => {
+        setFormdata({
+            ...formdata,
+            shareDisabled: !formdata.shareDisabled
+        });
+    }
+
+    const deleteAllMedia = () => {
         let fileData =  {
             section: 'items',
-            id: this.state.formdata._id,
+            id: formdata._id,
             fileType: null,
             fileName: null,
             deleteAll: true
@@ -239,40 +217,38 @@ class EditItem extends Component {
             });
     }
 
-    deleteThisItem = () => {
-        this.props.dispatch(deleteItem(this.state.formdata._id)); 
-        if (this.state.formdata.is_pdf_chapter === true) {
-            this.props.dispatch(deleteChapter(this.state.formdata.pdf_item_parent_id, this.state.formdata.title))
+    const deleteThisItem = () => {
+        props.dispatch(deleteItem(formdata._id)); 
+        if (formdata.is_pdf_chapter === true) {
+            props.dispatch(deleteChapter(formdata.pdf_item_parent_id, formdata.title))
         }
-        this.deleteAllMedia();
-        this.props.history.push('/user/all-items');
+        deleteAllMedia();
+        props.history.push('/user/all-items');
     }
 
-    redirectUser = () => {
+    const redirectUser = () => {
         setTimeout(() => {
-            this.props.history.push('/user/all-items')
+            props.history.push('/user/all-items')
         }, 1000)
     }
 
-    cancel = () => {
-        this.props.history.push(`/items/${this.props.match.params.id}`)
+    const cancel = () => {
+        props.history.push(`/items/${props.match.params.id}`)
     }
 
-    submitForm = (e) => {
+    const submitForm = e => {
         e.preventDefault();
-        this.props.dispatch(updateItem({
-                ...this.state.formdata
+        props.dispatch(updateItem({
+                ...formdata
             }
         ))
-        this.setState({
-            saved: true
-        })
+        setSaved(true);
         setTimeout(() => {
-            this.props.history.push(`/user/edit-item-sel/${this.props.items.item._id}`)
+            props.history.push(`/user/edit-item-sel/${props.items.item._id}`)
         }, 1000)
     }
 
-    createTextInput = (existing, name, placeholder, inputLabel, level) => {
+    const createTextInput = (existing, name, placeholder, inputLabel, level) => {
         return (
             <tr>
                 <td>
@@ -284,7 +260,7 @@ class EditItem extends Component {
                             type="text"
                             placeholder={placeholder}
                             defaultValue={existing} 
-                            onChange={(event) => this.handleInput(event, name, level)}
+                            onChange={(event) => handleInput(event, name, level)}
                         />
                     </div>
                 </td>
@@ -292,25 +268,24 @@ class EditItem extends Component {
         )
     }
 
-    addDefaultImg = (ev) => {
+    const addDefaultImg = ev => {
         const newImg = '/assets/media/default/default.jpg';
         if (ev.target.src !== newImg) {
             ev.target.src = newImg
         }  
     } 
 
-    renderForm = () => {
-        const formdata = this.state.formdata;
+    const renderForm = () => {
         return (
             <div>
-                <form onSubmit={this.submitForm}>
+                <form onSubmit={submitForm}>
                     <div className="edit_item_container">
-                        <Link to={`/items/${this.state.formdata._id}`} target="_blank" >
+                        <Link to={`/items/${formdata._id}`} target="_blank" >
                             <div className="container">
                                 <div className="img_back">
-                                    { this.props.items.files && this.props.items.files.length ?
+                                    { props.items.files && props.items.files.length ?
                                         <div>
-                                            <img src={`${FS_PREFIX}/assets/media/items/${formdata._id}/original/${this.props.items.files[0].name}`} alt="item main " className="edit_main_img" onError={this.addDefaultImg} />
+                                            <img src={`${FS_PREFIX}/assets/media/items/${formdata._id}/original/${props.items.files[0].name}`} alt="item main " className="edit_main_img" onError={addDefaultImg} />
                                         </div>
                                     : <img src={'/assets/media/default/default.jpg'} alt='default'/> }
                                 </div>
@@ -321,9 +296,9 @@ class EditItem extends Component {
                     <h2>Edit Item Details</h2>
                     <table>
                     <tbody>
-                        {this.createTextInput(formdata.title,'title', "Enter title", "Title")}
-                        {this.createTextInput(formdata.creator,'creator', "Enter creator", "Creator")}
-                        {this.createTextInput(formdata.subject,'subject', "General subject matter", "Subject")}
+                        {createTextInput(formdata.title,'title', "Enter title", "Title")}
+                        {createTextInput(formdata.creator,'creator', "Enter creator", "Creator")}
+                        {createTextInput(formdata.subject,'subject', "General subject matter", "Subject")}
                         <tr>
                             <td className="label">
                                 Description
@@ -333,13 +308,13 @@ class EditItem extends Component {
                                     type="text"
                                     placeholder="Please write as much details as you know about the item here. For example the place of origin, who made it, or owned it previously, what it was made out of, what it was used for, and any other details"
                                     defaultValue={formdata.description} 
-                                    onChange={(event) => this.handleInput(event, 'description')}
+                                    onChange={(event) => handleInput(event, 'description')}
                                     rows={18}
                                 />
                             </td>
                         </tr>
-                        {this.createTextInput(formdata.source,'source', "Sources of information about the item", "Source")}
-                        {this.createTextInput(formdata.date_created,'date_created', "Date item was created", "Date")}
+                        {createTextInput(formdata.source,'source', "Sources of information about the item", "Source")}
+                        {createTextInput(formdata.date_created,'date_created', "Date item was created", "Date")}
                         {formdata.is_pdf_chapter ? 
                             <React.Fragment>
                                 <tr><td></td><td></td></tr>
@@ -352,8 +327,8 @@ class EditItem extends Component {
                                     <td>
                                         <Link to={`/items/${formdata.pdf_item_parent_id}`} target="_blank" >
                                             
-                                                {this.props.parentpdf ?
-                                                <u>{this.props.parentpdf.title}</u>
+                                                {props.parentpdf ?
+                                                <u>{props.parentpdf.title}</u>
                                                 : 
                                                 <u>Link</u>
                                                 }
@@ -371,7 +346,7 @@ class EditItem extends Component {
                                                 type="number"
                                                 placeholder="Start page from parent item's PDF"
                                                 defaultValue={formdata.pdf_item_pages.start} 
-                                                onChange={(event) => this.handleInput(event, 'start', 'pdf_item_pages')}
+                                                onChange={(event) => handleInput(event, 'start', 'pdf_item_pages')}
                                             />
                                         </div>
                                     </td>
@@ -386,7 +361,7 @@ class EditItem extends Component {
                                                 type="number"
                                                 placeholder="End page from parent item's PDF"
                                                 defaultValue={formdata.pdf_item_pages.end} 
-                                                onChange={(event) => this.handleInput(event, 'end', 'pdf_item_pages')}
+                                                onChange={(event) => handleInput(event, 'end', 'pdf_item_pages')}
                                             />
                                         </div>
                                     </td>
@@ -396,7 +371,7 @@ class EditItem extends Component {
                             <tr>
                                 <td></td>
                                 <td>
-                                    <Link to={`/user/chapter-index/${this.state.formdata._id}`} target="_blank" >
+                                    <Link to={`/user/chapter-index/${formdata._id}`} target="_blank" >
                                         <button type="button" className="half_width_l">Add Chapter Index (PDF)</button>
                                     </Link>
                                 </td>
@@ -406,25 +381,25 @@ class EditItem extends Component {
                         <tr><td colSpan="2"><hr /></td></tr>
                         <tr><td></td><td></td></tr>
                         <tr></tr>
-                        {this.createTextInput(formdata.location,'location', "The item's general location ie. Cashel", "Location")}
-                        {this.createTextInput(formdata.geo.address,'address', "Where is the item currently located", "Exact Address", 'geo')}
+                        {createTextInput(formdata.location,'location', "The item's general location ie. Cashel", "Location")}
+                        {createTextInput(formdata.geo.address,'address', "Where is the item currently located", "Exact Address", 'geo')}
                         <tr>
                             <td>Geo-location</td>
                             <td>
                                 <Map 
                                     className="edit_map"
-                                    center={[this.state.initMap.initLat, this.state.initMap.initLong]} 
-                                    zoom={this.state.initMap.initZoom} 
-                                    onClick={(e) => { this.handleClick(e)}}
-                                    // style={{ height: this.state.showMap ? '350px' : '0px'}}
+                                    center={[initMap.initLat, initMap.initLong]} 
+                                    zoom={initMap.initZoom} 
+                                    onClick={(e) => { handleClick(e)}}
+                                    // style={{ height: showMap ? '350px' : '0px'}}
                                 >
                                     <TileLayer
                                         attribution='&copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                                     />
-                                    { this.state.formdata.geo.latitude && this.state.formdata.geo.longitude ?
+                                    { formdata.geo.latitude && formdata.geo.longitude ?
                                         <Marker 
-                                            position={[this.state.formdata.geo.latitude, this.state.formdata.geo.longitude]} 
+                                            position={[formdata.geo.latitude, formdata.geo.longitude]} 
                                         />
                                     : null }
                                 </Map>
@@ -442,7 +417,7 @@ class EditItem extends Component {
                                         type="number"
                                         placeholder="Geo-location latitude ie. 52.232269"
                                         defaultValue={formdata.geo.latitude} 
-                                        onChange={(event) => this.handleInput(event, 'latitude', 'geo')}
+                                        onChange={(event) => handleInput(event, 'latitude', 'geo')}
                                         className="input_latlng"
                                     />
                                 </div>
@@ -458,7 +433,7 @@ class EditItem extends Component {
                                         type="number"
                                         placeholder="Geo-location longitude ie. -8.670860"
                                         defaultValue={formdata.geo.longitude} 
-                                        onChange={(event) => this.handleInput(event, 'longitude', 'geo')}
+                                        onChange={(event) => handleInput(event, 'longitude', 'geo')}
                                         className="input_latlng"
                                     />
                                 </div>
@@ -470,26 +445,26 @@ class EditItem extends Component {
                         <tr><td></td><td></td></tr>
 
 
-                        {this.createTextInput(formdata.rights,'rights', "Rights", "Rights")}
-                        {this.createTextInput(formdata.further_info,'further_info', "Enter any further info, resources..", "Further Info")}
-                        {this.createTextInput(formdata.external_link[0].url,'url', "External link URL ie. https://www...", "External Link", 'external_link')}
-                        {this.createTextInput(formdata.external_link[0].text,'text', "Description of the link", '', "external_link")}
+                        {createTextInput(formdata.rights,'rights', "Rights", "Rights")}
+                        {createTextInput(formdata.further_info,'further_info', "Enter any further info, resources..", "Further Info")}
+                        {createTextInput(formdata.external_link[0].url,'url', "External link URL ie. https://www...", "External Link", 'external_link')}
+                        {createTextInput(formdata.external_link[0].text,'text', "Description of the link", '', "external_link")}
 
                         <tr><td></td><td></td></tr>
                         <tr><td colSpan="2"><hr /></td></tr>
                         <tr><td></td><td></td></tr>
     
-                        {this.createTextInput(formdata.item_format,'item_format', "The item's format", "Format")}
-                        {this.createTextInput(formdata.materials,'materials', "The materials used in the item", "Materials")}
-                        {this.createTextInput(formdata.physical_dimensions,'physical_dimensions', "Physical dimensions", "Dimensions")}
+                        {createTextInput(formdata.item_format,'item_format', "The item's format", "Format")}
+                        {createTextInput(formdata.materials,'materials', "The materials used in the item", "Materials")}
+                        {createTextInput(formdata.physical_dimensions,'physical_dimensions', "Physical dimensions", "Dimensions")}
                         
                         <tr><td></td><td></td></tr>
                         <tr><td colSpan="2"><hr /></td></tr>
                         <tr><td></td><td></td></tr>
 
-                        {this.createTextInput(formdata.editor,'editor', "Editor's name(s)", "Editor")}
-                        {this.createTextInput(formdata.publisher,'publisher', "Publisher", "Publisher")}
-                        {this.createTextInput(formdata.language,'language', "ie. Cant, Gammon, Romani", "Language")}
+                        {createTextInput(formdata.editor,'editor', "Editor's name(s)", "Editor")}
+                        {createTextInput(formdata.publisher,'publisher', "Publisher", "Publisher")}
+                        {createTextInput(formdata.language,'language', "ie. Cant, Gammon, Romani", "Language")}
 
                         <tr>
                             <td className="label">
@@ -501,13 +476,13 @@ class EditItem extends Component {
                                         type="number"
                                         placeholder="Enter number of pages"
                                         defaultValue={formdata.pages} 
-                                        onChange={(event) => this.handleInput(event, 'pages')}
+                                        onChange={(event) => handleInput(event, 'pages')}
                                     />
                                 </div>
                             </td>
                         </tr>
 
-                        {this.createTextInput(formdata.reference,'reference', "Reference code", "Ref")}
+                        {createTextInput(formdata.reference,'reference', "Reference code", "Ref")}
 
                         <tr>
                             <td className="label">
@@ -518,8 +493,8 @@ class EditItem extends Component {
                                     <input 
                                         type="checkbox" 
                                         // className="share_toggle"
-                                        checked={!this.state.formdata.shareDisabled} 
-                                        onChange={(event) => this.handleSwitch(event)}
+                                        checked={!formdata.shareDisabled} 
+                                        onChange={(event) => handleSwitch(event)}
                                     />
                                 </div>
                             </td>
@@ -529,7 +504,7 @@ class EditItem extends Component {
                         <tr><td colSpan="2"><hr /></td></tr>
                         <tr><td></td><td></td></tr>
 
-                        {this.createTextInput(formdata.contributor,'contributor', "Add your name here", "Contributor")}
+                        {createTextInput(formdata.contributor,'contributor', "Add your name here", "Contributor")}
 
                         <tr>
                             <td colSpan="2">
@@ -537,7 +512,7 @@ class EditItem extends Component {
                                 <button 
                                     type="button" 
                                     className="delete"
-                                    onClick={(e) => { if (window.confirm('Are you sure you wish to permanently delete this item?')) this.deleteThisItem(e) } }
+                                    onClick={(e) => { if (window.confirm('Are you sure you wish to permanently delete this item?')) deleteThisItem(e) } }
                                 >
                                     Delete item
                                 </button>
@@ -546,14 +521,14 @@ class EditItem extends Component {
 
                         <tr className="half_width">
                             <td colSpan="2" >
-                                <button type="button" className="half_width_l" onClick={(e) => { if (window.confirm('Are you sure you wish to cancel? All data entered will be lost!')) this.cancel(e) }}>Cancel</button>
+                                <button type="button" className="half_width_l" onClick={(e) => { if (window.confirm('Are you sure you wish to cancel? All data entered will be lost!')) cancel(e) }}>Cancel</button>
                                 <button type="submit" className="half_width_r">Save and Continue</button>
                             </td>
                         </tr>  
 
                     </tbody>
                     </table>
-                    {this.state.saved ?
+                    {saved ?
                         <p className="message center">Information saved!</p>
                     : null}
                 </form>
@@ -561,15 +536,13 @@ class EditItem extends Component {
         )
     }
 
-    render() {
-        return (
-            <div className="main_view">
-                <div className="form_input item_form_input edit_page">
-                        {this.renderForm()}
-                </div>
+    return (
+        <div className="main_view">
+            <div className="form_input item_form_input edit_page">
+                {renderForm()}
             </div>
-        );
-    }
+        </div>
+    );
 }
 
 function mapStateToProps(state) {
