@@ -164,7 +164,8 @@ const EditItemFile = props => {
             })
             axios.post(`${API_PREFIX}/upload-array/${formdata._id}`, formdata)
                 .then(res => { // then print response status
-                    alert('File(s) uploaded successfully')
+                    alert('File(s) uploaded successfully');
+                    setLoaded(1);
                 })
                 .catch(err => { 
                     console.error('UPLOAD ERROR: ', err)
