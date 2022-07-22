@@ -17,14 +17,14 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 const ItemView = props => {
     const [numPages, setNumPages] = useState(null);             // total number of pages??
     const [pageNumber, setPageNumber] = useState(1);            // page currently displayed
-    // const [pdfError, setPdfError] = useState(false);            // commented out
+    const [pdfError, setPdfError] = useState(false);            // commented out
     // const [setNumPages, setSetNumPages] = useState(null);    // not used
     // const [setPageNumber, setSetPageNumber] = useState(1);   // not used
     // const [pdfPageNumber, setPdfPageNumber] = useState(0);   // not used
-    const pdfScale = 1; // const [pdfScale, setPdfScale] = useState(1);
+    const [pdfScale, setPdfScale] = useState(1);
 
     const [showMap, setShowMap] = useState(false);
-    const mapZoom = 12; // const [mapZoom, setMapZoom] = useState(12);
+    const [mapZoom, setMapZoom] = useState(12);
 
     const [isPending, setIsPending] = useState(false);
 
@@ -127,12 +127,10 @@ const ItemView = props => {
     }, [props.items.nextitem]);
 
     useEffect(() => {
-        if (props.user.login) {
-            if (props.user.login.isAuth) {
-                setUserIsAuth(true);
-            } else {
-                setUserIsAuth(false);
-            }
+        if (props.user.login.isAuth) {
+            setUserIsAuth(true);
+        } else {
+            setUserIsAuth(false);
         } // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.user.login]);
 
