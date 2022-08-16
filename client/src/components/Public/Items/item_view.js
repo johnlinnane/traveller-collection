@@ -127,7 +127,7 @@ const ItemView = props => {
     }, [props.items.nextitem]);
 
     useEffect(() => {
-        if (props.user.login.isAuth) {
+        if (props.user.login && props.user.login.isAuth) {
             setUserIsAuth(true);
         } else {
             setUserIsAuth(false);
