@@ -61,13 +61,12 @@ export function getUsers() {
     }
 }
 
-// uses thunk
+// thunk
 export function userRegister(user, userList) {
     const request = axios.post(`${API_PREFIX}/register`, user);
     return (dispatch) => {
         request.then(({data}) => {
 
-            // if register is wrong, don't send new user
             let users = data.success ? [...userList, data.user] : userList;
             let response = {
                 success:data.success,
@@ -132,7 +131,7 @@ export function getItems(
 }
 
 export function getItemOrPending(id) {
-    // reduxthunk's dispatched function sends payload to reducers whenever we are ready
+    // thunk
     return (dispatch) => {
         axios.get(`${API_PREFIX}/get-item-by-id?id=${id}`)
             .then(res => {
