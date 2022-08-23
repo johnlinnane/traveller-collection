@@ -11,7 +11,7 @@ import Routes from './routes';
 
 require('dotenv').config({path: '../../.env'});
 
-const storeWithMiddleware = createStore(
+const storeWithMiddleware: any = createStore(
     reducers, 
     applyMiddleware(promiseMiddleware, thunkMiddleware)
 );

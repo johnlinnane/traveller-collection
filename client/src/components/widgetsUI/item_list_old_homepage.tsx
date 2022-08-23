@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const ItemListOldHomepage = (item) => {
+const ItemListOldHomepage: React.FC = (item: any) => {
 
     return (
         <div>

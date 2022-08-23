@@ -3,8 +3,8 @@ import FontAwesome from 'react-fontawesome';
 import { Link } from 'react-router-dom';
 import Nav from './Sidenav/sidenav';
 
-export default function Header() {
-    const [showNav, setShowNav] = useState(false);
+const Header: React.FC = () => {
+    const [showNav, setShowNav] = useState<boolean>(false);
 
     return (
         <header>
@@ -35,3 +35,5 @@ export default function Header() {
         </header>
     );
 }
+
+export default Header;

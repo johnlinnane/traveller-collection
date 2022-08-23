@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const Breadcrumb = (props) => {
+const Breadcrumb: React.FC = (props: any) => {
     return (
         <div className="nav_bar">
             <Link to={`/`}>

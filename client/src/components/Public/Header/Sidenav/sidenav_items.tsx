@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import FontAwesome from 'react-fontawesome';
 import { connect } from 'react-redux';
 
-function SidenavItems({user}) {
+const SidenavItems: React.FC = ({user}: any) => {
     const items = [
         {   type:'navItem',
             icon:'home',
@@ -126,7 +126,7 @@ function SidenavItems({user}) {
     );
 };
 
-function mapStateToProps(state) {
+function mapStateToProps(state: any) {
     return {
         user:state.user
     }

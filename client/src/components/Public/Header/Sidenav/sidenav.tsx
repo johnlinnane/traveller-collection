@@ -2,7 +2,7 @@ import SideNav from 'react-simple-sidenav';
 import React from 'react';
 import SidenavItems from './sidenav_items';
 
-export default function Nav(props) {
+const Nav: React.FC = (props: any) => {
     return (
         <SideNav
             showNav={props.showNav}
@@ -16,3 +16,5 @@ export default function Nav(props) {
         </SideNav>
     );
 };
+
+export default Nav;
