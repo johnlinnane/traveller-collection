@@ -1,4 +1,8 @@
-export default function foo(state={}, action) {
+interface DefaultStateI {}
+
+const defaultState: DefaultStateI = {}
+
+export default function foo(state: DefaultStateI = defaultState, action: any): DefaultStateI {
     switch(action.type) {
 
         case 'UPDATE_INTRO_TEXT':

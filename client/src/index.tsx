@@ -4,17 +4,20 @@ import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import promiseMiddleware from 'redux-promise';
-import ReduxThunk from 'redux-thunk';
+import thunkMiddleware from 'redux-thunk';
 
 import reducers from './reducers';
 import Routes from './routes';
 
 require('dotenv').config({path: '../../.env'});
 
-const createStoreWithMiddleware = applyMiddleware(promiseMiddleware, ReduxThunk)(createStore);
+const storeWithMiddleware = createStore(
+    reducers, 
+    applyMiddleware(promiseMiddleware, thunkMiddleware)
+);
 
 ReactDOM.render(
-    <Provider store={createStoreWithMiddleware(reducers)}>
+    <Provider store={storeWithMiddleware}>
         <BrowserRouter>
             <Routes />
         </BrowserRouter>
