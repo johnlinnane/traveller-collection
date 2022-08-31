@@ -14,7 +14,7 @@ const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
-const ItemView = props => {
+const ItemView: React.FC = (props: any) => {
     const [numPages, setNumPages] = useState(null);             // total number of pages??
     const [pageNumber, setPageNumber] = useState(1);            // page currently displayed
     const [pdfError, setPdfError] = useState(false);            // commented out
@@ -127,7 +127,7 @@ const ItemView = props => {
     }, [props.items.nextitem]);
 
     useEffect(() => {
-        if (props.user.login.isAuth) {
+        if (props.user.login && props.user.login.isAuth) {
             setUserIsAuth(true);
         } else {
             setUserIsAuth(false);

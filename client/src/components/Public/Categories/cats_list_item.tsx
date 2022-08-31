@@ -1,7 +1,7 @@
 import React from 'react';
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
-const CatItem = (props) => {
+const CatItem: React.FC = (props: any) => {
     const addDefaultImg = (ev) => {
         const newImg = '/assets/media/default/default.jpg';
         if (ev.target.src !== newImg) {

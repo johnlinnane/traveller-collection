@@ -6,7 +6,7 @@ import SearchList from './news_list';
 import { getAllItems } from '../../../actions';
 import config from "../../../config";
 
-const Search = props => {
+const Search = (props: any) => {
     const [filtered, setFiltered] = useState([]);
     const [noMatch, setNoMatch] = useState(null);
 
@@ -18,11 +18,11 @@ const Search = props => {
         } // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const getKeyword = (event) => {
+    const getKeyword = (event: any) => {
         let keyword = event.target.value.toLowerCase();
         let matchFound = false;
 
-        let filteredByKeyword = props.items.items.filter( (item) => {
+        let filteredByKeyword = props.items.items.filter( (item: any) => {
             let isMatch = false;
 
             if (item.title) {
@@ -76,7 +76,7 @@ const Search = props => {
     )
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state: any) {
   return {
       items:state.items
   }

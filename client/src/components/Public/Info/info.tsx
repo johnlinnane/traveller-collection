@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { getInfoText } from '../../../actions';
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
-const Info = props => {
+const Info: React.FC = (props: any) => {
 
     useEffect(() => {
         props.dispatch(getInfoText());
@@ -69,7 +69,7 @@ const Info = props => {
     );
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state: any) {
     return {
         text: state.infos.text
     }

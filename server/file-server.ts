@@ -1,8 +1,8 @@
-const express = require('express');
-// const http = require('http');
-const https = require('https'); // this is new
-const fs = require('fs')
-const app = express();
+import express, { Application } from 'express';
+import https from 'https';
+import fs from 'fs';
+
+const app: Application = express();
 
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');

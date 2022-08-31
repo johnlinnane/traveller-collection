@@ -1,12 +1,12 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
-const mongoose = require('mongoose');
-const path = require("path")
-const sharp = require('sharp');
-const https = require('https');
+import express, { Application, Request, Response, NextFunction } from 'express';
+import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
+import mongoose from 'mongoose';
+import path from "path";
+import sharp from 'sharp';
+import https from 'https';
 
-const app = express();
+const app: Application = express();
 
 require('dotenv').config({path: '../.env'})
 
@@ -48,7 +48,7 @@ app.use(cors({
 
 // **************************** GET ****************************
 
-app.get('/api/auth-get-user-creds', authMiddleware, (req, res) => {
+app.get('/api/auth-get-user-creds', authMiddleware, (req: Request, res) => {
     res.json({
         isAuth:true,
         id:req.user._id,
@@ -58,7 +58,7 @@ app.get('/api/auth-get-user-creds', authMiddleware, (req, res) => {
     })
 })
 
-app.get('/api/logout', authMiddleware, (req, res) => {
+app.get('/api/logout', authMiddleware, (req: Request, res) => {
     req.user.deleteToken(req.token, (err, user) => {
         if(err) return res.status(400).send(err);
         res.sendStatus(200)
@@ -66,7 +66,7 @@ app.get('/api/logout', authMiddleware, (req, res) => {
 }) 
 
 // * * * * * * * * * * * * * * * * * * * * getItemById
-app.get('/api/get-item-by-id', (req,res) => {
+app.get('/api/get-item-by-id', (req: Request, res: Response) => {
     let id = req.query.id;
     Item.findById(id, (err, doc) => {
         if(err) return res.status(400).send(err);
@@ -75,7 +75,7 @@ app.get('/api/get-item-by-id', (req,res) => {
 })
 
 //////// * * * * * * * * * * * * * * * * * * * * getPendItemById
-app.get('/api/get-pend-item-by-id', (req,res) => {
+app.get('/api/get-pend-item-by-id', (req: Request, res: Response) => {
     let id = req.query.id;
     PendingItem.findById(id, (err, doc) => {
         if(err) return res.status(400).send(err);
@@ -84,7 +84,7 @@ app.get('/api/get-pend-item-by-id', (req,res) => {
 })
 
 // * * * * * * * * * * * * * * * * * * * * getParentPdf
-app.get('/api/get-parent-pdf', (req,res) => {
+app.get('/api/get-parent-pdf', (req: Request, res: Response) => {
     let id = req.query.id;
     Item.findById(id, (err, doc) => {
         if(err) return res.status(400).send(err);
@@ -93,7 +93,7 @@ app.get('/api/get-parent-pdf', (req,res) => {
 })
 
 // * * * * * * * * * * * * * * * * * * * * searchItem // unused???
-app.get('/api/search-item', (req,res) => {
+app.get('/api/search-item', (req: Request, res: Response) => {
     let queryKey = req.query.key;
     let queryValue = req.query.value;
 
@@ -108,7 +108,7 @@ app.get('/api/search-item', (req,res) => {
 
 
 // * * * * * * * * * * * * * * * * * * * * get all items TEST
-app.get('/api/all-items', (req, res) => {
+app.get('/api/all-items', (req: Request, res) => {
     // empty object returns all
     Item.find({}, (err, items) => {
         if(err) return res.status(400).send(err);
@@ -118,7 +118,7 @@ app.get('/api/all-items', (req, res) => {
 
 
 /////////////////// get all pend items
-app.get('/api/all-pend-items', (req, res) => {
+app.get('/api/all-pend-items', (req: Request, res) => {
     // empty object returns all
     PendingItem.find({}, (err, items) => {
         if(err) return res.status(400).send(err);
@@ -127,7 +127,7 @@ app.get('/api/all-pend-items', (req, res) => {
 })
 
 // * * * * * * * * * * * * * * * * * * * * get multiple items
-app.get('/api/items', (req,res) => {
+app.get('/api/items', (req: Request, res: Response) => {
     // query should look like this: localhost:3002/api/items?skip=3?limit=2&order=asc
     let skip = parseInt(req.query.skip);
     let limit = parseInt(req.query.limit);
@@ -139,35 +139,35 @@ app.get('/api/items', (req,res) => {
     })
 })
 
-app.get('/api/users', (req, res) => {
+app.get('/api/users', (req: Request, res) => {
     User.find({}, (err, users) => {
         if(err) return res.status(400).send(err);
         res.status(200).send(users);
     })
 })
 
-app.get('/api/user-items', (req, res) => {
+app.get('/api/user-items', (req: Request, res) => {
     Item.find({ownerId:req.query.user}).exec( (err, docs) => {
         if(err) return res.status(400).send(err);
         res.send(docs);
     })
 })
 
-app.get('/api/get-all-categories', (req, res) => {
+app.get('/api/get-all-categories', (req: Request, res) => {
     Cat.find({}, (err, items) => {
         if(err) return res.status(400).send(err);
         res.status(200).send(items);
     })
 })
 
-app.get('/api/get-all-subcategories', (req, res) => {
+app.get('/api/get-all-subcategories', (req: Request, res) => {
     SubCat.find({}, (err, items) => {
         if(err) return res.status(400).send(err);
         res.status(200).send(items);
     })
 })
 
-app.get('/api/get-items-by-cat', (req, res) => {
+app.get('/api/get-items-by-cat', (req: Request, res) => {
     let value = req.query.value;
     Item.find({ category_ref:value }).exec( (err, docs) => {
         if(err) return res.status(400).send(err);
@@ -175,7 +175,7 @@ app.get('/api/get-items-by-cat', (req, res) => {
     })
 })
 
-app.get('/api/get-next-item', (req,res) => {
+app.get('/api/get-next-item', (req: Request, res: Response) => {
     let oldId = req.query.oldId;
     let query = {_id: {$gt: oldId}}
     Item.findOne(query, (err, doc) => {
@@ -184,7 +184,7 @@ app.get('/api/get-next-item', (req,res) => {
     })
 })
 
-app.get('/api/get-prev-item', (req,res) => {
+app.get('/api/get-prev-item', (req: Request, res: Response) => {
     let oldId = req.query.oldId;
     // let query = {_id: {$lt: oldId}}, null, { sort: { '_id':-1 } };
     Item.findOne({_id: {$lt: oldId}}, null, { sort: { '_id':-1 } }, (err, doc) => {
@@ -193,7 +193,7 @@ app.get('/api/get-prev-item', (req,res) => {
     })
 })
 
-app.get('/api/get-items-by-subcat', (req,res) => {
+app.get('/api/get-items-by-subcat', (req: Request, res: Response) => {
     let subcatId = req.query.subcatid;
     Item.find({ subcategory_ref: subcatId}, {}, { sort: { '_id':1 } }, (err, doc) => {
         if(err) return res.status(400).send(err);
@@ -201,7 +201,7 @@ app.get('/api/get-items-by-subcat', (req,res) => {
     })
 })
 
-app.get('/api/get-cat-by-id', (req, res) => {
+app.get('/api/get-cat-by-id', (req: Request, res) => {
     let value = req.query.id;
     Cat.findOne({ _id:value }).exec( (err, docs) => {
         if(err) return res.status(400).send(err);
@@ -209,7 +209,7 @@ app.get('/api/get-cat-by-id', (req, res) => {
     })
 })
 
-app.get('/api/get-subcat-by-id', (req, res) => {
+app.get('/api/get-subcat-by-id', (req: Request, res) => {
     let value = req.query.subcatid;
     SubCat.find({ _id:value }).exec( (err, docs) => {
         if(err) return res.status(400).send(err);
@@ -217,21 +217,21 @@ app.get('/api/get-subcat-by-id', (req, res) => {
     })
 })
 
-app.get('/api/get-intro-text', (req,res) => {
+app.get('/api/get-intro-text', (req: Request, res: Response) => {
     Intro.findOne({}, {}, { sort: { '_id':1 } }, (err, doc) => {
         if(err) return res.status(400).send(err);
         res.send(doc);
     })
 })
 
-app.get('/api/get-info-text', (req,res) => {
+app.get('/api/get-info-text', (req: Request, res: Response) => {
     Info.findOne({}, {}, { sort: { '_id':1 } }, (err, doc) => {
         if(err) return res.status(400).send(err);
         res.send(doc);
     })
 })
 
-app.get('/api/get-items-with-coords', (req,res) => {
+app.get('/api/get-items-with-coords', (req: Request, res: Response) => {
     Item.find( { "geo.latitude": {$ne:null} }, {}, { sort: { '_id':1 } }, (err, doc) => {
         if(err) return res.status(400).send(err);
         res.send(doc);
@@ -240,7 +240,7 @@ app.get('/api/get-items-with-coords', (req,res) => {
 
 // ********************* POST ****************************
 
-app.post('/api/create-item', (req, res) => {
+app.post('/api/create-item', (req: Request, res) => {
     const item = new Item( req.body );
     item.save( (err, doc) =>{
         if(err) return res.status(400).send(doc);
@@ -251,7 +251,7 @@ app.post('/api/create-item', (req, res) => {
       })
 })
 
-app.post('/api/create-item-pending', (req, res) => {
+app.post('/api/create-item-pending', (req: Request, res) => {
     const pendingItem = new PendingItem( req.body );
     pendingItem.save( (err, doc) =>{
         if(err) return res.status(400).send(doc);
@@ -262,7 +262,7 @@ app.post('/api/create-item-pending', (req, res) => {
       })
 })
 
-app.post('/api/register', (req, res) => {
+app.post('/api/register', (req: Request, res) => {
     const user = new User(req.body);
     user.save((err, doc) => {
         if(err) return res.json({success:false});
@@ -273,7 +273,7 @@ app.post('/api/register', (req, res) => {
     })
 })
 
-app.post('/api/login',  (req, res) => {
+app.post('/api/login',  (req: Request, res) => {
     User.findOne({'email':req.body.email}, (err, user) => {
         if(!user) {
             return res.json({isAuth:false, message:'Incorrect username or password'})
@@ -297,7 +297,7 @@ app.post('/api/login',  (req, res) => {
     });
 });
 
-app.post('/api/add-cat', (req, res) => {
+app.post('/api/add-cat', (req: Request, res) => {
     const cat = new Cat( req.body );
     cat.save( (err, doc) =>{
         if(err) return res.status(400).send(doc);
@@ -308,7 +308,7 @@ app.post('/api/add-cat', (req, res) => {
       })
 })
 
-app.post('/api/add-subcat', (req, res) => {
+app.post('/api/add-subcat', (req: Request, res) => {
     const subcat = new SubCat( req.body );
     subcat.save( (err, doc) =>{
         if(err) return res.status(400).send(doc);
@@ -319,7 +319,7 @@ app.post('/api/add-subcat', (req, res) => {
       })
 })
 
-app.get('/api/accept-item', (req, res) => {
+app.get('/api/accept-item', (req: Request, res) => {
     let itemid = req.query.itemid;
     let userid = req.query.userid;
     let newId = mongoose.Types.ObjectId();
@@ -359,7 +359,7 @@ app.get('/api/accept-item', (req, res) => {
 
 // **************************** UPDATE ****************************
 
-app.post('/api/item-update', (req, res) => {
+app.post('/api/item-update', (req: Request, res) => {
     Item.findByIdAndUpdate(req.body._id, req.body, {new:true}, (err, doc) => {
         if(err) return res.status(400).send(err);
         res.json({
@@ -369,7 +369,7 @@ app.post('/api/item-update', (req, res) => {
     })
 })
 
-app.post('/api/item-pend-update', (req, res) => {
+app.post('/api/item-pend-update', (req: Request, res) => {
     PendingItem.findByIdAndUpdate(req.body._id, req.body, {new:true}, (err, doc) => {
         if(err) return res.status(400).send(err);
         res.json({
@@ -379,7 +379,7 @@ app.post('/api/item-pend-update', (req, res) => {
     })
 })
 
-app.post('/api/cat-update', (req, res) => {
+app.post('/api/cat-update', (req: Request, res) => {
     Cat.findByIdAndUpdate(req.body._id, req.body, {new:true}, (err, doc) => {
         if(err) return res.status(400).send(err);
         res.json({
@@ -389,7 +389,7 @@ app.post('/api/cat-update', (req, res) => {
     })
 })
 
-app.post('/api/subcat-update', (req, res) => {
+app.post('/api/subcat-update', (req: Request, res) => {
     SubCat.findByIdAndUpdate(req.body._id, req.body, {new:true}, (err, doc) => {
         if(err) return res.status(400).send(err);
         res.json({
@@ -399,7 +399,7 @@ app.post('/api/subcat-update', (req, res) => {
     })
 })
 
-app.post('/api/update-intro-text', (req, res) => {
+app.post('/api/update-intro-text', (req: Request, res) => {
     Intro.findOneAndUpdate({}, req.body, { sort: { '_id':1 } }, (err, doc) => {
         if(err) return res.status(400).send(err);
         res.json({
@@ -409,7 +409,7 @@ app.post('/api/update-intro-text', (req, res) => {
     })
 })
 
-app.post('/api/update-info-text', (req, res) => {
+app.post('/api/update-info-text', (req: Request, res) => {
     Info.findOneAndUpdate({}, req.body, { sort: { '_id':1 } }, (err, doc) => {
         if(err) return res.status(400).send(err);
         res.json({
@@ -421,7 +421,7 @@ app.post('/api/update-info-text', (req, res) => {
 
 //  **************************** DELETE ***************************
 
-app.delete('/api/delete-item', (req, res) => {
+app.delete('/api/delete-item', (req: Request, res) => {
     let id = req.query.id;
     Item.findByIdAndRemove(id, (err, doc) => {
         if(err) return res.status(400).send(err);
@@ -429,7 +429,7 @@ app.delete('/api/delete-item', (req, res) => {
     })
 })
 
-app.delete('/api/del-pend-item', (req, res) => {
+app.delete('/api/del-pend-item', (req: Request, res) => {
     let id = req.query.id;
     PendingItem.findByIdAndRemove(id, (err, doc) => {
         if(err) return res.status(400).send(err);
@@ -437,7 +437,7 @@ app.delete('/api/del-pend-item', (req, res) => {
     })
 })
 
-app.delete('/api/delete-cat', (req, res) => {
+app.delete('/api/delete-cat', (req: Request, res) => {
     let id = req.query.id;
     Cat.findByIdAndRemove(id, (err, doc) => {
         if(err) return res.status(400).send(err);
@@ -445,7 +445,7 @@ app.delete('/api/delete-cat', (req, res) => {
     })
 })
 
-app.delete('/api/delete-subcat', (req, res) => {
+app.delete('/api/delete-subcat', (req: Request, res) => {
     let id = req.query.id;
     SubCat.findByIdAndRemove(id, (err, doc) => {
         if(err) return res.status(400).send(err);
@@ -463,7 +463,7 @@ app.delete('/api/delete-subcat', (req, res) => {
 //     });
 // }
 
-app.post('/api/delete-file', function(req, res) {
+app.post('/api/delete-file', function(req: Request, res) {
     let query = './public/assets/media';
     let fullPath = query + req.body.path
     fs.unlink(fullPath, function (err) {
@@ -472,7 +472,7 @@ app.post('/api/delete-file', function(req, res) {
     })
 });
 
-app.post('/api/get-files-folder', (req, res) => {
+app.post('/api/get-files-folder', (req: Request, res) => {
     let query = './public/assets/media';
     let fullPath = query + req.body.folder
     fs.readdir(fullPath, {withFileTypes: true}, (err, files) => {
@@ -485,7 +485,7 @@ app.post('/api/get-files-folder', (req, res) => {
     })
 });
 
-app.post('/api/delete-dir', function(req, res) {
+app.post('/api/delete-dir', function(req: Request, res) {
     const baseUrl = './public/assets/media';
 
     let section = req.body.section;
@@ -535,7 +535,7 @@ app.post('/api/delete-dir', function(req, res) {
 
 
 // // get number of files
-// app.post('/get-number-files', function(req, res) {
+// app.post('/get-number-files', function(req: Request, res) {
 //     const baseUrl = './public/assets/media';
 //     let section = req.body.section;
 //     let id = req.body.id;
@@ -556,13 +556,13 @@ app.post('/api/delete-dir', function(req, res) {
 // })
 
 let storageArray = multer.diskStorage({
-    destination: function (req, file, cb) {
+    destination: function (req: Request, file, cb) {
         const path = `./public/assets/media/items/${req.params.id}/original`
         mkdirp.sync(path);
         cb(null, path)
 
     },
-    filename: function (req, file, cb) {
+    filename: function (req: Request, file, cb) {
         let uniqueId = mongoose.Types.ObjectId();
         let extArray = file.mimetype.split("/");
         let extension = extArray[extArray.length - 1];
@@ -583,10 +583,10 @@ let storageArray = multer.diskStorage({
 let uploadArray = multer({ storage: storageArray }).array('files');
 
 app.post('/api/upload-array/:id', 
-    (req, res, next) => {
+    (req: Request, res: Response, next: NextFunction) => {
         next()
     },
-    function (req, res, next) {
+    function (req: Request, res: Response, next: NextFunction) {
         uploadArray(req, res, function (err) {
             if (err instanceof multer.MulterError) {
                 console.log(err)
@@ -596,7 +596,7 @@ app.post('/api/upload-array/:id',
             next();
         })
     }, 
-    (req, res, next) => {
+    (req: Request, res: Response, next: NextFunction) => {
         let thumbPath = `./public/assets/media/items/${req.params.id}/sq_thumbnail`;
         mkdirp.sync(thumbPath);
         fs.readdir(thumbPath, function(err, thumbFiles) {
@@ -620,17 +620,17 @@ app.post('/api/upload-array/:id',
 )
 
 app.post('/api/upload-cat/:id',
-    function(req, res) {
+    function(req: Request, res) {
         let catId = req.params.id;
         let index = 0;
         multer({ storage: multer.diskStorage({
-            destination: function (req, file, cb) {
+            destination: function (req: Request, file, cb) {
                 let dest = `./public/assets/media/cover_img_cat`;
                 mkdirp.sync(dest);
                 cb(null, dest)
                 
             },
-            filename: function (req, file, cb) {
+            filename: function (req: Request, file, cb) {
                 cb(null, `${catId}.jpg` );
                 index++;
             }
@@ -647,16 +647,16 @@ app.post('/api/upload-cat/:id',
 });
 
 app.post('/api/upload-subcat/:id',
-    function(req, res) {
+    function(req: Request, res) {
         let subCatId = req.params.id;
         let index = 0;
         multer({ storage: multer.diskStorage({
-            destination: function (req, file, cb) {
+            destination: function (req: Request, file, cb) {
                 let dest = `./public/assets/media/cover_img_subcat`;
                 mkdirp.sync(dest);
                 cb(null, dest)
             },
-            filename: function (req, file, cb) {
+            filename: function (req: Request, file, cb) {
                 cb(null, `${subCatId}.jpg` );
                 index++;
             }
@@ -672,16 +672,16 @@ app.post('/api/upload-subcat/:id',
 });
 
 app.post('/api/upload-intro-img',
-    function(req, res) {
+    function(req: Request, res) {
         multer({ storage: multer.diskStorage({
-            destination: function (req, file, cb) {
+            destination: function (req: Request, file, cb) {
 
                 let dest = `./public/assets/media/intro`;
                 mkdirp.sync(dest);
                 cb(null, dest)
                 
             },
-            filename: function (req, file, cb) {
+            filename: function (req: Request, file, cb) {
                 cb(null, `intro.jpg` );
             }
         }) }).single('file')(req, res, function (err) {
@@ -697,15 +697,15 @@ app.post('/api/upload-intro-img',
 });
 
 app.post('/api/upload-info/:number',
-    function(req, res) {
+    function(req: Request, res) {
         let number = req.params.number;
         multer({ storage: multer.diskStorage({
-            destination: function (req, file, cb) {
+            destination: function (req: Request, file, cb) {
                 let dest = `./public/assets/media/info`;
                 mkdirp.sync(dest);
                 cb(null, dest)
             },
-            filename: function (req, file, cb) {
+            filename: function (req: Request, file, cb) {
                 cb(null, `${number}.jpg` );
             }
         }) }).single('file')(req, res, function (err) {

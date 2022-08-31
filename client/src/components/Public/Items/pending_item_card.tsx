@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
-const PendingItemCard = (props) => {
+const PendingItemCard: React.FC = (props: any) => {
 
     const addDefaultImg = (ev) => {
         const newImg = '/assets/media/default/default.jpg';

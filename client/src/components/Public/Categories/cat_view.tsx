@@ -7,7 +7,7 @@ import Breadcrumb from '../../widgetsUI/breadcrumb';
 
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
-const CatView = props => {
+const CatView: React.FC = (props: any) => {
     
     let catId = props.match.params.id
 
@@ -107,7 +107,7 @@ const CatView = props => {
     )
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state: any) {
     return {
         catinfo: state.cats.catinfo,
         subcats: state.cats.subcats,

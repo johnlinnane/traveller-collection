@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
-import ItemListOldHomepage from './../widgetsUI/item_list_old_homepage';
+import ItemListOldHomepage from '../widgetsUI/item_list_old_homepage';
 import { getItems } from '../../actions';
-import SlickCarouselOldHomepage from './../widgetsUI/Slider/slider';
+import SlickCarouselOldHomepage from '../widgetsUI/Slider/slider';
 
-function HomeContainer(props) {
+const HomeContainer: React.FC = (props: any) => {
 
     useEffect(() => {
         props.dispatch(getItems(4,0,'asc'));
@@ -44,7 +44,7 @@ function HomeContainer(props) {
     );
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state: any) {
     return {
         items:state.items
     }

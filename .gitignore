@@ -6,8 +6,10 @@
 /client/build
 /client/.env
 /client/.eslintcache
+/client/dist
 /server/public/assets/media
 /server/ssl
+/server/dist
 
 .DS_Store
 .env

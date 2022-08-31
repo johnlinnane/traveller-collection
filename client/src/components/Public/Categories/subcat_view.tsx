@@ -7,9 +7,8 @@ import Breadcrumb from '../../widgetsUI/breadcrumb';
 import config from "../../../config";
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
-const SubcatView = props => {
+const SubcatView: React.FC = (props: any) => {
     
-    // const [newItemId, setNewItemId] = useState(null);
     const [navInfo, setNavInfo] = useState({
         catTitle: null,
         catId: null,

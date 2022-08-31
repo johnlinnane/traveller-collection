@@ -5,7 +5,7 @@ import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
 import { getItemsWithCoords } from '../../../actions';
 import config from "../../../config";
 
-const MainMap = props => {
+const MainMap = (props: any) => {
     const initLat = 53.342609;
     const initLong = -7.603976;
     const initZoom = 8;
@@ -79,10 +79,10 @@ const MainMap = props => {
     );
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state: any) {
     return {
         items: state.items
     }
 }
 
-export default connect(mapStateToProps)(MainMap)
+export default connect(mapStateToProps)(MainMap);

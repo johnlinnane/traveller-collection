@@ -5,8 +5,7 @@ import { getIntroText } from '../../../actions';
 import config from "../../../config";
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
-const Intro = props =>  {
-
+const Intro: React.FC = (props: any) =>  {
 
     useEffect(() => {
         props.dispatch(getIntroText());
@@ -62,10 +61,10 @@ const Intro = props =>  {
     );
 };
 
-function mapStateToProps(state) {
+function mapStateToProps(state: any) {
     return {
         text: state.intros.text
     }
 }
     
-export default connect(mapStateToProps)(Intro)
+export default connect(mapStateToProps)(Intro);

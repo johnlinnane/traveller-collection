@@ -6,7 +6,7 @@ import PendingItemCard from './pending_item_card'
 import config from "../../../config";
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 
-const PendingItemsView = props => {
+const PendingItemsView: React.FC = (props: any) => {
 
     const [items, setItems] = useState(null);
 
@@ -49,7 +49,7 @@ const PendingItemsView = props => {
             props.dispatch(deletePendItem(itemId));
             deleteAllMedia(itemId);
         }
-        let tempItems = items
+        let tempItems = items;
         let index = tempItems.findIndex(p => p._id === itemId)
         if (index > -1) {
             tempItems.splice(index, 1);
@@ -69,7 +69,7 @@ const PendingItemsView = props => {
     );
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state: any) {
     return {
         items:state.items
     }

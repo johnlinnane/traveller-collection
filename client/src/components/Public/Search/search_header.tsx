@@ -1,6 +1,6 @@
 import React from 'react';
 
-const SearchHeader = props => {
+const SearchHeader: React.FC = (props: any) => {
     return (
         <div className="search_input form_input">  
           <input 

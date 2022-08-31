@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { loginUser } from '../../../actions';
 import config from "../../../config";
 
-function Login(props) {
+const Login: React.FC = (props: any) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error] = useState('');
@@ -76,7 +76,7 @@ function Login(props) {
     );
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state: any) {
     return {
         user:state.user
     }

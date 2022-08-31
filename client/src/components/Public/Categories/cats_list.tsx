@@ -7,7 +7,7 @@ import Breadcrumb from '../../widgetsUI/breadcrumb';
 import { getAllCats } from '../../../actions';
 import CatItem from './cats_list_item';
 
-const CatList = props => {
+const CatList: React.FC = (props: any) => {
     const navInfo ={
         catTitle: null,
         catId: null,
@@ -44,7 +44,7 @@ const CatList = props => {
     );
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state: any) {
     return {
         cats: state.cats.cats,
         items: state.cats.catitems
