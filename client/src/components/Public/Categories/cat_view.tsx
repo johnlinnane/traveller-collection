@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import config from "../../../config";
+const config = require('../../../config');
+
 import { getItemsByCat, getCatById, getAllSubCats } from '../../../actions';
 import Breadcrumb from '../../widgetsUI/breadcrumb';
 
@@ -31,7 +32,7 @@ const CatView: React.FC = (props: any) => {
         type: 'Categories'
     });
 
-    const addDefaultImg = (ev) => {
+    const addDefaultImg = (ev: any) => {
         const newImg = '/assets/media/default/default.jpg';
         if (ev.target.src !== newImg) {
             ev.target.src = newImg
@@ -40,7 +41,7 @@ const CatView: React.FC = (props: any) => {
 
     useEffect(() => {
         if (props.subcats && props.subcats.length ) {
-            let tempTheseSubcats = [];
+            let tempTheseSubcats: any = [];
             props.subcats.forEach( subcat => {
                 if (subcat.parent_cat === props.match.params.id) {
                     tempTheseSubcats.push(subcat)

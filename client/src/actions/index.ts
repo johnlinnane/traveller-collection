@@ -1,9 +1,10 @@
 import axios from 'axios';
+import { Dispatch} from 'redux';
 axios.defaults.withCredentials = true;
 
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 
-export function getUserItems(userId) {
+export function getUserItems(userId: string | number) {
     const request = axios.get(`${API_PREFIX}/user-items?user=${userId}`)
                         .then(response => response.data);
     
@@ -24,7 +25,7 @@ export function clearItem() {
     }
 }
 
-export function acceptItem(itemId, userId) {
+export function acceptItem(itemId: string | number, userId: string | number) {
 
     const request = axios.get(`${API_PREFIX}/accept-item?itemid=${itemId}&userid=${userId}`)
                         .then(response => response.data);
@@ -64,7 +65,7 @@ export function getUsers() {
 // thunk
 export function userRegister(user, userList) {
     const request = axios.post(`${API_PREFIX}/register`, user);
-    return (dispatch) => {
+    return (dispatch: Dispatch) => {
         request.then(({data}) => {
 
             let users = data.success ? [...userList, data.user] : userList;
