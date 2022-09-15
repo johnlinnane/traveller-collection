@@ -265,7 +265,7 @@ const EditItemSel = props => {
                     <td>
                         <div className="form_element select">
                             <Select
-                                key={`cat_${props.items.item._id}`}
+                                key={`cat_${props.match.params.id}`}
                                 defaultValue={catsConverted}
                                 isMulti
                                 name="colors"
@@ -286,7 +286,7 @@ const EditItemSel = props => {
 
                             <div className="form_element select">
                                 <Select
-                                    key={`cat_${props.items.item._id}`}
+                                    key={`subcat_${props.match.params.id}`}
                                     defaultValue={subcatsConverted}
                                     isMulti
                                     name="colors"
