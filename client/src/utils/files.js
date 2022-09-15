@@ -23,7 +23,7 @@ export const checkMimeType = (event, _types) => {
 
 export const checkFileSize = (event, _size) => {
     let files = event.target.files;
-    let size = _size ? _size : 150000;
+    let size = _size ? _size : 400 * 1000;
     for(let x = 0; x < files.length; x++) {
         if (files[x].size > size) {
             alert(files[x].name + ' is too large, please pick a smaller file\n');
