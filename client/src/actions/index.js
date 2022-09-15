@@ -193,11 +193,16 @@ export function clearItemWithContributor() {
 }
 
 export function addItem(item) {
-    const request = axios.post(`${API_PREFIX}/create-item`, item)
-                        .then(response => response.data);
-    return {
-        type: 'CREATE_ITEM',
-        payload:request
+    return function (dispatch) {
+        const request = axios.post(`${API_PREFIX}/create-item`, item)
+            .then(response => response.data)
+            .then(response => {
+                dispatch({
+                    type: 'CREATE_ITEM',
+                    payload:response
+                });
+            });
+                            
     }
 }
 

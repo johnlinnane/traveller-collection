@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import {Progress} from 'reactstrap';
 import Select from 'react-select';
 import { getItemById, getPendItemById, updateItem, updatePendItem, getFilesFolder } from '../../../actions';
+import { maxSelectFile, checkMimeType, checkFileSize } from '../../../utils/files';
 import config from "../../../config";
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
@@ -122,19 +123,17 @@ const EditItemFile = props => {
     }, []);
 
     const onChangeHandler = event => {
-
-        const file = event.target.files;
+        let files = event.target.files;
         let tempSelectedFiles = selectedFiles;
-        tempSelectedFiles.push(file)
+        tempSelectedFiles.push(files)
 
         let tempSelectedFilesImg = selectedFilesImg;
-        if (file[0] && file[0].type && JSON.stringify(file[0].type).includes('pdf') ) {
+        if (files[0] && files[0].type && JSON.stringify(files[0].type).includes('pdf') ) {
             tempSelectedFilesImg.push('/assets/media/icons/pdf.png');
         } else {
-            tempSelectedFilesImg.push(URL.createObjectURL(file[0]));
+            tempSelectedFilesImg.push(URL.createObjectURL(files[0]));
         }
-
-        if (maxSelectFile(event) && checkMimeType(event) && checkFileSize(event)) {  
+        if (maxSelectFile(event, 6) && checkMimeType(event, ['image/png', 'image/jpg', 'image/jpeg', 'image/gif', 'application/pdf', 'video/mp4', 'video/quicktime']) && checkFileSize(event)) {  
             setSelectedFilesNum(selectedFilesNum + 1);
             setSelectedFiles(tempSelectedFiles);
             setSelectedFilesImg(tempSelectedFilesImg);
@@ -157,13 +156,12 @@ const EditItemFile = props => {
             ))
         }
         if (selectedFiles.length) {
-            let formdata = new FormData() 
-
+            let filesData = new FormData() 
             selectedFiles.forEach( (file, i) => {
-                formdata.append('files', file[0]);  
+                filesData.append('files', file[0]);
             })
-            axios.post(`${API_PREFIX}/upload-array/${formdata._id}`, formdata)
-                .then(res => { // then print response status
+            axios.post(`${API_PREFIX}/upload-array/${formdata._id}`, filesData)
+                .then(res => { 
                     alert('File(s) uploaded successfully')
                 })
                 .catch(err => { 
@@ -174,51 +172,6 @@ const EditItemFile = props => {
             props.history.push(`/items/${formdata._id}`)
         }, 1000)
     }
-
-    const maxSelectFile = event => {
-        let files = event.target.files;
-        if (files.length > 6) { 
-            // const msg = 'Only 6 images can be uploaded at a time';
-            event.target.value = null;
-            return false;
-        }
-        return true;
-    }
-
-    const checkMimeType = event => {
-        let files = event.target.files 
-        let err = ''
-        const types = ['image/png', 'image/jpg', 'image/jpeg', 'image/gif', 'application/pdf', 'video/mp4', 'video/quicktime']
-        for(let x = 0; x<files.length; x++) {
-            if (types.every(type => files[x].type !== type)) {
-                err += files[x].type+' is not a supported format\n';
-            }
-        };
-
-        for(let z = 0; z<err.length; z++) { // loop create toast massage
-            event.target.value = null 
-            toast.error(err[z])
-        }
-        return true;
-    }
-
-    const checkFileSize = event => {
-        let files = event.target.files
-        let size = 15000 
-        let err = ""; 
-
-        for(let x = 0; x<files.length; x++) {
-            if (files[x].size > size) {
-                err += files[x].type+'is too large, please pick a smaller file\n';
-            }
-        };
-
-        for(let z = 0; z<err.length; z++) {
-            toast.error(err[z])
-            event.target.value = null
-        }
-        return true;
-    }    
 
     const deleteAllMedia = () => {
         let fileData =  {
@@ -344,7 +297,7 @@ const EditItemFile = props => {
                             {selectedType === 'jpg' ?
                                 <input 
                                     id="file_input"
-                                    key={inputKey}
+                                    key={`${inputKey}-image`}
                                     type="file" 
                                     className="form-control"  
                                     accept="image/*" 
@@ -353,7 +306,7 @@ const EditItemFile = props => {
                             : selectedType === 'mp4' ? 
                                 <input 
                                     id="file_input"
-                                    key={inputKey}
+                                    key={`${inputKey}-video`}
                                     type="file" 
                                     className="form-control"  
                                     accept="video/*" 
@@ -362,7 +315,7 @@ const EditItemFile = props => {
                             : selectedType === 'pdf' ? 
                                 <input 
                                     id="file_input"
-                                    key={inputKey}
+                                    key={`${inputKey}-pdf`}
                                     type="file" 
                                     className="form-control"  
                                     accept="application/pdf" 
@@ -370,7 +323,7 @@ const EditItemFile = props => {
                                 /> 
                             : <input 
                                 id="file_input"
-                                key={inputKey}
+                                key={`${inputKey}-file`}
                                 type="file" 
                                 className="form-control"  
                                 onChange={event => {onChangeHandler(event)}}/>

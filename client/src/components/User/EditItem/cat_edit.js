@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import {Progress} from 'reactstrap';
 
 import { getAllCats } from '../../../actions';
+import { maxSelectFile, checkMimeType, checkFileSize } from '../../../utils/files';
 
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
@@ -34,8 +35,7 @@ const CatEdit = props => {
 
     const onChangeHandler = (id, event) => {
         let files = event.target.files;
-
-        if (maxSelectFile(event) && checkMimeType(event) && checkMimeType(event)) {  
+        if (maxSelectFile(event, 6) && checkMimeType(event, ['image/png', 'image/jpeg', 'image/gif', 'application/pdf']) && checkFileSize(event)) {  
             setSelectedFile(files);
         }
     }
@@ -63,52 +63,6 @@ const CatEdit = props => {
         }
         redirectUser(`/category/${props.match.params.id}`)
     }
-
-    const maxSelectFile = event => {
-        let files = event.target.files; // create file object
-        if (files.length > 6) { 
-            // const msg = 'Only 6 images can be uploaded at a time';
-            event.target.value = null;
-            return false;
-        }
-        return true;
-    }
-
-    const checkMimeType = event => {
-        let files = event.target.files 
-        let err = ''
-        const types = ['image/png', 'image/jpeg', 'image/gif', 'application/pdf']
-        for(let i = 0; i < files.length; i++) {
-            if (types.every(type => files[i].type !== type)) {
-                err += files[i].type+' is not a supported format\n';
-            }
-        };
-
-        for(let j = 0; j < err.length; j++) { 
-            event.target.value = null 
-            toast.error(err[j])
-        }
-        return true;
-    }
-
-    // const checkFileSize = event => {
-    //     let files = event.target.files
-    //     let size = 15000 
-    //     let err = ""; 
-
-    //     for(let x = 0; x<files.length; x++) {
-    //         if (files[x].size > size) {
-    //             err += files[x].type+'is too large, please pick a smaller file\n';
-    //         }
-    //     };
-
-    //     for(let z = 0; z<err.length; z++) {
-    //         toast.error(err[z])
-    //         event.target.value = null
-    //     }
-    //     return true;
-    // }    
-
 
     const redirectUser = url => {
         setTimeout(() => {

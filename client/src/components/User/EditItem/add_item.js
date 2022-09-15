@@ -54,6 +54,12 @@ const AddItem = props => {
         } // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    useEffect(() => {
+        if (props.items.newitem && props.items.newitem.itemId && props.items.newitem.itemId.length > 0) {
+            props.history.push(`/user/edit-item-sel/${props.items.newitem.itemId}`);
+        } // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [props.items.newitem]);
+
     const handleInput = (event, name, level) => {
         let newFormdata = {
             ...formdata
@@ -88,12 +94,6 @@ const AddItem = props => {
         props.history.push(`/user/all-items`)
     }
 
-    const redirectUser = url => {
-        setTimeout(() => {
-            props.history.push(url)
-        }, 1000)
-    }
-
     const submitForm = e => {
         e.preventDefault();
         if (props.user.login.isAuth) {
@@ -108,9 +108,9 @@ const AddItem = props => {
             }))
         }
         setSaved(true);
-        setTimeout(() => {
-            props.history.push(`/user/edit-item-sel/${props.items.newitem.itemId}`);
-        }, 2000)
+        // setTimeout(() => {
+        //     props.history.push(`/user/edit-item-sel/${props.items.newitem.itemId}`);
+        // }, 5000);
     }
 
     const createTextInput = (existing, name, placeholder, inputLabel, level) => {

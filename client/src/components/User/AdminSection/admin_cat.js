@@ -7,6 +7,7 @@ import 'react-tabs/style/react-tabs.css';
 
 import { getAllCats  } from '../../../actions';
 import { deleteCat, updateCat }  from '../../../actions';
+import { maxSelectFile, checkMimeType, checkFileSize } from '../../../utils/files';
 
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
@@ -57,7 +58,7 @@ const AdminCat = props => {
 
     const onImgChange = (event) => {
         let files = event.target.files;
-        if (maxSelectFile(event) && checkMimeType(event) && checkMimeType(event)) {  
+        if (maxSelectFile(event, 1) && checkMimeType(event) && checkFileSize(event)) {  
             setSelectedFile(files);
         }
         setImgSrc(URL.createObjectURL(event.target.files[0]));
@@ -87,49 +88,6 @@ const AdminCat = props => {
         setImgSrc(imgSrc + '?' + Math.random());
         props.history.push(`/admin/${props.index}`);
     }
-
-    const maxSelectFile=(event)=>{
-        let files = event.target.files; // create file object
-        if (files.length > 1) { 
-            // const msg = 'Only 1 image can be uploaded at a time'
-            event.target.value = null;
-            return false;
-        }
-        return true;
-    }
-
-    const checkMimeType=(event)=>{
-        let files = event.target.files 
-        let err = ''
-        const types = ['image/png', 'image/jpeg', 'image/gif']
-        for(let x = 0; x<files.length; x++) {
-            if (types.every(type => files[x].type !== type)) {
-                err += files[x].type+' is not a supported format\n';
-            }
-        };
-        for(let z = 0; z<err.length; z++) {
-            event.target.value = null 
-            toast.error(err[z])
-        }
-        return true;
-    }
-
-    // const checkFileSize=(event)=>{
-    //     let files = event.target.files
-    //     let size = 15000 
-    //     let err = ""; 
-    //     for(let x = 0; x<files.length; x++) {
-    //         if (files[x].size > size) {
-    //             err += files[x].type+'is too large, please pick a smaller file\n';
-    //         }
-    //     };
-    //     for(let z = 0; z<err.length; z++) {
-    //         toast.error(err[z])
-    //         event.target.value = null
-    //     }
-    //     return true;
-    // }    
-
 
     const handleCatInput = (event, field) => {
         let newFormdata = {
