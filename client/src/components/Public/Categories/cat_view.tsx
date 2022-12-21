@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-const config = require('../../../config');
+
 
 import { getItemsByCat, getCatById, getAllSubCats } from '../../../actions';
 import Breadcrumb from '../../widgetsUI/breadcrumb';
-
+const config = require('../../../config');
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
 const CatView: React.FC = (props: any) => {

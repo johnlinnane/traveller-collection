@@ -10,6 +10,18 @@ const cors = require('cors');
 
 require('dotenv').config({path: '../.env'})
 
+declare var process : {
+    env: {
+        CLIENT_PREFIX: string | undefined,
+        DB: string | undefined,
+        CLIENT_BUILD_PREFIX: string | undefined,
+        FILE_SERVER_PREFIX: string | undefined,
+        PRODUCTION_PREFIX: string | undefined,
+        SSL_KEY: string | undefined | fs.PathOrFileDescriptor,
+        SSL_CERT: string | undefined | fs.PathOrFileDescriptor,
+    }
+  }
+
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(cors({

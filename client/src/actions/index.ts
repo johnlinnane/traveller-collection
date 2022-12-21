@@ -65,7 +65,7 @@ export function getUsers() {
 // thunk
 export function userRegister(user, userList) {
     const request = axios.post(`${API_PREFIX}/register`, user);
-    return (dispatch: Dispatch) => {
+    return (dispatch: Dispatch<any>) => {
         request.then(({data}) => {
 
             let users = data.success ? [...userList, data.user] : userList;
