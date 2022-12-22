@@ -10,6 +10,7 @@
 /server/public/assets/media
 /server/ssl
 /server/dist
+/server/node_modules
 
 .DS_Store
 .env
