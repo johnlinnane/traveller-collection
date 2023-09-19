@@ -226,11 +226,11 @@ const EditItem = props => {
         props.history.push('/user/all-items');
     }
 
-    const redirectUser = () => {
-        setTimeout(() => {
-            props.history.push('/user/all-items')
-        }, 1000)
-    }
+    // const redirectUser = () => {
+    //     setTimeout(() => {
+    //         props.history.push('/user/all-items')
+    //     }, 1000)
+    // }
 
     const cancel = () => {
         props.history.push(`/items/${props.match.params.id}`)

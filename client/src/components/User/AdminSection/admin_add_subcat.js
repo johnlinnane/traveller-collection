@@ -9,7 +9,7 @@ import Select from 'react-select';
 import { getAllCats } from '../../../actions';
 import { addSubcat } from '../../../actions';
 
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 
 const AdminAddSubCat = props => {

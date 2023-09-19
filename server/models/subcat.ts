@@ -1,7 +1,6 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
-
-const subcatSchema = mongoose.Schema({
+const subcatSchema = new mongoose.Schema({
     
     title: String,
     description: String,

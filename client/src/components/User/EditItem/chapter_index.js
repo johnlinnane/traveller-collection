@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom';
 import { getItemById, updateItem, addItem } from '../../../actions';
 import config from "../../../config";
 
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const ChapterIndex = props => {
 

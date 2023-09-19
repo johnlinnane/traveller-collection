@@ -17,16 +17,16 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 const ItemView: React.FC = (props: any) => {
     const [numPages, setNumPages] = useState(null);             // total number of pages??
     const [pageNumber, setPageNumber] = useState(1);            // page currently displayed
-    const [pdfError, setPdfError] = useState(false);            // commented out
+    // const [pdfError, setPdfError] = useState(false);         // not used
     // const [setNumPages, setSetNumPages] = useState(null);    // not used
     // const [setPageNumber, setSetPageNumber] = useState(1);   // not used
     // const [pdfPageNumber, setPdfPageNumber] = useState(0);   // not used
-    const [pdfScale, setPdfScale] = useState(1);
+    const [pdfScale] = useState(1);
 
     const [showMap, setShowMap] = useState(false);
-    const [mapZoom, setMapZoom] = useState(12);
+    const [mapZoom] = useState(12);
 
-    const [isPending, setIsPending] = useState(false);
+    const [isPending] = useState(false); // setIsPending
 
     const [itemFiles, setItemFiles] = useState([]);
     const [imgFiles, setImgFiles] = useState([]);

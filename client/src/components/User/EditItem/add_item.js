@@ -88,11 +88,11 @@ const AddItem = props => {
         props.history.push(`/user/all-items`)
     }
 
-    const redirectUser = url => {
-        setTimeout(() => {
-            props.history.push(url)
-        }, 1000)
-    }
+    // const redirectUser = url => {
+    //     setTimeout(() => {
+    //         props.history.push(url)
+    //     }, 1000)
+    // }
 
     const submitForm = e => {
         e.preventDefault();

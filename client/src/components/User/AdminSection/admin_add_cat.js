@@ -6,7 +6,8 @@ import { toast } from 'react-toastify';
 
 import { addCat } from '../../../actions';
 
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 
 const AdminAddCat = props => {

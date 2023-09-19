@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Select from 'react-select';
-import CreatableSelect from 'react-select/creatable';
+// import CreatableSelect from 'react-select/creatable';
 import { getItemById, getPendItemById, updateItem, updatePendItem, clearItem, getFilesFolder } from '../../../actions';
 import { getAllCats, getAllSubCats  } from '../../../actions';
 import config from "../../../config";
@@ -22,7 +22,7 @@ const EditItemSel = props => {
     const [subcatList, setSubcatList] = useState([]);
     const [subcatsInitialised, setSubcatsInitialised] = useState(false);
     const [saved, setSaved] = useState(false);
-    const [tagsDisabled, setTagsDisabled] = useState(true);
+    // const [tagsDisabled, setTagsDisabled] = useState(true);
     
     useEffect(() => {
         document.title = `Edit Item - ${config.defaultTitle}`;
@@ -108,21 +108,21 @@ const EditItemSel = props => {
         }, 1000)
     }
 
-    const handleInputTags = newValue => {
-        let latestData = {
-            ...dataToUpdate,
-            tags: newValue
-        }
-        let catchData = {
-            ...dataToUpdate,
-            tags: []
-        }
-        if (newValue == null) {
-            setDataToUpdate(catchData);
-        } else {
-            setDataToUpdate(latestData);
-        }
-    }
+    // const handleInputTags = newValue => {
+    //     let latestData = {
+    //         ...dataToUpdate,
+    //         tags: newValue
+    //     }
+    //     let catchData = {
+    //         ...dataToUpdate,
+    //         tags: []
+    //     }
+    //     if (newValue == null) {
+    //         setDataToUpdate(catchData);
+    //     } else {
+    //         setDataToUpdate(latestData);
+    //     }
+    // }
 
     const handleInputCats = newValue => {
         let catArray = [];
@@ -239,7 +239,7 @@ const EditItemSel = props => {
             <h2>Edit Item Categories</h2>
             <table>
             <tbody>
-                {tagsDisabled === true ?
+                {/* {tagsDisabled === true ?
                     null
                 :
                     <tr>
@@ -257,7 +257,7 @@ const EditItemSel = props => {
                             </div>
                         </td>
                     </tr>
-                }
+                } */}
                 <tr>
                     <td>
                         Category

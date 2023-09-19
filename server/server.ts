@@ -9,28 +9,30 @@ import https from 'https';
 
 const app: Application = express();
 
-require('dotenv').config({path: '../.env'})
+import dotenv from 'dotenv';
+dotenv.config({path: '../.env'})
 
-const cors = require('cors');
-const multer = require('multer');
-const fs = require('fs')
-const mkdirp = require('mkdirp')
+import cors from 'cors';
+import multer from 'multer';
+import fs from 'fs';
+import mkdirp from 'mkdirp';
+
 
 mongoose.Promise = global.Promise;
-mongoose.connect(process.env.DB, { useMongoClient: true }) 
+mongoose.connect(process.env.DB, { useNewUrlParser: true }) //old: useMongoClient: true
     .catch(error => console.log('MONGOOSE CONNECT ERROR: ', error));
 
 
-const { User } = require('./models/user');
-const { Item, PendingItem } = require('./models/item');
-const { Cat } = require('./models/cat');
-const { SubCat } = require('./models/subcat');
-const { Intro } = require('./models/intro');
-const { Info } = require('./models/info');
+import { User } from './models/user';
+import { Item, PendingItem } from './models/item';
+import { Cat } from './models/cat';
+import { SubCat } from './models/subcat';
+import { Intro } from './models/intro';
+import { Info } from './models/info';
 
 
-const { authMiddleware } = require('./middleware/auth_middleware');
-const { fileURLToPath } = require('url');
+import { authMiddleware } from './middleware/auth_middleware';
+// import { fileURLToPath } from 'url';
 
 
 // middleware
@@ -39,419 +41,621 @@ app.use(bodyParser.json());
 app.use(cors({
     credentials: true,
     origin: [
-        process.env.CLIENT_PREFIX,
-        process.env.DB, 
-        process.env.CLIENT_BUILD_PREFIX,
-        process.env.FILE_SERVER_PREFIX,
-        process.env.PRODUCTION_PREFIX
+        // process.env.CLIENT_PREFIX,
+        // process.env.DB, 
+        // process.env.CLIENT_BUILD_PREFIX,
+        // process.env.FILE_SERVER_PREFIX,
+        // process.env.PRODUCTION_PREFIX
+        'https://localhost:5000',
+        'https://localhost:3000',
+        'https://localhost:4000'
     ]
 }));
 
 // **************************** GET ****************************
 
-app.get('/api/auth-get-user-creds', authMiddleware, (req: Request, res) => {
-    res.json({
-        isAuth:true,
-        id:req.user._id,
-        email:req.user.email,
-        name:req.user.name,
-        lastname:req.user.lastname
-    })
+app.get('/api/auth-get-user-creds', authMiddleware, async (req: Request, res) => {
+    try {
+        res.json({
+            isAuth:true,
+            id:req.user._id,
+            email:req.user.email,
+            name:req.user.name,
+            lastname:req.user.lastname
+        })
+    } catch (err) {
+        res.status(400).send(err);
+    }
 })
 
-app.get('/api/logout', authMiddleware, (req: Request, res) => {
-    req.user.deleteToken(req.token, (err, user) => {
-        if(err) return res.status(400).send(err);
+app.get('/api/logout', authMiddleware, async (req: Request, res) => {
+    try {
+        req.user.deleteToken(req.token);
         res.sendStatus(200)
-    })
+    } catch (err) {
+        res.status(400).send(err);
+    }
 }) 
 
 // * * * * * * * * * * * * * * * * * * * * getItemById
-app.get('/api/get-item-by-id', (req: Request, res: Response) => {
-    let id = req.query.id;
-    Item.findById(id, (err, doc) => {
-        if(err) return res.status(400).send(err);
-        res.send(doc);
-    })
+app.get('/api/get-item-by-id', async (req: Request, res: Response) => {
+    try {
+        let id = req.query.id;
+        const data = await Item.findById(id);
+        if(!data) {
+            throw new Error('Not found');
+        }
+        res.send(data);
+    } catch (err) {
+        res.status(400).send(err);
+    }
 })
 
 //////// * * * * * * * * * * * * * * * * * * * * getPendItemById
-app.get('/api/get-pend-item-by-id', (req: Request, res: Response) => {
-    let id = req.query.id;
-    PendingItem.findById(id, (err, doc) => {
-        if(err) return res.status(400).send(err);
-        res.send(doc);
-    })
+app.get('/api/get-pend-item-by-id', async (req: Request, res: Response) => {
+    try {
+        let id = req.query.id;
+        const data = await PendingItem.findById(id);
+        if(!data) {
+            throw new Error('Not found');
+        }
+        res.send(data);
+    } catch (err) {
+        res.status(400).send(err);
+    }
 })
 
 // * * * * * * * * * * * * * * * * * * * * getParentPdf
-app.get('/api/get-parent-pdf', (req: Request, res: Response) => {
-    let id = req.query.id;
-    Item.findById(id, (err, doc) => {
-        if(err) return res.status(400).send(err);
-        res.send(doc);
-    })
+app.get('/api/get-parent-pdf', async (req: Request, res: Response) => {
+    try {
+        let id = req.query.id;
+        const data = await Item.findById(id);
+        if(!data) {
+            throw new Error('Not found');
+        }
+        res.send(data);
+    } catch (err) {
+        res.status(400).send(err);
+    }
 })
 
 // * * * * * * * * * * * * * * * * * * * * searchItem // unused???
-app.get('/api/search-item', (req: Request, res: Response) => {
-    let queryKey = req.query.key;
-    let queryValue = req.query.value;
+app.get('/api/search-item', async (req: Request, res: Response) => {
+    try {
+        let queryKey = req.query.key;
+        let queryValue = req.query.value;
 
-    let query = {};
-    query[queryKey] = queryValue;
+        let query = {};
+        query[queryKey] = queryValue;
 
-    Item.find( query , (err, doc) => {
-        if(err) return res.status(400).send(err);
-        res.send(doc);
-    })
+        const data = await Item.find(query);
+        if(!data) {
+            throw new Error('Not found');
+        }
+        res.send(data);
+    } catch (err) {
+        res.status(400).send(err);
+    }
 })
 
 
 // * * * * * * * * * * * * * * * * * * * * get all items TEST
-app.get('/api/all-items', (req: Request, res) => {
-    // empty object returns all
-    Item.find({}, (err, items) => {
-        if(err) return res.status(400).send(err);
-        res.status(200).send(items);
-    })
+app.get('/api/all-items', async (req: Request, res) => {
+    try {
+
+        // empty object returns all
+        const data = await Item.find({});
+        if(!data) {
+            throw new Error('Not found');
+        }
+        res.status(200).send(data);
+    } catch (err) {
+        res.status(400).send(err);
+    }
+
 })
 
 
 /////////////////// get all pend items
-app.get('/api/all-pend-items', (req: Request, res) => {
-    // empty object returns all
-    PendingItem.find({}, (err, items) => {
-        if(err) return res.status(400).send(err);
-        res.status(200).send(items);
-    })
+app.get('/api/all-pend-items', async (req: Request, res) => {
+    try {
+
+        // empty object returns all
+        const data = await PendingItem.find({});
+        if(!data) {
+            throw new Error('Not found');
+        }
+        res.status(200).send(data);
+    } catch (err) {
+        res.status(400).send(err);
+    }
 })
 
 // * * * * * * * * * * * * * * * * * * * * get multiple items
-app.get('/api/items', (req: Request, res: Response) => {
-    // query should look like this: localhost:3002/api/items?skip=3?limit=2&order=asc
-    let skip = parseInt(req.query.skip);
-    let limit = parseInt(req.query.limit);
-    let order = req.query.order;
+app.get('/api/items', async (req: Request, res: Response) => {
+    try {
 
-    Item.find().skip(skip).sort({_id:order}).limit(limit).exec((err,doc) => {
-        if(err) return res.status(400).send(err);
-        res.send(doc);
-    })
+        // query should look like this: localhost:3002/api/items?skip=3?limit=2&order=asc
+        let skip = parseInt(req.query.skip);
+        let limit = parseInt(req.query.limit);
+        let order = req.query.order;
+
+        const data = await Item.find().skip(skip).sort({_id:order}).limit(limit).exec();
+        if(!data) {
+            throw new Error('Not found');
+        }
+        res.send(data);
+    } catch (err) {
+        res.status(400).send(err);
+    }
 })
 
-app.get('/api/users', (req: Request, res) => {
-    User.find({}, (err, users) => {
-        if(err) return res.status(400).send(err);
-        res.status(200).send(users);
-    })
+app.get('/api/users', async (req: Request, res) => {
+    try {
+        const data = await User.find({});
+        if(!data) {
+            throw new Error('Not found');
+        }
+        res.status(200).send(data);
+    } catch (err) {
+        res.status(400).send(err);
+    }
 })
 
-app.get('/api/user-items', (req: Request, res) => {
-    Item.find({ownerId:req.query.user}).exec( (err, docs) => {
-        if(err) return res.status(400).send(err);
-        res.send(docs);
-    })
+app.get('/api/user-items', async (req: Request, res) => {
+    try {
+        const data = await Item.find({ownerId:req.query.user}).exec();
+        if(!data) {
+            throw new Error('Not found');
+        }
+        res.send(data);
+    } catch (err) {
+        res.status(400).send(err);
+    }
 })
 
-app.get('/api/get-all-categories', (req: Request, res) => {
-    Cat.find({}, (err, items) => {
-        if(err) return res.status(400).send(err);
-        res.status(200).send(items);
-    })
+
+
+app.get('/api/get-all-categories', async (req: Request, res: Response) => {
+    try {
+        const data = await Cat.find({}).exec();
+        if(!data) {
+            throw new Error('Not found');
+        }
+        res.status(200).send(data);
+    } catch (err) {
+        res.status(400).send(err);
+    }
+});
+
+app.get('/api/get-all-subcategories', async (req: Request, res) => {
+    try {
+        const data = await SubCat.find({});
+        if(!data) {
+            throw new Error('Not found');
+        }
+        res.status(200).send(data);
+    } catch (err) {
+        res.status(400).send(err);
+    }
 })
 
-app.get('/api/get-all-subcategories', (req: Request, res) => {
-    SubCat.find({}, (err, items) => {
-        if(err) return res.status(400).send(err);
-        res.status(200).send(items);
-    })
+app.get('/api/get-items-by-cat', async (req: Request, res) => {
+    try {
+        let value = req.query.value;
+        const data = await Item.find({ category_ref:value }).exec();
+        if(!data) {
+            throw new Error('Not found');
+        }
+        res.send(data);
+    } catch (err) {
+        res.status(400).send(err);
+    }
 })
 
-app.get('/api/get-items-by-cat', (req: Request, res) => {
-    let value = req.query.value;
-    Item.find({ category_ref:value }).exec( (err, docs) => {
-        if(err) return res.status(400).send(err);
-        res.send(docs);
-    })
+app.get('/api/get-next-item', async (req: Request, res: Response) => {
+    try {
+        let oldId = req.query.oldId;
+        let query = {_id: {$gt: oldId}}
+        const data = await Item.findOne(query);
+        if(!data) {
+            throw new Error('Not found');
+        }
+        res.send(data);
+    } catch (err) {
+        res.status(400).send(err);
+    }
 })
 
-app.get('/api/get-next-item', (req: Request, res: Response) => {
-    let oldId = req.query.oldId;
-    let query = {_id: {$gt: oldId}}
-    Item.findOne(query, (err, doc) => {
-        if(err) return res.status(400).send(err);
-        res.send(doc);
-    })
+app.get('/api/get-prev-item', async (req: Request, res: Response) => {
+    try {
+        let oldId = req.query.oldId;
+        // let query = {_id: {$lt: oldId}}, null, { sort: { '_id':-1 } };
+        const data = await Item.findOne({_id: {$lt: oldId}}, null, { sort: { '_id':-1 } });
+        if(!data) {
+            throw new Error('Not found');
+        }
+        res.send(data);
+    } catch (err) {
+        res.status(400).send(err);
+    }
 })
 
-app.get('/api/get-prev-item', (req: Request, res: Response) => {
-    let oldId = req.query.oldId;
-    // let query = {_id: {$lt: oldId}}, null, { sort: { '_id':-1 } };
-    Item.findOne({_id: {$lt: oldId}}, null, { sort: { '_id':-1 } }, (err, doc) => {
-        if(err) return res.status(400).send(err);
-        res.send(doc);
-    })
+app.get('/api/get-items-by-subcat', async (req: Request, res: Response) => {
+    try {
+        let subcatId = req.query.subcatid;
+        const data = await Item.find({ subcategory_ref: subcatId}, {}, { sort: { '_id':1 } });
+        if(!data) {
+            throw new Error('Not found');
+        }
+        res.send(data);
+    } catch (err) {
+        res.status(400).send(err);
+    }
 })
 
-app.get('/api/get-items-by-subcat', (req: Request, res: Response) => {
-    let subcatId = req.query.subcatid;
-    Item.find({ subcategory_ref: subcatId}, {}, { sort: { '_id':1 } }, (err, doc) => {
-        if(err) return res.status(400).send(err);
-        res.send(doc);
-    })
+app.get('/api/get-cat-by-id', async (req: Request, res) => {
+	try {
+    	let value = req.query.id;
+    	const cat = await Cat.findOne({ _id: value }).exec();
+        if(!cat) {
+            throw new Error('Not found');
+        }
+    	res.send(cat);
+	} catch (err) {
+    	res.status(400).send(err);
+	}
+});
+
+
+app.get('/api/get-subcat-by-id', async (req: Request, res) => {
+    try {
+        let value = req.query.subcatid;
+        const data = await SubCat.find({ _id:value }).exec();
+        if(!data) {
+            throw new Error('Not found');
+        }
+        res.send(data);
+    } catch (err) {
+        res.status(400).send(err);
+    }
 })
 
-app.get('/api/get-cat-by-id', (req: Request, res) => {
-    let value = req.query.id;
-    Cat.findOne({ _id:value }).exec( (err, docs) => {
-        if(err) return res.status(400).send(err);
-        res.send(docs);
-    })
+app.get('/api/get-intro-text', async (req: Request, res: Response) => {
+    try {
+        const data = await Intro.findOne({}, {}, { sort: { '_id':1 } });
+        if(!data) {
+            throw new Error('Not found');
+        }
+        res.send(data);
+    } catch (err) {
+        res.send(err);
+    }
 })
 
-app.get('/api/get-subcat-by-id', (req: Request, res) => {
-    let value = req.query.subcatid;
-    SubCat.find({ _id:value }).exec( (err, docs) => {
-        if(err) return res.status(400).send(err);
-        res.send(docs);
-    })
+app.get('/api/get-info-text', async (req: Request, res: Response) => {
+    try {
+        const data = await Info.findOne({}, {}, { sort: { '_id':1 } });
+        if(!data) {
+            throw new Error('Not found');
+        }
+        res.send(data);
+    } catch (err) {
+        res.status(400).send(err);
+    }
 })
 
-app.get('/api/get-intro-text', (req: Request, res: Response) => {
-    Intro.findOne({}, {}, { sort: { '_id':1 } }, (err, doc) => {
-        if(err) return res.status(400).send(err);
-        res.send(doc);
-    })
-})
-
-app.get('/api/get-info-text', (req: Request, res: Response) => {
-    Info.findOne({}, {}, { sort: { '_id':1 } }, (err, doc) => {
-        if(err) return res.status(400).send(err);
-        res.send(doc);
-    })
-})
-
-app.get('/api/get-items-with-coords', (req: Request, res: Response) => {
-    Item.find( { "geo.latitude": {$ne:null} }, {}, { sort: { '_id':1 } }, (err, doc) => {
-        if(err) return res.status(400).send(err);
-        res.send(doc);
-    })
+app.get('/api/get-items-with-coords', async (req: Request, res: Response) => {
+    try {
+        const data = await Item.find( { "geo.latitude": {$ne:null} }, {}, { sort: { '_id':1 } });
+        if(!data) {
+            throw new Error('Not found');
+        }
+        res.send(data);
+    } catch (err) {
+        res.status(400).send(err);
+    }
 })
 
 // ********************* POST ****************************
 
-app.post('/api/create-item', (req: Request, res) => {
-    const item = new Item( req.body );
-    item.save( (err, doc) =>{
-        if(err) return res.status(400).send(doc);
+app.post('/api/create-item', async (req: Request, res) => {
+    try {
+        const item = new Item( req.body );
+        const data = await item.save();
+        if(!data) {
+            throw new Error('Not found');
+        }
         res.status(200).json({
             post:true,
-            itemId:doc._id
+            itemId:data._id
         })
-      })
+    } catch (err) {
+        res.status(400).send(doc);
+    }
 })
 
-app.post('/api/create-item-pending', (req: Request, res) => {
-    const pendingItem = new PendingItem( req.body );
-    pendingItem.save( (err, doc) =>{
-        if(err) return res.status(400).send(doc);
+app.post('/api/create-item-pending', async (req: Request, res) => {
+    try {
+        const pendingItem = new PendingItem( req.body );
+        const data = await pendingItem.save();
+        if(!data) {
+            throw new Error('Not found');
+        }
         res.status(200).json({
             post:true,
-            itemId:doc._id
+            itemId:data._id
         })
-      })
+    } catch (err) {
+        res.status(400).send(err);
+    }
 })
 
-app.post('/api/register', (req: Request, res) => {
-    const user = new User(req.body);
-    user.save((err, doc) => {
-        if(err) return res.json({success:false});
+app.post('/api/register', async (req: Request, res) => {
+    try {
+        const user = new User(req.body);
+        const data = await user.save();
+        if(!data) {
+            throw new Error('Not found');
+        }
         res.status(200).json({
             success:true,
-            user:doc
+            user:data
         })
-    })
+    } catch (err) {
+        res.json({success:false})
+    }
 })
 
-app.post('/api/login',  (req: Request, res) => {
-    User.findOne({'email':req.body.email}, (err, user) => {
-        if(!user) {
+app.post('/api/login', async (req: Request, res) => {
+    try {
+        const data = await User.findOne({'email':req.body.email});
+        
+        if(!data) {
             return res.json({isAuth:false, message:'Incorrect username or password'})
         };
-        user.comparePassword(req.body.password, (err, isMatch) => {
+        data.comparePassword(req.body.password, (err, isMatch) => {
             if(!isMatch) {
                 return res.json({
                     isAuth:false,
                     message:'Incorrect username or password'
                 })
             };
-            user.generateToken((err, user) => {
+            data.generateToken((err, data) => {
                 if(err) return res.status(400).send(err);
-                res.cookie('tc_auth_cookie', user.token, { sameSite: 'lax', secure: false }).send({
+                res.cookie('tc_auth_cookie', data.token, { sameSite: 'lax', secure: false }).send({
                     isAuth:true,
-                    id:user._id,
-                    email:user.email
+                    id:data._id,
+                    email:data.email
                 });
             });
         });
-    });
+    } catch (err) {
+        res.status(400).send(err);
+    }
 });
 
-app.post('/api/add-cat', (req: Request, res) => {
-    const cat = new Cat( req.body );
-    cat.save( (err, doc) =>{
-        if(err) return res.status(400).send(doc);
+app.post('/api/add-cat', async (req: Request, res) => {
+    try {
+        const cat = new Cat( req.body );
+        const data = await cat.save();
+        if(!data) {
+            throw new Error('Not found');
+        }
         res.status(200).json({
             post:true,
-            catId:doc._id
+            catId:data._id
         })
-      })
+    } catch (err) {
+        res.status(400).send(err);
+    }
 })
 
-app.post('/api/add-subcat', (req: Request, res) => {
-    const subcat = new SubCat( req.body );
-    subcat.save( (err, doc) =>{
-        if(err) return res.status(400).send(doc);
+app.post('/api/add-subcat', async (req: Request, res) => {
+    try {
+        const subcat = new SubCat( req.body );
+        const data = await subcat.save();
+        if(!data) {
+            throw new Error('Not found');
+        }
         res.status(200).json({
             post:true,
-            catId:doc._id
+            catId:data._id
         })
-      })
+    } catch (err) {
+        res.status(400).send(err);
+    }
 })
 
-app.get('/api/accept-item', (req: Request, res) => {
-    let itemid = req.query.itemid;
-    let userid = req.query.userid;
-    let newId = mongoose.Types.ObjectId();
-    const itemsPath = './public/assets/media/items/';
+app.get('/api/accept-item', async (req: Request, res) => {
+    try {
+        let itemid = req.query.itemid;
+        let userid = req.query.userid;
+        let newId = mongoose.Types.ObjectId();
+        const itemsPath = './public/assets/media/items/';
 
-    PendingItem.findOne({ _id: itemid }, function(err, pendItem) {
-        let data = { 
+        const data = await PendingItem.findOne({ _id: itemid });
+        if(!data) {
+            throw new Error('Not found');
+        }
+        let item_data = { 
             ...pendItem._doc,
             _id: newId,
             ownerId: userid,
             accepted: true,
         }
-        let newItem = new Item(data);
+        let newItem = new Item(item_data);
         pendItem.remove()
-        newItem.save( (err, doc) =>{
-            if(err) return res.status(400).send(doc);
+        newItem.save( (err, data) =>{
             res.status(200).json({
                 swapped:true,
-                itemId:doc._id
+                itemId:data._id
             })
         })
-    })
 
-    if (fs.existsSync(`${itemsPath}${itemid}`)) {
-        fs.renameSync(`${itemsPath}${itemid}`, `${itemsPath}${newId}`, (err) => {
-            if (err) {
-                throw err;
-            }
-            fs.statSync(`${itemsPath}${newId}`, (error, stats) => {
-                if (error) {
-                    throw error;
+        if (fs.existsSync(`${itemsPath}${itemid}`)) {
+            fs.renameSync(`${itemsPath}${itemid}`, `${itemsPath}${newId}`, (err) => {
+                if (err) {
+                    throw err;
                 }
+                fs.statSync(`${itemsPath}${newId}`, (error, stats) => {
+                    if (error) {
+                        throw error;
+                    }
+                });
             });
-        });
+        }
+    } catch (err) {
+        res.status(400).send(err);
     }
 })
 
 // **************************** UPDATE ****************************
 
-app.post('/api/item-update', (req: Request, res) => {
-    Item.findByIdAndUpdate(req.body._id, req.body, {new:true}, (err, doc) => {
-        if(err) return res.status(400).send(err);
+app.post('/api/item-update', async (req: Request, res) => {
+    try {
+
+        const data = await Item.findByIdAndUpdate(req.body._id, req.body, {new:true});
+        if(!data) {
+            throw new Error('Not found');
+        }
         res.json({
             success:true,
-            doc
+            data
         });
-    })
+    } catch (err) {
+        res.status(400).send(err);
+    }
 })
 
-app.post('/api/item-pend-update', (req: Request, res) => {
-    PendingItem.findByIdAndUpdate(req.body._id, req.body, {new:true}, (err, doc) => {
-        if(err) return res.status(400).send(err);
+app.post('/api/item-pend-update', async (req: Request, res) => {
+    try {
+
+        const data = await PendingItem.findByIdAndUpdate(req.body._id, req.body, {new:true});
+        if(!data) {
+            throw new Error('Not found');
+        }
         res.json({
             success:true,
-            doc
+            data
         });
-    })
+    } catch (err) {
+        res.status(400).send(err);
+    }
 })
 
-app.post('/api/cat-update', (req: Request, res) => {
-    Cat.findByIdAndUpdate(req.body._id, req.body, {new:true}, (err, doc) => {
-        if(err) return res.status(400).send(err);
+app.post('/api/cat-update', async (req: Request, res) => {
+    try {
+        const data = await Cat.findByIdAndUpdate(req.body._id, req.body, {new:true});
+        if(!data) {
+            throw new Error('Not found');
+        }
         res.json({
             success:true,
-            doc
+            data
         });
-    })
+    } catch (err) {
+        res.status(400).send(err);
+    }
 })
 
-app.post('/api/subcat-update', (req: Request, res) => {
-    SubCat.findByIdAndUpdate(req.body._id, req.body, {new:true}, (err, doc) => {
-        if(err) return res.status(400).send(err);
+app.post('/api/subcat-update', async (req: Request, res) => {
+    try {
+        const data = await SubCat.findByIdAndUpdate(req.body._id, req.body, {new:true});
+        if(!data) {
+            throw new Error('Not found');
+        }
         res.json({
             success:true,
-            doc
+            data
         });
-    })
+    } catch (err) {
+        res.status(400).send(err);
+    }
 })
 
-app.post('/api/update-intro-text', (req: Request, res) => {
-    Intro.findOneAndUpdate({}, req.body, { sort: { '_id':1 } }, (err, doc) => {
-        if(err) return res.status(400).send(err);
+app.post('/api/update-intro-text', async (req: Request, res) => {
+    try {
+        const data = await Intro.findOneAndUpdate({}, req.body, { sort: { '_id':1 } });
+        if(!data) {
+            throw new Error('Not found');
+        }
         res.json({
             success:true,
-            doc
+            data
         });
-    })
+    } catch (err) {
+        res.status(400).send(err);
+    }
 })
 
-app.post('/api/update-info-text', (req: Request, res) => {
-    Info.findOneAndUpdate({}, req.body, { sort: { '_id':1 } }, (err, doc) => {
-        if(err) return res.status(400).send(err);
+app.post('/api/update-info-text', async (req: Request, res) => {
+    try {
+        const data = await Info.findOneAndUpdate({}, req.body, { sort: { '_id':1 } });
+        if(!data) {
+            throw new Error('Not found');
+        }
         res.json({
             success:true,
-            doc
+            data
         });
-    })
+    } catch (err) {
+        res.status(400).send(err);
+    }
 })
 
 //  **************************** DELETE ***************************
 
-app.delete('/api/delete-item', (req: Request, res) => {
-    let id = req.query.id;
-    Item.findByIdAndRemove(id, (err, doc) => {
-        if(err) return res.status(400).send(err);
+app.delete('/api/delete-item', async (req: Request, res) => {
+    try {
+        let id = req.query.id;
+        const data = await Item.findByIdAndRemove(id);
+        if(!data) {
+            throw new Error('Not found');
+        }
         res.json(true);
-    })
+    } catch (err) {
+        res.status(400).send(err);
+    }
 })
 
-app.delete('/api/del-pend-item', (req: Request, res) => {
-    let id = req.query.id;
-    PendingItem.findByIdAndRemove(id, (err, doc) => {
-        if(err) return res.status(400).send(err);
+app.delete('/api/del-pend-item', async (req: Request, res) => {
+    try {
+        let id = req.query.id;
+        const data = await PendingItem.findByIdAndRemove(id);
+        if(!data) {
+            throw new Error('Not found');
+        }
         res.json(true);
-    })
+    } catch (err) {
+        res.status(400).send(err);
+    }
 })
 
-app.delete('/api/delete-cat', (req: Request, res) => {
-    let id = req.query.id;
-    Cat.findByIdAndRemove(id, (err, doc) => {
-        if(err) return res.status(400).send(err);
+app.delete('/api/delete-cat', async (req: Request, res) => {
+    try {
+        let id = req.query.id;
+        const data = await Cat.findByIdAndRemove(id);
+        if(!data) {
+            throw new Error('Not found');
+        }
         res.json(true);
-    })
+    } catch (err) {
+        res.status(400).send(err);
+    }
 })
 
-app.delete('/api/delete-subcat', (req: Request, res) => {
-    let id = req.query.id;
-    SubCat.findByIdAndRemove(id, (err, doc) => {
-        if(err) return res.status(400).send(err);
+app.delete('/api/delete-subcat', async (req: Request, res) => {
+    try {
+        let id = req.query.id;
+        const data = await SubCat.findByIdAndRemove(id);
+        if(!data) {
+            throw new Error('Not found');
+        }
         res.json(true);
-    })
+    } catch (err) {
+        res.status(400).send(err);
+    }
 })
 
 
@@ -465,71 +669,75 @@ app.delete('/api/delete-subcat', (req: Request, res) => {
 // }
 
 app.post('/api/delete-file', function(req: Request, res) {
-    let query = './public/assets/media';
-    let fullPath = query + req.body.path
-    fs.unlink(fullPath, function (err) {
-        if (err) throw err;
-        res.send('File deleted!');
-    })
+
+        let query = './public/assets/media';
+        let fullPath = query + req.body.path
+        fs.unlink(fullPath, function (err) {
+            if (err) throw err;
+            res.send('File deleted!');
+        })
+
 });
 
-app.post('/api/get-files-folder', (req: Request, res) => {
-    let query = './public/assets/media';
-    let fullPath = query + req.body.folder
-    fs.readdir(fullPath, {withFileTypes: true}, (err, files) => {
-        if (err) {
-            console.log('Error finding files in folder / no files in folder')
-        } else if (files.length && files[0].name === '.DS_Store') {
-            files.shift()
-        }
-        res.send(files)
-    })
+app.post('/api/get-files-folder', async (req: Request, res) => {
+
+        let query = './public/assets/media';
+        let fullPath = query + req.body.folder
+        fs.readdir(fullPath, {withFileTypes: true}, (err, files) => {
+            if (err) {
+                console.log('Error finding files in folder / no files in folder')
+            } else if (files.length && files[0].name === '.DS_Store') {
+                files.shift()
+            }
+            res.send(files)
+        })
 });
 
 app.post('/api/delete-dir', function(req: Request, res) {
-    const baseUrl = './public/assets/media';
 
-    let section = req.body.section;
-    let id = req.body.id;
-    let dir = path.resolve(baseUrl, section, id)
-    const deleteDir = (dir, subDir) => {
-        fs.rmdir(subDir, () => {
-            // console.log('SUBDIR BEING DELETED:', subDir);
-            fs.rmdir(dir, () => {
-                // console.log('DIR BEING DELTED: ', dir);
-            })
-        })
-    }
+        const baseUrl = './public/assets/media';
 
-    if (dir != baseUrl) {
-        fs.readdir(dir, {withFileTypes: true}, (err, files) => {
-            if (files && files.length) {
-                files.forEach( file => {
-                    let string = path.resolve(dir, file.name)
-                    if (fs.lstatSync(string).isFile()) {
-                        fs.unlink(string, function (err) {
-                            if (err) throw err;
-                        })
-                    }
-                    if (fs.lstatSync(string).isDirectory()) {
-                        let subDir = path.resolve(dir, file.name)
-                        fs.readdir(subDir, {withFileTypes: true}, (err, files) => {
-                            files.forEach( file => {
-                                let subFile = path.resolve(string, file.name)
-                                if (fs.lstatSync(subFile).isFile()) {
-                                    fs.unlink(subFile, function (err) {
-                                        if (err) throw err;
-                                        deleteDir(dir, subDir);
-                                    })
-                                }
-                            })
-                        })
-                    }
+        let section = req.body.section;
+        let id = req.body.id;
+        let dir = path.resolve(baseUrl, section, id)
+        const deleteDir = (dir, subDir) => {
+            fs.rmdir(subDir, () => {
+                // console.log('SUBDIR BEING DELETED:', subDir);
+                fs.rmdir(dir, () => {
+                    // console.log('DIR BEING DELTED: ', dir);
                 })
-            }
-        })
-    }
-    return res.status(200)
+            })
+        }
+
+        if (dir != baseUrl) {
+            fs.readdir(dir, {withFileTypes: true}, (err, files) => {
+                if (files && files.length) {
+                    files.forEach( file => {
+                        let string = path.resolve(dir, file.name)
+                        if (fs.lstatSync(string).isFile()) {
+                            fs.unlink(string, function (err) {
+                                if (err) throw err;
+                            })
+                        }
+                        if (fs.lstatSync(string).isDirectory()) {
+                            let subDir = path.resolve(dir, file.name)
+                            fs.readdir(subDir, {withFileTypes: true}, (err, files) => {
+                                files.forEach( file => {
+                                    let subFile = path.resolve(string, file.name)
+                                    if (fs.lstatSync(subFile).isFile()) {
+                                        fs.unlink(subFile, function (err) {
+                                            if (err) throw err;
+                                            deleteDir(dir, subDir);
+                                        })
+                                    }
+                                })
+                            })
+                        }
+                    })
+                }
+            })
+        }
+        return res.status(200)
 })
 
 
@@ -584,6 +792,7 @@ let storageArray = multer.diskStorage({
 let uploadArray = multer({ storage: storageArray }).array('files');
 
 app.post('/api/upload-array/:id', 
+
     (req: Request, res: Response, next: NextFunction) => {
         next()
     },
@@ -621,102 +830,107 @@ app.post('/api/upload-array/:id',
 )
 
 app.post('/api/upload-cat/:id',
-    function(req: Request, res) {
+
+function(req: Request, res) {
+
         let catId = req.params.id;
-        let index = 0;
-        multer({ storage: multer.diskStorage({
-            destination: function (req: Request, file, cb) {
-                let dest = `./public/assets/media/cover_img_cat`;
-                mkdirp.sync(dest);
-                cb(null, dest)
+            let index = 0;
+            multer({ storage: multer.diskStorage({
+                destination: function (req: Request, file, cb) {
+                    let dest = `./public/assets/media/cover_img_cat`;
+                    mkdirp.sync(dest);
+                    cb(null, dest)
+                    
+                },
+                filename: function (req: Request, file, cb) {
+                    cb(null, `${catId}.jpg` );
+                    index++;
+                }
+            }) }).array('file')(req, res, function (err) {
                 
-            },
-            filename: function (req: Request, file, cb) {
-                cb(null, `${catId}.jpg` );
-                index++;
-            }
-        }) }).array('file')(req, res, function (err) {
-            
-            if (err instanceof multer.MulterError) {
-                return res.status(500).json(err)
-            } else if (err) {
-                return res.status(500).json(err)
-            }
-        return res.status(200).send(req.file)
-    })
+                if (err instanceof multer.MulterError) {
+                    return res.status(500).json(err)
+                } else if (err) {
+                    return res.status(500).json(err)
+                }
+            return res.status(200).send(req.file)
+        })
 
 });
 
 app.post('/api/upload-subcat/:id',
     function(req: Request, res) {
-        let subCatId = req.params.id;
-        let index = 0;
-        multer({ storage: multer.diskStorage({
-            destination: function (req: Request, file, cb) {
-                let dest = `./public/assets/media/cover_img_subcat`;
-                mkdirp.sync(dest);
-                cb(null, dest)
-            },
-            filename: function (req: Request, file, cb) {
-                cb(null, `${subCatId}.jpg` );
-                index++;
-            }
-        }) }).array('file')(req, res, function (err) {
-            if (err instanceof multer.MulterError) {
-                return res.status(500).json(err)
-            } else if (err) {
-                return res.status(500).json(err)
-            }
-        return res.status(200).send(req.file)
-    })
+
+            let subCatId = req.params.id;
+            let index = 0;
+            multer({ storage: multer.diskStorage({
+                destination: function (req: Request, file, cb) {
+                    let dest = `./public/assets/media/cover_img_subcat`;
+                    mkdirp.sync(dest);
+                    cb(null, dest)
+                },
+                filename: function (req: Request, file, cb) {
+                    cb(null, `${subCatId}.jpg` );
+                    index++;
+                }
+            }) }).array('file')(req, res, function (err) {
+                if (err instanceof multer.MulterError) {
+                    return res.status(500).json(err)
+                } else if (err) {
+                    return res.status(500).json(err)
+                }
+            return res.status(200).send(req.file)
+        })
 
 });
 
 app.post('/api/upload-intro-img',
     function(req: Request, res) {
-        multer({ storage: multer.diskStorage({
-            destination: function (req: Request, file, cb) {
 
-                let dest = `./public/assets/media/intro`;
-                mkdirp.sync(dest);
-                cb(null, dest)
+            multer({ storage: multer.diskStorage({
+                destination: function (req: Request, file, cb) {
+
+                    let dest = `./public/assets/media/intro`;
+                    mkdirp.sync(dest);
+                    cb(null, dest)
+                    
+                },
+                filename: function (req: Request, file, cb) {
+                    cb(null, `intro.jpg` );
+                }
+            }) }).single('file')(req, res, function (err) {
                 
-            },
-            filename: function (req: Request, file, cb) {
-                cb(null, `intro.jpg` );
-            }
-        }) }).single('file')(req, res, function (err) {
-            
-            if (err instanceof multer.MulterError) {
-                return res.status(500).json(err)
-            } else if (err) {
-                return res.status(500).json(err)
-            }
-        return res.status(200).send(req.file)
-    })
+                if (err instanceof multer.MulterError) {
+                    return res.status(500).json(err)
+                } else if (err) {
+                    return res.status(500).json(err)
+                }
+            return res.status(200).send(req.file)
+        })
 
 });
 
 app.post('/api/upload-info/:number',
     function(req: Request, res) {
-        let number = req.params.number;
-        multer({ storage: multer.diskStorage({
-            destination: function (req: Request, file, cb) {
-                let dest = `./public/assets/media/info`;
-                mkdirp.sync(dest);
-                cb(null, dest)
-            },
-            filename: function (req: Request, file, cb) {
-                cb(null, `${number}.jpg` );
-            }
-        }) }).single('file')(req, res, function (err) {
-            if (err instanceof multer.MulterError) {
-                return res.status(500).json(err)
-            } else if (err) {
-                return res.status(500).json(err)
-            }
-        return res.status(200).send(req.file)
-    })
+
+            let number = req.params.number;
+            multer({ storage: multer.diskStorage({
+                destination: function (req: Request, file, cb) {
+                    let dest = `./public/assets/media/info`;
+                    mkdirp.sync(dest);
+                    cb(null, dest)
+                },
+                filename: function (req: Request, file, cb) {
+                    cb(null, `${number}.jpg` );
+                }
+            }) }).single('file')(req, res, function (err) {
+                if (err instanceof multer.MulterError) {
+                    return res.status(500).json(err)
+                } else if (err) {
+                    return res.status(500).json(err)
+                }
+            return res.status(200).send(req.file)
+        })
 });
 
 //  ********************************************************

@@ -49,8 +49,8 @@ const EditItemFile = props => {
     const [selectedFiles, setSelectedFiles] = useState([]);
     const [selectedFilesImg, setSelectedFilesImg] = useState([]);
     const [selectedFilesNum, setSelectedFilesNum] = useState(0);
-    const [loaded, setLoaded] = useState(0);
-    const [fileTypes, setFileTypes] = useState([
+    let loaded = 0;
+    const fileTypes = [
         {
             value: 'jpg',
             label: "Image"
@@ -62,8 +62,8 @@ const EditItemFile = props => {
         {
             value: 'mp4',
             label: "Video (MP4)"
-        },
-    ]);
+        }
+    ];
     const [selectedType, setSelectedType] = useState('jpg');
     const [imgSrc, setImgSrc] = useState('/assets/media/default/default.jpg');
     const [inputKey, setInputKey] = useState(Math.random().toString(36));

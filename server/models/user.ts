@@ -1,4 +1,5 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
+
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
@@ -6,9 +7,7 @@ const SALT_I = 10;
 
 require('dotenv').config({path: '../../.env'})
 
-// create schema
-
-const userSchema = mongoose.Schema({
+const userSchema = new mongoose.Schema({
     email:{
         type:String,
         required:true,
@@ -41,15 +40,15 @@ const userSchema = mongoose.Schema({
 
 // pre-save: hash the password before saving
 // middleware uses next
-userSchema.pre('save', function(next){
+userSchema.pre('save', function(next: any){
     let user = this;
 
     if (user.isModified('password')) {
         // hash the password
-        bcrypt.genSalt(SALT_I, function(err, salt){
+        bcrypt.genSalt(SALT_I, function(err: any, salt: any){
             if(err) return next(err);
 
-            bcrypt.hash(user.password, salt, function(err, hash) {
+            bcrypt.hash(user.password, salt, function(err: any, hash: any) {
                 if(err) return next(err);
                 user.password = hash;
                 next();
@@ -62,8 +61,8 @@ userSchema.pre('save', function(next){
 
 
 // create function to compare passwords (to be called in server.js)
-userSchema.methods.comparePassword = function(candidatePassword, cb) {
-    bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
+userSchema.methods.comparePassword = function(candidatePassword: any, cb: any) {
+    bcrypt.compare(candidatePassword, this.password, function(err: any, isMatch: any) {
         if(err) return cb(err);
         cb(null, isMatch);
     })
@@ -71,7 +70,7 @@ userSchema.methods.comparePassword = function(candidatePassword, cb) {
 
 
 // create a method to generate token
-userSchema.methods.generateToken = function(cb) {
+userSchema.methods.generateToken = function(cb: any) {
     let user = this;
     // generate token
     let token = jwt.sign(user._id.toHexString(), process.env.PW); // old: config.SECRET
@@ -79,35 +78,45 @@ userSchema.methods.generateToken = function(cb) {
 
     // save all user info, with token
     user.token = token;
-    user.save(function(err, user) {
+    user.save(function(err: any, user: any) {
         if(err) return cb(err);
         cb(null, user);
     });
 }
 
 // find user by token, check in cookies
-userSchema.statics.findByToken = function(token, cb) {
+// userSchema.statics.findByToken = function(token, cb) {
+//     let user = this;
+
+//     // decode contains the user id
+    
+//     jwt.verify(token, process.env.PW, function(err, decode) { // old: config.SECRET
+//         user.findOne({"_id":decode, "token":token}, function(err, user) {
+//             if(err) return cb(err);
+//             // return all user info if token is correct
+
+//             cb(null, user)
+//         })
+//     })
+// }
+
+userSchema.statics.findByToken = async function(token: any) {
     let user = this;
 
     // decode contains the user id
     
-    jwt.verify(token, process.env.PW, function(err, decode) { // old: config.SECRET
-        user.findOne({"_id":decode, "token":token}, function(err, user) {
-            if(err) return cb(err);
-            // return all user info if token is correct
-
-            cb(null, user)
-        })
-    })
+    const decode = jwt.verify(token, process.env.PW); // old: config.SECRET
+    const foundUser = await user.findOne({"_id":decode, "token":token});
+    if (!foundUser) return null;
+    return foundUser;
 }
 
-
 // delete token on logout
-userSchema.methods.deleteToken = function(token, cb) {
+userSchema.methods.deleteToken = function(token: any, cb: any) {
     let user = this;
 
     // unset the value (to 1)
-    user.update({$unset:{token:1}}, (err, user) => {
+    user.update({$unset:{token:1}}, (err: any, user: any) => {
         if(err) return cb(err);
         cb(null, user);
     })

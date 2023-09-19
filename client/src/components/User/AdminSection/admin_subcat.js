@@ -24,19 +24,19 @@ const AdminSubCat = props => {
 
         }
     });
-    const [allCats, setAllCats] = useState([]);
-    const [allSubcats, setAllSubcats] = useState([]);
+    // const [allCats, setAllCats] = useState([]);
+    // const [allSubcats, setAllSubcats] = useState([]);
     const [selectedCatConverted, setSelectedCatConverted] = useState({
         value: '',
         label: ''
     });
     const [allCatsConverted, setAllCatsConverted] = useState([]);
     const [imgSrc, setImgSrc] = useState(`${FS_PREFIX}/assets/media/cover_img_cat/${props.chosenSubCatInfo._id}.jpg`);
-    const [saved, setSaved] = useState(false);
-    const [catDeleted, setCatDeleted] = useState(false);
-    const [selectedSubFiles, setSelectedSubFiles] = useState([]);
+    const [saved] = useState(false);
+    const [catDeleted] = useState(false);
+    // const [selectedSubFiles, setSelectedSubFiles] = useState([]);
     const [selectedCatsLoaded, setSelectedCatsLoaded] = useState(false);
-    const [subCatIsHidden, setSubCatIsHidden] = useState(null);
+    // const [subCatIsHidden, setSubCatIsHidden] = useState(null);
     const [selectedFile, setSelectedFile] = useState(null);
     
     useEffect(() => {
@@ -66,11 +66,11 @@ const AdminSubCat = props => {
                     }
                 }
             })
-            setAllCats(props.cats);
+            // setAllCats(props.cats);
             setAllCatsConverted(tempAllCatsConverted);
             setSelectedCatConverted(tempSelectedCatConverted);
             setSelectedCatsLoaded(true);
-            setSubCatIsHidden(props.chosenSubCatInfo.subCatIsHidden || false);
+            // setSubCatIsHidden(props.chosenSubCatInfo.subCatIsHidden || false);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props]);
@@ -150,23 +150,23 @@ const AdminSubCat = props => {
         return true;
     }
 
-    const checkFileSize = event => {
-        let files = event.target.files
-        let size = 15000 
-        let err = ""; 
+    // const checkFileSize = event => {
+    //     let files = event.target.files
+    //     let size = 15000 
+    //     let err = ""; 
 
-        for(let x = 0; x<files.length; x++) {
-            if (files[x].size > size) {
-                err += files[x].type+'is too large, please pick a smaller file\n';
-            }
-        };
+    //     for(let x = 0; x<files.length; x++) {
+    //         if (files[x].size > size) {
+    //             err += files[x].type+'is too large, please pick a smaller file\n';
+    //         }
+    //     };
 
-        for(let z = 0; z<err.length; z++) {
-            toast.error(err[z])
-            event.target.value = null
-        }
-        return true;
-    }    
+    //     for(let z = 0; z<err.length; z++) {
+    //         toast.error(err[z])
+    //         event.target.value = null
+    //     }
+    //     return true;
+    // }    
 
     const addDefaultImg = ev => {
         const newImg = '/assets/media/default/default.jpg';

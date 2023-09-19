@@ -6,7 +6,7 @@ import { withRouter } from "react-router-dom";
 
 import { getInfoText, updateInfoText } from '../../../actions';
 
-const mongoose = require('mongoose');
+// import mongoose from 'mongoose';
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
@@ -20,8 +20,8 @@ const AdminInfo = props => {
     const [imgUrls, setImgUrls] = useState([]);
     const [iconImgSrc, setIconImgSrc] = useState(`${FS_PREFIX}/assets/media/info/icons.jpg`);
     const [selectedIconImg, setSelectedIconImg] = useState([]);
-    const [key, setKey] = useState(null);
-    const [imgSrc, setImgSrc] = useState('');
+    // const [key, setKey] = useState(null);
+    // const [imgSrc, setImgSrc] = useState('');
     const [saved, setSaved] = useState(null);
 
 
@@ -52,7 +52,7 @@ const AdminInfo = props => {
                     iconsCaption: tempIconsCaption
                 });
             setImgUrls(tempImgUrls);
-            setKey(tempKey);
+            // setKey(tempKey);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props]);
@@ -67,7 +67,7 @@ const AdminInfo = props => {
             }
             let tempImgSrc = imgUrls;
             tempImgSrc[i] = URL.createObjectURL(event.target.files[0]);
-            setImgSrc(tempImgSrc);
+            // setImgSrc(tempImgSrc);
         }
         if (name) {
             if (maxSelectFile(event) && checkMimeType(event)) {  
@@ -151,23 +151,23 @@ const AdminInfo = props => {
         return true;
     }
 
-    const checkFileSize = event => {
-        let files = event.target.files;
-        let size = 15000;
-        let err = ""; 
+    // const checkFileSize = event => {
+    //     let files = event.target.files;
+    //     let size = 15000;
+    //     let err = ""; 
 
-        for(let x = 0; x<files.length; x++) {
-            if (files[x].size > size) {
-                err += files[x].type+'is too large, please pick a smaller file\n';
-            }
-        };
+    //     for(let x = 0; x<files.length; x++) {
+    //         if (files[x].size > size) {
+    //             err += files[x].type+'is too large, please pick a smaller file\n';
+    //         }
+    //     };
 
-        for(let z = 0; z<err.length; z++) {
-            toast.error(err[z]);
-            event.target.value = null;
-        }
-        return true;
-    }    
+    //     for(let z = 0; z<err.length; z++) {
+    //         toast.error(err[z]);
+    //         event.target.value = null;
+    //     }
+    //     return true;
+    // }    
 
     const addDefaultImg = ev => {
         const newImg = '/assets/media/default/default.jpg';
@@ -199,19 +199,19 @@ const AdminInfo = props => {
         });
     }
 
-    const addSection = () => {
-        setFormdata({
-            ...formdata,
-            sections: [
-                ...formdata.sections,
-                {
-                    heading: '',
-                    paragraph: '',
-                    item_id: mongoose.Types.ObjectId().toHexString()
-                }
-            ]
-        });
-    }
+    // const addSection = () => {
+    //     setFormdata({
+    //         ...formdata,
+    //         sections: [
+    //             ...formdata.sections,
+    //             {
+    //                 heading: '',
+    //                 paragraph: '',
+    //                 item_id: mongoose.Types.ObjectId().toHexString()
+    //             }
+    //         ]
+    //     });
+    // }
 
     const removeSection = index => {
         let tempSections = formdata.sections;

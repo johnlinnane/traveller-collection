@@ -3,13 +3,14 @@
 /.env
 
 /client/node_modules
-/client/build
+/client/build/*
 /client/.env
 /client/.eslintcache
 /client/dist
-/server/public/assets/media
-/server/ssl
-/server/dist
+
+/server/public/assets/media/items/*
+/server/ssl/*
+/server/dist/*
 /server/node_modules
 
 .DS_Store

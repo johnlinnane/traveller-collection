@@ -4,11 +4,12 @@ import fs from 'fs';
 
 const app: Application = express();
 
-const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
-const cors = require('cors');
+import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
+import cors from 'cors';
 
-require('dotenv').config({path: '../.env'})
+import dotenv from 'dotenv';
+dotenv.config({ path: '../.env' });
 
 declare var process : {
     env: {
@@ -27,22 +28,27 @@ app.use(bodyParser.json());
 app.use(cors({
     credentials: true,
     origin: [
-        process.env.CLIENT_PREFIX,
-        process.env.DB, 
-        process.env.CLIENT_BUILD_PREFIX,
-        process.env.FILE_SERVER_PREFIX,
-        process.env.PRODUCTION_PREFIX
+        process.env.CLIENT_PREFIX!,
+        process.env.DB!, 
+        process.env.CLIENT_BUILD_PREFIX!,
+        process.env.FILE_SERVER_PREFIX!,
+        process.env.PRODUCTION_PREFIX!
     ]
 }));
 
-app.use(express.static('public'));
+app.use(express.static('./../public'));
 
 
-// const server = http.createServer(app);
+const key = fs.readFileSync(process.env.SSL_KEY!);
+const cert = fs.readFileSync(process.env.SSL_CERT!);
+
+if (!key || !cert) {
+    throw new Error('Certs not defined.');
+}
 
 const options = {
-    key: fs.readFileSync(process.env.SSL_KEY),
-    cert: fs.readFileSync(process.env.SSL_CERT)
+    key: key,
+    cert: cert
   };
 
 const httpsServer = https.createServer(options, app);
