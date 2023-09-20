@@ -6,7 +6,7 @@ import {Progress} from 'reactstrap';
 
 import { getAllCats } from '../../../actions';
 
-import { checkMimeType } from '../../../utils';
+import { checkMimeType, maxSelectFile } from '../../../utils';
 
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
@@ -37,7 +37,7 @@ const CatEdit = props => {
     const onChangeHandler = (id, event) => {
         let files = event.target.files;
 
-        if (maxSelectFile(event) && checkMimeType(event, ['image/png', 'image/jpeg', 'image/gif'])) {  
+        if (maxSelectFile(event, 1) && checkMimeType(event, ['image/png', 'image/jpeg', 'image/gif'])) {  
             setSelectedFile(files);
         }
     }
@@ -64,16 +64,6 @@ const CatEdit = props => {
             })
         }
         redirectUser(`/category/${props.match.params.id}`)
-    }
-
-    const maxSelectFile = event => {
-        let files = event.target.files; // create file object
-        if (files.length > 6) { 
-            // const msg = 'Only 6 images can be uploaded at a time';
-            event.target.value = null;
-            return false;
-        }
-        return true;
     }
 
     const redirectUser = url => {

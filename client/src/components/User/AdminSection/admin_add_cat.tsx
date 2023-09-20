@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 
 import { addCat } from '../../../actions';
 
-import { checkMimeType } from '../../../utils';
+import { checkMimeType, maxSelectFile } from '../../../utils';
 
 // const mongoose = require('mongoose');
 import mongoose from 'mongoose';
@@ -51,7 +51,7 @@ const AdminAddCat = props => {
 
     const onImgChange = (event) => {
         let files = event.target.files;
-        if (maxSelectFile(event) && checkMimeType(event, ['image/png', 'image/jpeg', 'image/gif'])) {  
+        if (maxSelectFile(event, 1) && checkMimeType(event, ['image/png', 'image/jpeg', 'image/gif'])) {  
             setSelectedFile(files)
         }
         setImgSrc(URL.createObjectURL(event.target.files[0]));
@@ -77,16 +77,6 @@ const AdminAddCat = props => {
             })
         }
         props.history.push(`/admin/${props.index}`);
-    }
-
-    const maxSelectFile = event => {
-        let files = event.target.files;
-        if (files.length > 1) { 
-            // const msg = 'Only 1 image can be uploaded at a time';
-            event.target.value = null;
-            return false;
-        }
-        return true;
     }
 
     const submitForm = (e) => {

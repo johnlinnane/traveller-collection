@@ -6,7 +6,7 @@ import { withRouter } from "react-router-dom";
 
 import { getInfoText, updateInfoText } from '../../../actions';
 
-import { checkMimeType } from '../../../utils';
+import { checkMimeType, maxSelectFile } from '../../../utils';
 
 // import mongoose from 'mongoose';
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
@@ -62,7 +62,7 @@ const AdminInfo = props => {
     const onChangeHandler = (event, i, name) => {
         let files = event.target.files;
         if (i) {
-            if (maxSelectFile(event) && checkMimeType(event, ['image/png', 'image/jpeg', 'image/gif'])) {  
+            if (maxSelectFile(event, 1) && checkMimeType(event, ['image/png', 'image/jpeg', 'image/gif'])) {  
                 let tempSelectedFiles = selectedFiles;
                 tempSelectedFiles[i] = files[0];
                 setSelectedFiles(tempSelectedFiles);
@@ -72,7 +72,7 @@ const AdminInfo = props => {
             // setImgSrc(tempImgSrc);
         }
         if (name) {
-            if (maxSelectFile(event) && checkMimeType(event, ['image/png', 'image/jpeg', 'image/gif'])) {  
+            if (maxSelectFile(event, 1) && checkMimeType(event, ['image/png', 'image/jpeg', 'image/gif'])) {  
                 let tempSelectedIconImg = selectedIconImg;
                 tempSelectedIconImg = files[0];
                 setSelectedIconImg(tempSelectedIconImg);
@@ -125,16 +125,6 @@ const AdminInfo = props => {
                 toast.error('Upload fail')
             })
         }
-    }
-
-    const maxSelectFile = event => {
-        let files = event.target.files; 
-        if (files.length > 1) { 
-            // const msg = 'Only 1 image can be uploaded at a time';
-            event.target.value = null;
-            return false;
-        }
-        return true;
     }
 
     const addDefaultImg = ev => {

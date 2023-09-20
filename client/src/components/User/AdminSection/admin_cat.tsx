@@ -8,7 +8,7 @@ import 'react-tabs/style/react-tabs.css';
 import { getAllCats  } from '../../../actions';
 import { deleteCat, updateCat }  from '../../../actions';
 
-import { checkMimeType } from '../../../utils';
+import { checkMimeType, maxSelectFile } from '../../../utils';
 
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
@@ -59,7 +59,7 @@ const AdminCat = props => {
 
     const onImgChange = (event) => {
         let files = event.target.files;
-        if (maxSelectFile(event) && checkMimeType(event, ['image/png', 'image/jpeg', 'image/gif'])) {  
+        if (maxSelectFile(event, 1) && checkMimeType(event, ['image/png', 'image/jpeg', 'image/gif'])) {  
             setSelectedFile(files);
         }
         setImgSrc(URL.createObjectURL(event.target.files[0]));
@@ -88,16 +88,6 @@ const AdminCat = props => {
         }
         setImgSrc(imgSrc + '?' + Math.random());
         props.history.push(`/admin/${props.index}`);
-    }
-
-    const maxSelectFile=(event)=>{
-        let files = event.target.files; // create file object
-        if (files.length > 1) { 
-            // const msg = 'Only 1 image can be uploaded at a time'
-            event.target.value = null;
-            return false;
-        }
-        return true;
     }
 
     const handleCatInput = (event, field) => {

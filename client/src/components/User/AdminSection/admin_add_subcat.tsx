@@ -9,7 +9,7 @@ import Select from 'react-select';
 import { getAllCats } from '../../../actions';
 import { addSubcat } from '../../../actions';
 
-import { checkMimeType } from '../../../utils';
+import { checkMimeType, maxSelectFile } from '../../../utils';
 
 import mongoose from 'mongoose';
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
@@ -89,7 +89,7 @@ const AdminAddSubCat = props => {
 
     const onImgChange = (event) => {
         let files = event.target.files;
-        if (maxSelectFile(event) && checkMimeType(event, ['image/png', 'image/jpeg', 'image/gif'])) {  
+        if (maxSelectFile(event, 1) && checkMimeType(event, ['image/png', 'image/jpeg', 'image/gif'])) {  
             setSelectedFile(files);
         }
         setImgSrc(URL.createObjectURL(event.target.files[0]));
@@ -118,32 +118,6 @@ const AdminAddSubCat = props => {
         }
         props.history.push(`/admin/${props.index}`);
     }
-
-    const maxSelectFile = event => {
-        let files = event.target.files;
-        if (files.length > 1) { 
-            // const msg = 'Only 1 image can be uploaded at a time';
-            event.target.value = null;
-            return false;
-        }
-        return true;
-    }
-
-    // const checkFileSize = event => {
-    //     let files = event.target.files
-    //     let size = 15000 
-    //     let err = ""; 
-    //     for(let x = 0; x<files.length; x++) {
-    //         if (files[x].size > size) {
-    //             err += files[x].type+'is too large, please pick a smaller file\n';
-    //         }
-    //     };
-    //     for(let z = 0; z<err.length; z++) {
-    //         toast.error(err[z])
-    //         event.target.value = null
-    //     }
-    //     return true;
-    // }    
 
     const submitForm = (e) => {
         e.preventDefault();

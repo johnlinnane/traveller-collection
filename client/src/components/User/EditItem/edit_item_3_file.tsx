@@ -7,7 +7,7 @@ import {Progress} from 'reactstrap';
 import Select from 'react-select';
 import { getItemById, getPendItemById, updateItem, updatePendItem, getFilesFolder } from '../../../actions';
 
-import { checkMimeType } from '../../../utils';
+import { checkMimeType, checkFileSize, maxSelectFile } from '../../../utils';
 
 import config from "../../../config";
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
@@ -137,7 +137,11 @@ const EditItemFile = props => {
             tempSelectedFilesImg.push(URL.createObjectURL(file[0]));
         }
 
-        if (maxSelectFile(event) && checkMimeType(event, ['image/png', 'image/jpeg', 'image/gif']) && checkFileSize(event)) {  
+        if (
+            maxSelectFile(event, 1) &&
+            checkMimeType(event, ['image/png', 'image/jpeg', 'image/gif']) &&
+            checkFileSize(event, 15000)
+        ) {  
             setSelectedFilesNum(selectedFilesNum + 1);
             setSelectedFiles(tempSelectedFiles);
             setSelectedFilesImg(tempSelectedFilesImg);
@@ -177,34 +181,6 @@ const EditItemFile = props => {
             props.history.push(`/items/${formdata._id}`)
         }, 1000)
     }
-
-    const maxSelectFile = event => {
-        let files = event.target.files;
-        if (files.length > 6) { 
-            // const msg = 'Only 6 images can be uploaded at a time';
-            event.target.value = null;
-            return false;
-        }
-        return true;
-    }
-
-    const checkFileSize = event => {
-        let files = event.target.files
-        let size = 15000 
-        let err = ""; 
-
-        for(let x = 0; x<files.length; x++) {
-            if (files[x].size > size) {
-                err += files[x].type+'is too large, please pick a smaller file\n';
-            }
-        };
-
-        for(let z = 0; z<err.length; z++) {
-            toast.error(err[z])
-            event.target.value = null
-        }
-        return true;
-    }    
 
     const deleteAllMedia = () => {
         let fileData =  {
