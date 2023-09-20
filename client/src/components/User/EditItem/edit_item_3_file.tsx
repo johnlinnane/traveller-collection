@@ -6,6 +6,9 @@ import { toast } from 'react-toastify';
 import {Progress} from 'reactstrap';
 import Select from 'react-select';
 import { getItemById, getPendItemById, updateItem, updatePendItem, getFilesFolder } from '../../../actions';
+
+import { checkMimeType } from '../../../utils';
+
 import config from "../../../config";
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
@@ -134,7 +137,7 @@ const EditItemFile = props => {
             tempSelectedFilesImg.push(URL.createObjectURL(file[0]));
         }
 
-        if (maxSelectFile(event) && checkMimeType(event) && checkFileSize(event)) {  
+        if (maxSelectFile(event) && checkMimeType(event, ['image/png', 'image/jpeg', 'image/gif']) && checkFileSize(event)) {  
             setSelectedFilesNum(selectedFilesNum + 1);
             setSelectedFiles(tempSelectedFiles);
             setSelectedFilesImg(tempSelectedFilesImg);
@@ -181,23 +184,6 @@ const EditItemFile = props => {
             // const msg = 'Only 6 images can be uploaded at a time';
             event.target.value = null;
             return false;
-        }
-        return true;
-    }
-
-    const checkMimeType = event => {
-        let files = event.target.files 
-        let err = ''
-        const types = ['image/png', 'image/jpg', 'image/jpeg', 'image/gif', 'application/pdf', 'video/mp4', 'video/quicktime']
-        for(let x = 0; x<files.length; x++) {
-            if (types.every(type => files[x].type !== type)) {
-                err += files[x].type+' is not a supported format\n';
-            }
-        };
-
-        for(let z = 0; z<err.length; z++) { // loop create toast massage
-            event.target.value = null 
-            toast.error(err[z])
         }
         return true;
     }

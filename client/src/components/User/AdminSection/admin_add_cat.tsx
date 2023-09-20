@@ -1,52 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from "react-router-dom";
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import Select from 'react-select';
 
+import { addCat } from '../../../actions';
 
-import { getAllCats } from '../../../actions';
-import { addSubcat } from '../../../actions';
+import { checkMimeType } from '../../../utils';
 
+// const mongoose = require('mongoose');
 import mongoose from 'mongoose';
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 
-const AdminAddSubCat = props => {
+const AdminAddCat = props => {
 
-    const [subcatdata, setSubcatdata] = useState({
+    const [catdata, setCatdata] = useState({
         _id: mongoose.Types.ObjectId().toHexString(),
         title: '',
-        description: '',
-        parent_cat: ''
+        description: ''
     });
     const [saved, setSaved] = useState(false);
-    const [allCatsConverted, setAllCatsConverted] = useState([]);
-    const [convertedCatsLoaded, setConvertedCatsLoaded] = useState(false);
     const [imgSrc, setImgSrc] = useState('/assets/media/default/default.jpg');
-    // const [loaded, setLoaded] = useState(null);
     const [selectedFile, setSelectedFile] = useState(null);
-
-
-    useEffect(() => {
-        props.dispatch(getAllCats());
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    useEffect(() => {
-        if (props.cats && props.cats.length) {
-            let tempAllCatsConverted = [];
-            props.cats.forEach( cat => {
-                tempAllCatsConverted.push({
-                    value: cat._id,
-                    label: cat.title
-                })
-            })
-            setAllCatsConverted(tempAllCatsConverted);
-            setConvertedCatsLoaded(true);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [props]);
+    // const [loaded, setLoaded] = useState(null);
 
 
     const addDefaultImg = (ev) => {
@@ -61,47 +37,33 @@ const AdminAddSubCat = props => {
     }
 
     const handleInput = (event, field, i) => {
-
-        const newSubcatdata = {
-            ...subcatdata
+        const newCatdata = {
+            ...catdata
         }
-
         if (field === 'title') {
-            newSubcatdata.title = event.target.value;
-
+            newCatdata.title = event.target.value;
         } 
-        
         if (field === 'description') {
-            newSubcatdata.description = event.target.value;
+            newCatdata.description = event.target.value;
         } 
-
-        setSubcatdata(newSubcatdata);
-    }
-
-
-    const handleCatChange = (newValue) => {
-        let tempSubcatdata = subcatdata;
-        tempSubcatdata.parent_cat = newValue.value
-        setSubcatdata(tempSubcatdata);
+        setCatdata(newCatdata);
     }
 
     const onImgChange = (event) => {
         let files = event.target.files;
-        if (maxSelectFile(event) && checkMimeType(event) && checkMimeType(event)) {  
-            setSelectedFile(files);
+        if (maxSelectFile(event) && checkMimeType(event, ['image/png', 'image/jpeg', 'image/gif'])) {  
+            setSelectedFile(files)
         }
         setImgSrc(URL.createObjectURL(event.target.files[0]));
     }
 
-
     const onSubmitHandler = () => {
         const data = new FormData();
-        
         if (selectedFile) {
             for(let x = 0; x < selectedFile.length; x++) {
                 data.append('file', selectedFile[x])
             }
-            axios.post(`${API_PREFIX}/upload-subcat/${subcatdata._id}`, data, { 
+            axios.post(`${API_PREFIX}/upload-cat/${catdata._id}`, data, { 
                 // onUploadProgress: ProgressEvent => {
                 //     setLoaded((ProgressEvent.loaded / ProgressEvent.total*100));
                 // }
@@ -127,44 +89,15 @@ const AdminAddSubCat = props => {
         return true;
     }
 
-    const checkMimeType = event => {
-        let files = event.target.files 
-        let err = ''
-        const types = ['image/png', 'image/jpeg', 'image/gif']
-        for(let x = 0; x<files.length; x++) {
-            if (types.every(type => files[x].type !== type)) {
-                err += files[x].type+' is not a supported format\n';
-            }
-        };
-        for(let z = 0; z<err.length; z++) {
-            event.target.value = null 
-            toast.error(err[z])
-        }
-        return true;
-    }
-
-    // const checkFileSize = event => {
-    //     let files = event.target.files
-    //     let size = 15000 
-    //     let err = ""; 
-    //     for(let x = 0; x<files.length; x++) {
-    //         if (files[x].size > size) {
-    //             err += files[x].type+'is too large, please pick a smaller file\n';
-    //         }
-    //     };
-    //     for(let z = 0; z<err.length; z++) {
-    //         toast.error(err[z])
-    //         event.target.value = null
-    //     }
-    //     return true;
-    // }    
-
     const submitForm = (e) => {
         e.preventDefault();
-        props.dispatch(addSubcat({...subcatdata}));
+        props.dispatch(addCat({
+            ...catdata,
+        }));
         onSubmitHandler();
         setSaved(true);
         setTimeout(() => {
+            // props.history.push(`/user/edit-item-sel/${props.items.newitem.itemId}`);
             props.history.push(`/admin/0`);
         }, 2000)
     }
@@ -183,7 +116,7 @@ const AdminAddSubCat = props => {
                                 <input
                                     type="text"
                                     placeholder={"Enter title"}
-                                    defaultValue={subcatdata.title} 
+                                    defaultValue={catdata.title} 
                                     onChange={(event) => handleInput(event, 'title')}
                                 />
                             </td>
@@ -196,7 +129,7 @@ const AdminAddSubCat = props => {
                                 <textarea
                                     type="text"
                                     placeholder="Enter category description"
-                                    defaultValue={subcatdata.description} 
+                                    defaultValue={catdata.description} 
                                     onChange={(event) => handleInput(event, 'description')}
                                     rows={6}
                                 />
@@ -204,31 +137,11 @@ const AdminAddSubCat = props => {
                         </tr>
                         <tr>
                             <td>
-                                <h3>Parent Category</h3>
-                            </td>
-                            {convertedCatsLoaded ?
-                                    <td>
-                                        <Select
-                                            // key={`cat_${props.items.item._id}`}
-                                            // defaultValue={null}
-                                            // isMulti
-                                            // name="colors"
-                                            options={allCatsConverted}
-                                            // className="basic-multi-select"
-                                            className="basic-single"
-                                            classNamePrefix="select"
-                                            onChange={handleCatChange}
-                                        />
-                                    </td>
-                            : null}
-                        </tr>
-                        <tr>
-                            <td>
                                 <img 
                                     className="change_cat_img" 
                                     src={imgSrc} 
                                     onError={addDefaultImg}
-                                    alt='parent category cover'
+                                    alt='cat cover'
                                 />
                             </td>
                             <td>
@@ -254,7 +167,7 @@ const AdminAddSubCat = props => {
                 </form>
 
                 {saved ?
-                    <p className="message">Sucessfully added new subcategory!</p>
+                    <p className="message">Sucessfully added new category!</p>
                 : null}
             </div>
         </div>
@@ -263,8 +176,8 @@ const AdminAddSubCat = props => {
 
 function mapStateToProps(state) {
     return {
-        cats:state.cats.cats
+        // xxx: state.xxx.xxxx
     }
 }
 
-export default withRouter(connect(mapStateToProps)(AdminAddSubCat));
+export default withRouter(connect(mapStateToProps)(AdminAddCat));

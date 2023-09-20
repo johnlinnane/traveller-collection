@@ -53,8 +53,6 @@ const options = {
 
 const httpsServer = https.createServer(options, app);
 
-// server.listen(4000);
-
 const port = 4000;
 
 httpsServer.listen(port, () => {

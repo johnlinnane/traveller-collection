@@ -6,6 +6,8 @@ import { withRouter } from "react-router-dom";
 
 import { getInfoText, updateInfoText } from '../../../actions';
 
+import { checkMimeType } from '../../../utils';
+
 // import mongoose from 'mongoose';
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
@@ -60,7 +62,7 @@ const AdminInfo = props => {
     const onChangeHandler = (event, i, name) => {
         let files = event.target.files;
         if (i) {
-            if (maxSelectFile(event) && checkMimeType(event)) {  
+            if (maxSelectFile(event) && checkMimeType(event, ['image/png', 'image/jpeg', 'image/gif'])) {  
                 let tempSelectedFiles = selectedFiles;
                 tempSelectedFiles[i] = files[0];
                 setSelectedFiles(tempSelectedFiles);
@@ -70,7 +72,7 @@ const AdminInfo = props => {
             // setImgSrc(tempImgSrc);
         }
         if (name) {
-            if (maxSelectFile(event) && checkMimeType(event)) {  
+            if (maxSelectFile(event) && checkMimeType(event, ['image/png', 'image/jpeg', 'image/gif'])) {  
                 let tempSelectedIconImg = selectedIconImg;
                 tempSelectedIconImg = files[0];
                 setSelectedIconImg(tempSelectedIconImg);
@@ -134,40 +136,6 @@ const AdminInfo = props => {
         }
         return true;
     }
-
-    const checkMimeType = event => {
-        let files = event.target.files;
-        let err = '';
-        const types = ['image/png', 'image/jpeg', 'image/gif'];
-        for(let x = 0; x < files.length; x++) {
-            if (types.every(type => files[x].type !== type)) {
-                err += files[x].type+' is not a supported format\n';
-            }
-        };
-        for(let z = 0; z<err.length; z++) { 
-            event.target.value = null;
-            toast.error(err[z]);
-        }
-        return true;
-    }
-
-    // const checkFileSize = event => {
-    //     let files = event.target.files;
-    //     let size = 15000;
-    //     let err = ""; 
-
-    //     for(let x = 0; x<files.length; x++) {
-    //         if (files[x].size > size) {
-    //             err += files[x].type+'is too large, please pick a smaller file\n';
-    //         }
-    //     };
-
-    //     for(let z = 0; z<err.length; z++) {
-    //         toast.error(err[z]);
-    //         event.target.value = null;
-    //     }
-    //     return true;
-    // }    
 
     const addDefaultImg = ev => {
         const newImg = '/assets/media/default/default.jpg';

@@ -410,24 +410,23 @@ app.post('/api/register', async (req: Request, res) => {
 app.post('/api/login', async (req: Request, res) => {
     try {
         const data = await User.findOne({'email':req.body.email});
-        
+        console.log('data: ', data);
         if(!data) {
             return res.json({isAuth:false, message:'Incorrect username or password'})
         };
-        data.comparePassword(req.body.password, (err, isMatch) => {
+        data.comparePassword(req.body.password, async (err, isMatch) => {
             if(!isMatch) {
                 return res.json({
                     isAuth:false,
                     message:'Incorrect username or password'
                 })
             };
-            data.generateToken((err, data) => {
-                if(err) return res.status(400).send(err);
-                res.cookie('tc_auth_cookie', data.token, { sameSite: 'lax', secure: false }).send({
-                    isAuth:true,
-                    id:data._id,
-                    email:data.email
-                });
+            const savedUser = await data.generateToken();
+            if(!savedUser) return res.status(400).send(err);
+            res.cookie('tc_auth_cookie', savedUser.token, { sameSite: 'lax', secure: false }).send({
+                isAuth:true,
+                id:savedUser._id,
+                email:savedUser.email
             });
         });
     } catch (err) {
@@ -685,7 +684,7 @@ app.post('/api/get-files-folder', async (req: Request, res) => {
         let fullPath = query + req.body.folder
         fs.readdir(fullPath, {withFileTypes: true}, (err, files) => {
             if (err) {
-                console.log('Error finding files in folder / no files in folder')
+                // no files in folder
             } else if (files.length && files[0].name === '.DS_Store') {
                 files.shift()
             }

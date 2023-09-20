@@ -38,13 +38,10 @@ const userSchema = new mongoose.Schema({
 })
 
 
-// pre-save: hash the password before saving
-// middleware uses next
 userSchema.pre('save', function(next: any){
     let user = this;
 
     if (user.isModified('password')) {
-        // hash the password
         bcrypt.genSalt(SALT_I, function(err: any, salt: any){
             if(err) return next(err);
 
@@ -60,7 +57,6 @@ userSchema.pre('save', function(next: any){
 })
 
 
-// create function to compare passwords (to be called in server.js)
 userSchema.methods.comparePassword = function(candidatePassword: any, cb: any) {
     bcrypt.compare(candidatePassword, this.password, function(err: any, isMatch: any) {
         if(err) return cb(err);
@@ -69,60 +65,37 @@ userSchema.methods.comparePassword = function(candidatePassword: any, cb: any) {
 }
 
 
-// create a method to generate token
-userSchema.methods.generateToken = function(cb: any) {
+userSchema.methods.generateToken = async function(cb: any) {
     let user = this;
-    // generate token
-    let token = jwt.sign(user._id.toHexString(), process.env.PW); // old: config.SECRET
-    
-
-    // save all user info, with token
+    let token = jwt.sign(user._id.toHexString(), process.env.PW);
     user.token = token;
-    user.save(function(err: any, user: any) {
-        if(err) return cb(err);
-        cb(null, user);
-    });
-}
-
-// find user by token, check in cookies
-// userSchema.statics.findByToken = function(token, cb) {
-//     let user = this;
-
-//     // decode contains the user id
     
-//     jwt.verify(token, process.env.PW, function(err, decode) { // old: config.SECRET
-//         user.findOne({"_id":decode, "token":token}, function(err, user) {
-//             if(err) return cb(err);
-//             // return all user info if token is correct
-
-//             cb(null, user)
-//         })
-//     })
-// }
+    try {
+        const savedUser = await user.save();
+        if(!savedUser) {
+            throw new Error('Not found');
+        }
+        return savedUser;
+    } catch (err) {
+        return err;
+    }
+}
 
 userSchema.statics.findByToken = async function(token: any) {
     let user = this;
-
-    // decode contains the user id
-    
-    const decode = jwt.verify(token, process.env.PW); // old: config.SECRET
+    const decode = jwt.verify(token, process.env.PW);
     const foundUser = await user.findOne({"_id":decode, "token":token});
     if (!foundUser) return null;
     return foundUser;
 }
 
-// delete token on logout
 userSchema.methods.deleteToken = function(token: any, cb: any) {
     let user = this;
-
-    // unset the value (to 1)
     user.update({$unset:{token:1}}, (err: any, user: any) => {
         if(err) return cb(err);
         cb(null, user);
     })
 }
-
-
 
 const User = mongoose.model('User', userSchema);
 
