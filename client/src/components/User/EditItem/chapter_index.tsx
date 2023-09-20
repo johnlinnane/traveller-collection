@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { getItemById, updateItem, addItem } from '../../../actions';
+import { getItemById, updateItem, createItem } from '../../../actions';
 import config from "../../../config";
 
 // const mongoose = require('mongoose');
@@ -155,7 +155,7 @@ const ChapterIndex = props => {
             },
             location: ''
         }
-        props.dispatch(addItem(chapterItem))
+        props.dispatch(createItem(chapterItem))
         // setTimeout(() => {
         //     props.history.push(`/user/edit-item/${chapterItem._id}`)
         // }, 1000)

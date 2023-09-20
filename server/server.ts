@@ -375,7 +375,7 @@ app.post('/api/create-item', async (req: Request, res) => {
     }
 })
 
-app.post('/api/create-item-pending', async (req: Request, res) => {
+app.post('/api/create-pending-item', async (req: Request, res) => {
     try {
         const pendingItem = new PendingItem( req.body );
         const data = await pendingItem.save();

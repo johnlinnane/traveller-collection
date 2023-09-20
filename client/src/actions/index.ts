@@ -192,7 +192,7 @@ export function clearItemWithContributor() {
     }
 }
 
-export function addItem(item) {
+export function createItem(item) {
     const request = axios.post(`${API_PREFIX}/create-item`, item)
                         .then(response => response.data);
     return {
@@ -201,8 +201,8 @@ export function addItem(item) {
     }
 }
 
-export function addPendingItem(item) {
-    const request = axios.post(`${API_PREFIX}/create-item-pending`, item)
+export function createPendingItem(item) {
+    const request = axios.post(`${API_PREFIX}/create-pending-item`, item)
                         .then(response => response.data);
     return {
         type: 'CREATE_PEND_ITEM',

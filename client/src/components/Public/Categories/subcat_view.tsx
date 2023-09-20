@@ -87,7 +87,7 @@ const SubcatView: React.FC = (props: any) => {
         //     subcategory_ref : [this.state.navInfo.subCatId],
         //     category_ref: [this.state.navInfo.catId]
         // }
-        // this.props.dispatch(addItem(item))
+        // this.props.dispatch(createItem(item))
         setTimeout(() => {
             // this.props.history.push(`/user/edit-item/${tempNewItemId}`);
             props.history.push(`/add_item`);

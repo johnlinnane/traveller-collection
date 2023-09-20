@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Map, TileLayer, Marker } from 'react-leaflet'
 import '../../../../node_modules/react-toastify/dist/ReactToastify.css';
 import config from "../../../config";
-import { addItem, addPendingItem, clearNewItem } from '../../../actions';
+import { createItem, createPendingItem, clearNewItem } from '../../../actions';
 
 const AddItem = props => {
 
@@ -97,12 +97,12 @@ const AddItem = props => {
     const submitForm = e => {
         e.preventDefault();
         if (props.user.login.isAuth) {
-            props.dispatch(addItem({
+            props.dispatch(createItem({
                     ...formdata,
                     ownerId:props.user.login.id
             }));
         } else {
-            props.dispatch(addPendingItem({
+            props.dispatch(createPendingItem({
                 ...formdata,
                 ownerId:'guest'
             }))
