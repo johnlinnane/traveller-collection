@@ -124,7 +124,6 @@ const AdminCat = props => {
         props.dispatch(deleteCat(id));
         setCatDeleted(true);
         setTimeout(() => {
-            // props.history.push(`/user/edit-item-sel/${props.items.newitem.itemId}`);
             props.history.push(`/admin/0`);
         }, 1000)
     }

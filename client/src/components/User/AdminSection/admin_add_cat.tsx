@@ -87,7 +87,6 @@ const AdminAddCat = props => {
         onSubmitHandler();
         setSaved(true);
         setTimeout(() => {
-            // props.history.push(`/user/edit-item-sel/${props.items.newitem.itemId}`);
             props.history.push(`/admin/0`);
         }, 2000)
     }
