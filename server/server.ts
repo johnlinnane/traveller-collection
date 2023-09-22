@@ -77,10 +77,9 @@ app.get('/api/logout', authMiddleware, async (req: Request, res) => {
     }
 }) 
 
-// * * * * * * * * * * * * * * * * * * * * getItemById
 app.get('/api/get-item-by-id', async (req: Request, res: Response) => {
     try {
-        let id = req.query.id;
+        let id: number = req.query.id;
         const data = await Item.findById(id);
         if(!data) {
             throw new Error('Not found');
@@ -91,7 +90,6 @@ app.get('/api/get-item-by-id', async (req: Request, res: Response) => {
     }
 })
 
-//////// * * * * * * * * * * * * * * * * * * * * getPendItemById
 app.get('/api/get-pend-item-by-id', async (req: Request, res: Response) => {
     try {
         let id = req.query.id;
@@ -105,7 +103,6 @@ app.get('/api/get-pend-item-by-id', async (req: Request, res: Response) => {
     }
 })
 
-// * * * * * * * * * * * * * * * * * * * * getParentPdf
 app.get('/api/get-parent-pdf', async (req: Request, res: Response) => {
     try {
         let id = req.query.id;
@@ -119,30 +116,26 @@ app.get('/api/get-parent-pdf', async (req: Request, res: Response) => {
     }
 })
 
-// * * * * * * * * * * * * * * * * * * * * searchItem // unused???
-app.get('/api/search-item', async (req: Request, res: Response) => {
-    try {
-        let queryKey = req.query.key;
-        let queryValue = req.query.value;
+// app.get('/api/search-item', async (req: Request, res: Response) => {
+//     try {
+//         let queryKey = req.query.key;
+//         let queryValue = req.query.value;
 
-        let query = {};
-        query[queryKey] = queryValue;
+//         let query = {};
+//         query[queryKey] = queryValue;
 
-        const data = await Item.find(query);
-        if(!data) {
-            throw new Error('Not found');
-        }
-        res.send(data);
-    } catch (err) {
-        res.status(400).send(err);
-    }
-})
+//         const data = await Item.find(query);
+//         if(!data) {
+//             throw new Error('Not found');
+//         }
+//         res.send(data);
+//     } catch (err) {
+//         res.status(400).send(err);
+//     }
+// })
 
-
-// * * * * * * * * * * * * * * * * * * * * get all items TEST
 app.get('/api/all-items', async (req: Request, res) => {
     try {
-
         // empty object returns all
         const data = await Item.find({});
         if(!data) {
@@ -152,11 +145,8 @@ app.get('/api/all-items', async (req: Request, res) => {
     } catch (err) {
         res.status(400).send(err);
     }
-
 })
 
-
-/////////////////// get all pend items
 app.get('/api/all-pend-items', async (req: Request, res) => {
     try {
 
@@ -171,10 +161,8 @@ app.get('/api/all-pend-items', async (req: Request, res) => {
     }
 })
 
-// * * * * * * * * * * * * * * * * * * * * get multiple items
 app.get('/api/items', async (req: Request, res: Response) => {
     try {
-
         // query should look like this: localhost:3002/api/items?skip=3?limit=2&order=asc
         let skip = parseInt(req.query.skip);
         let limit = parseInt(req.query.limit);
@@ -213,8 +201,6 @@ app.get('/api/user-items', async (req: Request, res) => {
         res.status(400).send(err);
     }
 })
-
-
 
 app.get('/api/get-all-categories', async (req: Request, res: Response) => {
     try {
@@ -307,7 +293,6 @@ app.get('/api/get-cat-by-id', async (req: Request, res) => {
 	}
 });
 
-
 app.get('/api/get-subcat-by-id', async (req: Request, res) => {
     try {
         let value = req.query.subcatid;
@@ -363,6 +348,7 @@ app.post('/api/create-item', async (req: Request, res) => {
     try {
         const item = new Item( req.body );
         const data = await item.save();
+        
         if(!data) {
             throw new Error('Not found');
         }
@@ -675,11 +661,9 @@ app.post('/api/delete-file', function(req: Request, res) {
             if (err) throw err;
             res.send('File deleted!');
         })
-
 });
 
 app.post('/api/get-files-folder', async (req: Request, res) => {
-
         let query = './public/assets/media';
         let fullPath = query + req.body.folder
         fs.readdir(fullPath, {withFileTypes: true}, (err, files) => {
@@ -693,9 +677,7 @@ app.post('/api/get-files-folder', async (req: Request, res) => {
 });
 
 app.post('/api/delete-dir', function(req: Request, res) {
-
         const baseUrl = './public/assets/media';
-
         let section = req.body.section;
         let id = req.body.id;
         let dir = path.resolve(baseUrl, section, id)
@@ -738,9 +720,6 @@ app.post('/api/delete-dir', function(req: Request, res) {
         }
         return res.status(200)
 })
-
-
-
 
 // // get number of files
 // app.post('/get-number-files', function(req: Request, res) {
@@ -880,7 +859,6 @@ app.post('/api/upload-subcat/:id',
                 }
             return res.status(200).send(req.file)
         })
-
 });
 
 app.post('/api/upload-intro-img',
@@ -906,7 +884,6 @@ app.post('/api/upload-intro-img',
                 }
             return res.status(200).send(req.file)
         })
-
 });
 
 app.post('/api/upload-info/:number',
