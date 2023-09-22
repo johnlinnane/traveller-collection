@@ -54,7 +54,7 @@ app.use(cors({
 
 // **************************** GET ****************************
 
-app.get('/api/auth-get-user-creds', authMiddleware, async (req: Request, res) => {
+app.get('/api/auth-get-user-creds', authMiddleware, async (req: Request, res: Response) => {
     try {
         res.json({
             isAuth:true,
@@ -68,7 +68,7 @@ app.get('/api/auth-get-user-creds', authMiddleware, async (req: Request, res) =>
     }
 })
 
-app.get('/api/logout', authMiddleware, async (req: Request, res) => {
+app.get('/api/logout', authMiddleware, async (req: Request, res: Response) => {
     try {
         req.user.deleteToken(req.token);
         res.sendStatus(200)
@@ -134,7 +134,7 @@ app.get('/api/get-parent-pdf', async (req: Request, res: Response) => {
 //     }
 // })
 
-app.get('/api/all-items', async (req: Request, res) => {
+app.get('/api/all-items', async (req: Request, res: response) => {
     try {
         // empty object returns all
         const data = await Item.find({});
@@ -147,7 +147,7 @@ app.get('/api/all-items', async (req: Request, res) => {
     }
 })
 
-app.get('/api/all-pend-items', async (req: Request, res) => {
+app.get('/api/all-pend-items', async (req: Request, res: response) => {
     try {
 
         // empty object returns all
@@ -178,7 +178,7 @@ app.get('/api/items', async (req: Request, res: Response) => {
     }
 })
 
-app.get('/api/users', async (req: Request, res) => {
+app.get('/api/users', async (req: Request, res: Response) => {
     try {
         const data = await User.find({});
         if(!data) {
@@ -190,7 +190,7 @@ app.get('/api/users', async (req: Request, res) => {
     }
 })
 
-app.get('/api/user-items', async (req: Request, res) => {
+app.get('/api/user-items', async (req: Request, res: Response) => {
     try {
         const data = await Item.find({ownerId:req.query.user}).exec();
         if(!data) {
@@ -214,7 +214,7 @@ app.get('/api/get-all-categories', async (req: Request, res: Response) => {
     }
 });
 
-app.get('/api/get-all-subcategories', async (req: Request, res) => {
+app.get('/api/get-all-subcategories', async (req: Request, res: Response) => {
     try {
         const data = await SubCat.find({});
         if(!data) {
@@ -226,7 +226,7 @@ app.get('/api/get-all-subcategories', async (req: Request, res) => {
     }
 })
 
-app.get('/api/get-items-by-cat', async (req: Request, res) => {
+app.get('/api/get-items-by-cat', async (req: Request, res: Response) => {
     try {
         let value = req.query.value;
         const data = await Item.find({ category_ref:value }).exec();
@@ -280,7 +280,7 @@ app.get('/api/get-items-by-subcat', async (req: Request, res: Response) => {
     }
 })
 
-app.get('/api/get-cat-by-id', async (req: Request, res) => {
+app.get('/api/get-cat-by-id', async (req: Request, res: Response) => {
 	try {
     	let value = req.query.id;
     	const cat = await Cat.findOne({ _id: value }).exec();
@@ -293,7 +293,7 @@ app.get('/api/get-cat-by-id', async (req: Request, res) => {
 	}
 });
 
-app.get('/api/get-subcat-by-id', async (req: Request, res) => {
+app.get('/api/get-subcat-by-id', async (req: Request, res: Response) => {
     try {
         let value = req.query.subcatid;
         const data = await SubCat.find({ _id:value }).exec();
@@ -344,7 +344,7 @@ app.get('/api/get-items-with-coords', async (req: Request, res: Response) => {
 
 // ********************* POST ****************************
 
-app.post('/api/create-item', async (req: Request, res) => {
+app.post('/api/create-item', async (req: Request, res: Response) => {
     try {
         const item = new Item( req.body );
         const data = await item.save();
@@ -361,7 +361,7 @@ app.post('/api/create-item', async (req: Request, res) => {
     }
 })
 
-app.post('/api/create-pending-item', async (req: Request, res) => {
+app.post('/api/create-pending-item', async (req: Request, res: Response) => {
     try {
         const pendingItem = new PendingItem( req.body );
         const data = await pendingItem.save();
@@ -377,7 +377,7 @@ app.post('/api/create-pending-item', async (req: Request, res) => {
     }
 })
 
-app.post('/api/register', async (req: Request, res) => {
+app.post('/api/register', async (req: Request, res: Response) => {
     try {
         const user = new User(req.body);
         const data = await user.save();
@@ -393,7 +393,7 @@ app.post('/api/register', async (req: Request, res) => {
     }
 })
 
-app.post('/api/login', async (req: Request, res) => {
+app.post('/api/login', async (req: Request, res: Response) => {
     try {
         const data = await User.findOne({'email':req.body.email});
         console.log('data: ', data);
@@ -420,7 +420,7 @@ app.post('/api/login', async (req: Request, res) => {
     }
 });
 
-app.post('/api/add-cat', async (req: Request, res) => {
+app.post('/api/add-cat', async (req: Request, res: Response) => {
     try {
         const cat = new Cat( req.body );
         const data = await cat.save();
@@ -436,7 +436,7 @@ app.post('/api/add-cat', async (req: Request, res) => {
     }
 })
 
-app.post('/api/add-subcat', async (req: Request, res) => {
+app.post('/api/add-subcat', async (req: Request, res: Response) => {
     try {
         const subcat = new SubCat( req.body );
         const data = await subcat.save();
@@ -452,7 +452,7 @@ app.post('/api/add-subcat', async (req: Request, res) => {
     }
 })
 
-app.get('/api/accept-item', async (req: Request, res) => {
+app.get('/api/accept-item', async (req: Request, res: Response) => {
     try {
         let itemid = req.query.itemid;
         let userid = req.query.userid;
@@ -497,7 +497,7 @@ app.get('/api/accept-item', async (req: Request, res) => {
 
 // **************************** UPDATE ****************************
 
-app.post('/api/item-update', async (req: Request, res) => {
+app.post('/api/item-update', async (req: Request, res: Response) => {
     try {
 
         const data = await Item.findByIdAndUpdate(req.body._id, req.body, {new:true});
@@ -513,7 +513,7 @@ app.post('/api/item-update', async (req: Request, res) => {
     }
 })
 
-app.post('/api/item-pend-update', async (req: Request, res) => {
+app.post('/api/item-pend-update', async (req: Request, res: Response) => {
     try {
 
         const data = await PendingItem.findByIdAndUpdate(req.body._id, req.body, {new:true});
@@ -529,7 +529,7 @@ app.post('/api/item-pend-update', async (req: Request, res) => {
     }
 })
 
-app.post('/api/cat-update', async (req: Request, res) => {
+app.post('/api/cat-update', async (req: Request, res: Response) => {
     try {
         const data = await Cat.findByIdAndUpdate(req.body._id, req.body, {new:true});
         if(!data) {
@@ -544,7 +544,7 @@ app.post('/api/cat-update', async (req: Request, res) => {
     }
 })
 
-app.post('/api/subcat-update', async (req: Request, res) => {
+app.post('/api/subcat-update', async (req: Request, res: Response) => {
     try {
         const data = await SubCat.findByIdAndUpdate(req.body._id, req.body, {new:true});
         if(!data) {
@@ -559,7 +559,7 @@ app.post('/api/subcat-update', async (req: Request, res) => {
     }
 })
 
-app.post('/api/update-intro-text', async (req: Request, res) => {
+app.post('/api/update-intro-text', async (req: Request, res: Response) => {
     try {
         const data = await Intro.findOneAndUpdate({}, req.body, { sort: { '_id':1 } });
         if(!data) {
@@ -574,7 +574,7 @@ app.post('/api/update-intro-text', async (req: Request, res) => {
     }
 })
 
-app.post('/api/update-info-text', async (req: Request, res) => {
+app.post('/api/update-info-text', async (req: Request, res: Response) => {
     try {
         const data = await Info.findOneAndUpdate({}, req.body, { sort: { '_id':1 } });
         if(!data) {
@@ -591,7 +591,7 @@ app.post('/api/update-info-text', async (req: Request, res) => {
 
 //  **************************** DELETE ***************************
 
-app.delete('/api/delete-item', async (req: Request, res) => {
+app.delete('/api/delete-item', async (req: Request, res: Response) => {
     try {
         let id = req.query.id;
         const data = await Item.findByIdAndRemove(id);
@@ -604,7 +604,7 @@ app.delete('/api/delete-item', async (req: Request, res) => {
     }
 })
 
-app.delete('/api/del-pend-item', async (req: Request, res) => {
+app.delete('/api/del-pend-item', async (req: Request, res: Response) => {
     try {
         let id = req.query.id;
         const data = await PendingItem.findByIdAndRemove(id);
@@ -617,7 +617,7 @@ app.delete('/api/del-pend-item', async (req: Request, res) => {
     }
 })
 
-app.delete('/api/delete-cat', async (req: Request, res) => {
+app.delete('/api/delete-cat', async (req: Request, res: Response) => {
     try {
         let id = req.query.id;
         const data = await Cat.findByIdAndRemove(id);
@@ -630,7 +630,7 @@ app.delete('/api/delete-cat', async (req: Request, res) => {
     }
 })
 
-app.delete('/api/delete-subcat', async (req: Request, res) => {
+app.delete('/api/delete-subcat', async (req: Request, res: Response) => {
     try {
         let id = req.query.id;
         const data = await SubCat.findByIdAndRemove(id);
@@ -653,7 +653,7 @@ app.delete('/api/delete-subcat', async (req: Request, res) => {
 //     });
 // }
 
-app.post('/api/delete-file', function(req: Request, res) {
+app.post('/api/delete-file', function(req: Request, res: Response) {
 
         let query = './public/assets/media';
         let fullPath = query + req.body.path
@@ -663,7 +663,7 @@ app.post('/api/delete-file', function(req: Request, res) {
         })
 });
 
-app.post('/api/get-files-folder', async (req: Request, res) => {
+app.post('/api/get-files-folder', async (req: Request, res: Response) => {
         let query = './public/assets/media';
         let fullPath = query + req.body.folder
         fs.readdir(fullPath, {withFileTypes: true}, (err, files) => {
@@ -676,7 +676,7 @@ app.post('/api/get-files-folder', async (req: Request, res) => {
         })
 });
 
-app.post('/api/delete-dir', function(req: Request, res) {
+app.post('/api/delete-dir', function(req: Request, res: Response) {
         const baseUrl = './public/assets/media';
         let section = req.body.section;
         let id = req.body.id;
@@ -722,7 +722,7 @@ app.post('/api/delete-dir', function(req: Request, res) {
 })
 
 // // get number of files
-// app.post('/get-number-files', function(req: Request, res) {
+// app.post('/get-number-files', function(req: Request, res: Response) {
 //     const baseUrl = './public/assets/media';
 //     let section = req.body.section;
 //     let id = req.body.id;
@@ -809,7 +809,7 @@ app.post('/api/upload-array/:id',
 
 app.post('/api/upload-cat/:id',
 
-function(req: Request, res) {
+function(req: Request, res: Response) {
 
         let catId = req.params.id;
             let index = 0;
@@ -837,7 +837,7 @@ function(req: Request, res) {
 });
 
 app.post('/api/upload-subcat/:id',
-    function(req: Request, res) {
+    function(req: Request, res: Response) {
 
             let subCatId = req.params.id;
             let index = 0;
@@ -862,7 +862,7 @@ app.post('/api/upload-subcat/:id',
 });
 
 app.post('/api/upload-intro-img',
-    function(req: Request, res) {
+    function(req: Request, res: Response) {
 
             multer({ storage: multer.diskStorage({
                 destination: function (req: Request, file, cb) {
@@ -887,7 +887,7 @@ app.post('/api/upload-intro-img',
 });
 
 app.post('/api/upload-info/:number',
-    function(req: Request, res) {
+    function(req: Request, res: Response) {
 
             let number = req.params.number;
             multer({ storage: multer.diskStorage({
