@@ -89,12 +89,28 @@ userSchema.statics.findByToken = async function(token: any) {
     return foundUser;
 }
 
-userSchema.methods.deleteToken = function(token: any, cb: any) {
-    let user = this;
-    user.update({$unset:{token:1}}, (err: any, user: any) => {
-        if(err) return cb(err);
-        cb(null, user);
-    })
+// userSchema.methods.deleteToken = function(token: any, cb: any) {
+//     let user = this;
+//     user.update({$unset:{token:1}}, (err: any, user: any) => {
+//         if(err) return cb(err);
+//         cb(null, user);
+//     })
+// }
+
+userSchema.methods.deleteToken = async function(token: string) {
+    try {
+        let user = this;
+        if (user.token === token) {
+            const query = user.updateOne({$unset:{token:1}});
+            if(!query) {
+                throw new Error('Deletion not successful');
+            }
+        } else {
+            throw new Error('Token does not match current user');
+        }
+    } catch (err) {
+        return err;
+    }
 }
 
 const User = mongoose.model('User', userSchema);
