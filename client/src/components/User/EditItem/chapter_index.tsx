@@ -85,7 +85,7 @@ const ChapterIndex = props => {
         setCancelled(true);
     }
 
-    const createItem = (i) => {
+    const createChapterItem = (i) => {
         const chapterItemId = mongoose.Types.ObjectId().toHexString()
         let temp_pdf_page_index = formdata.pdf_page_index;
         temp_pdf_page_index[i] = {
@@ -213,18 +213,10 @@ const ChapterIndex = props => {
                         </div>
                     :
                         <div 
-                            onClick={() => { if (window.confirm('This will make this chapter into its own separate item.')) createItem(i) } }
+                            onClick={() => { if (window.confirm('This will make this chapter into its own separate item.')) createChapterItem(i) } }
                             className="index_form_grid_button"
                         >
-                            {/* <button 
-                                type="button" 
-                                className="index_create_item" 
-                                onClick={() => { if (window.confirm('This will make this chapter into its own separate item.')) createItem(i) } }
-                            >
-                                Create Item
-                            </button> */}
                             Create New Archive Item
-
                         </div>
                     }
                 </div>
