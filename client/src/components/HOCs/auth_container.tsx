@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { authGetCredentials } from '../../actions';
 import { withRouter } from "react-router-dom";
 
-export default function foo(ComposedClass, reload) {
+export default function foo(ComposedClass, redirectToLogin) {
     const AuthenticationCheck = props => {
         const [loading, setLoading] = useState(false);
 
@@ -14,15 +14,17 @@ export default function foo(ComposedClass, reload) {
 
         useEffect(() => {
             setLoading(false);
-            if(props.user && props.user.login && !props.user.login.isAuth) {
-                if(reload === true) {
-                    props.history.push('/login');
+            if(props.user && props.user.login) {
+                if (!props.user.login.isAuth) {
+                    if(redirectToLogin === true) {
+                        props.history.push('/login');
+                    }
+                } else {
+                    if (redirectToLogin === false) {
+                        props.history.push('/user')
+                    } 
                 }
-            } else { 
-                if (reload === false) {
-                    props.history.push('/user')
-                } 
-            } 
+            }
         }, [props]);
 
         if(loading) {
