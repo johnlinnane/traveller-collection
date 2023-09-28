@@ -101,9 +101,13 @@ userSchema.methods.deleteToken = async function(token: string) {
     try {
         let user = this;
         if (user.token === token) {
-            const query = user.updateOne({$unset:{token:1}});
-            if(!query) {
-                throw new Error('Deletion not successful');
+            try {
+                const query = await user.updateOne({$unset:{token:1}});
+                if(!query) {
+                    throw new Error('Deletion not successful');
+                }
+            } catch (err) {
+                return err;
             }
         } else {
             throw new Error('Token does not match current user');

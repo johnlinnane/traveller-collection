@@ -396,7 +396,6 @@ app.post('/api/register', async (req: Request, res: Response) => {
 app.post('/api/login', async (req: Request, res: Response) => {
     try {
         const data = await User.findOne({'email':req.body.email});
-        console.log('data: ', data);
         if(!data) {
             return res.json({isAuth:false, message:'Incorrect username or password'})
         };
