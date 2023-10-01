@@ -9,18 +9,20 @@ const User = props => {
             <div className="avatar">
                 <img alt="avatar" src="/assets/media/avatar.png"/>
             </div>
+            {user ? 
+                <div className="nfo">
 
-            <div className="nfo">
-                <div><span>Name: </span> {user.name}</div>
-                <div><span>Lastname: </span> {user.lastname}</div>
-                <div><span>Email: </span> {user.email}</div>
-                
-                <Link to={'/register'}>
-                    <div className="register_button">
-                        Register a new user
-                    </div>
-                </Link>
-            </div>
+                    <div><span>Name: </span> {user.name}</div>
+                    <div><span>Lastname: </span> {user.lastname}</div>
+                    <div><span>Email: </span> {user.email}</div>
+                    
+                    <Link to={'/register'}>
+                        <div className="register_button">
+                            Register a new user
+                        </div>
+                    </Link>
+                </div>
+            : null }
             
         </div>
     )

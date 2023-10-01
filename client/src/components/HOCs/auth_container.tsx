@@ -25,13 +25,13 @@ export default function foo(ComposedClass, redirectToLogin) {
                     } 
                 }
             }
-        }, [props]);
+        }, [props.user, props.history]);
 
         if(loading) {
             return <div className="loader">Loading...</div>
         }
         return(
-            <ComposedClass {...props} user={props.user}/>
+            <ComposedClass {...props} />
         )
     }
 
