@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import FontAwesome from 'react-fontawesome';
 import { connect } from 'react-redux';
 
-const SidenavItems: React.FC = ({user}: any) => {
+const SidenavItems: React.FC<any> = ( {user, onHideNav}: any) => {
     const items = [
         {   type:'navItem',
             icon:'home',
@@ -93,7 +93,7 @@ const SidenavItems: React.FC = ({user}: any) => {
     ]
 
     const element = (item, i) => (
-        <div key={i} className={item.type}>
+        <div key={i} className={item.type} onClick={onHideNav}>
             <Link to={item.link}>
                 <FontAwesome name={item.icon}/>
                 {item.text}

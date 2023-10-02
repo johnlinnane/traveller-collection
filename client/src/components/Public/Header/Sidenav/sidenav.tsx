@@ -12,7 +12,7 @@ const Nav: React.FC = (props: any) => {
                 maxWidth:'220px'
             }}
         >
-            <SidenavItems/>
+            <SidenavItems onHideNav={props.onHideNav}/>
         </SideNav>
     );
 };
