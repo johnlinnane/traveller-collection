@@ -9,9 +9,6 @@ import thunkMiddleware from 'redux-thunk';
 import reducers from './reducers';
 import Routes from './routes';
 
-import dotenv from 'dotenv';
-dotenv.config({path: '../../.env'});
-
 const storeWithMiddleware: any = createStore(
     reducers, 
     applyMiddleware(promiseMiddleware, thunkMiddleware)
