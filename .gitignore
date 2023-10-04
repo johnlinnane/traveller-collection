@@ -8,6 +8,10 @@
 /client/.eslintcache
 /client/dist
 
+/server/public/assets/media/cover_img_cat/*
+/server/public/assets/media/cover_img_subcat/*
+/server/public/assets/media/info/*
+/server/public/assets/media/intro/*
 /server/public/assets/media/items/*
 /server/ssl/*
 /server/dist/*
