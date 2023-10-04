@@ -41,14 +41,11 @@ app.use(bodyParser.json());
 app.use(cors({
     credentials: true,
     origin: [
-        // process.env.CLIENT_PREFIX,
-        // process.env.DB, 
-        // process.env.CLIENT_BUILD_PREFIX,
-        // process.env.FILE_SERVER_PREFIX,
-        // process.env.PRODUCTION_PREFIX
-        'https://localhost:5000',
-        'https://localhost:3000',
-        'https://localhost:4000'
+        process.env.CLIENT_PREFIX,
+        process.env.DB, 
+        process.env.CLIENT_BUILD_PREFIX,
+        process.env.FILE_SERVER_PREFIX,
+        process.env.PRODUCTION_PREFIX
     ]
 }));
 
