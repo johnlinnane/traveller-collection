@@ -41,7 +41,7 @@ const EditItemSel = props => {
     }, []);
 
     useEffect(() => {
-        if (props.items && props.items.item && props.cats && props.subcats) {
+        if (props.items?.item && props.cats && props.subcats) {
             let catsForState = [];
             if (props.items.item.category_ref && props.items.item.category_ref.length) {
                 props.items.item.category_ref.forEach( (catref) => {
@@ -196,7 +196,7 @@ const EditItemSel = props => {
 
     const getSubcatOptions = () => {
         if (!subcatsInitialised) {
-            if (props.items.item.category_ref && props.items.item.category_ref.length) {
+            if (props.items?.item && props.items.item.category_ref && props.items.item.category_ref.length) {
                 props.subcats.forEach( (subcat) => {
                     if (props.items.item.category_ref.indexOf(subcat.parent_cat) !== -1) {
                         subcatList.push({
@@ -230,7 +230,7 @@ const EditItemSel = props => {
                                 </div>
                             : <img src={'/assets/media/default/default.jpg'} alt='default'/> }
                         </div>
-                        {props.items && props.items.item ?
+                        {props.items?.item ?
                             <div className="centered edit_img_text"><h2>{props.items.item.title}</h2></div>
                         : null}
                     </div>
@@ -265,7 +265,7 @@ const EditItemSel = props => {
                     <td>
                         <div className="form_element select">
                             <Select
-                                key={`cat_${props.items.item._id}`}
+                                key={`cat_${props.items?.item ? props.items.item._id : Math.floor(Math.random() * ((Math.pow(10, 6) - 1)) - Math.pow(10, 5) + 1) + Math.pow(10, 5)}`}
                                 defaultValue={catsConverted}
                                 isMulti
                                 name="colors"
@@ -286,7 +286,7 @@ const EditItemSel = props => {
 
                             <div className="form_element select">
                                 <Select
-                                    key={`cat_${props.items.item._id}`}
+                                    key={`cat_${props.items?.item ? props.items.item._id : Math.floor(Math.random() * ((Math.pow(10, 6) - 1)) - Math.pow(10, 5) + 1) + Math.pow(10, 5)}`}
                                     defaultValue={subcatsConverted}
                                     isMulti
                                     name="colors"
@@ -313,7 +313,7 @@ const EditItemSel = props => {
         <div className="main_view">
             <div className="form_input item_form_input edit_page">
                 {
-                    props.items.itemDeleted ?
+                    props.items?.itemDeleted ?
                         <div className="red_tag">
                             Item Deleted    
                             {redirectUser('/user/all-items')}
