@@ -14,7 +14,6 @@ const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
 const EditItemFile = props => {
-
     const [formdata, setFormdata] = useState({
         _id:props.match.params.id,
         title: '',
@@ -85,17 +84,16 @@ const EditItemFile = props => {
     }, []);
 
     useEffect(() => {
-        let tempFormdata = formdata;
         if (props.items.item ) {
             let item = props.items.item;
-            tempFormdata = {
+            setFormdata({
                 ...formdata,
                 _id:item._id,
-                title:item.title,  //
-                creator:item.creator,  //
-                description:item.description,  //
-                pages:item.pages,  //
-                source:item.source,   //
+                title:item.title,
+                creator:item.creator,
+                description:item.description,
+                pages:item.pages,
+                source:item.source,
 
                 subject: item.subject,
                 date_created: item.date_created,
@@ -111,15 +109,10 @@ const EditItemFile = props => {
                 rights: item.rights,
                 subcategory_ref: item.subcategory_ref,
                 number_files: item.number_files
-            }
-            setFormdata(tempFormdata);
+            });
             setImgSrc('/assets/media/default/default.jpg');
             if (props.items.files && props.items.files.length) {
-                let tempItemFiles = [];
-                props.items.files.forEach( item => {
-                    tempItemFiles.push(item.name)
-                })
-                setItemFiles(tempItemFiles);
+                setItemFiles(props.items.files.map(item => item.name));
             }
         } // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -164,13 +157,12 @@ const EditItemFile = props => {
             ))
         }
         if (selectedFiles.length) {
-            let formdata = new FormData() 
-
+            let filesForm = new FormData();
             selectedFiles.forEach( (file, i) => {
-                formdata.append('files', file[0]);  
+                filesForm.append('files', file[0]);  
             })
-            axios.post(`${API_PREFIX}/upload-array/${formdata._id}`, formdata)
-                .then(res => { // then print response status
+            axios.post(`${API_PREFIX}/upload-array/${formdata._id}`, filesForm)
+                .then(res => {
                     alert('File(s) uploaded successfully')
                 })
                 .catch(err => { 
