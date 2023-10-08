@@ -453,7 +453,7 @@ app.get('/api/accept-item', async (req: Request, res: Response) => {
         let itemid = req.query.itemid;
         let userid = req.query.userid;
         let newId = new mongoose.Types.ObjectId();
-        const itemsPath = './public/assets/media/items/';
+        const itemsPath = './../public/assets/media/items/';
 
         const data = await PendingItem.findOne({ _id: itemid });
         if(!data) {
@@ -651,7 +651,7 @@ app.delete('/api/delete-subcat', async (req: Request, res: Response) => {
 
 app.post('/api/delete-file', function(req: Request, res: Response) {
 
-        let query = './public/assets/media';
+        let query = './../public/assets/media';
         let fullPath = query + req.body.path
         fs.unlink(fullPath, function (err) {
             if (err) throw err;
@@ -660,7 +660,7 @@ app.post('/api/delete-file', function(req: Request, res: Response) {
 });
 
 app.post('/api/get-files-folder', async (req: Request, res: Response) => {
-        let query = './public/assets/media';
+        let query = './../public/assets/media';
         let fullPath = query + req.body.folder
         fs.readdir(fullPath, {withFileTypes: true}, (err, files) => {
             if (err) {
@@ -673,7 +673,7 @@ app.post('/api/get-files-folder', async (req: Request, res: Response) => {
 });
 
 app.post('/api/delete-dir', function(req: Request, res: Response) {
-        const baseUrl = './public/assets/media';
+        const baseUrl = './../public/assets/media';
         let section = req.body.section;
         let id = req.body.id;
         let dir = path.resolve(baseUrl, section, id)
@@ -719,7 +719,7 @@ app.post('/api/delete-dir', function(req: Request, res: Response) {
 
 // // get number of files
 // app.post('/get-number-files', function(req: Request, res: Response) {
-//     const baseUrl = './public/assets/media';
+//     const baseUrl = './../public/assets/media';
 //     let section = req.body.section;
 //     let id = req.body.id;
 //     let fileType = req.body.filetype;
@@ -740,10 +740,16 @@ app.post('/api/delete-dir', function(req: Request, res: Response) {
 
 let storageArray = multer.diskStorage({
     destination: function (req: Request, file, cb) {
-        const path = `./public/assets/media/items/${req.params.id}/original`
-        mkdirp.sync(path);
-        cb(null, path)
-
+        const filePath = `./../public/assets/media/items/${req.params.id}/original`;
+        try {
+            mkdirp.sync(filePath);
+            if (!fs.existsSync(filePath)) {
+                console.error('Directory creation failed.');
+            }
+        } catch (error) {
+            console.error('Error creating directory:', error);
+        }
+        cb(null, filePath)
     },
     filename: function (req: Request, file, cb) {
         let uniqueId = new mongoose.Types.ObjectId();
@@ -761,53 +767,55 @@ let storageArray = multer.diskStorage({
 
 let uploadArray = multer({ storage: storageArray }).array('files');
 
-app.post('/api/upload-array/:id', 
+app.post('/api/upload-array/:id', uploadMiddleware, createThumbnail);
 
-    (req: Request, res: Response, next: NextFunction) => {
-        next()
-    },
-    function (req: Request, res: Response, next: NextFunction) {
-        uploadArray(req, res, function (err) {
-            if (err instanceof multer.MulterError) {
-                console.log(err)
-            } else if (err) {
-                console.log(err)
-            }
-            next();
-        })
-    }, 
-    (req: Request, res: Response, next: NextFunction) => {
-        let thumbPath = `./public/assets/media/items/${req.params.id}/sq_thumbnail`;
-        mkdirp.sync(thumbPath);
-        fs.readdir(thumbPath, function(err, thumbFiles) {
-            thumbFiles = thumbFiles.filter(item => !(/(^|\/)\.[^\/\.]/g).test(item));
-            if (!thumbFiles.length) {
-                sharp(req.files[0].path)
-                    .resize(500, 500)
-                    .toFile(`${thumbPath}/0.jpg`, (err) => {
-                        if (err) {
-                            console.log('UPLOAD-FIELDS SHARP ERROR', err);
-                        } else {
-                            console.log('UPLOAD-FIELDS: sharp success');
-                            res.send("Sq thumbnail uploaded successfully.");
-                        }
-                    })
-            } else {
-                res.send("Files uploaded.");
-            }
-        })
-    }
-)
+function uploadMiddleware(req, res, next) {
+    uploadArray(req, res, function (err) {
+        if (err instanceof multer.MulterError) {
+            console.log(err);
+            return res.status(500).send({ message: 'Multer error occurred.' });
+        } else if (err) {
+            console.log(err);
+            return res.status(500).send({ message: 'Unknown error occurred.' });
+        }
+        next();
+    });
+}
+
+function createThumbnail(req, res) {
+    let thumbPath = `./../public/assets/media/items/${req.params.id}/sq_thumbnail`;
+    mkdirp.sync(thumbPath);
+    fs.readdir(thumbPath, function(err, thumbFiles) {
+        if (err) {
+            console.log('Error reading directory:', err);
+            return res.status(500).send({ message: 'Error processing images.' });
+        }
+
+        thumbFiles = thumbFiles.filter(item => !(/(^|\/)\.[^\/\.]/g).test(item));
+        if (!thumbFiles.length) {
+            sharp(req.files[0].path)
+                .resize(500, 500)
+                .toFile(`${thumbPath}/0.jpg`, (err) => {
+                    if (err) {
+                        console.log('UPLOAD-FIELDS SHARP ERROR', err);
+                        return res.status(500).send({ message: 'Error resizing image.' });
+                    } else {
+                        res.send("Files uploaded.");
+                    }
+                });
+        } else {
+            res.send("Files uploaded.");
+        }
+    });
+}
 
 app.post('/api/upload-cat/:id',
-
-function(req: Request, res: Response) {
-
+    function(req: Request, res: Response) {
         let catId = req.params.id;
             let index = 0;
             multer({ storage: multer.diskStorage({
                 destination: function (req: Request, file, cb) {
-                    let dest = `./public/assets/media/cover_img_cat`;
+                    let dest = `./../public/assets/media/cover_img_cat`;
                     mkdirp.sync(dest);
                     cb(null, dest)
                     
@@ -825,8 +833,8 @@ function(req: Request, res: Response) {
                 }
             return res.status(200).send(req.file)
         })
-
-});
+    }
+);
 
 app.post('/api/upload-subcat/:id',
     function(req: Request, res: Response) {
@@ -835,7 +843,7 @@ app.post('/api/upload-subcat/:id',
             let index = 0;
             multer({ storage: multer.diskStorage({
                 destination: function (req: Request, file, cb) {
-                    let dest = `./public/assets/media/cover_img_subcat`;
+                    let dest = `./../public/assets/media/cover_img_subcat`;
                     mkdirp.sync(dest);
                     cb(null, dest)
                 },
@@ -859,7 +867,7 @@ app.post('/api/upload-intro-img',
             multer({ storage: multer.diskStorage({
                 destination: function (req: Request, file, cb) {
 
-                    let dest = `./public/assets/media/intro`;
+                    let dest = `./../public/assets/media/intro`;
                     mkdirp.sync(dest);
                     cb(null, dest)
                     
@@ -884,7 +892,7 @@ app.post('/api/upload-info/:number',
             let number = req.params.number;
             multer({ storage: multer.diskStorage({
                 destination: function (req: Request, file, cb) {
-                    let dest = `./public/assets/media/info`;
+                    let dest = `./../public/assets/media/info`;
                     mkdirp.sync(dest);
                     cb(null, dest)
                 },
