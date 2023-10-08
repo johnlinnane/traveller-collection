@@ -452,7 +452,7 @@ app.get('/api/accept-item', async (req: Request, res: Response) => {
     try {
         let itemid = req.query.itemid;
         let userid = req.query.userid;
-        let newId = mongoose.Types.ObjectId();
+        let newId = new mongoose.Types.ObjectId();
         const itemsPath = './public/assets/media/items/';
 
         const data = await PendingItem.findOne({ _id: itemid });
@@ -746,20 +746,16 @@ let storageArray = multer.diskStorage({
 
     },
     filename: function (req: Request, file, cb) {
-        let uniqueId = mongoose.Types.ObjectId();
-        let extArray = file.mimetype.split("/");
-        let extension = extArray[extArray.length - 1];
-        switch(extension) {
-            case 'jpeg':
-              ext = 'jpg'
-              break;
-            case 'png':
-                ext = 'jpg'
-                break;
-            default:
-              ext = extension
-          }
-        cb(null, `${uniqueId}.${ext}`)
+        let uniqueId = new mongoose.Types.ObjectId();
+        let extension = file.mimetype.split("/").pop();
+        const extensionMap = {
+            'jpeg': 'jpg',
+            'png': 'jpg',
+            'gif': 'jpg'
+          };
+          
+        let ext = extensionMap[extension] || extension;
+        cb(null, `${uniqueId}.${ext}`);
     }
 })
 
