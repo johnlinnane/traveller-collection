@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import { getAllPendItems, deletePendItem, acceptItem } from '../../../actions';
-import PendingItemCard from './pending_item_card'
+import PendingItem from './pending_item'
 import config from "../../../config";
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 
 const PendingItemsView: React.FC = (props: any) => {
 
-    const [items, setItems] = useState(null);
+    const [items, setItems] = useState<any[]>([]);
 
     useEffect(() => {
         document.title = `Pending Items - ${config.defaultTitle}`;
@@ -24,7 +24,7 @@ const PendingItemsView: React.FC = (props: any) => {
         } // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props]);
 
-    const deleteAllMedia = (id) => {
+    const deleteAllMedia = async (id: string) => {
         let fileData =  {
             section: 'items',
             id: id,
@@ -32,13 +32,12 @@ const PendingItemsView: React.FC = (props: any) => {
             fileName: null,
             deleteAll: true
         };
-        axios.post(`${API_PREFIX}/delete-dir`, fileData  )
-            .then(res => { 
-                console.log('Media deleted successfully')
-            })
-            .catch(err => { 
-                console.log('No media deleted')
-            });
+        try {
+            await axios.post(`${API_PREFIX}/delete-dir`, fileData);
+            console.log('Media deleted successfully');
+        } catch (error) {
+            console.log('No media deleted');
+        }
     }
 
     const handleChoice = (itemId, choice) => {
@@ -62,7 +61,7 @@ const PendingItemsView: React.FC = (props: any) => {
             <h2>Pending Items</h2>
             {items && items.length ?
                 items.map( (item, i) => (
-                    <PendingItemCard key={i} item={item} handleChoicePass={handleChoice} />
+                    <PendingItem key={i} item={item} handleChoicePass={handleChoice} />
                 ))
             : <p>There are no pending items.</p>}
         </div>
