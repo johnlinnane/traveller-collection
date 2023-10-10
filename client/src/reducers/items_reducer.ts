@@ -43,7 +43,9 @@ export default function foo(state: DefaultStateI = defaultState, action: any): D
             return {
                 ...state,
                 item:action.payload.item,
-                error:action.payload.error
+                error:action.payload.error,
+                pendingItemFound: action.payload.pendingItemFound,
+                noItemOrPendingFound: action.payload.noItemOrPendingFound
             };
         case 'CLEAR_ITEM_W_CONTRIBUTOR': 
             return {

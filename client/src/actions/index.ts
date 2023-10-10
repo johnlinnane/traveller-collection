@@ -132,49 +132,31 @@ export function getItems(
 }
 
 export function getItemOrPending(id) {
-    // thunk
-    return (dispatch) => {
-        axios.get(`${API_PREFIX}/get-item-by-id?id=${id}`)
-            .then(res => {
-                if (res.data.length !== 0) {
-                    let response = {
-                        item:res.data, 
-                    }
-                    dispatch({
-                        type:'GET_ITEM_OR_PENDING',
-                        payload:response
-                    });
-                } else {
-                    axios.get(`${API_PREFIX}/get-pend-item-by-id?id=${id}`)
-                        .then(({data}) => {
-                            if (data.length !== 0) {
-                                let response = {
-                                    item:data, 
-                                    pendingItemFound: true
-                                }
-                                dispatch({
-                                    type:'GET_ITEM_OR_PENDING',
-                                    payload:response
-                                });
-                            } else {
-                                let response = {
-                                    noPendingItemFound: true,
-                                    error: true
-                                }
-                                dispatch({
-                                    type:'GET_ITEM_OR_PENDING',
-                                    payload:response
-                                });
-                            }
-                        })
+    return async (dispatch) => {
+        let payload = {};
+        try {
+            const { data } = await axios.get(`${API_PREFIX}/get-item-by-id?id=${id}`);
+            payload = {
+                item: data,
+            }
+        } catch {
+            try {
+                const { data } = await axios.get(`${API_PREFIX}/get-pend-item-by-id?id=${id}`);
+                payload = {
+                    item: data,
+                    pendingItemFound: true
                 }
-            })
-            .catch(err => {
-                dispatch({
-                    type:'GET_ITEM_OR_PENDING',
-                    payload:{error: true}
-                });
-            })
+            } catch {
+                payload = {
+                    noItemOrPendingFound: true,
+                    error: true
+                }
+            }
+        }
+        dispatch({
+            type: 'GET_ITEM_OR_PENDING',
+            payload : payload
+        });
     }
 }
 

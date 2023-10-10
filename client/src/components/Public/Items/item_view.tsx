@@ -26,7 +26,7 @@ const ItemView: React.FC = (props: any) => {
     const [showMap, setShowMap] = useState(false);
     const [mapZoom] = useState(12);
 
-    const [isPending] = useState(false); // setIsPending
+    const [isPending, setIsPending] = useState(false);
 
     const [itemFiles, setItemFiles] = useState([]);
     const [imgFiles, setImgFiles] = useState([]);
@@ -92,6 +92,12 @@ const ItemView: React.FC = (props: any) => {
     }, [props.items.item]);
 
     useEffect(() => {
+        if (props.items.pendingItemFound) {
+            setIsPending(true);
+        } // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [props.items?.pendingItemFound]);
+
+    useEffect(() => {
         if (props.items.files && props.items.files.length) {
             let tempItemFiles = [];
             let tempImgFiles = [];
@@ -141,13 +147,6 @@ const ItemView: React.FC = (props: any) => {
         subCatId: null,
         type: 'Categories'
     }
-
-    // const addDefaultImg = ev => {
-    //     const newImg = '/assets/media/default/default.jpg';
-    //     if (ev.target.src !== newImg) {
-    //         ev.target.src = newImg
-    //     }  
-    // } 
 
     const getCatName = catId => {
         if (props.cats && props.cats.length) {
