@@ -3,19 +3,22 @@
 /.env
 
 /client/node_modules
+/server/package-lock.json
 /client/build/*
 /client/.env
 /client/.eslintcache
-/client/dist
+
+/server/node_modules
+/server/package-lock.json
+/server/ssl/*
+/server/dist/*
+
 
 /server/public/assets/media/cover_img_cat/*
 /server/public/assets/media/cover_img_subcat/*
 /server/public/assets/media/info/*
 /server/public/assets/media/intro/*
 /server/public/assets/media/items/*
-/server/ssl/*
-/server/dist/*
-/server/node_modules
 
 .DS_Store
 .env

@@ -2,7 +2,7 @@ import React, { useEffect, useState} from 'react';
 import { connect } from 'react-redux';
 
 import SearchHeader from './search_header';
-import SearchList from './news_list';
+import SearchList from './search_list';
 import { getAllItems } from '../../../actions';
 import config from "../../../config";
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import SearchItem from './news_list_item'
+import SearchItem from './search_list_item'
 
 function SearchList(props) {
     if (props.news) {
