@@ -29,6 +29,11 @@ export default function foo(state: DefaultStateI = defaultState, action: any): D
                 ...state,
                 items:action.payload
             };
+        case 'SEARCH_ITEMS':
+            return {
+                ...state,
+                results:action.payload
+            };
         case 'GET_ALL_PEND_ITEMS':
             return {
                 ...state,

@@ -99,6 +99,17 @@ export function getAllItems() {
     }
 }
 
+export function searchItems(input, resultsNumber) {
+    const request = axios.get(`${API_PREFIX}/search-items?input=${input}&resultsNumber=${resultsNumber}`)
+        .then(response => {
+                return response.data
+        });
+    return {
+        type:'SEARCH_ITEMS',
+        payload:request
+    }
+}
+
 export function getAllPendItems() {
     const request = axios.get(`${API_PREFIX}/all-pend-items`)
                         .then(response => {

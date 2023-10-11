@@ -1,85 +1,62 @@
 import React, { useEffect, useState} from 'react';
 import { connect } from 'react-redux';
 
-import SearchHeader from './search_header';
 import SearchList from './search_list';
-import { getAllItems } from '../../../actions';
+import { searchItems } from '../../../actions';
 import config from "../../../config";
 
 const Search = (props: any) => {
-    const [filtered, setFiltered] = useState([]);
-    const [noMatch, setNoMatch] = useState(null);
+    const [noMatch, setNoMatch] = useState<boolean | null>(null);
+    const [results, setResults] = useState([]);
+    const [resultsNumber] = useState<number>(10); // setResultsNumber @todo
 
     useEffect(() => {
         document.title = `Search - ${config.defaultTitle}`;
-        props.dispatch(getAllItems());
         return () => {
             document.title = config.defaultTitle;
-        } // eslint-disable-next-line react-hooks/exhaustive-deps
+        }
     }, []);
 
+    useEffect(() => {
+        if (props.items?.results) {
+            setResults(props.items.results);
+            setNoMatch(false);
+        }
+    }, [props.items]);
+
+    let timeout: number | null = null;
+
     const getKeyword = (event: any) => {
+        if (timeout !== null) {
+            clearTimeout(timeout);
+        }
         let keyword = event.target.value.toLowerCase();
-        let matchFound = false;
-
-        let filteredByKeyword = props.items.items.filter( (item: any) => {
-            let isMatch = false;
-
-            if (item.title) {
-                let match = item.title.toLowerCase();
-                if (match.indexOf(keyword) > -1) {
-                    isMatch = true;
-                }
-            }
-            if (item.creator) {
-                let match = item.creator.toLowerCase();
-                if (match.indexOf(keyword) > -1) {
-                    isMatch = true;
-                }
-            }
-            if (item.description) {
-                let match = item.description.toLowerCase();
-                if (match.indexOf(keyword) > -1) {
-                    isMatch = true;
-                }
-            }
-            if (item.geo && item.geo.address) {
-                let match = item.geo.address.toLowerCase();
-                if (match.indexOf(keyword) > -1) {
-                    isMatch = true;
-                }
-            }
-            if (isMatch) {
-                matchFound = true;
-                setNoMatch(false);
-                return true;
-            } 
-            return false;
-        });
-        if (!matchFound) {
-            setNoMatch(true);
-        }
-        if (keyword !== '') {
-            setFiltered(filteredByKeyword);
-        } else {
-            setFiltered([]);
-        }
+        timeout = setTimeout(() => {
+            props.dispatch(searchItems(keyword, resultsNumber));
+        }, 1000);
     }
   
     return (
         <div className="main_view">
-            <SearchHeader keywords={getKeyword} placeholder="Search title, creator, description, address"/>
+            <div className="search_input form_input">  
+            <input 
+                type="text" 
+                onChange={getKeyword}
+                placeholder="Search title, creator, description, address"
+                autoComplete="off"
+            />
+            </div>
             { !noMatch ?
-                <SearchList news={filtered.length === 0 ? null : filtered} />
+                <SearchList results={results.length === 0 ? null : results} />
             : <p className="center">No matches found</p> }
         </div>
     )
 }
 
 function mapStateToProps(state: any) {
-  return {
-      items:state.items
-  }
+    return {
+        items:state.items
+    }
 }
 
 export default connect(mapStateToProps)(Search);

@@ -113,23 +113,25 @@ app.get('/api/get-parent-pdf', async (req: Request, res: Response) => {
     }
 })
 
-// app.get('/api/search-item', async (req: Request, res: Response) => {
-//     try {
-//         let queryKey = req.query.key;
-//         let queryValue = req.query.value;
+app.get('/api/search-items', async (req: Request, res: Response) => {
+    let input: string = req.query.input.toLowerCase();
+    let resultsNumber: number = parseInt(req.query.resultsNumber, 10);
 
-//         let query = {};
-//         query[queryKey] = queryValue;
+    const fields = ['title', 'creator', 'description', 'address'];
+    const query = fields.map(field => ({
+        [field]: { "$regex": input, "$options": "i" }
+    }));
 
-//         const data = await Item.find(query);
-//         if(!data) {
-//             throw new Error('Not found');
-//         }
-//         res.send(data);
-//     } catch (err) {
-//         res.status(400).send(err);
-//     }
-// })
+    try {
+        const data = await Item.find({ $or: query }).select('title creator').limit(resultsNumber);
+        if(!data) {
+            throw new Error('Not found');
+        }
+        res.send(data);
+    } catch (err) {
+        res.status(400).send(err);
+    }
+})
 
 app.get('/api/all-items', async (req: Request, res: response) => {
     try {

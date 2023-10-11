@@ -2,8 +2,8 @@ import React from 'react';
 import SearchItem from './search_list_item'
 
 function SearchList(props) {
-    if (props.news) {
-        const items = props.news.map( (item) => {
+    if (props.results) {
+        const items = props.results.map( (item) => {
             return (
                 <SearchItem key={item._id} item={item} />
             )
