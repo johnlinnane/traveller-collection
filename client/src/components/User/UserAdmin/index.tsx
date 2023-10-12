@@ -16,7 +16,7 @@ const User = props => {
                     <div><span>Lastname: </span> {user.lastname}</div>
                     <div><span>Email: </span> {user.email}</div>
                     
-                    <Link to={'/register'}>
+                    <Link to={'/user/register'}>
                         <div className="register_button">
                             Register a new user
                         </div>
