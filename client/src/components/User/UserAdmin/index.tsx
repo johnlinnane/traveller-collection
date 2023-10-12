@@ -18,7 +18,7 @@ const User = props => {
                     
                     <Link to={'/user/register'}>
                         <div className="register_button">
-                            Register a new user
+                            Register a new Admin
                         </div>
                     </Link>
                 </div>

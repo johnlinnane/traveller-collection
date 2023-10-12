@@ -71,7 +71,7 @@ const Register = props => {
     return (
         <div className="form_input">
             <form onSubmit={submitForm}>
-                <h2>Add user</h2>
+                <h2>Add a new Admin</h2>
                 <div className="form_element">
                     <input
                         type="text"
@@ -104,14 +104,14 @@ const Register = props => {
                         onChange={handleInputPassword}
                     />
                 </div>
-                <button type="submit">Add user</button>
+                <button type="submit">Create Admin</button>
                 <div className="error">
                     {error}
                 </div>
             </form>
 
             <div className="current_users">
-                <h4>Current users:</h4>
+                <h4>Current Admins:</h4>
                 <table>
                     <thead>
                         <tr>
