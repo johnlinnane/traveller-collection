@@ -31,7 +31,7 @@ const SidenavItems: React.FC<any> = ( {user, onHideNav}: any) => {
         },
         {   type:'navItem',
             icon:'file-text-o',
-            text:'Edit All Items',
+            text:'List All Items',
             link:'/user/all-items',
             restricted:true
         },

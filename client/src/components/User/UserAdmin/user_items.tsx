@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -6,10 +6,19 @@ import { getUserItems } from '../../../actions';
 
 const UserItems = props => {
 
+    const [loading, setLoading] = useState<boolean>(true);
+
     useEffect(() => {
-        props.dispatch(getUserItems(props.user.login.id))
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+        if (props.user?.login?.id) {
+            props.dispatch(getUserItems(props.user.login.id))
+        }
+    }, [props.user?.login?.id]);
+
+    useEffect(() => {
+        if (props.items?.items?.length) {
+            setLoading(false);
+        };
+    }, [props.items?.items]);
 
     const showUserItems = user => (
         user.userItems ?
@@ -26,27 +35,34 @@ const UserItems = props => {
         : null
     )
 
-    return (
-        <div className="user_posts">
-            <h4>Your Items</h4>
-            <table className="item_list">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Creator</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {showUserItems(props.user)}
-                </tbody>
-            </table>
+    return loading ? (
+        <div className="form_input">
+            <div><br />Loading...</div>
         </div>
+    ) : (
+        props.items && (
+            <div className="user_posts">
+                <h4>Your Items</h4>
+                <table className="item_list">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Creator</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {showUserItems(props.user)}
+                    </tbody>
+                </table>
+            </div>
+        )
     );
 }
 
 function mapStateToProps(state) {
     return {
-        user:state.user
+        user:state.user,
+        items:state.items
     }
 }
 
