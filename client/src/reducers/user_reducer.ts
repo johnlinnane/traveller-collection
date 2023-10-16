@@ -11,9 +11,6 @@ export default function foo(state: DefaultStateI = defaultState, action: any): D
         case 'USER_AUTH':
             return { ...state, login:action.payload }
 
-        case 'GET_USER_POSTS':
-            return {...state, userPosts:action.payload }
-
         case 'GET_USER_ITEMS':
             return {...state, userItems:action.payload }
 

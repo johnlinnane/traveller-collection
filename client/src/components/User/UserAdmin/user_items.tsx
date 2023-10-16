@@ -15,10 +15,10 @@ const UserItems = props => {
     }, [props.user?.login?.id]);
 
     useEffect(() => {
-        if (props.items?.items?.length) {
+        if (props.user?.userItems?.length) {
             setLoading(false);
         };
-    }, [props.items?.items]);
+    }, [props.user?.userItems]);
 
     const showUserItems = user => (
         user.userItems ?
@@ -35,14 +35,20 @@ const UserItems = props => {
         : null
     )
 
+    const showNumberOfItems = user => (
+        user.userItems && user.userItems.length ?
+            <span>({user.userItems.length})</span>
+        : null
+    )
+
     return loading ? (
         <div className="form_input">
             <div><br />Loading...</div>
         </div>
     ) : (
-        props.items && (
+        props.user && (
             <div className="user_posts">
-                <h4>Your Items</h4>
+                <h4>Your Items {showNumberOfItems(props.user)}</h4>
                 <table className="item_list">
                     <thead>
                         <tr>
@@ -61,8 +67,7 @@ const UserItems = props => {
 
 function mapStateToProps(state) {
     return {
-        user:state.user,
-        items:state.items
+        user:state.user
     }
 }
 
