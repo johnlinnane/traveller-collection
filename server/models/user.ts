@@ -37,15 +37,14 @@ const userSchema = new mongoose.Schema({
     }
 })
 
-
 userSchema.pre('save', function(next: any){
     let user = this;
 
     if (user.isModified('password')) {
-        bcrypt.genSalt(SALT_I, function(err: any, salt: any){
+        bcrypt.genSalt(SALT_I, function(err: any, salt: string){
             if(err) return next(err);
 
-            bcrypt.hash(user.password, salt, function(err: any, hash: any) {
+            bcrypt.hash(user.password, salt, function(err: any, hash: string) {
                 if(err) return next(err);
                 user.password = hash;
                 next();
@@ -56,7 +55,6 @@ userSchema.pre('save', function(next: any){
     }
 })
 
-
 userSchema.methods.comparePassword = function(candidatePassword: any, cb: any) {
     bcrypt.compare(candidatePassword, this.password, function(err: any, isMatch: any) {
         if(err) return cb(err);
@@ -64,8 +62,7 @@ userSchema.methods.comparePassword = function(candidatePassword: any, cb: any) {
     })
 }
 
-
-userSchema.methods.generateToken = async function(cb: any) {
+userSchema.methods.generateToken = async function() {
     let user = this;
     let token = jwt.sign(user._id.toHexString(), process.env.PW);
     user.token = token;
@@ -88,14 +85,6 @@ userSchema.statics.findByToken = async function(token: any) {
     if (!foundUser) return null;
     return foundUser;
 }
-
-// userSchema.methods.deleteToken = function(token: any, cb: any) {
-//     let user = this;
-//     user.update({$unset:{token:1}}, (err: any, user: any) => {
-//         if(err) return cb(err);
-//         cb(null, user);
-//     })
-// }
 
 userSchema.methods.deleteToken = async function(token: string) {
     try {

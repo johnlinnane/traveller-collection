@@ -23,15 +23,17 @@ const SubcatView: React.FC = (props: any) => {
     const initZoom = 8;
 
     useEffect(() => {
-        props.dispatch(getSubcat(props.match.params.id))
-        props.dispatch(getItemsBySubcat(props.match.params.id))
+        if (props.match?.params?.id) {
+            props.dispatch(getSubcat(props.match.params.id))
+            props.dispatch(getItemsBySubcat(props.match.params.id))
+        }
         return () => {
             document.title = config.defaultTitle;
-        } // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+        }
+    }, [props.match?.params?.id]);
 
     useEffect(() => {
-        if (props.catinfo) {
+        if (props.catinfo?._id) {
             let tempNavInfo = {
                 ...navInfo,
                 catTitle: props.catinfo.title,
@@ -39,8 +41,7 @@ const SubcatView: React.FC = (props: any) => {
             }
             setNavInfo(tempNavInfo);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [props]);
+    }, [props.catinfo]);
 
     useEffect(() => {
         if (props.subcat && props.subcat.length) {

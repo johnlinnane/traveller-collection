@@ -13,14 +13,15 @@ const CatView: React.FC = (props: any) => {
     let catId = props.match.params.id
 
     useEffect(() => {
-        props.dispatch(getItemsByCat(catId));
-        props.dispatch(getCatById(catId));
-        props.dispatch(getAllSubCats(catId));
+        if (props.match?.params?.id) {
+            props.dispatch(getItemsByCat(catId));
+            props.dispatch(getCatById(catId));
+            props.dispatch(getAllSubCats());
+        }
         return () => {
             document.title = config.defaultTitle;            
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [props.match?.params?.id]);
 
     const [theseSubcats, setTheseSubcats] = useState([]);
     
@@ -49,17 +50,15 @@ const CatView: React.FC = (props: any) => {
             })
             setTheseSubcats(tempTheseSubcats);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.subcats]);
 
     useEffect(() => {
-        if (props.catinfo ) {
+        if (props.catinfo) {
             document.title = `${props.catinfo.title} - Traveller Collection`
             navInfo.catTitle = props.catinfo.title;
             navInfo.catId = props.catinfo._id;
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [props.subcats]);
+    }, [props.catinfo?._id]);
     
     return (
         <div>

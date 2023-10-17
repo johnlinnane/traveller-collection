@@ -38,34 +38,25 @@ const ItemView: React.FC = (props: any) => {
     const [itemInfo, setItemInfo] = useState(null);
 
     useEffect(() => {
-        props.dispatch(getItemOrPending(props.match.params.id));
-        props.dispatch(getAllCats());
-        props.dispatch(getAllSubCats());
-        props.dispatch(getNextItem(props.match.params.id));
-        props.dispatch(getPrevItem(props.match.params.id));
-        props.dispatch(getFilesFolder({folder: `/items/${props.match.params.id}/original`}));
-        return () => {
-            props.dispatch(clearItemWithContributor());
-            document.title = config.defaultTitle;
-        } // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    useEffect(() => {
-        if (props.items.error) {
-            props.history.push('/');
-        } // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [props.items]);
-
-    useEffect(() => {
-        if (props.match.params.id) {
+        if (props.match?.params?.id) {
             props.dispatch(getItemOrPending(props.match.params.id));
             props.dispatch(getAllCats());
             props.dispatch(getAllSubCats());
             props.dispatch(getNextItem(props.match.params.id));
             props.dispatch(getPrevItem(props.match.params.id));
             props.dispatch(getFilesFolder({folder: `/items/${props.match.params.id}/original`}));
+        }
+        return () => {
+            props.dispatch(clearItemWithContributor());
+            document.title = config.defaultTitle;
+        }
+    }, [props.match?.params?.id]);
+
+    useEffect(() => {
+        if (props.items.error) {
+            props.history.push('/');
         } // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [props.match.params.id]);
+    }, [props.items]);
 
     useEffect(() => {
         setItemInfo(props.items.item);

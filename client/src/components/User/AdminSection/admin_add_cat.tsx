@@ -8,7 +8,6 @@ import { addCat } from '../../../actions';
 
 import { checkMimeType, maxSelectFile } from '../../../utils';
 
-// const mongoose = require('mongoose');
 import mongoose from 'mongoose';
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 
@@ -22,7 +21,6 @@ const AdminAddCat = props => {
     const [saved, setSaved] = useState(false);
     const [imgSrc, setImgSrc] = useState('/assets/media/default/default.jpg');
     const [selectedFile, setSelectedFile] = useState(null);
-    // const [loaded, setLoaded] = useState(null);
 
 
     const addDefaultImg = (ev) => {

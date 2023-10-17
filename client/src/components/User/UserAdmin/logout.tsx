@@ -14,6 +14,7 @@ const Logout = props => {
     return (
         <div className="logout_container">
             <h1>Logged out successfully</h1>
+            <p>Redirecting to homepage...</p>
         </div>
     );
 };

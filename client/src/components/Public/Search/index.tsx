@@ -24,16 +24,20 @@ const Search = (props: any) => {
         }
     }, [props.items]);
 
-    let timeout: number | null = null;
+    let timeout: NodeJS.Timeout | null = null;
 
     const getKeyword = (event: any) => {
         if (timeout !== null) {
             clearTimeout(timeout);
         }
         let keyword = event.target.value.toLowerCase();
-        timeout = setTimeout(() => {
-            props.dispatch(searchItems(keyword, resultsNumber));
-        }, 1000);
+        if (!keyword.length) {
+            setResults([]);
+        } else {
+            timeout = setTimeout(() => {
+                props.dispatch(searchItems(keyword, resultsNumber));
+            }, 1000);
+        }
     }
   
     return (

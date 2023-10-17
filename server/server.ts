@@ -135,7 +135,6 @@ app.get('/api/search-items', async (req: Request, res: Response) => {
 
 app.get('/api/all-items', async (req: Request, res: response) => {
     try {
-        // empty object returns all
         const data = await Item.find({});
         if(!data) {
             throw new Error('Not found');
@@ -148,8 +147,6 @@ app.get('/api/all-items', async (req: Request, res: response) => {
 
 app.get('/api/all-pend-items', async (req: Request, res: response) => {
     try {
-
-        // empty object returns all
         const data = await PendingItem.find({});
         if(!data) {
             throw new Error('Not found');
@@ -162,7 +159,6 @@ app.get('/api/all-pend-items', async (req: Request, res: response) => {
 
 app.get('/api/items', async (req: Request, res: Response) => {
     try {
-        // query should look like this: localhost:3002/api/items?skip=3?limit=2&order=asc
         let skip = parseInt(req.query.skip);
         let limit = parseInt(req.query.limit);
         let order = req.query.order;
@@ -255,7 +251,6 @@ app.get('/api/get-next-item', async (req: Request, res: Response) => {
 app.get('/api/get-prev-item', async (req: Request, res: Response) => {
     try {
         let oldId = req.query.oldId;
-        // let query = {_id: {$lt: oldId}}, null, { sort: { '_id':-1 } };
         const data = await Item.findOne({_id: {$lt: oldId}}, null, { sort: { '_id':-1 } });
         if(!data) {
             throw new Error('Not found');
@@ -645,12 +640,6 @@ app.delete('/api/delete-subcat', async (req: Request, res: Response) => {
 
 //  ************ FS ********************************************
 
-// const isDirEmpty = (dirname) => {
-//     return fs.promises.readdir(dirname).then(files => {
-//         return files.length === 0;
-//     });
-// }
-
 app.post('/api/delete-file', function(req: Request, res: Response) {
 
         let query = './../public/assets/media';
@@ -718,27 +707,6 @@ app.post('/api/delete-dir', function(req: Request, res: Response) {
         }
         return res.status(200)
 })
-
-// // get number of files
-// app.post('/get-number-files', function(req: Request, res: Response) {
-//     const baseUrl = './../public/assets/media';
-//     let section = req.body.section;
-//     let id = req.body.id;
-//     let fileType = req.body.filetype;
-//     let dir = path.resolve(baseUrl, section, id, fileType)
-//     let numFiles = 0;
-
-//     if (dir != baseUrl) {
-//         fs.readdir(dir, {withFileTypes: true}, (err, files) => {
-//             if (files && files.length) {
-//                 files.forEach( file => {
-//                     numFiles++
-//                 })
-//             }
-//         })
-//     }
-//     return res.status(200)
-// })
 
 let storageArray = multer.diskStorage({
     destination: function (req: Request, file, cb) {

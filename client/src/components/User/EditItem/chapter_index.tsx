@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import { getItemById, updateItem, createItem } from '../../../actions';
 import config from "../../../config";
 
-// const mongoose = require('mongoose');
 import mongoose from 'mongoose';
 
 const ChapterIndex = props => {
@@ -17,23 +16,24 @@ const ChapterIndex = props => {
     const [cancelled, setCancelled] = useState(false);
 
     useEffect(() => {
-        document.title = `Chapter Index - ${config.defaultTitle}`;
-        props.dispatch(getItemById(props.match.params.id))
-        return () => {
-            document.title = config.defaultTitle;
-        } // eslint-disable-next-line react-hooks/exhaustive-deps
+        if (props.match?.params?.id) {
+            document.title = `Chapter Index - ${config.defaultTitle}`;
+            props.dispatch(getItemById(props.match.params.id))
+            return () => {
+                document.title = config.defaultTitle;
+            }
+        }
     }, []);
 
     useEffect(() => {
-        if (props.items && props.items.item) {
+        if (props.items?.item) {
             let tempFormdata = {
                 ...formdata,
                 ...props.items.item
             }
             setFormdata(tempFormdata);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [props.items.item]);
+    }, [props.items?.item]);
 
 
     const handleInput = (event, field, i) => {

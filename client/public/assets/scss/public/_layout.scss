@@ -34,12 +34,16 @@ a:focus {
     padding: 10px;
 }
 
-.logout_container h1{
-    color: $dark-turq;
-    font-size: 30px;
-    font-weight: 300;
-    text-align: center;
-    padding-top: 31px;
+.logout_container {
+    * {
+        text-align: center;
+    }
+    h1 {
+        color: $dark-turq;
+        font-size: 30px;
+        font-weight: 300;
+        padding-top: 31px;
+    }
 }
 
 
