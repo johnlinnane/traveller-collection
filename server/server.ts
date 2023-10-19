@@ -394,7 +394,8 @@ app.post('/api/login', async (req: Request, res: Response) => {
         if(!data) {
             return res.json({isAuth:false, message:'Incorrect username or password'})
         };
-        data.comparePassword(req.body.password, async (err, isMatch) => {
+        try {
+            const isMatch = data.comparePassword(req.body.password);
             if(!isMatch) {
                 return res.json({
                     isAuth:false,
@@ -402,15 +403,17 @@ app.post('/api/login', async (req: Request, res: Response) => {
                 })
             };
             const savedUser = await data.generateToken();
-            if(!savedUser) return res.status(400).send(err);
+            if(!savedUser) return res.status(400).send('generateToken(). ', err);
             res.cookie('tc_auth_cookie', savedUser.token, { sameSite: 'lax', secure: true }).send({
                 isAuth:true,
                 id:savedUser._id,
                 email:savedUser.email
             });
-        });
+        } catch (err) {
+            res.status(400).send('comparePassword(). ',err);
+        }
     } catch (err) {
-        res.status(400).send(err);
+        res.status(400).send('User.findOne(). ',err);
     }
 });
 

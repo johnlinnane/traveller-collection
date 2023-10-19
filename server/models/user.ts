@@ -55,12 +55,14 @@ userSchema.pre('save', function(next: any){
     }
 })
 
-userSchema.methods.comparePassword = function(candidatePassword: string, cb: any) {
-    bcrypt.compare(candidatePassword, this.password, function(err: any, isMatch: any) {
-        if(err) return cb(err);
-        cb(null, isMatch);
-    })
-}
+userSchema.methods.comparePassword = async function (candidatePassword: string) {
+    try {
+        const isMatch: boolean = await bcrypt.compare(candidatePassword, this.password);
+        return isMatch;
+    } catch (err) {
+        throw err;
+    }
+  };
 
 userSchema.methods.generateToken = async function() {
     let user = this;
