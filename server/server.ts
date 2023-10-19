@@ -15,6 +15,7 @@ dotenv.config({path: '../.env'})
 import cors from 'cors';
 import multer from 'multer';
 import fs from 'fs';
+const fsPromises = fs.promises;
 import mkdirp from 'mkdirp';
 
 
@@ -402,7 +403,7 @@ app.post('/api/login', async (req: Request, res: Response) => {
             };
             const savedUser = await data.generateToken();
             if(!savedUser) return res.status(400).send(err);
-            res.cookie('tc_auth_cookie', savedUser.token, { sameSite: 'lax', secure: false }).send({
+            res.cookie('tc_auth_cookie', savedUser.token, { sameSite: 'lax', secure: true }).send({
                 isAuth:true,
                 id:savedUser._id,
                 email:savedUser.email
@@ -651,16 +652,18 @@ app.post('/api/delete-file', function(req: Request, res: Response) {
 });
 
 app.post('/api/get-files-folder', async (req: Request, res: Response) => {
-        let query = './../public/assets/media';
-        let fullPath = query + req.body.folder
-        fs.readdir(fullPath, {withFileTypes: true}, (err, files) => {
-            if (err) {
-                // no files in folder
-            } else if (files.length && files[0].name === '.DS_Store') {
-                files.shift()
-            }
-            res.send(files)
-        })
+    try {
+        const folderPath = path.join(__dirname, '..', 'public', 'assets', 'media', req.body.folder);
+        const files = await fs.promises.readdir(folderPath);
+  
+        if (files.length === 0) {
+            res.send([]);
+        } else {
+            res.send(files);
+        }
+    } catch (err) {
+        res.status(500).json({ error: 'Internal Server Error. File directory not found or Permissions Issue. ' , err});
+    }
 });
 
 app.post('/api/delete-dir', function(req: Request, res: Response) {

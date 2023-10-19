@@ -283,7 +283,7 @@ const EditItem = props => {
                         <Link to={`/items/${formdata._id}`} target="_blank" >
                             <div className="container">
                                 <div className="img_back">
-                                    { props.items.files && props.items.files.length ?
+                                    { props.items.files?.length ?
                                         <div>
                                             <img src={`${FS_PREFIX}/assets/media/items/${formdata._id}/original/${props.items.files[0].name}`} alt="item main " className="edit_main_img" onError={addDefaultImg} />
                                         </div>
