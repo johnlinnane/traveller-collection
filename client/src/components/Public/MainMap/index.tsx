@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import { getItemsWithCoords } from '../../../actions';
 import config from "../../../config";
 
@@ -25,7 +25,7 @@ const MainMap = (props: any) => {
                 <span>Click on a point on the map to take you to the item.</span>
             </div>
 
-            <Map 
+            <MapContainer 
                 className="main_map"
                 center={[initLat, initLong]} 
                 zoom={initZoom} 
@@ -74,7 +74,7 @@ const MainMap = (props: any) => {
                         ) )}     
                     </div>
                 : null}
-            </Map>
+            </MapContainer>
         </div>
     );
 }

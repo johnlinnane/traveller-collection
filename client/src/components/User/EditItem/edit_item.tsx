@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Map, TileLayer, Marker } from 'react-leaflet'
+import { MapContainer, TileLayer, Marker } from 'react-leaflet'
 import axios from 'axios';
 import { getItemById, updateItem, clearItem, deleteItem, getParentPdf, deleteChapter, getFilesFolder } from '../../../actions';
 import config from "../../../config";
@@ -386,7 +386,7 @@ const EditItem = props => {
                         <tr>
                             <td>Geo-location</td>
                             <td>
-                                <Map 
+                                <MapContainer 
                                     className="edit_map"
                                     center={[initMap.initLat, initMap.initLong]} 
                                     zoom={initMap.initZoom} 
@@ -402,7 +402,7 @@ const EditItem = props => {
                                             position={[formdata.geo.latitude, formdata.geo.longitude]} 
                                         />
                                     : null }
-                                </Map>
+                                </MapContainer>
                                 <br/>
                                 Click on the map to set geolocation
                             </td>

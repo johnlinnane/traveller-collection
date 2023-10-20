@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import { getSubcat, getItemsBySubcat, getCatById } from '../../../actions';
 import Breadcrumb from '../../widgetsUI/breadcrumb';
 import config from "../../../config";
@@ -113,7 +113,7 @@ const SubcatView: React.FC = (props: any) => {
     )
 
     const renderMap = () => (
-        <Map 
+        <MapContainer 
             className="main_map"
             center={[initLat, initLong]} 
             zoom={initZoom} 
@@ -147,7 +147,7 @@ const SubcatView: React.FC = (props: any) => {
                     : null
                 ))
             : null }
-        </Map>
+        </MapContainer>
     )
 
     return (

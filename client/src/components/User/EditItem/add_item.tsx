@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Map, TileLayer, Marker } from 'react-leaflet'
+import { MapContainer, TileLayer, Marker } from 'react-leaflet'
 import '../../../../node_modules/react-toastify/dist/ReactToastify.css';
 import config from "../../../config";
 import { createItem, createPendingItem, clearNewItem } from '../../../actions';
@@ -170,7 +170,7 @@ const AddItem = props => {
                     <tr>
                         <td>Geo-location</td>
                         <td>
-                            <Map 
+                            <MapContainer 
                                 className="edit_map"
                                 center={[initMap.initLat, initMap.initLong]} 
                                 zoom={initMap.initZoom} 
@@ -188,7 +188,7 @@ const AddItem = props => {
                                         position={[formdata.geo.latitude, formdata.geo.longitude]} 
                                     />
                                 : null }
-                            </Map>
+                            </MapContainer>
                             <br/>
                             Click on the map to set geolocation
                         </td>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import Slick from 'react-slick';   // uses cdn css
-import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import { EmailShareButton, FacebookShareButton, WhatsappShareButton } from "react-share";
 import { EmailIcon, FacebookIcon, WhatsappIcon } from "react-share";
 import { Document, Page, pdfjs } from 'react-pdf';
@@ -423,7 +423,7 @@ const ItemView: React.FC = (props: any) => {
                                         </p>
                                     </div>
                                     {showMap ?
-                                        <Map 
+                                        <MapContainer 
                                             className="item_map"
                                             center={[itemInfo.geo.latitude, itemInfo.geo.longitude]} 
                                             zoom={mapZoom} 
@@ -445,7 +445,7 @@ const ItemView: React.FC = (props: any) => {
                                                     <span>{itemInfo.geo.latitude}, {itemInfo.geo.longitude}</span><br/>
                                                 </Popup>
                                             </Marker>
-                                        </Map>
+                                        </MapContainer>
                                     : null }
                                 </div>
                             : null}
