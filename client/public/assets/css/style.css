@@ -141,7 +141,7 @@
   padding: 1rem 1.5rem 2rem;
   vertical-align: top;
   line-height: 1.3rem;
-  color: hsl(0deg, 0%, 80%);
+  color: hsl(0, 0%, 80%);
 }
 
 .cat_view .cat_view_header_card {
@@ -176,7 +176,7 @@
   padding: 1rem 1.5rem 2rem;
   vertical-align: top;
   line-height: 1.3rem;
-  color: hsl(0deg, 0%, 80%);
+  color: hsl(0, 0%, 80%);
 }
 .cat_view .cat_view_header_card .cat_view_header_card_img_text h2 {
   text-transform: uppercase;
@@ -835,11 +835,13 @@ a:focus {
   padding: 10px;
 }
 
+.logout_container * {
+  text-align: center;
+}
 .logout_container h1 {
   color: #2F5C6B;
   font-size: 30px;
   font-weight: 300;
-  text-align: center;
   padding-top: 31px;
 }
 

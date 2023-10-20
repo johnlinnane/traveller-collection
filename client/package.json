@@ -15,7 +15,6 @@
     "leaflet": "^1.6.0",
     "mongoose": "^5.11.12",
     "multer": "^1.4.2",
-    "nodemon": "^2.0.4",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.1",
     "react-dom": "^16.13.1",
@@ -27,19 +26,26 @@
     "react-scripts": "^5.0.1",
     "react-select": "^3.1.0",
     "react-share": "^4.2.1",
-    "react-simple-sidenav": "^0.1.6",
+    "react-simple-sidenav": "^2.0.0",
     "react-slick": "^0.25.2",
     "react-stack-grid": "^0.7.1",
     "react-tabs": "^3.1.2",
-    "react-tag-input": "^6.4.2",
+    "react-tag-input": "^6.8.1",
     "react-toastify": "^6.0.5",
     "reactstrap": "^8.4.1",
-    "redux": "^3.7.2",
+    "redux": "^4.2.1",
     "redux-promise": "^0.5.3",
     "redux-thunk": "^2.2.0"
   },
+  "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@types/react-redux": "^7.1.24",
+    "@types/react-router-dom": "^5.3.3",
+    "@types/redux-promise": "^0.5.29",
+    "typescript": "^4.9.5"
+  },
   "scripts": {
-    "start": "HTTPS=true react-scripts start",
+    "start": "PORT=5000 HTTPS=true react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -59,9 +65,8 @@
       "last 1 safari version"
     ]
   },
-  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
+  "description": "Online digital archive containing artifacts related to the culture of the Irish Travellers.",
   "main": "file-server.js",
-  "devDependencies": {},
   "author": "",
   "license": "ISC"
 }

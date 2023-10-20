@@ -1,0 +1,78 @@
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+import axios from 'axios';
+import { getAllPendItems, deletePendItem, acceptItem } from '../../../actions';
+import PendingItem from './pending_item'
+import config from "../../../config";
+const API_PREFIX = process.env.REACT_APP_API_PREFIX;
+
+const PendingItemsView: React.FC = (props: any) => {
+
+    const [items, setItems] = useState<any[]>([]);
+
+    useEffect(() => {
+        document.title = `Pending Items - ${config.defaultTitle}`;
+        props.dispatch(getAllPendItems());
+        return () => {
+            document.title = config.defaultTitle;
+        } // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    useEffect(() => {
+        if (props.items && props.items.items) {
+            setItems(props.items.items);
+        } // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [props]);
+
+    const deleteAllMedia = async (id: string) => {
+        let fileData =  {
+            section: 'items',
+            id: id,
+            fileType: null,
+            fileName: null,
+            deleteAll: true
+        };
+        try {
+            await axios.post(`${API_PREFIX}/delete-dir`, fileData);
+            console.log('Media deleted successfully');
+        } catch (error) {
+            console.log('No media deleted');
+        }
+    }
+
+    const handleChoice = (itemId, choice) => {
+        if (choice === 'accept') {
+            props.dispatch(acceptItem(itemId, props.user.login.id))
+        }
+        if (choice === 'reject') {
+            props.dispatch(deletePendItem(itemId));
+            deleteAllMedia(itemId);
+        }
+        let tempItems = items;
+        let index = tempItems.findIndex(p => p._id === itemId)
+        if (index > -1) {
+            tempItems.splice(index, 1);
+        }
+        setItems(tempItems);
+    }
+
+    return (
+        <div className="main_view p_items_view">
+            <h2>Pending Items</h2>
+            {items && items.length ?
+                items.map( (item, i) => (
+                    <PendingItem key={i} item={item} handleChoicePass={handleChoice} />
+                ))
+            : <p>There are no pending items.</p>}
+        </div>
+    );
+}
+
+function mapStateToProps(state: any) {
+    return {
+        items:state.items
+    }
+}
+
+export default connect(mapStateToProps)(PendingItemsView)
+
