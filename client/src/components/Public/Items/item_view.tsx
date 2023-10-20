@@ -94,14 +94,16 @@ const ItemView: React.FC = (props: any) => {
             let tempImgFiles = [];
             let tempPdfFiles = [];
             let tempVidFiles = [];
-            props.items.files.forEach( item => {
-                tempItemFiles.push(item.name)
-                if (item.name.includes(".jpg")) {
-                    tempImgFiles.push(item.name)
-                } else if (item.name.includes(".pdf")) {
-                    tempPdfFiles.push(item.name)
-                } else if (item.name.includes(".mp4")) {
-                    tempVidFiles.push(item.name)
+            props.items.files.forEach( file => {
+                if (file.name && typeof file.name !== 'undefined') {
+                    tempItemFiles.push(file.name)
+                    if (file.name.includes(".jpg")) {
+                        tempImgFiles.push(file.name)
+                    } else if (file.name.includes(".pdf")) {
+                        tempPdfFiles.push(file.name)
+                    } else if (file.name.includes(".mp4")) {
+                        tempVidFiles.push(file.name)
+                    }
                 }
             })
             setItemFiles(tempItemFiles);
