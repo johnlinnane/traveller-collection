@@ -26,12 +26,12 @@ const ItemView: React.FC = (props: any) => {
     const [showMap, setShowMap] = useState(false);
     const [mapZoom] = useState(12);
 
-    const [isPending, setIsPending] = useState(false);
+    const [isPending, setIsPending] = useState<boolean>(false);
 
-    const [itemFiles, setItemFiles] = useState([]);
-    const [imgFiles, setImgFiles] = useState([]);
-    const [pdfFiles, setPdfFiles] = useState([]);
-    const [vidFiles, setVidFiles] = useState([]);
+    const [itemFiles, setItemFiles] = useState<string[]>([]);
+    const [imgFiles, setImgFiles] = useState<string[]>([]);
+    const [pdfFiles, setPdfFiles] = useState<string[]>([]);
+    const [vidFiles, setVidFiles] = useState<string[]>([]);
     const [prevItem, setPrevItem] = useState(null);
     const [nextItem, setNextItem] = useState(null);
     const [userIsAuth, setUserIsAuth] = useState(null);
@@ -50,7 +50,7 @@ const ItemView: React.FC = (props: any) => {
             props.dispatch(clearItemWithContributor());
             document.title = config.defaultTitle;
         }
-    }, [props.match?.params?.id]);
+    }, [props?.match?.params?.id]);
 
     useEffect(() => {
         if (props.items.error) {
@@ -85,32 +85,38 @@ const ItemView: React.FC = (props: any) => {
     useEffect(() => {
         if (props.items.pendingItemFound) {
             setIsPending(true);
-        } // eslint-disable-next-line react-hooks/exhaustive-deps
+        }
     }, [props.items?.pendingItemFound]);
 
     useEffect(() => {
         if (props.items.files && props.items.files.length) {
-            let tempItemFiles = [];
-            let tempImgFiles = [];
-            let tempPdfFiles = [];
-            let tempVidFiles = [];
-            props.items.files.forEach( file => {
-                if (file.name && typeof file.name !== 'undefined') {
-                    tempItemFiles.push(file.name)
-                    if (file.name.includes(".jpg")) {
-                        tempImgFiles.push(file.name)
-                    } else if (file.name.includes(".pdf")) {
-                        tempPdfFiles.push(file.name)
-                    } else if (file.name.includes(".mp4")) {
-                        tempVidFiles.push(file.name)
+            const categorizedFiles = props.items.files.reduce(
+                (result, fileName: string) => {
+                    if (fileName) {
+                            result.all.push(fileName);
+                        if (fileName.includes('.jpg')) {
+                            result.images.push(fileName);
+                        } else if (fileName.includes('.pdf')) {
+                            result.pdfs.push(fileName);
+                        } else if (fileName.includes('.mp4')) {
+                            result.videos.push(fileName);
+                        }
                     }
+                return result;
+                },
+                { all: [], images: [], pdfs: [], videos: [] } as {
+                    all: string[];
+                    images: string[];
+                    pdfs: string[];
+                    videos: string[];
                 }
-            })
-            setItemFiles(tempItemFiles);
-            setImgFiles(tempImgFiles);
-            setPdfFiles(tempPdfFiles);
-            setVidFiles(tempVidFiles) ;
-        } // eslint-disable-next-line react-hooks/exhaustive-deps
+            );
+      
+            setItemFiles(categorizedFiles.all);
+            setImgFiles(categorizedFiles.images);
+            setPdfFiles(categorizedFiles.pdfs);
+            setVidFiles(categorizedFiles.videos);
+        }
     }, [props.items.files]);
 
     useEffect(() => {
