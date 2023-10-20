@@ -55,15 +55,9 @@ const AddItem = props => {
     }, []);
 
     useEffect(() => {
-<<<<<<< HEAD:client/src/components/User/EditItem/add_item.js
-        if (props.items.newitem && props.items.newitem.itemId && props.items.newitem.itemId.length > 0) {
-            props.history.push(`/user/edit-item-sel/${props.items.newitem.itemId}`);
-        } // eslint-disable-next-line react-hooks/exhaustive-deps
-=======
         if (props.items.newitem?.itemId) {
             props.history.push(`/user/edit-item-sel/${props.items.newitem.itemId}`);
         }
->>>>>>> typescript-refactor:client/src/components/User/EditItem/add_item.tsx
     }, [props.items.newitem]);
 
     const handleInput = (event, name, level) => {
@@ -114,12 +108,6 @@ const AddItem = props => {
             }))
         }
         setSaved(true);
-<<<<<<< HEAD:client/src/components/User/EditItem/add_item.js
-        // setTimeout(() => {
-        //     props.history.push(`/user/edit-item-sel/${props.items.newitem.itemId}`);
-        // }, 5000);
-=======
->>>>>>> typescript-refactor:client/src/components/User/EditItem/add_item.tsx
     }
 
     const createTextInput = (existing, name, placeholder, inputLabel, level) => {

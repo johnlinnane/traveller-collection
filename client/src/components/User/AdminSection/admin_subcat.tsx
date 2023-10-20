@@ -8,9 +8,7 @@ import Select from 'react-select';
 
 import { getAllCats, getAllSubCats  } from '../../../actions';
 import { deleteSubcat, updateSubcat  }  from '../../../actions';
-import { maxSelectFile, checkMimeType, checkFileSize } from '../../../utils/files';
-
-import { checkMimeType, maxSelectFile } from '../../../utils';
+import { maxSelectFile, checkMimeType } from '../../../utils/files';
 
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
@@ -94,11 +92,7 @@ const AdminSubCat = props => {
 
     const onImgChange = event => {
         let files = event.target.files;
-<<<<<<< HEAD:client/src/components/User/AdminSection/admin_subcat.js
-        if (maxSelectFile(event, 6) && checkMimeType(event) && checkFileSize(event)) {  
-=======
         if (maxSelectFile(event, 1) && checkMimeType(event, ['image/png', 'image/jpeg', 'image/gif'])) {  
->>>>>>> typescript-refactor:client/src/components/User/AdminSection/admin_subcat.tsx
             setSelectedFile(files);
         }
         setImgSrc(URL.createObjectURL(event.target.files[0]));

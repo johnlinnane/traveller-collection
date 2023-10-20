@@ -6,13 +6,9 @@ import { toast } from 'react-toastify';
 import {Progress} from 'reactstrap';
 import Select from 'react-select';
 import { getItemById, getPendItemById, updateItem, updatePendItem, getFilesFolder } from '../../../actions';
-<<<<<<< HEAD:client/src/components/User/EditItem/edit_item_3_file.js
-import { maxSelectFile, checkMimeType, checkFileSize } from '../../../utils/files';
-=======
 
 import { checkMimeType, checkFileSize, maxSelectFile } from '../../../utils';
 
->>>>>>> typescript-refactor:client/src/components/User/EditItem/edit_item_3_file.tsx
 import config from "../../../config";
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
@@ -132,16 +128,12 @@ const EditItemFile = props => {
         } else {
             tempSelectedFilesImg.push(URL.createObjectURL(files[0]));
         }
-<<<<<<< HEAD:client/src/components/User/EditItem/edit_item_3_file.js
-        if (maxSelectFile(event, 6) && checkMimeType(event, ['image/png', 'image/jpg', 'image/jpeg', 'image/gif', 'application/pdf', 'video/mp4', 'video/quicktime']) && checkFileSize(event)) {  
-=======
 
         if (
             maxSelectFile(event, 1) &&
             checkMimeType(event, ['image/png', 'image/jpeg', 'image/gif']) &&
             checkFileSize(event, 15000)
         ) {  
->>>>>>> typescript-refactor:client/src/components/User/EditItem/edit_item_3_file.tsx
             setSelectedFilesNum(selectedFilesNum + 1);
             setSelectedFiles(tempSelectedFiles);
             setSelectedFilesImg(tempSelectedFilesImg);
@@ -164,21 +156,12 @@ const EditItemFile = props => {
             ))
         }
         if (selectedFiles.length) {
-<<<<<<< HEAD:client/src/components/User/EditItem/edit_item_3_file.js
-            let filesData = new FormData() 
-            selectedFiles.forEach( (file, i) => {
-                filesData.append('files', file[0]);
-            })
-            axios.post(`${API_PREFIX}/upload-array/${formdata._id}`, filesData)
-                .then(res => { 
-=======
             let filesForm = new FormData();
             selectedFiles.forEach( (file, i) => {
                 filesForm.append('files', file[0]);  
             })
             axios.post(`${API_PREFIX}/upload-array/${formdata._id}`, filesForm)
                 .then(res => {
->>>>>>> typescript-refactor:client/src/components/User/EditItem/edit_item_3_file.tsx
                     alert('File(s) uploaded successfully')
                 })
                 .catch(err => { 

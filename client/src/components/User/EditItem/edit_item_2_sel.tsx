@@ -265,11 +265,7 @@ const EditItemSel = props => {
                     <td>
                         <div className="form_element select">
                             <Select
-<<<<<<< HEAD:client/src/components/User/EditItem/edit_item_2_sel.js
-                                key={`cat_${props.match.params.id}`}
-=======
                                 key={`cat_${props.items?.item ? props.items.item._id : Math.floor(Math.random() * ((Math.pow(10, 6) - 1)) - Math.pow(10, 5) + 1) + Math.pow(10, 5)}`}
->>>>>>> typescript-refactor:client/src/components/User/EditItem/edit_item_2_sel.tsx
                                 defaultValue={catsConverted}
                                 isMulti
                                 name="colors"
@@ -290,11 +286,7 @@ const EditItemSel = props => {
 
                             <div className="form_element select">
                                 <Select
-<<<<<<< HEAD:client/src/components/User/EditItem/edit_item_2_sel.js
-                                    key={`subcat_${props.match.params.id}`}
-=======
                                     key={`cat_${props.items?.item ? props.items.item._id : Math.floor(Math.random() * ((Math.pow(10, 6) - 1)) - Math.pow(10, 5) + 1) + Math.pow(10, 5)}`}
->>>>>>> typescript-refactor:client/src/components/User/EditItem/edit_item_2_sel.tsx
                                     defaultValue={subcatsConverted}
                                     isMulti
                                     name="colors"

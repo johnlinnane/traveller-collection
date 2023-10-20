@@ -185,26 +185,12 @@ export function clearItemWithContributor() {
     }
 }
 
-<<<<<<< HEAD:client/src/actions/index.js
-export function addItem(item) {
-    return function (dispatch) {
-        const request = axios.post(`${API_PREFIX}/create-item`, item)
-            .then(response => response.data)
-            .then(response => {
-                dispatch({
-                    type: 'CREATE_ITEM',
-                    payload:response
-                });
-            });
-                            
-=======
 export function createItem(item) {
     const request = axios.post(`${API_PREFIX}/create-item`, item)
                         .then(response => response.data);
     return {
         type: 'CREATE_ITEM',
         payload:request
->>>>>>> typescript-refactor:client/src/actions/index.ts
     }
 }
 

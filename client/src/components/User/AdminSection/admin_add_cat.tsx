@@ -5,9 +5,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 
 import { addCat } from '../../../actions';
-import { maxSelectFile, checkMimeType, checkFileSize } from '../../../utils/files';
-
-import { checkMimeType, maxSelectFile } from '../../../utils';
+import { maxSelectFile, checkMimeType } from '../../../utils/files';
 
 import mongoose from 'mongoose';
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
@@ -50,11 +48,7 @@ const AdminAddCat = props => {
 
     const onImgChange = (event) => {
         let files = event.target.files;
-<<<<<<< HEAD:client/src/components/User/AdminSection/admin_add_cat.js
-        if (maxSelectFile(event, 1) && checkMimeType(event) && checkFileSize(event)) {  
-=======
         if (maxSelectFile(event, 1) && checkMimeType(event, ['image/png', 'image/jpeg', 'image/gif'])) {  
->>>>>>> typescript-refactor:client/src/components/User/AdminSection/admin_add_cat.tsx
             setSelectedFile(files)
         }
         setImgSrc(URL.createObjectURL(event.target.files[0]));

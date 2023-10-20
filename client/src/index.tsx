@@ -9,17 +9,9 @@ import thunkMiddleware from 'redux-thunk';
 import reducers from './reducers';
 import Routes from './routes';
 
-<<<<<<< HEAD:client/src/index.js
-require('dotenv').config({path: '../../.env'})
-
-const storeWithMiddleware = createStore(
-    reducers, 
-    applyMiddleware(promiseMiddleware, ReduxThunk)
-=======
 const storeWithMiddleware: any = createStore(
     reducers, 
     applyMiddleware(promiseMiddleware, thunkMiddleware)
->>>>>>> typescript-refactor:client/src/index.tsx
 );
 
 ReactDOM.render(

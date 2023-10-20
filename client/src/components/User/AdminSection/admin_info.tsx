@@ -5,9 +5,7 @@ import { toast } from 'react-toastify';
 import { withRouter } from "react-router-dom";
 
 import { getInfoText, updateInfoText } from '../../../actions';
-import { maxSelectFile, checkMimeType, checkFileSize } from '../../../utils/files';
-
-import { checkMimeType, maxSelectFile } from '../../../utils';
+import { maxSelectFile, checkMimeType } from '../../../utils/files';
 
 // import mongoose from 'mongoose';
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
@@ -63,11 +61,7 @@ const AdminInfo = props => {
     const onChangeHandler = (event, i, name) => {
         let files = event.target.files;
         if (i) {
-<<<<<<< HEAD:client/src/components/User/AdminSection/admin_info.js
-            if (maxSelectFile(event, 1) && checkMimeType(event) && checkFileSize(event)) {  
-=======
             if (maxSelectFile(event, 1) && checkMimeType(event, ['image/png', 'image/jpeg', 'image/gif'])) {  
->>>>>>> typescript-refactor:client/src/components/User/AdminSection/admin_info.tsx
                 let tempSelectedFiles = selectedFiles;
                 tempSelectedFiles[i] = files[0];
                 setSelectedFiles(tempSelectedFiles);
@@ -77,11 +71,7 @@ const AdminInfo = props => {
             // setImgSrc(tempImgSrc);
         }
         if (name) {
-<<<<<<< HEAD:client/src/components/User/AdminSection/admin_info.js
-            if (maxSelectFile(event, 1) && checkMimeType(event) && checkFileSize(event)) {  
-=======
             if (maxSelectFile(event, 1) && checkMimeType(event, ['image/png', 'image/jpeg', 'image/gif'])) {  
->>>>>>> typescript-refactor:client/src/components/User/AdminSection/admin_info.tsx
                 let tempSelectedIconImg = selectedIconImg;
                 tempSelectedIconImg = files[0];
                 setSelectedIconImg(tempSelectedIconImg);
