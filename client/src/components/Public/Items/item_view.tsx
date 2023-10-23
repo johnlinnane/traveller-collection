@@ -174,7 +174,7 @@ const ItemView: React.FC = (props: any) => {
         setPageNumber(parseInt(pageNum));
     }
     
-    const renderField = (text, ref) => {
+    const renderField = (text: string, ref: string) => {
         if (ref) {
             return (
                 <div className="item_field link_blue">
@@ -197,19 +197,16 @@ const ItemView: React.FC = (props: any) => {
             // variableWidth: true
         }
 
-        let slickDivs = [];
-        files.forEach( (file, i) => {      
-            slickDivs.push( 
-                <div key={i} className="featured_item"> 
-                    <div className="featured_image"
-                         style={{
-                            background: `url(${FS_PREFIX}/assets/media/items/${props.match.params.id}/original/${files[i]}), url(/assets/media/default/default.jpg)`
-                         }}
-                    >
-                    </div>
-                </div>
-            )
-        })
+        const slickDivs: React.ReactElement[] = files?.length ? files.map((file: string, i: number) => (
+            <div key={i} className="featured_item"> 
+              <div className="featured_image"
+                style={{
+                  background: `url(${FS_PREFIX}/assets/media/items/${props.match.params.id}/original/${file}), url(/assets/media/default/default.jpg)`
+                }}
+              >
+              </div>
+            </div>
+          )) : [];
         return <div className="slick_div"><Slick {...settings}>{slickDivs}</Slick></div>;
     }
 
@@ -236,9 +233,9 @@ const ItemView: React.FC = (props: any) => {
         // const scaleUp = () => {
         //     setPdfScale(pdfScale + 0.2);
         // }
-        let pdfId = props.match.params.id;
-        if (props.items.item.is_pdf_chapter === true) {
-            pdfId = props.items.item.pdf_item_parent_id;
+        let pdfId: string | null = props.match.params.id ? props.match.params.id : null;
+        if (props.items?.item?.is_pdf_chapter === true) {
+            pdfId = props.items?.item?.pdf_item_parent_id ? props.items?.item?.pdf_item_parent_id : null;
         }
         
         return (
@@ -293,7 +290,7 @@ const ItemView: React.FC = (props: any) => {
                     <a href={`${FS_PREFIX}/assets/media/items/${pdfId}/original/${pdfFiles[0]}`}>[Fullscreen]</a>
                 </div>
 
-                { props.items.item.pdf_page_index && props.items.item.pdf_page_index.length ?
+                { props.items?.item?.pdf_page_index?.length ?
                     <div className="pdf_index_table">
 
                         <div className="pdf_index_row pdf_index_header">
