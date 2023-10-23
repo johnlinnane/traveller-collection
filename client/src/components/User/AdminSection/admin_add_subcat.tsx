@@ -34,20 +34,21 @@ const AdminAddSubCat = props => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    interface Cat {
+        _id: string;
+        title: string;
+    }
+
     useEffect(() => {
-        if (props.cats && props.cats.length) {
-            let tempAllCatsConverted = [];
-            props.cats.forEach( cat => {
-                tempAllCatsConverted.push({
-                    value: cat._id,
-                    label: cat.title
-                })
-            })
+        if (props.cats?.length) {
+            const tempAllCatsConverted = props.cats.map((cat: Cat) => ({
+                value: cat._id,
+                label: cat.title,
+            }));
             setAllCatsConverted(tempAllCatsConverted);
             setConvertedCatsLoaded(true);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [props]);
+    }, [props.cats]);
 
 
     const addDefaultImg = (ev) => {
