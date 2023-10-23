@@ -79,7 +79,7 @@ const SubcatView: React.FC = (props: any) => {
     }
 
     const addClick = () => {
-        // const tempNewItemId = mongoose.Types.ObjectId().toHexString()
+        // const tempNewItemId = new mongoose.Types.ObjectId().toHexString()
         // this.setState({
         //     newItemId: tempNewItemId
         // })

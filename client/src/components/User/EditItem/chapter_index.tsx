@@ -86,7 +86,7 @@ const ChapterIndex = props => {
     }
 
     const createChapterItem = (i) => {
-        const chapterItemId = mongoose.Types.ObjectId().toHexString()
+        const chapterItemId = new mongoose.Types.ObjectId().toHexString()
         let temp_pdf_page_index = formdata.pdf_page_index;
         temp_pdf_page_index[i] = {
             ...formdata.pdf_page_index[i],

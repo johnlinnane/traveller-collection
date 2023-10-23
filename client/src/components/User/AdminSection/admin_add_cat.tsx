@@ -13,7 +13,7 @@ const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 const AdminAddCat = props => {
 
     const [catdata, setCatdata] = useState({
-        _id: mongoose.Types.ObjectId().toHexString(),
+        _id: new mongoose.Types.ObjectId().toHexString(),
         title: '',
         description: ''
     });

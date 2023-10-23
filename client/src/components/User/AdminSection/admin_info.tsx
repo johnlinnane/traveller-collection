@@ -32,13 +32,12 @@ const AdminInfo = props => {
     }, []);
 
     useEffect(() => {
-        const infotext = props.infotext;
-        if (infotext.sections && infotext.sections.length) {
+        if (props.infotext?.sections?.length) {
             let tempSections = [];
-            let tempIconsCaption = infotext.iconsCaption || formdata.tempIconsCaption;
+            let tempIconsCaption = props.infotext.iconsCaption || formdata.tempIconsCaption;
             let tempImgUrls = [];
             let tempKey = '';
-            infotext.sections.forEach( (section, i) => {
+            props.infotext.sections.forEach( (section, i) => {
                 tempSections[i] = {
                     heading: section.heading,
                     paragraph: section.paragraph,
@@ -55,8 +54,7 @@ const AdminInfo = props => {
             setImgUrls(tempImgUrls);
             // setKey(tempKey);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [props]);
+    }, [props.infotext]);
 
     const onChangeHandler = (event, i, name) => {
         let files = event.target.files;
@@ -164,7 +162,7 @@ const AdminInfo = props => {
     //             {
     //                 heading: '',
     //                 paragraph: '',
-    //                 item_id: mongoose.Types.ObjectId().toHexString()
+    //                 item_id: new mongoose.Types.ObjectId().toHexString()
     //             }
     //         ]
     //     });
