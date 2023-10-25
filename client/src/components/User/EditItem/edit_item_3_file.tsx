@@ -111,8 +111,8 @@ const EditItemFile = props => {
                 number_files: item.number_files
             });
             setImgSrc('/assets/media/default/default.jpg');
-            if (props.items.files && props.items.files.length) {
-                setItemFiles(props.items.files.map(item => item.name));
+            if (props.items?.files?.length) {
+                setItemFiles(props.items.files.map(item => item));
             }
         } // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

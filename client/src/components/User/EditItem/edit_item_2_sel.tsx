@@ -18,8 +18,8 @@ const EditItemSel = props => {
     const [catsConverted, setCatsConverted] = useState(null);
     const [subcatsConverted, setSubcatsConverted] = useState(null);
     const [tagsConverted, setTagsConverted] = useState(null);
-    const [catList, setCatList] = useState(null);
-    const [subcatList, setSubcatList] = useState([]);
+    const [catList, setCatList] = useState<{ value: string; label: string }[]>([]);
+    const [subcatList, setSubcatList] = useState<{ value: string; label: string }[]>([]);
     const [subcatsInitialised, setSubcatsInitialised] = useState(false);
     const [saved, setSaved] = useState(false);
     // const [tagsDisabled, setTagsDisabled] = useState(true);
@@ -125,13 +125,13 @@ const EditItemSel = props => {
     // }
 
     const handleInputCats = newValue => {
-        let catArray = [];
+        let catArray: string[] = [];
         if (newValue && newValue.length) {
             newValue.forEach( cat => {
                 catArray.push(cat.value)
             })
         }
-        let newSubcatList = [];
+        let newSubcatList: { value: string; label: string }[] = [];
         if (newValue && newValue.length) {
             newValue.forEach( newval => {
                 props.subcats.forEach( (subcat) => {
@@ -153,7 +153,7 @@ const EditItemSel = props => {
     }
 
     const handleInputSubcats = newValue => {
-        let subcatArray = [];
+        let subcatArray: string[] = [];
         if (newValue && newValue.length) {
             newValue.forEach( subcat => {
                 subcatArray.push(subcat.value)
@@ -184,14 +184,14 @@ const EditItemSel = props => {
     }
 
     const getCatOptions = () => {
-        let catList = [];
+        let tempCatList: { value: string; label: string; }[] = [];
         props.cats.forEach( cat => {
-            catList.push({
+            tempCatList.push({
                 value: cat._id,
                 label: cat.title
             })
         })
-        setCatList(catList);
+        setCatList(tempCatList);
     }
 
     const getSubcatOptions = () => {
@@ -218,96 +218,103 @@ const EditItemSel = props => {
         }
     }
 
-    const renderForm = () => (
-        <form onSubmit={onSubmit}>
-            <div className="edit_item_container">
-                <Link to={`/items/${dataToUpdate._id}`} target="_blank" >
-                    <div className="container">
-                        <div className="img_back">
-                            { props.items.files && props.items.files.length ?
+    const renderForm = () => {
+        const { items, match } = props;
+        const imagePath: string = items?.files?.length
+            ? `${FS_PREFIX}/assets/media/items/${match.params.id}/original/${items.files[0]}`
+            : '/assets/media/default/default.jpg';
+        const title: string | null = items?.item?.title || null;
+        return (
+            <form onSubmit={onSubmit}>
+                <div className="edit_item_container">
+                    <Link to={`/items/${dataToUpdate._id}`} target="_blank" >
+                        <div className="container">
+                            <div className="img_back">
                                 <div>
-                                <img src={`${FS_PREFIX}/assets/media/items/${props.match.params.id}/original/${props.items.files[0].name}`} alt="item main" className="edit_main_img" onError={addDefaultImg} />
+                                    <img src={imagePath} alt="item main" className="edit_main_img" onError={addDefaultImg} />
                                 </div>
-                            : <img src={'/assets/media/default/default.jpg'} alt='default'/> }
-                        </div>
-                        {props.items?.item ?
-                            <div className="centered edit_img_text"><h2>{props.items.item.title}</h2></div>
-                        : null}
-                    </div>
-                </Link>
-            </div>
-            <h2>Edit Item Categories</h2>
-            <table>
-            <tbody>
-                {/* {tagsDisabled === true ?
-                    null
-                :
-                    <tr>
-                        <td>
-                            Tags
-                        </td>
-                        <td>
-                            <div className="form_element select">
-                                <CreatableSelect
-                                    defaultValue={tagsConverted}
-                                    isMulti
-                                    onChange={handleInputTags}
-                                    options={tagsConverted}
-                                />
                             </div>
-                        </td>
-                    </tr>
-                } */}
-                <tr>
-                    <td>
-                        Category
-                    </td>
-                    <td>
-                        <div className="form_element select">
-                            <Select
-                                key={`cat_${props.items?.item ? props.items.item._id : Math.floor(Math.random() * ((Math.pow(10, 6) - 1)) - Math.pow(10, 5) + 1) + Math.pow(10, 5)}`}
-                                defaultValue={catsConverted}
-                                isMulti
-                                name="colors"
-                                options={catList}
-                                className="basic-multi-select"
-                                classNamePrefix="select"
-                                onChange={handleInputCats}
-                            />
+                            {title && (
+                                <div className="centered edit_img_text">
+                                    <h2>{title}</h2>
+                                </div>
+                            )}
                         </div>
-                    </td>
-                </tr>  
-                { catsConverted ?
+                    </Link>
+                </div>
+                <h2>Edit Item Categories</h2>
+                <table>
+                <tbody>
+                    {/* {tagsDisabled === true ?
+                        null
+                    :
+                        <tr>
+                            <td>
+                                Tags
+                            </td>
+                            <td>
+                                <div className="form_element select">
+                                    <CreatableSelect
+                                        defaultValue={tagsConverted}
+                                        isMulti
+                                        onChange={handleInputTags}
+                                        options={tagsConverted}
+                                    />
+                                </div>
+                            </td>
+                        </tr>
+                    } */}
                     <tr>
                         <td>
-                            Sub-categories 
+                            Category
                         </td>
                         <td>
-
                             <div className="form_element select">
                                 <Select
                                     key={`cat_${props.items?.item ? props.items.item._id : Math.floor(Math.random() * ((Math.pow(10, 6) - 1)) - Math.pow(10, 5) + 1) + Math.pow(10, 5)}`}
-                                    defaultValue={subcatsConverted}
+                                    defaultValue={catsConverted}
                                     isMulti
                                     name="colors"
-                                    options={subcatList}
+                                    options={catList}
                                     className="basic-multi-select"
                                     classNamePrefix="select"
-                                    onChange={handleInputSubcats}
+                                    onChange={handleInputCats}
                                 />
                             </div>
                         </td>
+                    </tr>  
+                    { catsConverted ?
+                        <tr>
+                            <td>
+                                Sub-categories 
+                            </td>
+                            <td>
+
+                                <div className="form_element select">
+                                    <Select
+                                        key={`cat_${props.items?.item ? props.items.item._id : Math.floor(Math.random() * ((Math.pow(10, 6) - 1)) - Math.pow(10, 5) + 1) + Math.pow(10, 5)}`}
+                                        defaultValue={subcatsConverted}
+                                        isMulti
+                                        name="colors"
+                                        options={subcatList}
+                                        className="basic-multi-select"
+                                        classNamePrefix="select"
+                                        onChange={handleInputSubcats}
+                                    />
+                                </div>
+                            </td>
+                        </tr>
+                    : null }
+                    <tr>
+                        <td colSpan="2" className="center">
+                            <button type="submit" className="edit_page_2_save">Save and Continue</button>
+                        </td>
                     </tr>
-                : null }
-                <tr>
-                    <td colSpan="2" className="center">
-                        <button type="submit" className="edit_page_2_save">Save and Continue</button>
-                    </td>
-                </tr>
-            </tbody>
-            </table>
-        </form>
-    )
+                </tbody>
+                </table>
+            </form>
+        )
+    }
 
     return (
         <div className="main_view">

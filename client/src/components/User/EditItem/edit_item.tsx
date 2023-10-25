@@ -285,7 +285,7 @@ const EditItem = props => {
                                 <div className="img_back">
                                     { props.items.files?.length ?
                                         <div>
-                                            <img src={`${FS_PREFIX}/assets/media/items/${formdata._id}/original/${props.items.files[0].name}`} alt="item main " className="edit_main_img" onError={addDefaultImg} />
+                                            <img src={`${FS_PREFIX}/assets/media/items/${formdata._id}/original/${props.items.files[0]}`} alt="item main " className="edit_main_img" onError={addDefaultImg} />
                                         </div>
                                     : <img src={'/assets/media/default/default.jpg'} alt='default'/> }
                                 </div>
