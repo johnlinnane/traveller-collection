@@ -47,9 +47,10 @@ const EditItemFile = props => {
         },
         number_files: null
     });
-    const [itemFiles, setItemFiles] = useState([]);
-    const [selectedFiles, setSelectedFiles] = useState([]);
-    const [selectedFilesImg, setSelectedFilesImg] = useState([]);
+
+    const [itemFiles, setItemFiles] = useState<string[]>([]);
+    const [selectedFiles, setSelectedFiles] = useState<string[]>([]);
+    const [selectedFilesImg, setSelectedFilesImg] = useState<string[]>([]);
     const [selectedFilesNum, setSelectedFilesNum] = useState(0);
     let loaded = 0;
     const fileTypes = [
@@ -84,45 +85,47 @@ const EditItemFile = props => {
     }, []);
 
     useEffect(() => {
-        if (props.items.item ) {
-            let item = props.items.item;
-            setFormdata({
-                ...formdata,
-                _id:item._id,
-                title:item.title,
-                creator:item.creator,
-                description:item.description,
-                pages:item.pages,
-                source:item.source,
+        const { item } = props.items;
+        if (!item) return;
 
-                subject: item.subject,
-                date_created: item.date_created,
-                contributor: item.contributor,
-                item_format: item.item_format,
-                materials: item.materials,
-                physical_dimensions: item.physical_dimensions,
-                editor: item.editor,
-                publisher: item.publisher,
-                further_info: item.further_info,
-                language: item.language,
-                reference: item.reference,
-                rights: item.rights,
-                subcategory_ref: item.subcategory_ref,
-                number_files: item.number_files
-            });
-            setImgSrc('/assets/media/default/default.jpg');
-            if (props.items?.files?.length) {
-                setItemFiles(props.items.files.map(item => item));
-            }
-        } // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+        setFormdata((prevData) => ({
+            ...prevData,
+            _id: item._id ?? prevData._id,
+            title: item.title ?? prevData.title,
+            creator: item.creator ?? prevData.creator,
+            description: item.description ?? prevData.description,
+            pages: item.pages ?? prevData.pages,
+            source: item.source ?? prevData.source,
+            subject: item.subject ?? prevData.subject,
+            date_created: item.date_created ?? prevData.date_created,
+            contributor: item.contributor ?? prevData.contributor,
+            item_format: item.item_format ?? prevData.item_format,
+            materials: item.materials ?? prevData.materials,
+            physical_dimensions: item.physical_dimensions ?? prevData.physical_dimensions,
+            editor: item.editor ?? prevData.editor,
+            publisher: item.publisher ?? prevData.publisher,
+            further_info: item.further_info ?? prevData.further_info,
+            language: item.language ?? prevData.language,
+            reference: item.reference ?? prevData.reference,
+            rights: item.rights ?? prevData.rights,
+            subcategory_ref: item.subcategory_ref ?? prevData.subcategory_ref,
+            number_files: item.number_files ?? prevData.number_files
+        }));
+        setImgSrc('/assets/media/default/default.jpg');
+    }, [props.items?.item]);
+
+    useEffect(() => {
+        if (props.items?.files?.length) {
+            setItemFiles(props.items.files.map(item => item));
+        }
+    }, [props.items?.files]);
 
     const onChangeHandler = event => {
         let files = event.target.files;
-        let tempSelectedFiles = selectedFiles;
+        let tempSelectedFiles: string[] = selectedFiles;
         tempSelectedFiles.push(files)
 
-        let tempSelectedFilesImg = selectedFilesImg;
+        let tempSelectedFilesImg: string[] = selectedFilesImg;
         if (files[0] && files[0].type && JSON.stringify(files[0].type).includes('pdf') ) {
             tempSelectedFilesImg.push('/assets/media/icons/pdf.png');
         } else {
