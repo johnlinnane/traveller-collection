@@ -15,8 +15,8 @@ const EditItemSel = props => {
         subcategory_ref: [],
         tags: []
     });
-    const [catsConverted, setCatsConverted] = useState(null);
-    const [subcatsConverted, setSubcatsConverted] = useState(null);
+    const [catsConverted, setCatsConverted] = useState<{ value: string; label: string }[]>([]);
+    const [subcatsConverted, setSubcatsConverted] = useState<{ value: string; label: string }[]>([]);
     const [tagsConverted, setTagsConverted] = useState(null);
     const [catList, setCatList] = useState<{ value: string; label: string }[]>([]);
     const [subcatList, setSubcatList] = useState<{ value: string; label: string }[]>([]);
@@ -42,7 +42,7 @@ const EditItemSel = props => {
 
     useEffect(() => {
         if (props.items?.item && props.cats && props.subcats) {
-            let catsForState = [];
+            let catsForState: { value: string, label: string}[] = [];
             if (props.items.item.category_ref && props.items.item.category_ref.length) {
                 props.items.item.category_ref.forEach( (catref) => {
                     props.cats.forEach( (cat) => {
@@ -58,7 +58,7 @@ const EditItemSel = props => {
                 })
             }
 
-            let subcatsForState = [];
+            let subcatsForState: { value: string, label: string}[] = [];
             if (props.items.item.subcategory_ref && props.items.item.subcategory_ref.length) {
                 props.items.item.subcategory_ref.forEach( (subcatref) => {
                     props.subcats.forEach( (subcat) => {
