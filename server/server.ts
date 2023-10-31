@@ -772,7 +772,7 @@ function createThumbnail(req, res) {
 
         thumbFiles = thumbFiles.filter(item => !(/(^|\/)\.[^\/\.]/g).test(item));
         if (!thumbFiles.length) {
-            sharp(req.files[0].path)
+            sharp(req.files[0])
                 .resize(500, 500)
                 .toFile(`${thumbPath}/0.jpg`, (err) => {
                     if (err) {
