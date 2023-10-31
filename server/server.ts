@@ -84,7 +84,7 @@ app.get('/api/get-item-by-id', async (req: Request, res: Response) => {
         }
         res.send(data);
     } catch (err) {
-        res.status(400).send(err);
+        res.status(404).send(err);
     }
 })
 
@@ -110,7 +110,7 @@ app.get('/api/get-parent-pdf', async (req: Request, res: Response) => {
         }
         res.send(data);
     } catch (err) {
-        res.status(400).send(err);
+        res.status(404).send(err);
     }
 })
 
@@ -154,7 +154,7 @@ app.get('/api/all-pend-items', async (req: Request, res: response) => {
         }
         res.status(200).send(data);
     } catch (err) {
-        res.status(400).send(err);
+        res.status(404).send(err);
     }
 })
 
@@ -735,6 +735,7 @@ let storageArray = multer.diskStorage({
         let extension = file.mimetype.split("/").pop();
         const extensionMap = {
             'jpeg': 'jpg',
+            'jpg': 'jpg',
             'png': 'jpg',
             'gif': 'jpg'
           };
