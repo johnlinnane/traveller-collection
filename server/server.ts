@@ -717,33 +717,33 @@ app.post('/api/delete-dir', function(req: Request, res: Response) {
         return res.status(200)
 })
 
-let storageArray = multer.diskStorage({
-    destination: function (req: Request, file, cb) {
-        const filePath = `./../public/assets/media/items/${req.params.id}/original`;
+const storageArray = multer.diskStorage({
+    destination: async (req, file) => {
+        const destinationPath = `./../public/assets/media/items/${req.params.id}/original`;
         try {
-            mkdirp.sync(filePath);
-            if (!fs.existsSync(filePath)) {
-                console.error('Directory creation failed.');
-            }
+            await mkdirp(destinationPath);
         } catch (error) {
             console.error('Error creating directory:', error);
+            throw error;
         }
-        cb(null, filePath)
+    
+        return destinationPath;
     },
-    filename: function (req: Request, file, cb) {
-        let uniqueId = new mongoose.Types.ObjectId();
-        let extension = file.mimetype.split("/").pop();
+    filename: async (req, file) => {
+        const uniqueId = new mongoose.Types.ObjectId();
+        const extension = file.mimetype.split('/').pop();
         const extensionMap = {
-            'jpeg': 'jpg',
-            'jpg': 'jpg',
-            'png': 'jpg',
-            'gif': 'jpg'
-          };
-          
-        let ext = extensionMap[extension] || extension;
-        cb(null, `${uniqueId}.${ext}`);
-    }
-})
+            jpeg: 'jpg',
+            jpg: 'jpg',
+            png: 'jpg',
+            gif: 'jpg',
+        };
+    
+        const ext = extensionMap[extension] || extension;
+        const filename = `${uniqueId}.${ext}`;
+        return filename;
+    },
+});
 
 let uploadArray = multer({ storage: storageArray }).array('files');
 
