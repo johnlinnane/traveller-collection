@@ -660,12 +660,15 @@ app.post('/api/get-files-folder', async (req: Request, res: Response) => {
         const files = await fs.promises.readdir(folderPath);
   
         if (files.length === 0) {
-            res.send([]);
-        } else {
-            res.send(files);
-        }
+            return res.send([]);
+        } 
+        res.send(files);
     } catch (err) {
-        res.status(500).json({ error: 'Internal Server Error. File directory not found or Permissions Issue. ' , err});
+        if (err.code === 'ENOENT') {
+            // "Error NO ENTry". Requested file or directory does not exist
+            return res.send([]);
+        } 
+        res.status(500).json({ error: 'Internal server error.', err });
     }
 });
 
