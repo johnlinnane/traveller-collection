@@ -97,7 +97,7 @@ app.get('/api/get-pend-item-by-id', async (req: Request, res: Response) => {
         }
         res.send(data);
     } catch (err) {
-        res.status(400).send(err);
+        res.status(404).send(err);
     }
 })
 
