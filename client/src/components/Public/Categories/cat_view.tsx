@@ -22,7 +22,13 @@ const CatView: React.FC = (props: any) => {
         }
     }, [props.match?.params?.id]);
 
-    const [theseSubcats, setTheseSubcats] = useState([]);
+    interface SubCategory {
+        _id: string;
+        subCatIsHidden?: boolean;
+        title: string;
+    }
+
+    const [theseSubcats, setTheseSubcats] = useState<SubCategory[] | []>([]);
     
     const [navInfo] = useState({
         catTitle: null,
@@ -34,7 +40,7 @@ const CatView: React.FC = (props: any) => {
 
     useEffect(() => {
         if (props.subcats && props.subcats.length ) {
-            let tempTheseSubcats: any = [];
+            let tempTheseSubcats: SubCategory[] | [] = [];
             props.subcats.forEach( subcat => {
                 if (subcat.parent_cat === props.match.params.id) {
                     tempTheseSubcats.push(subcat)
