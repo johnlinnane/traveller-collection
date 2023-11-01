@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { withRouter } from "react-router-dom";
 
 import { getIntroText, updateIntroText } from '../../../actions';
-import { maxSelectFile, checkMimeType } from '../../../utils/files';
+import { maxSelectFile, checkMimeType } from '../../../utils';
 
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;

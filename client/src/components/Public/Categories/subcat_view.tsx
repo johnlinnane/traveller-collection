@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import { getSubcat, getItemsBySubcat, getCatById } from '../../../actions';
+import { addDefaultImg } from '../../../utils';
 import Breadcrumb from '../../widgetsUI/breadcrumb';
 import config from "../../../config";
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
@@ -70,13 +71,6 @@ const SubcatView: React.FC = (props: any) => {
             }
         }
     }, [props.subcatitems]);
-
-    const addDefaultImg = (ev) => {
-        const newImg = '/assets/media/default/default.jpg';
-        if (ev.target.src !== newImg) {
-            ev.target.src = newImg
-        }  
-    }
 
     const addClick = () => {
         // const tempNewItemId = new mongoose.Types.ObjectId().toHexString()

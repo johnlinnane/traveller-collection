@@ -1,16 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { addDefaultImg } from '../../../utils';
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
 const PendingItem: React.FC = (props: any) => {
 
-    const addDefaultImg = (ev) => {
-        const newImg = '/assets/media/default/default.jpg';
-        if (ev.target.src !== newImg) {
-            ev.target.src = newImg
-        }  
-    } 
-    
     return (
         <div className="p_item_card">
             <div className="p_item_img">

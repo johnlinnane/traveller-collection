@@ -15,7 +15,6 @@ dotenv.config({path: '../.env'})
 import cors from 'cors';
 import multer from 'multer';
 import fs from 'fs';
-const fsPromises = fs.promises;
 import mkdirp from 'mkdirp';
 
 
@@ -888,6 +887,35 @@ app.post('/api/upload-info/:number',
             return res.status(200).send(req.file)
         })
 });
+
+app.post('/api/file-check',
+    function(req: Request, res: Response) {
+        const paths = {
+            item: `./../public/assets/media/items${path.sep}${req.body.fileName}${path.sep}original${path.sep}0.jpg`,
+            cat: `./../public/assets/media/cover_img_cat${path.sep}${req.body.fileName}`,
+            subcat: `./../public/assets/media/cover_img_subcat${path.sep}${req.body.fileName}`,
+
+        }
+
+        const filePath = `${paths[req.body.type]}`;
+        try {
+            const request = fs.stat(filePath, (err, stats) => {
+                if (err) {
+                    return res.send({
+                        result: false,
+                        defaultPath: '/assets/media/default/default.jpg'
+                    });
+                } else {
+                    return res.status(200).send({result: true});
+                }
+              });
+        } catch (err) {
+            console.error(err);
+            return res.status(500).send(false);
+        }
+    }
+);
+
 
 //  ********************************************************
 const port = process.env.PORT || 3002;

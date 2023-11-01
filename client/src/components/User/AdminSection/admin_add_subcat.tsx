@@ -8,7 +8,7 @@ import Select from 'react-select';
 
 import { getAllCats } from '../../../actions';
 import { addSubcat } from '../../../actions';
-import { maxSelectFile, checkMimeType } from '../../../utils/files';
+import { maxSelectFile, checkMimeType } from '../../../utils';
 
 import mongoose from 'mongoose';
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;

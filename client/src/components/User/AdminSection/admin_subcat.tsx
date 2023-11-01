@@ -8,7 +8,7 @@ import Select from 'react-select';
 
 import { getAllCats, getAllSubCats  } from '../../../actions';
 import { deleteSubcat, updateSubcat  }  from '../../../actions';
-import { maxSelectFile, checkMimeType } from '../../../utils/files';
+import { maxSelectFile, checkMimeType } from '../../../utils';
 
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;

@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { withRouter } from "react-router-dom";
 
 import { getInfoText, updateInfoText } from '../../../actions';
-import { maxSelectFile, checkMimeType } from '../../../utils/files';
+import { maxSelectFile, checkMimeType } from '../../../utils';
 
 // import mongoose from 'mongoose';
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;

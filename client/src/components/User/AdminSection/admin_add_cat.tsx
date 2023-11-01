@@ -5,7 +5,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 
 import { addCat } from '../../../actions';
-import { maxSelectFile, checkMimeType } from '../../../utils/files';
+import { maxSelectFile, checkMimeType, addDefaultImg } from '../../../utils';
 
 import mongoose from 'mongoose';
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
@@ -20,14 +20,6 @@ const AdminAddCat = props => {
     const [saved, setSaved] = useState(false);
     const [imgSrc, setImgSrc] = useState('/assets/media/default/default.jpg');
     const [selectedFile, setSelectedFile] = useState(null);
-
-
-    const addDefaultImg = (ev) => {
-        const newImg = '/assets/media/default/default.jpg';
-        if (ev.target.src !== newImg) {
-            ev.target.src = newImg
-        }  
-    }
 
     const cancel = () => {
         props.history.push(`/admin/0`)
