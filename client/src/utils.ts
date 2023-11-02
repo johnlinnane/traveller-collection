@@ -2,26 +2,72 @@ import axios from 'axios';
 
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 
-export const checkMimeType = (event, _types) => {
-    let files = event.target.files 
-    const types = _types ? _types : ['image/png', 'image/jpg', 'image/jpeg', 'image/gif']
-    for(let x = 0; x < files.length; x++) {
-        if (types.every(type => files[x].type !== type)) {
-            alert(files[x].type + ' is not a supported format\n');
-            return false;
+const mimes = {
+    image: ['image/png', 'image/jpg', 'image/jpeg', 'image/gif', 'image/bmp', 'image/tiff', 'image/webp'],
+    pdf: ['application/pdf', 'application/x-pdf', 'application/acrobat', 'applications/vnd.pdf', 'text/pdf', 'text/x-pdf'],
+    video: ['video/mp4'] // 'video/webm', 'video/ogg', 'video/quicktime', 'video/x-msvideo', 'video/x-flv', 'video/3gpp', 'video/3gpp2', 'video/x-matroska'
+}
+
+export const checkMimeType = (event, _types: string[]) => {
+    let files = event.target.files;
+
+    const check = (types: string[], msg: string | null) => {
+        for(let x = 0; x < files.length; x++) {
+            if (types.every(type => files[x].type !== type)) {
+                alert(`${files[x].type} is not a supported format.\n${msg || ''}`);
+                return false;
+            }
+        };
+    }
+
+    for (let type of _types) {
+        switch (type) {
+            case 'image':
+                check(mimes.image, null)
+                break;
+            case 'pdf':
+                check(mimes.pdf, null);
+                break;
+            case 'video':
+                check(mimes.video, 'Please upload in MP4 format.');
+                break;
+            case 'all':
+                const allMimes: string[] = ([] as string[]).concat(...Object.values(mimes));
+                check(allMimes, null);
+                break;
         }
-    };
+    }
+
     return true;
 }
 
-export const checkFileSize = (event, _size) => {
+export const checkFileSize = (event) => {
+
+    
     let files = event.target.files;
-    let size = _size ? _size : 400 * 1000;
     for(let x = 0; x < files.length; x++) {
-        if (files[x].size > size) {
-            alert(files[x].name + ' is too large, please pick a smaller file\n');
-            return false;
+
+        if (mimes.image.includes(files[x].type)) {
+            if (files[x].size > 20000000) { // 20 MB
+                alert(files[x].name + ' is too large, please pick a smaller file\n');
+                return false;
+            }
         }
+
+        if (mimes.pdf.includes(files[x].type)) {
+            if (files[x].size > 20000000) { // 20 MB
+                alert(files[x].name + ' is too large, please pick a smaller file\n');
+                return false;
+            }
+        }
+
+        if (mimes.video.includes(files[x].type)) {
+            if (files[x].size > 500000000) { // 500 MB
+                alert(files[x].name + ' is too large, please pick a smaller file\n');
+                return false;
+            }
+        }
+
     };
     return true;
 }    

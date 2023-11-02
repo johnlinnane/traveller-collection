@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import {Progress} from 'reactstrap';
-import Select from 'react-select';
 import { getItemById, getPendItemById, updateItem, updatePendItem, getFilesFolder } from '../../../actions';
 
 import { checkMimeType, checkFileSize, maxSelectFile } from '../../../utils';
@@ -52,24 +51,10 @@ const EditItemFile = props => {
     const [selectedFiles, setSelectedFiles] = useState<string[]>([]);
     const [selectedFilesImg, setSelectedFilesImg] = useState<string[]>([]);
     const [selectedFilesNum, setSelectedFilesNum] = useState(0);
-    let loaded = 0;
-    const fileTypes = [
-        {
-            value: 'jpg',
-            label: "Image"
-        },
-        {
-            value: 'pdf',
-            label: "Document (PDF)"
-        },
-        {
-            value: 'mp4',
-            label: "Video (MP4)"
-        }
-    ];
-    const [selectedType, setSelectedType] = useState('jpg');
     const [imgSrc, setImgSrc] = useState('/assets/media/default/default.jpg');
     const [inputKey, setInputKey] = useState(Math.random().toString(36));
+
+    let loaded = 0;
 
     useEffect(() => {
         document.title = `Edit Item - ${config.defaultTitle}`;
@@ -134,8 +119,8 @@ const EditItemFile = props => {
 
         if (
             maxSelectFile(event, 1) &&
-            checkMimeType(event, ['image/png', 'image/jpeg', 'image/gif']) &&
-            checkFileSize(event, 15000)
+            checkMimeType(event, ['all']) &&
+            checkFileSize(event)
         ) {  
             setSelectedFilesNum(selectedFilesNum + 1);
             setSelectedFiles(tempSelectedFiles);
@@ -223,10 +208,6 @@ const EditItemFile = props => {
         setSelectedFilesNum(selectedFilesNum - 1);
     }
 
-    const handleFileType = newValue => {
-        setSelectedType(newValue.value);
-    }
-
     const addDefaultImg = ev => {
         const newImg = '/assets/media/default/default.jpg';
         if (ev.target.src !== newImg) {
@@ -297,59 +278,18 @@ const EditItemFile = props => {
                     </div>
                     <div className="edit_3_card_right">
                         <label className="edit_3_label">
-                            {selectedType === 'jpg' ?
-                                <input 
-                                    id="file_input"
-                                    key={`${inputKey}-image`}
-                                    type="file" 
-                                    className="form-control"  
-                                    accept="image/*" 
-                                    onChange={event => {onChangeHandler(event)}}
-                                />
-                            : selectedType === 'mp4' ? 
-                                <input 
-                                    id="file_input"
-                                    key={`${inputKey}-video`}
-                                    type="file" 
-                                    className="form-control"  
-                                    accept="video/*" 
-                                    onChange={event => {onChangeHandler(event)}}
-                                /> 
-                            : selectedType === 'pdf' ? 
-                                <input 
-                                    id="file_input"
-                                    key={`${inputKey}-pdf`}
-                                    type="file" 
-                                    className="form-control"  
-                                    accept="application/pdf" 
-                                    onChange={event => {onChangeHandler(event)}}
-                                /> 
-                            : <input 
+                            <input 
                                 id="file_input"
-                                key={`${inputKey}-file`}
+                                key={`${inputKey}-image`}
                                 type="file" 
                                 className="form-control"  
-                                onChange={event => {onChangeHandler(event)}}/>
-                            }
-
+                                accept="image/*, video/*, application/pdf" 
+                                onChange={event => {onChangeHandler(event)}}
+                            />
                             <div className="edit_page_3_button">
                                 Add File
                             </div>
                         </label>
-                        <p>Select File Type:</p>
-                        <Select
-                            className="basic-single"
-                            classNamePrefix="select"
-                            defaultValue={fileTypes[0]}
-                            // isDisabled={isDisabled}
-                            // isLoading={isLoading}
-                            // isClearable={isClearable}
-                            // isRtl={isRtl}
-                            // isSearchable={isSearchable}
-                            name="color"
-                            options={fileTypes}
-                            onChange={handleFileType}
-                        />
                     </div>
                 </div>
                 <div className="form_element">

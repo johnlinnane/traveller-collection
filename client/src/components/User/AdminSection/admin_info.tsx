@@ -59,7 +59,7 @@ const AdminInfo = props => {
     const onChangeHandler = (event, i, name) => {
         let files = event.target.files;
         if (i) {
-            if (maxSelectFile(event, 1) && checkMimeType(event, ['image/png', 'image/jpeg', 'image/gif'])) {  
+            if (maxSelectFile(event, 1) && checkMimeType(event, ['image'])) {  
                 let tempSelectedFiles = selectedFiles;
                 tempSelectedFiles[i] = files[0];
                 setSelectedFiles(tempSelectedFiles);
@@ -69,7 +69,7 @@ const AdminInfo = props => {
             // setImgSrc(tempImgSrc);
         }
         if (name) {
-            if (maxSelectFile(event, 1) && checkMimeType(event, ['image/png', 'image/jpeg', 'image/gif'])) {  
+            if (maxSelectFile(event, 1) && checkMimeType(event, ['image'])) {  
                 let tempSelectedIconImg = selectedIconImg;
                 tempSelectedIconImg = files[0];
                 setSelectedIconImg(tempSelectedIconImg);

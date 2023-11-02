@@ -36,7 +36,7 @@ const CatEdit = props => {
     const onChangeHandler = (id, event) => {
         let files = event.target.files;
 
-        if (maxSelectFile(event, 1) && checkMimeType(event, ['image/png', 'image/jpeg', 'image/gif'])) {  
+        if (maxSelectFile(event, 1) && checkMimeType(event, ['image'])) {  
             setSelectedFile(files);
         }
     }
