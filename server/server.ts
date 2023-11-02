@@ -244,7 +244,7 @@ app.get('/api/get-next-item', async (req: Request, res: Response) => {
         }
         res.send(data);
     } catch (err) {
-        res.status(400).send(err);
+        res.send(err);
     }
 })
 
@@ -748,7 +748,7 @@ let uploadArray = multer({ storage: storageArray }).array('files');
 
 app.post('/api/upload-array/:id', uploadMiddleware, createThumbnail);
 
-function uploadMiddleware(req, res, next) {
+function uploadMiddleware(req: Request, res: Response, next: NextFunction) {
     uploadArray(req, res, function (err) {
         if (err instanceof multer.MulterError) {
             console.log(err);
