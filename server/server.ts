@@ -719,11 +719,11 @@ app.post('/api/delete-dir', function(req: Request, res: Response) {
 type DestinationCallback = (error: Error | null, destination: string) => void;
 type FileNameCallback = (error: Error | null, filename: string) => void;
 
-const storageArray = await multer.diskStorage({
-    destination:  (req: Request, file: Express.Multer.File, cb: DestinationCallback) => {
+const storageArray = multer.diskStorage({
+    destination: async (req: Request, file: Express.Multer.File, cb: DestinationCallback) => {
         const destinationPath = `./../public/assets/media/items/${req.params.id}/original`;
         try {
-            mkdirp.sync(destinationPath);
+            await mkdirp.sync(destinationPath);
         } catch (error) {
                 console.error('Error creating directory:', error);
                 throw error;
