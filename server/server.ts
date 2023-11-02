@@ -716,19 +716,21 @@ app.post('/api/delete-dir', function(req: Request, res: Response) {
         return res.status(200)
 })
 
-const storageArray = multer.diskStorage({
-    destination: async (req, file) => {
+type DestinationCallback = (error: Error | null, destination: string) => void;
+type FileNameCallback = (error: Error | null, filename: string) => void;
+
+const storageArray = await multer.diskStorage({
+    destination:  (req: Request, file: Express.Multer.File, cb: DestinationCallback) => {
         const destinationPath = `./../public/assets/media/items/${req.params.id}/original`;
         try {
-            await mkdirp(destinationPath);
+            mkdirp.sync(destinationPath);
         } catch (error) {
-            console.error('Error creating directory:', error);
-            throw error;
-        }
-    
-        return destinationPath;
+                console.error('Error creating directory:', error);
+                throw error;
+            }
+        cb(null, destinationPath)
     },
-    filename: async (req, file) => {
+    filename: (req: Request, file: Express.Multer.File, cb: FileNameCallback) => {
         const uniqueId = new mongoose.Types.ObjectId();
         const extension = file.mimetype.split('/').pop();
         const extensionMap = {
@@ -737,10 +739,9 @@ const storageArray = multer.diskStorage({
             png: 'jpg',
             gif: 'jpg',
         };
-    
         const ext = extensionMap[extension] || extension;
         const filename = `${uniqueId}.${ext}`;
-        return filename;
+        cb (null, filename);
     },
 });
 
@@ -761,22 +762,22 @@ function uploadMiddleware(req: Request, res: Response, next: NextFunction) {
     });
 }
 
-function createThumbnail(req, res) {
+function createThumbnail(req: Request, res: Response) {
     let thumbPath = `./../public/assets/media/items/${req.params.id}/sq_thumbnail`;
     mkdirp.sync(thumbPath);
     fs.readdir(thumbPath, function(err, thumbFiles) {
         if (err) {
-            console.log('Error reading directory:', err);
+            console.log('Error reading sq_thumbnail directory:', err);
             return res.status(500).send({ message: 'Error processing images.' });
         }
 
         thumbFiles = thumbFiles.filter(item => !(/(^|\/)\.[^\/\.]/g).test(item));
         if (!thumbFiles.length) {
-            sharp(req.files[0])
+            sharp(req.files[0].path)
                 .resize(500, 500)
                 .toFile(`${thumbPath}/0.jpg`, (err) => {
                     if (err) {
-                        console.log('UPLOAD-FIELDS SHARP ERROR', err);
+                        console.log('Sharp resize error', err);
                         return res.status(500).send({ message: 'Error resizing image.' });
                     } else {
                         res.send("Files uploaded.");
