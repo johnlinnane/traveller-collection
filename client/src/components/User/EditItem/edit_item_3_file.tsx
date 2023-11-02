@@ -70,7 +70,7 @@ const EditItemFile = props => {
     }, []);
 
     useEffect(() => {
-        const { item } = props.items;
+        const item = props.items?.item;
         if (!item) return;
 
         setFormdata((prevData) => ({
@@ -129,7 +129,7 @@ const EditItemFile = props => {
         }
     }
 
-    const onSubmitHandler = () => {
+    const onSubmitHandler = async () => {
         if (props.user.login.isAuth) {
             props.dispatch(updateItem(
                 { 
@@ -148,13 +148,13 @@ const EditItemFile = props => {
             selectedFiles.forEach( (file, i) => {
                 filesForm.append('files', file[0]);  
             })
-            axios.post(`${API_PREFIX}/upload-array/${formdata._id}`, filesForm)
-                .then(res => {
-                    alert('File(s) uploaded successfully')
-                })
-                .catch(err => { 
-                    console.error('UPLOAD ERROR: ', err)
-                })
+            try {
+                const res = await axios.post(`${API_PREFIX}/upload-array/${formdata._id}`, filesForm);
+                alert('File(s) uploaded successfully');
+            } catch (err) {
+                console.error('UPLOAD ERROR: ', err);
+            }
+                  
         }
         setTimeout(() => {
             props.history.push(`/items/${formdata._id}`)

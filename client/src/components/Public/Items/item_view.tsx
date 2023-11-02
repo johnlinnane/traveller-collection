@@ -34,7 +34,7 @@ const ItemView: React.FC = (props: any) => {
     const [vidFiles, setVidFiles] = useState<string[]>([]);
     const [prevItem, setPrevItem] = useState(null);
     const [nextItem, setNextItem] = useState(null);
-    const [userIsAuth, setUserIsAuth] = useState(null);
+    const [userIsAuth, setUserIsAuth] = useState<boolean | null>(null);
     const [itemInfo, setItemInfo] = useState(null);
 
     useEffect(() => {
@@ -49,7 +49,7 @@ const ItemView: React.FC = (props: any) => {
         return () => {
             props.dispatch(clearItemWithContributor());
             document.title = config.defaultTitle;
-        }
+        } // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props?.match?.params?.id]);
 
     useEffect(() => {
@@ -522,9 +522,8 @@ const ItemView: React.FC = (props: any) => {
                                 </Link>
                             : null }
                         </div>
-
-                        <div className="right">
-                            {nextItem ?
+                        {nextItem?.title ?
+                            <div className="right">
                                 <Link to={`/items/${nextItem._id}`}>
                                     <div className="prev_next_box_header">
                                         <span>Next Item</span>
@@ -533,8 +532,8 @@ const ItemView: React.FC = (props: any) => {
                                         <span>{nextItem.title}</span>
                                     </div>
                                 </Link>
-                            : null }
-                        </div>
+                            </div>
+                        : null }
                     </div> 
                 : null }
             </div> 

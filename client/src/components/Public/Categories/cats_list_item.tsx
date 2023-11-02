@@ -1,18 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { checkFile, addDefaultImg } from '../../../utils';
+import { Category } from '../../../types';
 
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
-const CatItem: React.FC = (props: any) => {
+interface Props {
+    cat: Category;
+}
+
+const CatItem: React.FC<Props> = ({ cat }) => {
 
     const [imgSrc, setImgSrc] = useState<string>('');
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const request = await checkFile(`${props.cat._id}.jpg`, 'cat');
+                const request = await checkFile(`${cat._id}.jpg`, 'cat');
                 if (request.result === true) {
-                    setImgSrc(`${FS_PREFIX}/assets/media/cover_img_cat/${props.cat._id}.jpg`);
+                    setImgSrc(`${FS_PREFIX}/assets/media/cover_img_cat/${cat._id}.jpg`);
                 } else {
                     setImgSrc(request.defaultPath);
                 }
@@ -21,7 +26,7 @@ const CatItem: React.FC = (props: any) => {
             }
         };
         fetchData();
-    }, [props.cat?._id]);
+    }, [cat?._id]);
 
     return (
         <div className="cat_item_card">
@@ -29,8 +34,8 @@ const CatItem: React.FC = (props: any) => {
                     <img src={imgSrc} alt="category cover" onError={addDefaultImg} />
             </div>
             <div className="cat_item_text">
-                <h2><b>{props.cat.title}</b><span>→</span></h2>
-                {props.cat.description ? props.cat.description : null }<br />
+                <h2><b>{cat.title}</b><span>→</span></h2>
+                {cat.description ? cat.description : null }<br />
             </div>
         </div>
     );
