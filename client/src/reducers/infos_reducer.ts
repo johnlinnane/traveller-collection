@@ -8,7 +8,7 @@ export default function foo(state: DefaultStateI = defaultState, action: any): D
         case 'UPDATE_INFO_TEXT':
             return {
                 ...state,
-                updateInfoTextSuccess:action.payload.success,  // for update message
+                updateInfoTextSuccess:action.payload.success,
                 infoText:action.payload.doc
             }
         case 'GET_INFO_TEXT':

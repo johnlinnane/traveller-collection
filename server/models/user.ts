@@ -80,7 +80,7 @@ userSchema.methods.generateToken = async function() {
     }
 }
 
-userSchema.statics.findByToken = async function(token: any) {
+userSchema.statics.findByToken = async function(token: string) {
     let user = this;
     const decode = jwt.verify(token, process.env.PW);
     const foundUser = await user.findOne({"_id":decode, "token":token});
