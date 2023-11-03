@@ -258,7 +258,7 @@ const EditItem = props => {
                         <input
                             type="text"
                             placeholder={placeholder}
-                            defaultValue={existing || ''} 
+                            defaultValue={existing || undefined} 
                             onChange={(event) => handleInput(event, name, level)}
                         />
                     </div>
@@ -305,7 +305,7 @@ const EditItem = props => {
                             <td>
                                 <textarea
                                     placeholder="Please write as much details as you know about the item here. For example the place of origin, who made it, or owned it previously, what it was made out of, what it was used for, and any other details"
-                                    defaultValue={formdata.description || ''} 
+                                    defaultValue={formdata.description || undefined} 
                                     onChange={(event) => handleInput(event, 'description', null)}
                                     rows={18}
                                 />
@@ -343,7 +343,7 @@ const EditItem = props => {
                                             <input
                                                 type="number"
                                                 placeholder="Start page from parent item's PDF"
-                                                defaultValue={formdata.pdf_item_pages?.start || 1} 
+                                                defaultValue={formdata.pdf_item_pages?.start || undefined} 
                                                 onChange={(event) => handleInput(event, 'start', 'pdf_item_pages')}
                                             />
                                         </div>
@@ -358,7 +358,7 @@ const EditItem = props => {
                                             <input
                                                 type="number"
                                                 placeholder="End page from parent item's PDF"
-                                                defaultValue={formdata.pdf_item_pages?.end || 2} 
+                                                defaultValue={formdata.pdf_item_pages?.end || undefined} 
                                                 onChange={(event) => handleInput(event, 'end', 'pdf_item_pages')}
                                             />
                                         </div>
@@ -414,7 +414,7 @@ const EditItem = props => {
                                     <input
                                         type="number"
                                         placeholder="Geo-location latitude ie. 52.232269"
-                                        defaultValue={formdata.geo?.latitude || 52} 
+                                        defaultValue={formdata.geo?.latitude || undefined} 
                                         onChange={(event) => handleInput(event, 'latitude', 'geo')}
                                         className="input_latlng"
                                     />
@@ -430,7 +430,7 @@ const EditItem = props => {
                                     <input
                                         type="number"
                                         placeholder="Geo-location longitude ie. -8.670860"
-                                        defaultValue={formdata.geo?.longitude || -8} 
+                                        defaultValue={formdata.geo?.longitude || undefined} 
                                         onChange={(event) => handleInput(event, 'longitude', 'geo')}
                                         className="input_latlng"
                                     />
