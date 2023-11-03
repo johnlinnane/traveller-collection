@@ -421,10 +421,9 @@ const ItemView: React.FC = (props: any) => {
                                 <div>
                                     <div className="item_map_heading" onClick={() => setShowMap(!showMap)}>
                                         <p>
-                                            <b>View on Map </b> 
                                             {showMap ?
-                                                <i className="fa fa-angle-up"></i>
-                                            : <i className="fa fa-angle-down"></i>}
+                                            <b><u>Hide Map</u></b> 
+                                            : <b><u>Show Map</u></b>}
                                         </p>
                                     </div>
                                     {showMap ?
@@ -461,7 +460,7 @@ const ItemView: React.FC = (props: any) => {
 
                                 <div className="link_wrapper">
                                     <div className="link_text">
-                                        <b>Visit</b><br />
+                                        <b>External Link</b><br />
                                         {itemInfo.external_link[0].text}
                                     </div>
                                     <div className="link_img">
