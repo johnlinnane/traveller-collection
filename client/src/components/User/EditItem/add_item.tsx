@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { MapContainer, TileLayer, Marker } from 'react-leaflet'
+import "leaflet/dist/leaflet.css";
 import '../../../../node_modules/react-toastify/dist/ReactToastify.css';
+
 import config from "../../../config";
 import { createItem, createPendingItem, clearNewItem } from '../../../actions';
 
