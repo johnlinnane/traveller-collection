@@ -19,7 +19,7 @@ const CatView: React.FC = (props: any) => {
         }
         return () => {
             document.title = config.defaultTitle;            
-        }
+        } // eslint-disable-next-line
     }, [props.match?.params?.id]);
 
     interface SubCategory {
@@ -30,7 +30,7 @@ const CatView: React.FC = (props: any) => {
 
     const [theseSubcats, setTheseSubcats] = useState<SubCategory[] | []>([]);
     
-    const [navInfo] = useState({
+    const [navInfo, setNavInfo] = useState({
         catTitle: null,
         catId: null,
         subCatTitle: null,
@@ -48,15 +48,18 @@ const CatView: React.FC = (props: any) => {
             })
             setTheseSubcats(tempTheseSubcats);
         }
-    }, [props.subcats]);
+    }, [props.subcats, props.match?.params?.id]);
 
     useEffect(() => {
-        if (props.catinfo) {
+        if (props.catinfo?.title) {
             document.title = `${props.catinfo.title} - Traveller Collection`
-            navInfo.catTitle = props.catinfo.title;
-            navInfo.catId = props.catinfo._id;
+            setNavInfo(prevNavInfo => ({
+                ...prevNavInfo,
+                catTitle: props.catinfo.title,
+                catId: props.catinfo._id
+            }));
         }
-    }, [props.catinfo?._id]);
+    }, [props.catinfo]);
     
     return (
         <div>
