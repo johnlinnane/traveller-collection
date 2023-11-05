@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import "leaflet/dist/leaflet.css";
+import markerIconPng from "leaflet/dist/images/marker-icon.png";
+import { Icon } from 'leaflet'
 
 import { getItemsWithCoords } from '../../../actions';
 import config from "../../../config";
@@ -31,25 +33,11 @@ const MainMap = (props: any) => {
                 className="main_map"
                 center={[initLat, initLong]} 
                 zoom={initZoom} 
-                // style={{ height: showMap ? '350px' : '0px'}}
             >
                 <TileLayer
                     attribution='&copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-
-                {/* <Marker 
-                    position={[initLat, initLong]} 
-                    // key={incident['incident_number']} 
-                >
-                    <Popup>
-                        <span><b>Title</b></span>
-                        <br/>
-                        <span>address</span><br/>
-                        <br/>
-                        <span>{initLat}, {initLong}</span><br/>
-                    </Popup>
-                </Marker> */}
 
                 {props.items.items && props.items.items.length ?
                     <div>
@@ -58,6 +46,7 @@ const MainMap = (props: any) => {
                                 <Marker 
                                     position={[item.geo.latitude, item.geo.longitude]} 
                                     key={i}
+                                    icon={new Icon({iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41]})}
                                 >
                                     <Popup>
                                         <Link to={`/items/${item._id}`} target="_blank">

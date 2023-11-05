@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { MapContainer, TileLayer, Marker } from 'react-leaflet'
 import axios from 'axios';
+import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet'
 import "leaflet/dist/leaflet.css";
+import markerIconPng from "leaflet/dist/images/marker-icon.png";
+import { Icon } from 'leaflet'
 
 import { getItemById, updateItem, clearItem, deleteItem, getParentPdf, deleteChapter, getFilesFolder } from '../../../actions';
 import config from "../../../config";
@@ -188,18 +190,23 @@ const EditItem = props => {
         setFormdata(newFormdata);
     }
 
-    const handleClick = e => {
-        let lat = parseFloat(e.latlng.lat).toFixed(6);
-        let lng = parseFloat(e.latlng.lng).toFixed(6);
-        setFormdata({
-            ...formdata,
-            geo: {
-                ...formdata.geo,
-                latitude: lat,
-                longitude: lng
-            }
+    const MapClickHandler = () => {
+        const map = useMapEvents({
+            click(e) {
+                let lat = Math.round(e.latlng.lat * 1e6) / 1e6;
+                let lng = Math.round(e.latlng.lng * 1e6) / 1e6;
+                setFormdata({
+                    ...formdata,
+                    geo: {
+                        ...formdata.geo,
+                        latitude: lat,
+                        longitude: lng
+                    }
+                });
+            },
         });
-    }
+        return null;
+    };
 
     const handleSwitch = () => {
         setFormdata({
@@ -391,9 +398,8 @@ const EditItem = props => {
                                     className="edit_map"
                                     center={[initMap.initLat, initMap.initLong]} 
                                     zoom={initMap.initZoom} 
-                                    onClick={(e) => { handleClick(e)}}
-                                    // style={{ height: showMap ? '350px' : '0px'}}
                                 >
+                                    <MapClickHandler />
                                     <TileLayer
                                         attribution='&copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -401,6 +407,7 @@ const EditItem = props => {
                                     { formdata.geo?.latitude && formdata.geo?.longitude ?
                                         <Marker 
                                             position={[formdata.geo.latitude, formdata.geo.longitude]} 
+                                            icon={new Icon({iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41]})}
                                         />
                                     : null }
                                 </MapContainer>

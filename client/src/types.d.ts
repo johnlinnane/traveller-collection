@@ -28,8 +28,8 @@ export type Item = {
     ],
     geo?: {
         address?: string | null,
-        latitude?: string | null,
-        longitude?: string | null
+        latitude?: number | null,
+        longitude?: number | null
     },
     location?: string | null,
 

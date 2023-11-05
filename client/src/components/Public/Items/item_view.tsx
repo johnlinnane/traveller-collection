@@ -4,6 +4,8 @@ import { Link, withRouter } from 'react-router-dom';
 import Slick from 'react-slick';   // uses cdn css
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import "leaflet/dist/leaflet.css";
+import markerIconPng from "leaflet/dist/images/marker-icon.png";
+import { Icon } from 'leaflet'
 import { EmailShareButton, FacebookShareButton, WhatsappShareButton } from "react-share";
 import { EmailIcon, FacebookIcon, WhatsappIcon } from "react-share";
 import { Document, Page, pdfjs } from 'react-pdf';
@@ -426,7 +428,7 @@ const ItemView: React.FC = (props: any) => {
                                         <p>
                                             {showMap ?
                                             <b><u>Hide Map</u></b> 
-                                            : <b><u>Show Map</u></b>}
+                                            : <b><u>Show On Map</u></b>}
                                         </p>
                                     </div>
                                     {showMap ?
@@ -442,6 +444,7 @@ const ItemView: React.FC = (props: any) => {
                                             />
                                             <Marker 
                                                 position={[itemInfo.geo.latitude, itemInfo.geo.longitude]} 
+                                                icon={new Icon({iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41]})}
                                                 // key={incident['incident_number']} 
                                             >
                                                 <Popup>

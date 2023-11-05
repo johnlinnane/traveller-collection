@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import "leaflet/dist/leaflet.css";
+import markerIconPng from "leaflet/dist/images/marker-icon.png";
+import { Icon } from 'leaflet'
 
 import { getSubcat, getItemsBySubcat, getCatById } from '../../../actions';
 import { addDefaultImg } from '../../../utils';
@@ -125,6 +127,7 @@ const SubcatView: React.FC = (props: any) => {
                         <Marker 
                             position={[item.geo.latitude, item.geo.longitude]} 
                             key={i}
+                            icon={new Icon({iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41]})}
                         >   
                             <Popup>
                                 <Link to={`/items/${item._id}`} target="_blank">
