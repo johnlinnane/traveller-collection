@@ -5,6 +5,7 @@ import { addDefaultImg } from '../../../utils';
 import { getItemsByCat, getCatById, getAllSubCats } from '../../../actions';
 import Breadcrumb from '../../widgetsUI/breadcrumb';
 import config from '../../../config';
+import { SubCategory } from '../../../types';
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
 const CatView: React.FC = (props: any) => {
@@ -22,12 +23,6 @@ const CatView: React.FC = (props: any) => {
         } // eslint-disable-next-line
     }, [props.match?.params?.id]);
 
-    interface SubCategory {
-        _id: string;
-        subCatIsHidden?: boolean;
-        title: string;
-    }
-
     const [theseSubcats, setTheseSubcats] = useState<SubCategory[] | []>([]);
     
     const [navInfo, setNavInfo] = useState({
@@ -39,14 +34,9 @@ const CatView: React.FC = (props: any) => {
     });
 
     useEffect(() => {
-        if (props.subcats && props.subcats.length ) {
-            let tempTheseSubcats: SubCategory[] | [] = [];
-            props.subcats.forEach( subcat => {
-                if (subcat.parent_cat === props.match.params.id) {
-                    tempTheseSubcats.push(subcat)
-                }
-            })
-            setTheseSubcats(tempTheseSubcats);
+        if (props.subcats && props.subcats.length) {
+            const filteredSubcats: SubCategory[] = props.subcats.filter(subcat => subcat.parent_cat === props.match.params.id);
+            setTheseSubcats(filteredSubcats);
         }
     }, [props.subcats, props.match?.params?.id]);
 

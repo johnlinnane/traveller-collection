@@ -1,11 +1,4 @@
-export type Category = {
-    _id: string,
-    title: String,
-    description?: String,
-    catIsHidden?: Boolean
-};
-
-export type Item = ({
+export type Item = {
     _id: string,
     title: string,
     creator: string | null,
@@ -48,4 +41,21 @@ export type Item = ({
     pdf_item_parent_id?: string | null,
 
     shareDisabled?: boolean
-});
+};
+
+export type Category = {
+    _id: string,
+    title: String,
+    description?: String,
+    catIsHidden?: Boolean
+};
+
+export type SubCategory = {
+    _id?: string;
+    title?: string;
+    description: String,
+    parent_cat: String,
+    cover_item?: Number,
+    subCatIsHidden?: Boolean
+}
+
