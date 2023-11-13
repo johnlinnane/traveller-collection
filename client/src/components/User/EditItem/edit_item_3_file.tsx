@@ -182,7 +182,7 @@ const EditItemFile = props => {
         setImgSrc('/assets/media/default/default.jpg');
 
         setTimeout(() => {
-            props.history.push(`/user/edit-item-file/${formdata._id}`)
+            props.history.push(`/edit-item-file/${formdata._id}`)
         }, 1000)
     }
 

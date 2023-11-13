@@ -25,7 +25,7 @@ const AllItems = props => {
             items.items.map(item => (
                 <tr key={item._id}> 
                     <td>
-                        <Link to={`/user/edit-item/${item._id}`}>
+                        <Link to={`/edit-item/${item._id}`}>
                             {item.title}
                         </Link>
                     </td>

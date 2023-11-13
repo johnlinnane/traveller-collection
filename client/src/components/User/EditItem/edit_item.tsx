@@ -1,22 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet'
 import "leaflet/dist/leaflet.css";
 import markerIconPng from "leaflet/dist/images/marker-icon.png";
 import { Icon } from 'leaflet'
 
-import { getItemById, updateItem, clearItem, deleteItem, getParentPdf, deleteChapter, getFilesFolder } from '../../../actions';
+import { getItemById, updateItem, clearItem, deleteItem, createItem, getParentPdf, deleteChapter, getFilesFolder } from '../../../actions';
 import config from "../../../config";
 import { Item } from '../../../types';
 
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
+
 const EditItem = props => {
+
     const [formdata, setFormdata] = useState<Item>({
-        _id:props.match.params.id,
+        _id: '',
         title: '',
         creator: '',
         subject: '',
@@ -54,7 +56,8 @@ const EditItem = props => {
         },
         pdf_item_parent_id: '',
 
-        shareDisabled: false
+        shareDisabled: false,
+        isPending: null
     });
     const [initMap, setInitMap] = useState({
         initLat: 53.342609,
@@ -63,132 +66,229 @@ const EditItem = props => {
     });
     const [saved, setSaved] = useState(false);
     const [getParentCalled, setGetParentCalled] = useState(false);
+    const [creatingItem, setCreatingItem] = useState<boolean>(false);
+
+    
+    useEffect(() => {
+        if (typeof props.match.params.id === 'string' || props.match.params.id === 'new') {
+            setFormdata({
+                ...formdata,
+                _id: props.match.params.id
+            });
+        } 
+    }, [props.match?.params?.id]);
+    
+    
+    useEffect(() => {
+        if (typeof formdata._id !== 'string') {
+            props.history.push('/');
+        } else if (formdata._id === 'new') {
+            showConfirmationDialog();
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [formdata._id]);
+
 
     useEffect(() => {
-        props.dispatch(getItemById(props.match.params.id));
-        document.title = `Edit Item - ${config.defaultTitle}`;
-        props.dispatch(getFilesFolder({folder: `/items/${props.match.params.id}/original`}));
+        if (typeof props.items?.newitem?.itemId === 'string' && creatingItem === true) {
+            setCreatingItem(false);
+            setFormdata({
+                ...formdata,
+                _id: props.items.newitem.itemId
+            });
+            reloadEditPage(props.items.newitem.itemId);
+        }
+    }, [props.items.newitem]);
+
+
+    useEffect(() => {
+        if (typeof formdata._id === 'string' && formdata._id.length && formdata._id !== 'new') {
+            props.dispatch(getItemById(formdata._id));
+            document.title = `Edit Item - ${config.defaultTitle}`;
+            props.dispatch(getFilesFolder({folder: `/items/${formdata._id}/original`}));
+        }
         return () => {
             props.dispatch(clearItem());
             document.title = config.defaultTitle;
         } // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [formdata._id]);
 
+    
     useEffect(() => {
         if (props.items.item) {
             let item = props.items.item;
-                let newFormdata: Item = {
-                    ...formdata,
-                    _id:item._id,
-                    title:item.title,
-                    creator:item.creator,
-                    description:item.description,
-                    pages:item.pages,
-                    source:item.source,
-                    subject: item.subject,
-                    date_created: item.date_created,
-                    tags: item.tags,
-                    contributor: item.contributor,
-                    item_format: item.item_format,
-                    materials: item.materials,
-                    physical_dimensions: item.physical_dimensions,
-                    editor: item.editor,
-                    publisher: item.publisher,
-                    further_info: item.further_info,
-                    language: item.language,
-                    reference: item.reference,
-                    rights: item.rights,
-                    category_ref: item.category_ref,
-                    subcategory_ref: item.subcategory_ref,
-                    location: item.location,
-                    is_pdf_chapter: item.is_pdf_chapter,
-                    pdf_item_parent_id: item.pdf_item_parent_id,
-                    shareDisabled: item.shareDisabled
-                }
-                let newLatLng = initMap;
+            let newFormdata: Item = {
+                ...formdata,
+                _id:item._id,
+                title:item.title,
+                creator:item.creator,
+                description:item.description,
+                pages:item.pages,
+                source:item.source,
+                subject: item.subject,
+                date_created: item.date_created,
+                tags: item.tags,
+                contributor: item.contributor,
+                item_format: item.item_format,
+                materials: item.materials,
+                physical_dimensions: item.physical_dimensions,
+                editor: item.editor,
+                publisher: item.publisher,
+                further_info: item.further_info,
+                language: item.language,
+                reference: item.reference,
+                rights: item.rights,
+                category_ref: item.category_ref,
+                subcategory_ref: item.subcategory_ref,
+                location: item.location,
+                is_pdf_chapter: item.is_pdf_chapter,
+                pdf_item_parent_id: item.pdf_item_parent_id,
+                shareDisabled: item.shareDisabled,
+                isPending: item.isPending
+            }
+            let newLatLng = initMap;
 
-                if (item.external_link && item.external_link.length) {
-                    if (item.external_link[0].url || item.external_link[0].text) {
-                        newFormdata = {
-                            ...newFormdata,
-                            external_link: [
-                                {
-                                    url: item.external_link[0].url,
-                                    text: item.external_link[0].text
-                                }
-                            ]
-                        }
-                    }
-                } 
-
-                if (item.geo) {
-                    if (item.geo.address || item.geo.latitude || item.geo.longitude ) {
-                        newFormdata = {
-                            ...newFormdata,
-                            geo: {
-                                address: item.geo.address,
-                                latitude: item.geo.latitude,
-                                longitude: item.geo.longitude
-                            }
-                        }
-                    }
-                }
-
-                if (item.geo && item.geo.latitude && item.geo.longitude) {
-                    newLatLng = {
-                        initLat: item.geo.latitude,
-                        initLong: item.geo.longitude,
-                        initZoom: 6.5
-                    }
-                }
-
-                if (item.pdf_item_pages) {
+            if (item.external_link && item.external_link.length) {
+                if (item.external_link[0].url || item.external_link[0].text) {
                     newFormdata = {
                         ...newFormdata,
-                        pdf_item_pages: {
-                            start: item.pdf_item_pages.start || formdata.pdf_item_pages?.start,
-                            end: item.pdf_item_pages.end || formdata.pdf_item_pages?.end
+                        external_link: [
+                            {
+                                url: item.external_link[0].url,
+                                text: item.external_link[0].text
+                            }
+                        ]
+                    }
+                }
+            } 
+
+            if (item.geo) {
+                if (item.geo.address || item.geo.latitude || item.geo.longitude ) {
+                    newFormdata = {
+                        ...newFormdata,
+                        geo: {
+                            address: item.geo.address,
+                            latitude: item.geo.latitude,
+                            longitude: item.geo.longitude
                         }
                     }
                 }
-                
-                setFormdata(newFormdata);
-                setInitMap(newLatLng);
-                
-                if (props.items.item.is_pdf_chapter ) {
-                        
-                    if (!getParentCalled) {
-                        props.dispatch(getParentPdf(props.items.item.pdf_item_parent_id))
-                    }
-                    setGetParentCalled(true);
+            }
+
+            if (item.geo && item.geo.latitude && item.geo.longitude) {
+                newLatLng = {
+                    initLat: item.geo.latitude,
+                    initLong: item.geo.longitude,
+                    initZoom: 6.5
                 }
+            }
+
+            if (item.pdf_item_pages) {
+                newFormdata = {
+                    ...newFormdata,
+                    pdf_item_pages: {
+                        start: item.pdf_item_pages.start || formdata.pdf_item_pages?.start,
+                        end: item.pdf_item_pages.end || formdata.pdf_item_pages?.end
+                    }
+                }
+            }
+            
+            setFormdata(newFormdata);
+            setInitMap(newLatLng);
+            
+            if (props.items.item.is_pdf_chapter ) {
+                if (!getParentCalled) {
+                    props.dispatch(getParentPdf(props.items.item.pdf_item_parent_id))
+                }
+                setGetParentCalled(true);
+            }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [props]);
+    }, [props.items?.item]);
+
+
+    const showConfirmationDialog = () => {
+        if (window.confirm('Would you like to add a new item to this collection?')) {
+            handleCreateItem();
+        } else {
+            goBackToPreviousPage();
+        }
+    };
+
+    const handleCreateItem = () => {
+        setCreatingItem(true);
+        let { _id, ...newItemData } = {
+            ...formdata,
+            ownerId: 'guest',
+            isPending: true
+        };
+        if (props.user?.login?.isAuth && typeof props.user.login.id === 'string') {
+            newItemData = { 
+                ...newItemData,
+                ownerId: props.user.login.id,
+                isPending: false
+            };
+        }
+        try {
+            props.dispatch(createItem(newItemData));
+        } catch {
+            console.log('Error creating item.')
+        }
+    };
+
+
+    const goBackToPreviousPage = () => {
+        props.history.goBack();
+    };
+
+    const reloadEditPage = (itemId: string) => {
+        props.history.push(`/edit-item/${itemId}`);
+    };
+
 
     const handleInput = <T extends HTMLInputElement | HTMLTextAreaElement>(
         event: React.ChangeEvent<T>,
         name: string,
         level: string | null
     ) => {
-        let newFormdata: Item = {...formdata}
-        if (level === 'external_link') {
-                newFormdata.external_link[0][name] = event.target.value;
-        } else if (level === 'geo') {
-            newFormdata.geo[name] = event.target.value;
-            if (event.target.value === '') {
-                newFormdata.geo[name] = '';
+        setFormdata(prevFormData => {
+            let newFormdata = { ...prevFormData };
+    
+            const value = event.target.value;
+            switch (level) {
+                case 'external_link':
+                    return {
+                        ...newFormdata,
+                        external_link: [{
+                            ...newFormdata.external_link?.[0],
+                            [name]: value || null
+                        }]
+                    };
+                case 'geo':
+                    return {
+                        ...newFormdata,
+                        geo: {
+                            ...newFormdata.geo,
+                            [name]: value || null
+                        }
+                    };
+                case 'pdf_item_pages':
+                    return {
+                        ...newFormdata,
+                        pdf_item_pages: {
+                            ...newFormdata.pdf_item_pages,
+                            [name]: value || null
+                        }
+                    };
+                default:
+                    return {
+                        ...newFormdata,
+                        [name]: value
+                    };
             }
-        } else if (level === 'pdf_item_pages') {
-            newFormdata.pdf_item_pages[name] = event.target.value;
-            if (event.target.value === '') {
-                newFormdata.pdf_item_pages[name] = '';
-            }
-        } else {
-            newFormdata[name] = event.target.value;
-        }
-        setFormdata(newFormdata);
-    }
+        });
+    };
+    
 
     const MapClickHandler = () => {
         const map = useMapEvents({
@@ -242,7 +342,11 @@ const EditItem = props => {
     }
 
     const cancel = () => {
-        props.history.push(`/items/${props.match.params.id}`)
+        if (typeof formdata._id === 'string') {
+            props.history.push(`/items/${formdata._id}`)
+        } else {
+            props.history.push('/')
+        }
     }
 
     const submitForm = e => {
@@ -253,9 +357,12 @@ const EditItem = props => {
         ))
         setSaved(true);
         setTimeout(() => {
-            props.history.push(`/user/edit-item-sel/${props.items.item._id}`)
+            props.history.push({
+                pathname: `/edit-item-sel/${formdata._id}`
+            })
         }, 1000)
     }
+
 
     const createTextInput = (existing: string | null | undefined, name: string, placeholder: string, inputLabel: string, level: string | null) => {
         return (
@@ -277,12 +384,14 @@ const EditItem = props => {
         )
     }
 
+
     const addDefaultImg = ev => {
         const newImg = '/assets/media/default/default.jpg';
         if (ev.target.src !== newImg) {
             ev.target.src = newImg
         }  
     } 
+
 
     const renderForm = () => {
         return (

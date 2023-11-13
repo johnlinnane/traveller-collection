@@ -76,13 +76,13 @@ export default function foo(state: DefaultStateI = defaultState, action: any): D
         case 'UPDATE_ITEM':
             return {
                 ...state,
-                updateItem:action.payload.success,  // for update message
+                updateItemSuccess:action.payload.success,
                 item:action.payload.doc
             }
         case 'UPDATE_PEND_ITEM':
             return {
                 ...state,
-                updateItem:action.payload.success,  // for update message
+                updateItemSuccess:action.payload.success,
                 item:action.payload.doc
             }
         case 'DELETE_ITEM':

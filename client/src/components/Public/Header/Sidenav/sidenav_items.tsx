@@ -9,86 +9,86 @@ const SidenavItems: React.FC<any> = ( {user, onHideNav}: any) => {
             icon:'home',
             text:'Home',
             link:'/',
-            restricted:false
+            authOnly:false
         },
         {   type:'navItem',
             icon:'fa-solid fa-user',
             text:'My Profile',
             link:'/user',
-            restricted:true
+            authOnly:true
         },
         {   type:'navItem',
             icon:'fa-solid fa-user-plus',
             text:'Add Admins',
             link:'/user/register',
-            restricted:true
+            authOnly:true
         },
         {   type:'navItem',
             icon:'fa-solid fa-list-check',
             text:'List My Items',
             link:'/user/user_items',
-            restricted:true
+            authOnly:true
         },
         {   type:'navItem',
             icon:'fa-solid fa-list',
             text:'List All Items',
             link:'/user/all-items',
-            restricted:true
+            authOnly:true
         },
         {   type:'navItem',
             icon:'fa-solid fa-plus',
             text:'Add Item',
-            link:'/add_item',
-            restricted:false
+            link:'/edit-item/new',
+            authOnly:false
         },
         {   type:'navItem',
             icon:'fa-regular fa-clock',
             text:'Pending Items',
             link:'/user/pending-items',
-            restricted:true
+            authOnly:true
         },
         {   type:'navItem',
             icon:'fa-solid fa-eye',
             text:'Browse Categories',
             link:'/categories',
-            restricted:false
+            authOnly:false
         },
         {   type:'navItem',
             icon:'fa-sharp fa-solid fa-location-dot',
             text:'Map',
             link:'/map',
-            restricted:false
+            authOnly:false
         },
         {   type:'navItem',
             icon:'fa-solid fa-magnifying-glass',
             text:'Search',
             link:'/search',
-            restricted:false
+            authOnly:false
         },
         {   type:'navItem',
             icon:'fa-solid fa-hammer',
             text:'Admin',
             link:'/admin/0',
-            restricted:true
+            authOnly:true
         },
         {   type:'navItem',
             icon:'fa-solid fa-question',
             text:'About',
             link:'/info',
-            restricted:false
+            authOnly:false
         },
         {   type:'navItem',
             icon:'fa fa-sign-in',
             text:'Login',
             link:'/login',
-            restricted:false,
-            exclude:true
+            authOnly:false,
+            guestOnly:true
         },
         {   type:'navItem',
             icon:'fa fa-sign-out',
             text:'Logout',
             link:'/user/logout',
-            restricted:true
+            authOnly:true
         }
     ]
 
@@ -106,11 +106,11 @@ const SidenavItems: React.FC<any> = ( {user, onHideNav}: any) => {
             user.login ?
                 items.map((item, i) => {
                     if (user.login.isAuth) {
-                        return !item.exclude ?
+                        return !item.guestOnly ?
                             element(item, i)
                         : null
                     } else {
-                        return !item.restricted ?
+                        return !item.authOnly ?
                             element(item, i)
                         : null
                     }

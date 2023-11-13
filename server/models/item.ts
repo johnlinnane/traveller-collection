@@ -33,7 +33,6 @@ const itemSchema = new mongoose.Schema({
     publisher: String,
     further_info: String,
 
-
     external_link : [
         {
             url : String,
@@ -110,7 +109,8 @@ const itemSchema = new mongoose.Schema({
 
     pdf_item_parent_id: String,
 
-    shareDisabled: Boolean
+    shareDisabled: Boolean,
+    isPending: Boolean || null
 
 },{timestamps:true, strict: false});
 

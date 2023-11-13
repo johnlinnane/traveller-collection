@@ -10,7 +10,7 @@ import { EmailShareButton, FacebookShareButton, WhatsappShareButton } from "reac
 import { EmailIcon, FacebookIcon, WhatsappIcon } from "react-share";
 import { Document, Page, pdfjs } from 'react-pdf';
 
-import { getItemOrPending, clearItemWithContributor, getAllCats, getAllSubCats, getNextItem, getPrevItem, getParentPdf, getFilesFolder } from '../../../actions';
+import { getItemById, clearItemWithContributor, getAllCats, getAllSubCats, getNextItem, getPrevItem, getParentPdf, getFilesFolder } from '../../../actions';
 import Breadcrumb from '../../widgetsUI/breadcrumb';
 import config from "../../../config";
 
@@ -44,7 +44,7 @@ const ItemView: React.FC = (props: any) => {
 
     useEffect(() => {
         if (props.match?.params?.id) {
-            props.dispatch(getItemOrPending(props.match.params.id));
+            props.dispatch(getItemById(props.match.params.id));
             props.dispatch(getAllCats());
             props.dispatch(getAllSubCats());
             props.dispatch(getNextItem(props.match.params.id));
@@ -461,7 +461,7 @@ const ItemView: React.FC = (props: any) => {
                             : null}
                         </div> 
 
-                        {itemInfo.external_link && itemInfo.external_link[0].url ?
+                        {itemInfo?.external_link && itemInfo.external_link[0]?.url ?
                             <a href={itemInfo.external_link[0].url} target="_blank" rel="noreferrer">
 
                                 <div className="link_wrapper">
@@ -510,31 +510,31 @@ const ItemView: React.FC = (props: any) => {
                 }
 
                 {userIsAuth && !isPending === true ?
-                    <Link to={`/user/edit-item/${props.match.params.id}`} className="item_view_edit_link">Edit</Link>
+                    <Link to={`/edit-item/${props.match.params.id}`} className="item_view_edit_link">Edit</Link>
                 : null }
 
                 {isPending === false ?
                     <div className="item_box">
                         <div className="left">
-                            {prevItem ?
+                            {prevItem?._id ?
                                 <Link to={`/items/${prevItem._id}`}>
                                     <div className="prev_next_box_header">
                                         <span>Previous Item</span>
                                     </div>
                                     <div className="prev_next_box_item">
-                                        <span>{prevItem.title}</span>
+                                        <span>{prevItem.title || 'No Title'}</span>
                                     </div>
                                 </Link>
                             : null }
                         </div>
-                        {nextItem?.title ?
+                        {nextItem?._id ?
                             <div className="right">
                                 <Link to={`/items/${nextItem._id}`}>
                                     <div className="prev_next_box_header">
                                         <span>Next Item</span>
                                     </div>
                                     <div className="prev_next_box_item">
-                                        <span>{nextItem.title}</span>
+                                        <span>{nextItem.title || 'No Title'}</span>
                                     </div>
                                 </Link>
                             </div>

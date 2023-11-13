@@ -341,14 +341,14 @@ app.get('/api/get-items-with-coords', async (req: Request, res: Response) => {
 app.post('/api/create-item', async (req: Request, res: Response) => {
     try {
         const item = new Item( req.body );
-        const data = await item.save();
+        const request = await item.save();
         
-        if(!data) {
-            throw new Error('Not found');
+        if(!request) {
+            throw new Error('Error creating item.');
         }
         res.status(200).json({
             post:true,
-            itemId:data._id
+            itemId:request._id
         })
     } catch (err) {
         res.status(400).send(doc);
@@ -360,7 +360,7 @@ app.post('/api/create-pending-item', async (req: Request, res: Response) => {
         const pendingItem = new PendingItem( req.body );
         const data = await pendingItem.save();
         if(!data) {
-            throw new Error('Not found');
+            throw new Error('Error creating item.');
         }
         res.status(200).json({
             post:true,

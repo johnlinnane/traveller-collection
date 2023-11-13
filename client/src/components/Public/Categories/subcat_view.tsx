@@ -76,27 +76,14 @@ const SubcatView: React.FC = (props: any) => {
         }
     }, [props.subcatitems]);
 
-    const addClick = () => {
-        // const tempNewItemId = new mongoose.Types.ObjectId().toHexString()
-        // this.setState({
-        //     newItemId: tempNewItemId
-        // })
-        // let item = {
-        //     _id: tempNewItemId,
-        //     subcategory_ref : [this.state.navInfo.subCatId],
-        //     category_ref: [this.state.navInfo.catId]
-        // }
-        // this.props.dispatch(createItem(item))
-        setTimeout(() => {
-            // this.props.history.push(`/user/edit-item/${tempNewItemId}`);
-            props.history.push(`/add_item`);
-        }, 1000)
+    const addItemHandler = () => {
+        props.history.push(`/edit-item/new`);
     }
 
     const renderAddItem = (isPartOfGrid) => (
         <div 
             className={"btn-group pull-right " + (isPartOfGrid ? 'item_list_card' : 'item_list_add_card')}
-            onClick={() => { if (window.confirm('Would you like to add an item to this section?')) addClick() }}
+            onClick={() => { addItemHandler() }}
         >
             <div className="item_list_img">
                 <img src={`/assets/media/icons/add_item_icon.jpg`} 

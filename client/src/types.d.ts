@@ -40,7 +40,8 @@ export type Item = {
     },
     pdf_item_parent_id?: string | null,
 
-    shareDisabled?: boolean
+    shareDisabled?: boolean,
+    isPending: boolean | null
 };
 
 export type Category = {

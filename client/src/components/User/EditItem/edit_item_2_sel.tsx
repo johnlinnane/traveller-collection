@@ -2,98 +2,115 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Select from 'react-select';
-// import CreatableSelect from 'react-select/creatable';
-import { getItemById, getPendItemById, updateItem, updatePendItem, clearItem, getFilesFolder } from '../../../actions';
+import { getItemById, updateItem, clearItem, getFilesFolder } from '../../../actions';
 import { getAllCats, getAllSubCats  } from '../../../actions';
 import config from "../../../config";
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
 const EditItemSel = props => {
-    const [dataToUpdate, setDataToUpdate] = useState({
-        _id: null,
+
+    const idParam =  (props.match.params.id?.length === 24) ? props.match.params.id : "";
+
+    interface ItemData {
+        _id: string; 
+        category_ref: string[];
+        subcategory_ref: string[];
+    }
+    const [itemData, setItemData] = useState<ItemData>({
+        _id: idParam,
         category_ref: [],
         subcategory_ref: [],
-        tags: []
     });
-    const [catsConverted, setCatsConverted] = useState<{ value: string; label: string }[]>([]);
-    const [subcatsConverted, setSubcatsConverted] = useState<{ value: string; label: string }[]>([]);
-    const [tagsConverted, setTagsConverted] = useState(null);
-    const [catList, setCatList] = useState<{ value: string; label: string }[]>([]);
-    const [subcatList, setSubcatList] = useState<{ value: string; label: string }[]>([]);
-    const [subcatsInitialised, setSubcatsInitialised] = useState(false);
-    const [saved, setSaved] = useState(false);
-    // const [tagsDisabled, setTagsDisabled] = useState(true);
-    
+    const [itemCatsOptions, setItemCatsOptions] = useState<{ value: string; label: string }[]>([]);
+    const [itemCatsSelected, setItemCatsSelected] = useState<{ value: string; label: string }[]>([]);
+    const [itemSubcatsSelected, setItemSubcatsSelected] = useState<{ value: string; label: string }[]>([]);
+    const [itemSubcatOptions, setItemSubcatOptions] = useState<{ value: string; label: string }[]>([]);
+    const [submitted, setSubmitted] = useState(false);
+
+
     useEffect(() => {
         document.title = `Edit Item - ${config.defaultTitle}`;
-        if (props.user.login && props.user.login.isAuth) {
-            props.dispatch(getItemById(props.match.params.id))
-        } else {
-            props.dispatch(getPendItemById(props.match.params.id))
+        if (idParam) {
+            props.dispatch(getAllCats());
+            props.dispatch(getAllSubCats());
+            props.dispatch(getItemById(idParam));
         }
-        props.dispatch(getAllCats());
-        props.dispatch(getAllSubCats());
-        props.dispatch(getFilesFolder({folder: `/items/${props.match.params.id}/original`}));
         return () => {
             props.dispatch(clearItem())
             document.title = config.defaultTitle;
         } // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [idParam]);
+
 
     useEffect(() => {
-        if (props.items?.item && props.cats && props.subcats) {
-            let catsForState: { value: string, label: string}[] = [];
-            if (props.items.item.category_ref && props.items.item.category_ref.length) {
-                props.items.item.category_ref.forEach( (catref) => {
-                    props.cats.forEach( (cat) => {
-                        if ( cat._id === catref) {
-                            catsForState.push(
-                                {
-                                    value: cat._id,
-                                    label: cat.title
-                                }
-                            )
-                        }
-                    })
-                })
-            }
+        if (props.items?.item?._id) {
+            props.dispatch(getFilesFolder({folder: `/items/${props.items.item._id}/original`}));
+        } // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [props.items?.item?._id]);
 
-            let subcatsForState: { value: string, label: string}[] = [];
-            if (props.items.item.subcategory_ref && props.items.item.subcategory_ref.length) {
-                props.items.item.subcategory_ref.forEach( (subcatref) => {
-                    props.subcats.forEach( (subcat) => {
-                        if ( subcat._id === subcatref) {
-                            subcatsForState.push(
-                                {
-                                    value: subcat._id,
-                                    label: subcat.title
-                                }
-                            )
-                        }
-                    })
-                })
-            }
-            let existsForState = {
-                _id: props.items.item._id,
-                category_ref: props.items.item.category_ref,
-                subcategory_ref: props.items.item.subcategory_ref,
-                tags: props.items.item.tags,
-            }
-            let tagsForState = props.items.item.tags;
-            if (!tagsForState) {
-                tagsForState = []
-            }
-            getCatOptions()
-            getSubcatOptions()
-            renderForm()
 
-            setCatsConverted(catsForState);
-            setSubcatsConverted(subcatsForState);
-            setTagsConverted(tagsForState);
-            setDataToUpdate(existsForState);
+    useEffect(() => {
+        const { category_ref, subcategory_ref } = props.items.item || {};
+        setItemData(currentItemData => {
+            const newItemData = { ...currentItemData };
+            if (category_ref) {
+                newItemData.category_ref = category_ref;
+            }
+            if (subcategory_ref) {
+                newItemData.subcategory_ref = subcategory_ref;
+            }
+            return newItemData;
+        });
+    }, [props.items.item]);
+
+
+    useEffect(() => {
+        if (props.items?.item && props.cats?.length) {
+            setItemCatsOptions(props.cats.map(cat => ({
+                value: cat._id,
+                label: cat.title
+            })));
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [props]);
+    }, [props.cats, props.items?.item]);  
+    
+            
+    useEffect(() => {
+        if (props.items.item?.category_ref?.length && props.cats?.length) {
+                const cats = props.items.item.category_ref
+                    .map(catref => props.cats.find(cat => cat._id === catref))
+                    .filter(cat => cat !== undefined)
+                    .map(cat => ({ value: cat._id, label: cat.title }));
+                setItemCatsSelected(cats);
+            
+        }
+    }, [props.cats, props.items?.item?.category_ref]);    
+    
+
+    useEffect(() => {
+        if (props.items?.item?.subcategory_ref?.length && props.subcats) {
+            let options = props.items.item.subcategory_ref
+                .map(subcatref => props.subcats.find(subcat => subcat._id === subcatref))
+                .filter(subcat => subcat !== undefined)
+                .map(subcat => ({ value: subcat._id, label: subcat.title }));
+            setItemSubcatsSelected(options);
+        }
+    }, [props.subcats, props.items?.item?.subcategory_ref]);
+
+
+    useEffect(() => {
+        if (itemCatsSelected?.length && props.subcats?.length) {
+            let availableSubcats = [];
+            itemCatsSelected.forEach(cat => {
+                props.subcats.forEach(subcat => {
+                    if (cat.value === subcat.parent_cat) {
+                        availableSubcats.push({value: subcat._id, label: subcat.title});
+                    }
+                })
+            })
+            setItemSubcatOptions(availableSubcats);
+        }
+    }, [props.subcats, itemCatsSelected]);
+
 
     const addDefaultImg = ev => {
         const newImg = '/assets/media/default/default.jpg';
@@ -108,126 +125,102 @@ const EditItemSel = props => {
         }, 1000)
     }
 
-    // const handleInputTags = newValue => {
-    //     let latestData = {
-    //         ...dataToUpdate,
-    //         tags: newValue
-    //     }
-    //     let catchData = {
-    //         ...dataToUpdate,
-    //         tags: []
-    //     }
-    //     if (newValue == null) {
-    //         setDataToUpdate(catchData);
-    //     } else {
-    //         setDataToUpdate(latestData);
-    //     }
-    // }
 
-    const handleInputCats = newValue => {
-        let catArray: string[] = [];
-        if (newValue && newValue.length) {
-            newValue.forEach( cat => {
-                catArray.push(cat.value)
-            })
-        }
-        let newSubcatList: { value: string; label: string }[] = [];
-        if (newValue && newValue.length) {
-            newValue.forEach( newval => {
-                props.subcats.forEach( (subcat) => {
-                    if (newval.value === subcat.parent_cat){
-                        newSubcatList.push({
-                            value: subcat._id,
-                            label: subcat.title
-                        })
-                    }
-                })
-            })
-        }
-        let latestData = {
-            ...dataToUpdate,
+    const handleInputCats = newCatValues => {
+
+        setItemCatsSelected(newCatValues);
+
+        const catArray = newCatValues?.map(cat => cat.value) || [];
+        setItemData({
+            ...itemData,
             category_ref: catArray
-        }
-        setDataToUpdate(latestData);
-        setSubcatList(newSubcatList);
+        });
+
+        const newthing = newCatValues?.length > 0
+        ? newCatValues.flatMap(newval => 
+            props.subcats
+                .filter(subcat => newval.value === subcat.parent_cat)
+                .map(subcat => ({ value: subcat._id, label: subcat.title }))
+        )
+        : [];
+
+        setItemSubcatOptions(newthing);
+        removeOrphanedSubcats(newCatValues, catArray)
     }
 
-    const handleInputSubcats = newValue => {
-        let subcatArray: string[] = [];
-        if (newValue && newValue.length) {
-            newValue.forEach( subcat => {
-                subcatArray.push(subcat.value)
+
+    const removeOrphanedSubcats = (newCatValues, catArray) => {
+        let selectedCatIds: string[]= [];
+        newCatValues.forEach(cat => selectedCatIds.push(cat.value));
+
+        let selectedSubCatsFullData: string[]= [];
+        itemSubcatsSelected.forEach(subcat => {
+            props.subcats.forEach(propsubcat => {
+                if (propsubcat._id === subcat.value) {
+                    selectedSubCatsFullData.push(propsubcat);    
+                }
+                
             })
-        }
-        let latestData = {
-            ...dataToUpdate,
-            subcategory_ref: subcatArray
-        }
-        setDataToUpdate(latestData);
+        });
+
+        selectedSubCatsFullData.forEach(subcat => {
+            if (!selectedCatIds.includes(subcat.parent_cat)) {
+                const newSubcatArray = [...itemData.subcategory_ref].filter(item => item !== subcat._id);
+                setItemData({
+                    ...itemData,
+                    category_ref: catArray,
+                    subcategory_ref: newSubcatArray
+                });
+                let options = newSubcatArray
+                    .map(subcatref => props.subcats.find(subcat => subcat._id === subcatref))
+                    .filter(subcat => subcat !== undefined)
+                    .map(subcat => ({ value: subcat._id, label: subcat.title }));
+                setItemSubcatsSelected(options);
+            }
+        })
     }
+
+
+    const handleInputSubcats = newSubatValues => {
+        const subcatArray = newSubatValues?.map(cat => cat.value) || [];
+        setItemData({
+            ...itemData,
+            subcategory_ref: subcatArray
+        });
+        setItemSubcatsSelected(newSubatValues);
+
+    }
+
 
     const onSubmit = e => {
         e.preventDefault();
-        if (props.user.login.isAuth) {
-            props.dispatch(updateItem(
-                { ...dataToUpdate }
-            ))
+        if (!itemData.category_ref.length) {
+            alert('Please select a category');
+        } else if (!itemData.subcategory_ref.length) {
+            alert('Please select a subcategory');
         } else {
-            props.dispatch(updatePendItem(
-                { ...dataToUpdate }
-            ))
-        }
-        setSaved(true);
-        setTimeout(() => {
-            props.history.push(`/user/edit-item-file/${props.match.params.id }`)
-        }, 1000)
-    }
-
-    const getCatOptions = () => {
-        let tempCatList: { value: string; label: string; }[] = [];
-        props.cats.forEach( cat => {
-            tempCatList.push({
-                value: cat._id,
-                label: cat.title
-            })
-        })
-        setCatList(tempCatList);
-    }
-
-    const getSubcatOptions = () => {
-        if (!subcatsInitialised) {
-            if (props.items?.item && props.items.item.category_ref && props.items.item.category_ref.length) {
-                props.subcats.forEach( (subcat) => {
-                    if (props.items.item.category_ref.indexOf(subcat.parent_cat) !== -1) {
-                        subcatList.push({
-                            value: subcat._id,
-                            label: subcat.title
-                        })
-                    }  
-                })
-            } else {
-                props.subcats.forEach( subcat => {
-                    subcatList.push({
-                        value: subcat._id,
-                        label: subcat.title
-                    })
-                })
-            }
-            setSubcatList(subcatList);
-            setSubcatsInitialised(true);
+            props.dispatch(updateItem(
+                { ...itemData }
+            ));
+            setSubmitted(true);
+            
+            setTimeout(() => {
+                props.items?.updateItemSuccess && props.history.push(`/edit-item-file/${idParam}`);
+            }, 1000)
         }
     }
+
 
     const renderForm = () => {
-        const { items, match } = props;
+        const { items } = props;
         const imagePath: string = items?.files?.length
-            ? `${FS_PREFIX}/assets/media/items/${match.params.id}/original/${items.files[0]}`
+            ? `${FS_PREFIX}/assets/media/items/${idParam}/original/${items.files[0]}`
             : '/assets/media/default/default.jpg';
         const title: string | null = items?.item?.title || null;
         return (
             <form onSubmit={onSubmit}>
                 <div className="edit_item_container">
-                    <Link to={`/items/${dataToUpdate._id}`} target="_blank" >
+                    <Link to={`/items/${itemData._id}`} target="_blank" >
                         <div className="container">
                             <div className="img_back">
                                 <div>
@@ -245,25 +238,6 @@ const EditItemSel = props => {
                 <h2>Edit Item Categories</h2>
                 <table>
                 <tbody>
-                    {/* {tagsDisabled === true ?
-                        null
-                    :
-                        <tr>
-                            <td>
-                                Tags
-                            </td>
-                            <td>
-                                <div className="form_element select">
-                                    <CreatableSelect
-                                        defaultValue={tagsConverted}
-                                        isMulti
-                                        onChange={handleInputTags}
-                                        options={tagsConverted}
-                                    />
-                                </div>
-                            </td>
-                        </tr>
-                    } */}
                     <tr>
                         <td>
                             Category
@@ -272,10 +246,10 @@ const EditItemSel = props => {
                             <div className="form_element select">
                                 <Select
                                     key={`cat_${props.items?.item ? props.items.item._id : Math.floor(Math.random() * ((Math.pow(10, 6) - 1)) - Math.pow(10, 5) + 1) + Math.pow(10, 5)}`}
-                                    defaultValue={catsConverted}
+                                    value={itemCatsSelected}
                                     isMulti
                                     name="colors"
-                                    options={catList}
+                                    options={itemCatsOptions}
                                     className="basic-multi-select"
                                     classNamePrefix="select"
                                     onChange={handleInputCats}
@@ -283,7 +257,7 @@ const EditItemSel = props => {
                             </div>
                         </td>
                     </tr>  
-                    { catsConverted ?
+                    { itemData.category_ref?.length ?
                         <tr>
                             <td>
                                 Sub-categories 
@@ -293,10 +267,10 @@ const EditItemSel = props => {
                                 <div className="form_element select">
                                     <Select
                                         key={`cat_${props.items?.item ? props.items.item._id : Math.floor(Math.random() * ((Math.pow(10, 6) - 1)) - Math.pow(10, 5) + 1) + Math.pow(10, 5)}`}
-                                        defaultValue={subcatsConverted}
+                                        value={itemSubcatsSelected}
                                         isMulti
                                         name="colors"
-                                        options={subcatList}
+                                        options={itemSubcatOptions}
                                         className="basic-multi-select"
                                         classNamePrefix="select"
                                         onChange={handleInputSubcats}
@@ -319,19 +293,14 @@ const EditItemSel = props => {
     return (
         <div className="main_view">
             <div className="form_input item_form_input edit_page">
-                {
-                    props.items?.itemDeleted ?
-                        <div className="red_tag">
-                            Item Deleted    
-                            {redirectUser('/user/all-items')}
-                        </div>
-
-                    : null
-                }
-                {tagsConverted && catsConverted && subcatsConverted ?
-                    renderForm()
+                { props.items?.itemDeleted ?
+                    <div className="red_tag">
+                        Item Deleted    
+                        {redirectUser('/user/all-items')}
+                    </div>
                 : null }
-                {saved ?
+                {renderForm()}
+                {submitted ?
                     <p className="message center">Information saved!</p>
                 : null}
             </div>
@@ -339,6 +308,7 @@ const EditItemSel = props => {
         
     );
 }
+
 
 function mapStateToProps(state) {
     return {

@@ -157,7 +157,7 @@ const ChapterIndex = props => {
         }
         props.dispatch(createItem(chapterItem))
         // setTimeout(() => {
-        //     props.history.push(`/user/edit-item/${chapterItem._id}`)
+        //     props.history.push(`/edit-item/${chapterItem._id}`)
         // }, 1000)
     }
 
@@ -166,7 +166,7 @@ const ChapterIndex = props => {
         props.dispatch(updateItem({ ...formdata }));
         setSaved(true);
         // setTimeout(() => {
-        //     props.history.push(`/user/edit-item-file/${props.match.params.id }`)
+        //     props.history.push(`/edit-item-file/${props.match.params.id }`)
         // }, 1000)
     }
 

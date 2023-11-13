@@ -10,11 +10,9 @@ import ItemView from './components/Public/Items/item_view';
 import Search from './components/Public/Search';
 import MainMap from './components/Public/MainMap';
 import Info from './components/Public/Info/info';
-import AddItem from './components/User/EditItem/add_item';
 import Login from './components/Public/Login/login';
 
 // CONTAINERS ETC.
-import Home from './components/Public/Home/home'
 import Layout from './components/HOCs/layout';
 import AuthContainer from './components/HOCs/auth_container';
 import Register from './components/User/UserAdmin/register';
@@ -49,29 +47,28 @@ const Routes = () => {
                 <Route path="/search" exact component={AuthContainer(Search, null)}/>
                 <Route path="/map" exact component={AuthContainer(MainMap, null)}/>
                 <Route path="/info" exact component={AuthContainer(Info, null)}/>
-                <Route path="/add_item" exact component={AuthContainer(AddItem, null)}/>
-                <Route path="/login" exact component={AuthContainer(Login, false)}/> {/* DOESN'T SHOW IF USER IS LOGGED IN */}
+                <Route path="/login" exact component={AuthContainer(Login, 'user')}/> {/* DOESN'T SHOW IF USER IS LOGGED IN */}
+
+                <Route path="/edit-item/:id" exact component={AuthContainer(EditItem, null)}/>
+                <Route path="/edit-item-sel/:id" exact component={AuthContainer(EditItemSel, null)}/>
+                <Route path="/edit-item-file/:id" exact component={AuthContainer(EditItemFile, null)}/>
 
                 {/* WHEN LOGGED IN */}
 
-                <Route path="/user/logout" exact component={AuthContainer(Logout, true)}/>
-                <Route path="/user" exact component={AuthContainer(User, true)}/>
-                <Route path="/user/user_items" exact component={AuthContainer(UserItems, true)}/>
-                <Route path="/user/all-items" exact component={AuthContainer(AllItems, true)}/>
-                <Route path="/user/pending-items" exact component={AuthContainer(PendingItemsView, true)}/>
+                <Route path="/user/logout" exact component={AuthContainer(Logout, 'login')}/>
+                <Route path="/user" exact component={AuthContainer(User, 'login')}/>
+                <Route path="/user/user_items" exact component={AuthContainer(UserItems, 'login')}/>
+                <Route path="/user/all-items" exact component={AuthContainer(AllItems, 'login')}/>
+                <Route path="/user/pending-items" exact component={AuthContainer(PendingItemsView, 'login')}/>
 
-                <Route path="/user/edit-item/:id" exact component={AuthContainer(EditItem, true)}/>
-                <Route path="/user/edit-item-sel/:id" exact component={AuthContainer(EditItemSel, null)}/>
-                <Route path="/user/edit-item-file/:id" exact component={AuthContainer(EditItemFile, null)}/>
-                <Route path="/user/chapter-index/:id" exact component={AuthContainer(ChapterIndex, true)}/>
+                <Route path="/user/chapter-index/:id" exact component={AuthContainer(ChapterIndex, 'login')}/>
 
-                <Route path="/admin/:tab" exact component={AuthContainer(Admin, true)}/>
-                <Route path="/cat-edit/:id" exact component={AuthContainer(CatEdit, true)}/> {/*STILL USED??*/}
+                <Route path="/admin/:tab" exact component={AuthContainer(Admin, 'login')}/>
+                <Route path="/cat-edit/:id" exact component={AuthContainer(CatEdit, 'login')}/> {/*STILL USED??*/}
 
                 {/* DEPRECATED & MISC */}
                 
-                <Route path="/user/register" exact component={AuthContainer(Register, true)}/> 
-                <Route path="/home" exact component={AuthContainer(Home, null)}/>
+                <Route path="/user/register" exact component={AuthContainer(Register, 'login')}/> 
                 
             </Switch>
         </Layout>

@@ -3,12 +3,13 @@ import { connect } from 'react-redux';
 import { authGetCredentials } from '../../actions';
 import { withRouter } from "react-router-dom";
 
-export default function foo(ComposedClass, redirectToLogin) {
+export default function foo(Component, redirectTo: string | null) {
     const AuthenticationCheck = props => {
         const [loading, setLoading] = useState(false);
 
         useEffect(() => {
             props.dispatch(authGetCredentials()); 
+            setLoading(true);
             // eslint-disable-next-line react-hooks/exhaustive-deps
         }, []);
 
@@ -16,22 +17,22 @@ export default function foo(ComposedClass, redirectToLogin) {
             setLoading(false);
             if(props.user && props.user.login) {
                 if (!props.user.login.isAuth) {
-                    if(redirectToLogin === true) {
+                    if(redirectTo === 'login') {
                         props.history.push('/login');
                     }
                 } else {
-                    if (redirectToLogin === false) {
+                    if (redirectTo === 'user') {
                         props.history.push('/user')
                     } 
                 }
             }
-        }, [props.user, props.history]);
+        }, [props.user]);
 
         if(loading) {
             return <div className="loader">Loading...</div>
         }
         return(
-            <ComposedClass {...props} />
+            <Component {...props} />
         )
     }
 

@@ -142,35 +142,6 @@ export function getItems(
     }
 }
 
-export function getItemOrPending(id) {
-    return async (dispatch) => {
-        let payload = {};
-        try {
-            const { data } = await axios.get(`${API_PREFIX}/get-item-by-id?id=${id}`);
-            payload = {
-                item: data,
-            }
-        } catch {
-            try {
-                const { data } = await axios.get(`${API_PREFIX}/get-pend-item-by-id?id=${id}`);
-                payload = {
-                    item: data,
-                    pendingItemFound: true
-                }
-            } catch {
-                payload = {
-                    noItemOrPendingFound: true,
-                    error: true
-                }
-            }
-        }
-        dispatch({
-            type: 'GET_ITEM_OR_PENDING',
-            payload : payload
-        });
-    }
-}
-
 export function clearItemWithContributor() {
     return {
         type:'CLEAR_ITEM_W_CONTRIBUTOR',
@@ -275,16 +246,16 @@ export function getItemsWithCoords() {
 
 // * * * * * * * * * *  EDIT ITEMS * * * * * * * * * *  
 
-export function getItemById(id) {
+export function getItemById(id: string) {
     const request = axios.get(`${API_PREFIX}/get-item-by-id?id=${id}`)
                         .then(response => response.data);
     return {
         type:'GET_ITEM',
-        payload:request
+        payload: request
     }
 }
 
-export function getParentPdf(id) {
+export function getParentPdf(id: string) {
     const request = axios.get(`${API_PREFIX}/get-parent-pdf?id=${id}`)
                         .then(response => response.data);
     return {
