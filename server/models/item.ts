@@ -117,6 +117,4 @@ const itemSchema = new mongoose.Schema({
 
 const Item = mongoose.model('Item', itemSchema);
 
-const PendingItem = mongoose.model('PendingItem', itemSchema);
-
-module.exports = { Item, PendingItem }
+module.exports = { Item }

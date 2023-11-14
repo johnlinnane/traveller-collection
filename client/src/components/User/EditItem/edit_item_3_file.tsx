@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import {Progress} from 'reactstrap';
-import { getItemById, getPendItemById, updateItem, updatePendItem, getFilesFolder } from '../../../actions';
+import { getItemById, updateItem, getFilesFolder } from '../../../actions';
 
 import { checkMimeType, checkFileSize, maxSelectFile } from '../../../utils';
 
@@ -58,11 +58,7 @@ const EditItemFile = props => {
 
     useEffect(() => {
         document.title = `Edit Item - ${config.defaultTitle}`;
-        if (props.user && props.user.login && props.user.login.isAuth) {
-            props.dispatch(getItemById(props.match.params.id))
-        } else {
-            props.dispatch(getPendItemById(props.match.params.id))
-        }
+        props.dispatch(getItemById(props.match.params.id))
         props.dispatch(getFilesFolder({folder: `/items/${props.match.params.id}/original`}))
         return () => {
             document.title = config.defaultTitle;
@@ -130,19 +126,7 @@ const EditItemFile = props => {
     }
 
     const onSubmitHandler = async () => {
-        if (props.user.login.isAuth) {
-            props.dispatch(updateItem(
-                { 
-                    _id: formdata._id
-                }
-            ))
-        } else {
-            props.dispatch(updatePendItem(
-                { 
-                    _id: formdata._id
-                }
-            ))
-        }
+        props.dispatch(updateItem({ _id: formdata._id}));
         if (selectedFiles.length) {
             let filesForm = new FormData();
             selectedFiles.forEach( (file, i) => {
@@ -150,7 +134,7 @@ const EditItemFile = props => {
             })
             try {
                 const res = await axios.post(`${API_PREFIX}/upload-array/${formdata._id}`, filesForm);
-                alert('File(s) uploaded successfully');
+                alert('Item and media updoaded successfully!');
             } catch (err) {
                 console.error('UPLOAD ERROR: ', err);
             }

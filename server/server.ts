@@ -24,7 +24,7 @@ mongoose.connect(process.env.DB, { useNewUrlParser: true }) //old: useMongoClien
 
 
 import { User } from './models/user';
-import { Item, PendingItem } from './models/item';
+import { Item } from './models/item';
 import { Cat } from './models/cat';
 import { SubCat } from './models/subcat';
 import { Intro } from './models/intro';
@@ -32,7 +32,6 @@ import { Info } from './models/info';
 
 
 import { authMiddleware } from './middleware/auth_middleware';
-// import { fileURLToPath } from 'url';
 
 
 // middleware
@@ -78,19 +77,6 @@ app.get('/api/get-item-by-id', async (req: Request, res: Response) => {
     try {
         let id: number = req.query.id;
         const data = await Item.findById(id);
-        if(!data) {
-            throw new Error('Not found');
-        }
-        res.send(data);
-    } catch (err) {
-        res.status(404).send(err);
-    }
-})
-
-app.get('/api/get-pend-item-by-id', async (req: Request, res: Response) => {
-    try {
-        let id = req.query.id;
-        const data = await PendingItem.findById(id);
         if(!data) {
             throw new Error('Not found');
         }
@@ -147,7 +133,7 @@ app.get('/api/all-items', async (req: Request, res: response) => {
 
 app.get('/api/all-pend-items', async (req: Request, res: response) => {
     try {
-        const data = await PendingItem.find({});
+        const data = await Item.find({isPending: true});
         if(!data) {
             throw new Error('Not found');
         }
@@ -236,8 +222,8 @@ app.get('/api/get-items-by-cat', async (req: Request, res: Response) => {
 
 app.get('/api/get-next-item', async (req: Request, res: Response) => {
     try {
-        let oldId = req.query.oldId;
-        let query = {_id: {$gt: oldId}}
+        let { currentId } = req.query;
+        let query = {_id: {$gt: currentId}, isPending: {$ne: true}}
         const data = await Item.findOne(query);
         if(!data) {
             throw new Error('Not found');
@@ -250,8 +236,8 @@ app.get('/api/get-next-item', async (req: Request, res: Response) => {
 
 app.get('/api/get-prev-item', async (req: Request, res: Response) => {
     try {
-        let oldId = req.query.oldId;
-        const data = await Item.findOne({_id: {$lt: oldId}}, null, { sort: { '_id':-1 } });
+        let { currentId } = req.query;
+        const data = await Item.findOne({_id: {$lt: currentId}, isPending: {$ne: true}}, null, { sort: { '_id':-1 } });
         if(!data) {
             throw new Error('Not found');
         }
@@ -355,22 +341,6 @@ app.post('/api/create-item', async (req: Request, res: Response) => {
     }
 })
 
-app.post('/api/create-pending-item', async (req: Request, res: Response) => {
-    try {
-        const pendingItem = new PendingItem( req.body );
-        const data = await pendingItem.save();
-        if(!data) {
-            throw new Error('Error creating item.');
-        }
-        res.status(200).json({
-            post:true,
-            itemId:data._id
-        })
-    } catch (err) {
-        res.status(400).send(err);
-    }
-})
-
 app.post('/api/register', async (req: Request, res: Response) => {
     try {
         const user = new User(req.body);
@@ -448,48 +418,19 @@ app.post('/api/add-subcat', async (req: Request, res: Response) => {
     }
 })
 
+
 app.get('/api/accept-item', async (req: Request, res: Response) => {
     try {
-        let itemid = req.query.itemid;
-        let userid = req.query.userid;
-        let newId = new mongoose.Types.ObjectId();
-        const itemsPath = './../public/assets/media/items/';
-
-        const data = await PendingItem.findOne({ _id: itemid });
+        let { itemid: itemId } = req.query;
+        const data = await Item.updateOne({ _id: itemId }, { $set: { isPending: false } })
         if(!data) {
-            throw new Error('Not found');
-        }
-        let item_data = { 
-            ...pendItem._doc,
-            _id: newId,
-            ownerId: userid,
-            accepted: true,
-        }
-        let newItem = new Item(item_data);
-        pendItem.remove()
-        newItem.save( (err, data) =>{
-            res.status(200).json({
-                swapped:true,
-                itemId:data._id
-            })
-        })
-
-        if (fs.existsSync(`${itemsPath}${itemid}`)) {
-            fs.renameSync(`${itemsPath}${itemid}`, `${itemsPath}${newId}`, (err) => {
-                if (err) {
-                    throw err;
-                }
-                fs.statSync(`${itemsPath}${newId}`, (error, stats) => {
-                    if (error) {
-                        throw error;
-                    }
-                });
-            });
+            throw new Error('Item not found, or there was a problem with updating.');
         }
     } catch (err) {
         res.status(400).send(err);
     }
 })
+
 
 // **************************** UPDATE ****************************
 
@@ -497,22 +438,6 @@ app.post('/api/item-update', async (req: Request, res: Response) => {
     try {
 
         const data = await Item.findByIdAndUpdate(req.body._id, req.body, {new:true});
-        if(!data) {
-            throw new Error('Not found');
-        }
-        res.json({
-            success:true,
-            data
-        });
-    } catch (err) {
-        res.status(400).send(err);
-    }
-})
-
-app.post('/api/item-pend-update', async (req: Request, res: Response) => {
-    try {
-
-        const data = await PendingItem.findByIdAndUpdate(req.body._id, req.body, {new:true});
         if(!data) {
             throw new Error('Not found');
         }
@@ -589,7 +514,7 @@ app.post('/api/update-info-text', async (req: Request, res: Response) => {
 
 app.delete('/api/delete-item', async (req: Request, res: Response) => {
     try {
-        let id = req.query.id;
+        let { id } = req.query;
         const data = await Item.findByIdAndRemove(id);
         if(!data) {
             throw new Error('Not found');
@@ -602,9 +527,9 @@ app.delete('/api/delete-item', async (req: Request, res: Response) => {
 
 app.delete('/api/del-pend-item', async (req: Request, res: Response) => {
     try {
-        let id = req.query.id;
-        const data = await PendingItem.findByIdAndRemove(id);
-        if(!data) {
+        let { id } = req.query;
+        const response = await Item.deleteOne({ _id: id, isPending: true });
+        if(!response) {
             throw new Error('Not found');
         }
         res.json(true);
@@ -615,7 +540,7 @@ app.delete('/api/del-pend-item', async (req: Request, res: Response) => {
 
 app.delete('/api/delete-cat', async (req: Request, res: Response) => {
     try {
-        let id = req.query.id;
+        let { id } = req.query;
         const data = await Cat.findByIdAndRemove(id);
         if(!data) {
             throw new Error('Not found');
@@ -628,7 +553,7 @@ app.delete('/api/delete-cat', async (req: Request, res: Response) => {
 
 app.delete('/api/delete-subcat', async (req: Request, res: Response) => {
     try {
-        let id = req.query.id;
+        let { id } = req.query;
         const data = await SubCat.findByIdAndRemove(id);
         if(!data) {
             throw new Error('Not found');

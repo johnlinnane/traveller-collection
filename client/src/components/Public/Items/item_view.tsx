@@ -22,16 +22,14 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 const ItemView: React.FC = (props: any) => {
     const [numPages, setNumPages] = useState(null);             // total number of pages??
     const [pageNumber, setPageNumber] = useState(1);            // page currently displayed
-    // const [pdfError, setPdfError] = useState(false);         // not used
-    // const [setNumPages, setSetNumPages] = useState(null);    // not used
-    // const [setPageNumber, setSetPageNumber] = useState(1);   // not used
-    // const [pdfPageNumber, setPdfPageNumber] = useState(0);   // not used
+    // const [pdfError, setPdfError] = useState(false);
+    // const [setNumPages, setSetNumPages] = useState(null);
+    // const [setPageNumber, setSetPageNumber] = useState(1);
+    // const [pdfPageNumber, setPdfPageNumber] = useState(0);
     const [pdfScale] = useState(1);
 
     const [showMap, setShowMap] = useState(false);
     const [mapZoom] = useState(12);
-
-    const [isPending, setIsPending] = useState<boolean>(false);
 
     const [itemFiles, setItemFiles] = useState<string[]>([]);
     const [imgFiles, setImgFiles] = useState<string[]>([]);
@@ -61,7 +59,13 @@ const ItemView: React.FC = (props: any) => {
         if (props.items.error) {
             props.history.push('/');
         } // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [props.items]);
+    }, [props.items?.error]);
+
+    useEffect(() => {
+        if (props.items.item?.isPending && props.user.login?.error) {
+            props.history.push('/');
+        }
+    }, [props.items.item, props.user.login]);
 
     useEffect(() => {
         setItemInfo(props.items.item);
@@ -86,12 +90,6 @@ const ItemView: React.FC = (props: any) => {
             }
         } // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.items.item]);
-
-    useEffect(() => {
-        if (props.items.pendingItemFound) {
-            setIsPending(true);
-        }
-    }, [props.items?.pendingItemFound]);
 
     useEffect(() => {
         if (props.items.files && props.items.files.length) {
@@ -509,11 +507,11 @@ const ItemView: React.FC = (props: any) => {
                     </div>
                 }
 
-                {userIsAuth && !isPending === true ?
+                {userIsAuth ?
                     <Link to={`/edit-item/${props.match.params.id}`} className="item_view_edit_link">Edit</Link>
                 : null }
 
-                {isPending === false ?
+                {itemInfo.isPending !== true?
                     <div className="item_box">
                         <div className="left">
                             {prevItem?._id ?

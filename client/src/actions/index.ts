@@ -27,7 +27,7 @@ export function clearItem() {
 
 export function acceptItem(itemId: string | number, userId: string | number) {
 
-    const request = axios.get(`${API_PREFIX}/accept-item?itemid=${itemId}&userid=${userId}`)
+    const request = axios.get(`${API_PREFIX}/accept-item?itemid=${itemId}`)
                         .then(response => response.data);
     return {
         type: 'ACCEPT_ITEM',
@@ -113,9 +113,11 @@ export function searchItems(input, resultsNumber) {
 export function getAllPendItems() {
     const request = axios.get(`${API_PREFIX}/all-pend-items`)
                         .then(response => {
-                                return response.data
-                            }
-                        );
+                            return response.data
+                        })
+                        .catch(err => {
+                            return { error: true, msg: err }
+                        })
     return {
         type:'GET_ALL_PEND_ITEMS',
         payload:request
@@ -165,16 +167,6 @@ export function createItem(item) {
     }
 }
 
-export function createPendingItem(item) {
-    const request = axios.post(`${API_PREFIX}/create-pending-item`, item)
-                        .then(response => response.data);
-    return {
-        type: 'CREATE_PEND_ITEM',
-        payload:request
-    }
-}
-
-
 export function clearNewItem() {
     return {
         type:'CLEAR_NEWITEM',
@@ -182,8 +174,8 @@ export function clearNewItem() {
     }
 }
 
-export function getNextItem(oldId) {
-    const request = axios.get(`${API_PREFIX}/get-next-item?oldId=${oldId}`)
+export function getNextItem(currentId) {
+    const request = axios.get(`${API_PREFIX}/get-next-item?currentId=${currentId}`)
                         .then(response => {
                                 return response.data
                             }
@@ -194,8 +186,8 @@ export function getNextItem(oldId) {
     }
 }
 
-export function getPrevItem(oldId) {
-    const request = axios.get(`${API_PREFIX}/get-prev-item?oldId=${oldId}`)
+export function getPrevItem(currentId: string) {
+    const request = axios.get(`${API_PREFIX}/get-prev-item?currentId=${currentId}`)
                         .then(response => {
                                 return response.data
                             }
@@ -260,15 +252,6 @@ export function getParentPdf(id: string) {
                         .then(response => response.data);
     return {
         type:'GET_PARENT_PDF',
-        payload:request
-    }
-}
-
-export function getPendItemById(id) {
-    const request = axios.get(`${API_PREFIX}/get-pend-item-by-id?id=${id}`)
-                        .then(response => response.data);
-    return {
-        type:'GET_PEND_ITEM',
         payload:request
     }
 }

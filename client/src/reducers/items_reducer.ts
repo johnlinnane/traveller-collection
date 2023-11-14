@@ -14,11 +14,6 @@ export default function foo(state: DefaultStateI = defaultState, action: any): D
                 ...state,
                 item:action.payload
             };
-        case 'GET_PEND_ITEM':
-            return {
-                ...state,
-                item:action.payload
-            };
         case 'GET_PARENT_PDF':
             return {
                 ...state,
@@ -44,14 +39,6 @@ export default function foo(state: DefaultStateI = defaultState, action: any): D
                 ...state,
                 chaptDeleted:action.payload
             };
-        case 'GET_ITEM_OR_PENDING':
-            return {
-                ...state,
-                item:action.payload.item,
-                error:action.payload.error,
-                pendingItemFound: action.payload.pendingItemFound,
-                noItemOrPendingFound: action.payload.noItemOrPendingFound
-            };
         case 'CLEAR_ITEM_W_CONTRIBUTOR': 
             return {
                 ...state,
@@ -59,11 +46,6 @@ export default function foo(state: DefaultStateI = defaultState, action: any): D
                 contributor:action.payload.contributor
             };
         case 'CREATE_ITEM':
-            return {
-                ...state,
-                newitem:action.payload
-            };
-        case 'CREATE_PEND_ITEM':
             return {
                 ...state,
                 newitem:action.payload

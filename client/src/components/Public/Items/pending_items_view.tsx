@@ -9,6 +9,7 @@ const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 const PendingItemsView: React.FC = (props: any) => {
 
     const [items, setItems] = useState<any[]>([]);
+    const [errorMsg, setErrorMsg] = useState<string>('Loading...');
 
     useEffect(() => {
         document.title = `Pending Items - ${config.defaultTitle}`;
@@ -19,10 +20,17 @@ const PendingItemsView: React.FC = (props: any) => {
     }, []);
 
     useEffect(() => {
-        if (props.items && props.items.items) {
+        if (props.items.items?.error) {
+            setErrorMsg('There are no pending items.')
+        }
+    }, [props.items.items?.error]);
+
+
+    useEffect(() => {
+        if (props.items?.items) {
             setItems(props.items.items);
-        } // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [props]);
+        }
+    }, [props.items?.items]);
 
     const deleteAllMedia = async (id: string) => {
         let fileData =  {
@@ -63,7 +71,7 @@ const PendingItemsView: React.FC = (props: any) => {
                 items.map( (item, i) => (
                     <PendingItem key={i} item={item} handleChoicePass={handleChoice} />
                 ))
-            : <p>There are no pending items.</p>}
+            : <p>{errorMsg}</p>}
         </div>
     );
 }

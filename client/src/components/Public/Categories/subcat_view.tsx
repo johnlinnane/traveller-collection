@@ -64,15 +64,11 @@ const SubcatView: React.FC = (props: any) => {
 
     useEffect(() => {
         if (props.subcatitems && props.subcatitems.length) {
-            let hasMapCount = 0;
             props.subcatitems.forEach( (item, i) => {
                 if (item.geo && item.geo.latitude && item.geo.longitude) {
-                    hasMapCount++;
+                    setShowMap(true);
                 }
-            } )
-            if (hasMapCount) {
-                setShowMap(true);
-            }
+            });
         }
     }, [props.subcatitems]);
 
@@ -110,7 +106,7 @@ const SubcatView: React.FC = (props: any) => {
 
             {props.subcatitems && props.subcatitems.length ?
                 props.subcatitems.map( (item, i) => (
-                    item.geo && item.geo.latitude && item.geo.longitude ?
+                    item.geo?.latitude && item.geo?.longitude && !item.isPending?
                         <Marker 
                             position={[item.geo.latitude, item.geo.longitude]} 
                             key={i}
@@ -147,7 +143,7 @@ const SubcatView: React.FC = (props: any) => {
                                 <h2>{props.subcat[0].title}</h2>
                             </div>
                         : null}
-                        { props.subcatitems.map( (item, i) => (
+                        { props.subcatitems.map( (item, i) => !item.isPending && (
                                 <Link to={`/items/${item._id}`} key={i}>
                                     <div className="item_list_card">
                                         <div key={i} className="item_list_img">
