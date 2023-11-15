@@ -60,3 +60,8 @@ export type SubCategory = {
     subCatIsHidden?: Boolean
 }
 
+export type Intro = {
+    title: string,
+    body: String
+}
+
