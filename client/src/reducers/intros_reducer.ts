@@ -5,7 +5,7 @@ interface DefaultStateI {}
 const defaultState: DefaultStateI = {}
 
 
-interface UpdateItroTextAction {
+interface UpdateIntroTextAction {
     type: 'UPDATE_INTRO_TEXT';
     payload: {
         success: boolean;
@@ -18,7 +18,7 @@ interface GetIntroTextAction {
     payload: Intro;
 }
 
-type Action = UpdateItroTextAction | GetIntroTextAction;
+type Action = UpdateIntroTextAction | GetIntroTextAction;
 
 export default function foo(state: DefaultStateI = defaultState, action: Action): DefaultStateI {
     switch(action.type) {

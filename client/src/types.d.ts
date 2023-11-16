@@ -65,3 +65,12 @@ export type Intro = {
     body: String
 }
 
+export type Info = {
+    sections : [{
+        item_id : string,
+        heading : string,
+        paragraph : string
+    }],
+    iconsCaption: string
+}
+
