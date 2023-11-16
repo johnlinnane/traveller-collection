@@ -34,17 +34,17 @@ const SubcatView: React.FC = (props: any) => {
         }
         return () => {
             document.title = config.defaultTitle;
-        }
+        } // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.match?.params?.id]);
 
     useEffect(() => {
         if (props.catinfo?._id) {
-            let tempNavInfo = {
-                ...navInfo,
+
+            setNavInfo(prevNavInfo => ({
+                ...prevNavInfo,
                 catTitle: props.catinfo.title,
-                catId: props.catinfo._id,
-            }
-            setNavInfo(tempNavInfo);
+                catId: props.catinfo._id
+            }));
         }
     }, [props.catinfo]);
 

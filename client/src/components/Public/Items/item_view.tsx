@@ -64,7 +64,7 @@ const ItemView: React.FC = (props: any) => {
     useEffect(() => {
         if (props.items.item?.isPending && props.user.login?.error) {
             props.history.push('/');
-        }
+        } // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.items.item, props.user.login]);
 
     useEffect(() => {

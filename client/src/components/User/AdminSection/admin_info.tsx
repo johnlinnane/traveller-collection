@@ -46,11 +46,11 @@ const AdminInfo = props => {
                 tempKey = tempKey + section.heading;
                 tempImgUrls[i] = `${FS_PREFIX}/assets/media/info/${i}.jpg`;
             } )
-            setFormdata({
-                    ...formdata,
-                    sections: tempSections,
-                    iconsCaption: tempIconsCaption
-                });
+            setFormdata(prevFormData => ({
+                ...prevFormData,
+                sections: tempSections,
+                iconsCaption: tempIconsCaption
+            }));
             setImgUrls(tempImgUrls);
             // setKey(tempKey);
         }

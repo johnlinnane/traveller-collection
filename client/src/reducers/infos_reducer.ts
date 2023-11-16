@@ -19,7 +19,7 @@ interface GetInfoTextAction {
 
 type Action = UpdateInfoTextAction | GetInfoTextAction;
 
-export default function foo(state: DefaultStateI = defaultState, action: any): DefaultStateI {
+export default function foo(state: DefaultStateI = defaultState, action: Action): DefaultStateI {
     switch(action.type) {
 
         case 'UPDATE_INFO_TEXT':

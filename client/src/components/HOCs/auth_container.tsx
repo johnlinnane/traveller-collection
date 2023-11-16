@@ -25,7 +25,7 @@ export default function foo(Component, redirectTo: string | null) {
                         props.history.push('/user')
                     } 
                 }
-            }
+            } // eslint-disable-next-line react-hooks/exhaustive-deps
         }, [props.user]);
 
         if(loading) {
