@@ -13,6 +13,7 @@ import { Document, Page, pdfjs } from 'react-pdf';
 import { getItemById, clearItemWithContributor, getAllCats, getAllSubCats, getNextItem, getPrevItem, getParentPdf, getFilesFolder } from '../../../actions';
 import Breadcrumb from '../../widgetsUI/breadcrumb';
 import config from "../../../config";
+import { Item } from '../../../types';
 
 const IP_ADDRESS_REMOTE = process.env.REACT_APP_IP_ADDRESS_REMOTE;
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
@@ -20,25 +21,21 @@ const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 const ItemView: React.FC = (props: any) => {
-    const [numPages, setNumPages] = useState(null);             // total number of pages??
-    const [pageNumber, setPageNumber] = useState(1);            // page currently displayed
-    // const [pdfError, setPdfError] = useState(false);
-    // const [setNumPages, setSetNumPages] = useState(null);
-    // const [setPageNumber, setSetPageNumber] = useState(1);
-    // const [pdfPageNumber, setPdfPageNumber] = useState(0);
-    const [pdfScale] = useState(1);
-
-    const [showMap, setShowMap] = useState(false);
-    const [mapZoom] = useState(12);
+    const [numPages, setNumPages] = useState<number | null>(null);             // total number of pages??
+    const [pageNumber, setPageNumber] = useState<number>(1);            // page currently displayed
+    const [pdfScale] = useState<number>(1);
+    const [showMap, setShowMap] = useState<boolean>(false);
 
     const [itemFiles, setItemFiles] = useState<string[]>([]);
     const [imgFiles, setImgFiles] = useState<string[]>([]);
     const [pdfFiles, setPdfFiles] = useState<string[]>([]);
     const [vidFiles, setVidFiles] = useState<string[]>([]);
-    const [prevItem, setPrevItem] = useState(null);
-    const [nextItem, setNextItem] = useState(null);
+    const [prevItem, setPrevItem] = useState<Item | null>(null);
+    const [nextItem, setNextItem] = useState<Item | null>(null);
     const [userIsAuth, setUserIsAuth] = useState<boolean | null>(null);
-    const [itemInfo, setItemInfo] = useState(null);
+    const [itemInfo, setItemInfo] = useState<Item | null>(null);
+
+    const MAP_ZOOM: number = 12;
 
     useEffect(() => {
         if (props.match?.params?.id) {
@@ -247,7 +244,6 @@ const ItemView: React.FC = (props: any) => {
                     <Document
                         file={`${FS_PREFIX}/assets/media/items/${pdfId}/original/${pdfFiles[0]}`}
                         onLoadSuccess={onDocumentLoadSuccess}
-                        // onLoadError={setPdfError(true)}
                     >   
                             <Page 
                                 size="A4"
@@ -433,7 +429,7 @@ const ItemView: React.FC = (props: any) => {
                                         <MapContainer 
                                             className="item_map"
                                             center={[itemInfo.geo.latitude, itemInfo.geo.longitude]} 
-                                            zoom={mapZoom} 
+                                            zoom={MAP_ZOOM} 
                                             style={{ height: showMap ? '350px' : '0px'}}
                                         >
                                             <TileLayer
