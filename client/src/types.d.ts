@@ -74,3 +74,11 @@ export type Info = {
     iconsCaption: string
 }
 
+export type NavInfo = {
+    catTitle?: string | null,
+    catId?: string | null,
+    subCatTitle?: string | null,
+    subCatId?: string | null,
+    type?: string | null
+}
+

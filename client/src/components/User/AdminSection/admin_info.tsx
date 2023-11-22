@@ -220,7 +220,6 @@ const AdminInfo = props => {
                     <td>
                         <textarea
                             key={`para${i}`}
-                            type="text"
                             placeholder={`Paragraph ${i+1} Content`}
                             defaultValue={section.paragraph} 
                             onChange={(event) => handleInput(event, i, 'paragraph')}

@@ -6,8 +6,6 @@ import config from "../../../config";
 const Login: React.FC = (props: any) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error] = useState('');
-    const [success] = useState(false);
 
 
     const handleInputEmail = (event) => {
@@ -35,9 +33,7 @@ const Login: React.FC = (props: any) => {
         e.preventDefault();
         props.dispatch(loginUser({
             email,
-            password,
-            error,
-            success
+            password
         }))
     }
 

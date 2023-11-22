@@ -1,7 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const Breadcrumb: React.FC = (props: any) => {
+import { NavInfo } from '../../../src/types';
+
+type BreadcrumbProps = {
+    navinfo?: NavInfo;
+    title?: string;
+};
+
+const Breadcrumb = (props: BreadcrumbProps): JSX.Element => {
     return (
         <div className="nav_bar">
             <Link to={`/`}>

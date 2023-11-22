@@ -5,7 +5,7 @@ import { addDefaultImg } from '../../../utils';
 import { getItemsByCat, getCatById, getAllSubCats } from '../../../actions';
 import Breadcrumb from '../../widgetsUI/breadcrumb';
 import config from '../../../config';
-import { SubCategory } from '../../../types';
+import { SubCategory, NavInfo } from '../../../types';
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
 const CatView: React.FC = (props: any) => {
@@ -25,7 +25,7 @@ const CatView: React.FC = (props: any) => {
 
     const [theseSubcats, setTheseSubcats] = useState<SubCategory[] | []>([]);
     
-    const [navInfo, setNavInfo] = useState({
+    const [navInfo, setNavInfo] = useState<NavInfo>({
         catTitle: null,
         catId: null,
         subCatTitle: null,

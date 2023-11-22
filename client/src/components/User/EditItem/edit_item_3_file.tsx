@@ -133,7 +133,7 @@ const EditItemFile = props => {
                 filesForm.append('files', file[0]);  
             })
             try {
-                const res = await axios.post(`${API_PREFIX}/upload-array/${formdata._id}`, filesForm);
+                await axios.post(`${API_PREFIX}/upload-array/${formdata._id}`, filesForm);
                 alert('Item and media updoaded successfully!');
             } catch (err) {
                 console.error('UPLOAD ERROR: ', err);
@@ -296,7 +296,7 @@ const EditItemFile = props => {
                     <Progress max="100" color="success" value={loaded} >
                         { loaded ?
                             <div>    
-                                {Math.round(loaded,2)}
+                                {Math.round(loaded)}
                                 %
                             </div>
                         :null}

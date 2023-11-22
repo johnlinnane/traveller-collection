@@ -213,7 +213,6 @@ const AdminSubCat = props => {
                                 </td>
                                 <td>
                                     <textarea
-                                        type="text"
                                         placeholder="Description"
                                         defaultValue={props.chosenSubCatInfo.description} 
                                         onChange={(event) => handleSubCatInput(event, 'description')}

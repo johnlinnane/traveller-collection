@@ -25,7 +25,7 @@ const AdminAddCat = props => {
         props.history.push(`/admin/0`)
     }
 
-    const handleInput = (event, field, i) => {
+    const handleInput = (event, field) => {
         const newCatdata = {
             ...catdata
         }
@@ -105,7 +105,6 @@ const AdminAddCat = props => {
                             </td>
                             <td>
                                 <textarea
-                                    type="text"
                                     placeholder="Enter category description"
                                     defaultValue={catdata.description} 
                                     onChange={(event) => handleInput(event, 'description')}

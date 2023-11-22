@@ -170,7 +170,6 @@ const AdminCat = props => {
                                 </td>
                                 <td>
                                     <textarea
-                                        type="text"
                                         placeholder="Enter category description"
                                         defaultValue={props.chosenCatInfo.description} 
                                         onChange={(event) => handleCatInput(event, 'cat_description')}

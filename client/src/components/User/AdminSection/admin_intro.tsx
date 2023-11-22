@@ -118,7 +118,6 @@ const AdminIntro = props => {
                             <tr>
                                 <td>
                                     <textarea
-                                        type="text"
                                         placeholder="Text"
                                         defaultValue={introData.title} 
                                         onChange={(event) => handleInput(event, 'title')}
@@ -136,7 +135,6 @@ const AdminIntro = props => {
                             <tr>
                                 <td>
                                     <textarea
-                                        type="text"
                                         placeholder="Text"
                                         defaultValue={introData.body} 
                                         onChange={(event) => handleInput(event, 'body')}

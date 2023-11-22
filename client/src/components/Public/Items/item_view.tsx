@@ -13,7 +13,7 @@ import { Document, Page, pdfjs } from 'react-pdf';
 import { getItemById, clearItemWithContributor, getAllCats, getAllSubCats, getNextItem, getPrevItem, getParentPdf, getFilesFolder } from '../../../actions';
 import Breadcrumb from '../../widgetsUI/breadcrumb';
 import config from "../../../config";
-import { Item } from '../../../types';
+import { Item, NavInfo } from '../../../types';
 
 const IP_ADDRESS_REMOTE = process.env.REACT_APP_IP_ADDRESS_REMOTE;
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
@@ -139,21 +139,26 @@ const ItemView: React.FC = (props: any) => {
         } // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.user.login]);
 
-    const navInfo = {
+    const [navInfo, setNavInfo] = useState<NavInfo>({
         catTitle: null,
         catId: null,
         subCatTitle: null,
         subCatId: null,
         type: 'Categories'
-    }
+    });
+
 
     const getCatName = catId => {
         if (props.cats && props.cats.length) {
             props.cats.map( cat => {
                 if (cat._id === catId[0]) {
-                    navInfo.catTitle = cat.title;
-                    navInfo.catId = cat._id;
+                    setNavInfo(prevNavInfo => ({
+                        ...prevNavInfo,
+                        catTitle: cat.title,
+                        catId: cat._id
+                    }));
                 }
+                
                 return null;
             })
         }
@@ -163,8 +168,11 @@ const ItemView: React.FC = (props: any) => {
         if (props.subcats && props.subcats.length) {
             props.subcats.forEach( subcat => {
                 if (subcat._id === subCatId[0]) {
-                    navInfo.subCatTitle = subcat.title;
-                    navInfo.subCatId = subcat._id;
+                    setNavInfo(prevNavInfo => ({
+                        ...prevNavInfo,
+                        subCatTitle: subcat.title,
+                        subCatId: subcat._id
+                    }));
                 }
             })
         }

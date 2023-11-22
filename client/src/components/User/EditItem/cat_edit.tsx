@@ -25,7 +25,7 @@ const CatEdit = props => {
         if (props.cats) {
             props.cats.forEach( cat => {
                 if (cat._id === props.match.params.id) {
-                    setCatInfo(...cat);
+                    setCatInfo({ ...cat });
                 }
             })
         }

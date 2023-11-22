@@ -10,11 +10,13 @@ import { getSubcat, getItemsBySubcat, getCatById } from '../../../actions';
 import { addDefaultImg } from '../../../utils';
 import Breadcrumb from '../../widgetsUI/breadcrumb';
 import config from "../../../config";
+import { NavInfo } from '../../../types';
+
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
 const SubcatView: React.FC = (props: any) => {
     
-    const [navInfo, setNavInfo] = useState({
+    const [navInfo, setNavInfo] = useState<NavInfo>({
         catTitle: null,
         catId: null,
         subCatTitle: null,
