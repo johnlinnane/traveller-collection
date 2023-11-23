@@ -25,7 +25,7 @@ const AdminCat = props => {
     const [imgSrc, setImgSrc] = useState(`${FS_PREFIX}/assets/media/cover_img_cat/${props.chosenCatInfo._id}.jpg`);
     const [saved, setSaved] = useState(false);
     const [catDeleted, setCatDeleted] = useState(false);
-    const [selectedFile, setSelectedFile] = useState(false);
+    const [selectedFiles, setSelectedFiles] = useState<FileList | null>(null);
     
     useEffect(() => {
         props.dispatch(getAllCats());
@@ -58,25 +58,21 @@ const AdminCat = props => {
 
     const onImgChange = (event) => {
         let files = event.target.files;
-        if (maxSelectFile(event, 1) && checkMimeType(event, ['image'])) {  
-            setSelectedFile(files);
+        if (files.length) {
+            if (maxSelectFile(event, 1) && checkMimeType(event, ['image'])) {  
+                setSelectedFiles(files);
+            }
+            setImgSrc(URL.createObjectURL(files[0]));
         }
-        setImgSrc(URL.createObjectURL(event.target.files[0]));
     }
 
     const onSubmitHandler = () => {
         const data = new FormData();
-        if (selectedFile) {
-            for(let x = 0; x<selectedFile.length; x++) {
-                data.append('file', selectedFile[x])
+        if (selectedFiles) {
+            for(let x = 0; x < selectedFiles.length; x++) {
+                data.append('file', selectedFiles[x])
             }
-            axios.post(`${API_PREFIX}/upload-cat/${props.chosenCatInfo._id}`, data, { 
-                onUploadProgress: ProgressEvent => {
-                    // this.setState({
-                    //     loaded: (ProgressEvent.loaded / ProgressEvent.total*100)
-                    // })
-                }
-            })
+            axios.post(`${API_PREFIX}/upload-cat/${props.chosenCatInfo._id}`, data)
             .then(res => { 
                 toast.success('upload success')
                 alert('File uploaded successfully')

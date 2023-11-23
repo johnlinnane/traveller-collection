@@ -24,7 +24,7 @@ const Info: React.FC = (props: any) => {
                             <div className="img_and_para">
                                 <img src={`${FS_PREFIX}/assets/media/info/${i+1}.jpg`} 
                                     alt="Item" 
-                                    onError={i => i.target.style.display='none'}/
+                                    onError={i => (i.target as HTMLElement).style.display='none'}/
                                 >
 
                                 { section.paragraph ?
@@ -54,8 +54,8 @@ const Info: React.FC = (props: any) => {
                 <img src={`${FS_PREFIX}/assets/media/info/icons.jpg`} 
                     className="info_icons_img"
                     alt="Item" 
-                    onError={i => i.target.style.display='none'}/
-                >
+                    onError={i => (i.target as HTMLElement).style.display='none'}
+                />
             </div>
         )
     }

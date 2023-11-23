@@ -8,7 +8,7 @@ import React, { useRef, useState } from 'react';
 const SideNav = (props) => {
   const { style, navStyle, children, showNav, openFromRight, onHideNav } = props;
 
-  const navEle = useRef();
+  const navEle = useRef<HTMLDivElement>();
   let startX;
   let currentX;
   let touchingSideNav;
@@ -32,7 +32,7 @@ const SideNav = (props) => {
     if (!touchingSideNav) return;
     touchingSideNav = false;
     const translateX = Math[openFromRight ? 'max' : 'min'](0, currentX - startX);
-    navEle.current.style.transform = '';
+    navEle.current && (navEle.current.style.transform = '');
     if (!openFromRight && translateX < 0) hideNav();
     if (openFromRight && translateX > 0) hideNav();
   };
@@ -81,7 +81,7 @@ const SideNav = (props) => {
       background: 'rgba(0,0,0,0.4)',
       transition: 'opacity 0.3s cubic-bezier(0, 0, 0.3, 1)',
       willChange: 'opacity',
-    },
+    } as React.CSSProperties,
   };
 
   return (
@@ -90,7 +90,7 @@ const SideNav = (props) => {
       <nav
         style={styles.nav}
         onTransitionEnd={(e) => {
-          e.target.style.transition = 'none';
+          (e.target as HTMLElement).style.transition = 'none';
         }}
         onTouchStart={onTouchStart}
         onTouchMove={onTouchMove}
@@ -123,11 +123,11 @@ export default SideNav;
 
 const DefaultContent = (props) => {
   const { titleStyle, itemStyle, itemHoverStyle, title, items } = props;
-  const [hoverItemKey, setHoverItemKey] = useState();
+  const [hoverItemKey, setHoverItemKey] = useState(null);
 
-  const handleItemHover = (e, enter, key) => {
+  const handleItemHover = (enter, key?) => {
     if (enter) return setHoverItemKey(key);
-    setHoverItemKey();
+    setHoverItemKey(null);
   };
 
   const getItemStyle = (key) => {
@@ -159,8 +159,8 @@ const DefaultContent = (props) => {
             <li
               key={'item' + key}
               style={getItemStyle(key)}
-              onMouseOver={(e) => handleItemHover(e, true, key)}
-              onMouseOut={(e) => handleItemHover(e, false)}
+              onMouseOver={(e) => handleItemHover(true, key)}
+              onMouseOut={(e) => handleItemHover(false)}
             >
               {item}
             </li>

@@ -1,10 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { addDefaultImg } from '../../../utils';
+import { Item } from '../../../types';
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
-const PendingItem: React.FC = (props: any) => {
+interface PendingItemProps {
+    item: Item;
+    handleChoicePass: (itemId: string, choice: 'accept' | 'reject') => void;
+}
 
+const PendingItem: React.FC<PendingItemProps> = (props: any) => {
     return (
         <div className="p_item_card">
             <div className="p_item_img">

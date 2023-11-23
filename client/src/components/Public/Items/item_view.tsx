@@ -361,7 +361,7 @@ const ItemView: React.FC = (props: any) => {
                                                 <img src={`${FS_PREFIX}/assets/media/items/${itemInfo._id}/original/${itemFiles[0]}`} 
                                                 className="item_main_img"
                                                 alt="Item" 
-                                                onError={i => i.target.style.display='none'}/>
+                                                onError={i => (i.target as HTMLElement).style.display='none'}/>
                                             </div>
                                         </div>
                                     : 
@@ -373,7 +373,7 @@ const ItemView: React.FC = (props: any) => {
                                 : null }
 
                                 {vidFiles && vidFiles.length ?
-                                    <video className="video" controls name="media">
+                                    <video className="video" controls>
                                         <source src={`${FS_PREFIX}/assets/media/items/${itemInfo._id}/original/${vidFiles[0]}`} type="video/mp4"/>
                                     </video>
                                 : null }
