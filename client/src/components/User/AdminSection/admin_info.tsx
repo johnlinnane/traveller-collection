@@ -17,10 +17,10 @@ const AdminInfo = props => {
         sections: [],
         iconsCaption: ''
     });
-    const [selectedFiles, setSelectedFiles] = useState([]);
+    const [selectedFiles, setSelectedFiles] = useState<FileList | null>(null);
     const [imgUrls, setImgUrls] = useState([]);
     const [iconImgSrc, setIconImgSrc] = useState(`${FS_PREFIX}/assets/media/info/icons.jpg`);
-    const [selectedIconImg, setSelectedIconImg] = useState([]);
+    const [selectedIconImg, setSelectedIconImg] = useState<string | Blob>(null);
     // const [key, setKey] = useState(null);
     // const [imgSrc, setImgSrc] = useState('');
     const [saved, setSaved] = useState(null);
@@ -34,7 +34,7 @@ const AdminInfo = props => {
     useEffect(() => {
         if (props.infotext?.sections?.length) {
             let tempSections = [];
-            let tempIconsCaption = props.infotext.iconsCaption || formdata.tempIconsCaption;
+            let tempIconsCaption = props.infotext.iconsCaption || formdata.iconsCaption;
             let tempImgUrls = [];
             let tempKey = '';
             props.infotext.sections.forEach( (section, i) => {
@@ -56,7 +56,7 @@ const AdminInfo = props => {
         }
     }, [props.infotext]);
 
-    const onChangeHandler = (event, i, name) => {
+    const onChangeHandler = (event, i, name?) => {
         let files = event.target.files;
         if (i) {
             if (maxSelectFile(event, 1) && checkMimeType(event, ['image'])) {  
@@ -70,9 +70,7 @@ const AdminInfo = props => {
         }
         if (name) {
             if (maxSelectFile(event, 1) && checkMimeType(event, ['image'])) {  
-                let tempSelectedIconImg = selectedIconImg;
-                tempSelectedIconImg = files[0];
-                setSelectedIconImg(tempSelectedIconImg);
+                setSelectedIconImg(files[0]);
             }
             let tempIconImgSrc = iconImgSrc;
             tempIconImgSrc = URL.createObjectURL(event.target.files[0]);
@@ -183,9 +181,9 @@ const AdminInfo = props => {
             formdata
         ))
         if (selectedFiles && selectedFiles.length) {
-            selectedFiles.forEach( (file, i) => {
+            for (let i = 0; i < selectedFiles.length; ++i) {
                 onSubmitHandler(i);
-            })
+            }
         }
         if (selectedIconImg) {
             uploadIconsImg('icons');
@@ -251,7 +249,7 @@ const AdminInfo = props => {
                     </td>
                 </tr>
                 <tr>
-                    <td colSpan="2"><hr/></td>
+                    <td colSpan={2}><hr/></td>
                 </tr>
             </React.Fragment>
         ))
@@ -282,7 +280,7 @@ const AdminInfo = props => {
                 </td>
             </tr>
             <tr>
-                <td colSpan="2"><hr/></td>
+                <td colSpan={2}><hr/></td>
             </tr>
         </React.Fragment>
     )
@@ -314,7 +312,7 @@ const AdminInfo = props => {
                             </tr>
                             <tr><td></td><td></td></tr>
                             <tr>
-                                <td colSpan="2"><hr/></td>
+                                <td colSpan={2}><hr/></td>
                             </tr> */}
                             {renderIcons()}
                             <tr>

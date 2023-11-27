@@ -280,7 +280,7 @@ const EditItemSel = props => {
                         </tr>
                     : null }
                     <tr>
-                        <td colSpan="2" className="center">
+                        <td colSpan={2} className="center">
                             <button type="submit" className="edit_page_2_save">Save and Continue</button>
                         </td>
                     </tr>

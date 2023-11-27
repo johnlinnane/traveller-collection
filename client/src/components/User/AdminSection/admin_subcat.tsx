@@ -263,7 +263,7 @@ const AdminSubCat = props => {
                                         <input 
                                             type="checkbox" 
                                             checked={formdata.subCat.subCatIsHidden} 
-                                            onChange={(event) => handleHidden(event)}
+                                            onChange={() => handleHidden()}
                                         />
                                         <span>Hide this subcategory.</span>
                                     </div>
@@ -291,7 +291,7 @@ const AdminSubCat = props => {
                                 : null}
                             </tr>
                             <tr>
-                                <td colSpan="2">
+                                <td colSpan={2}>
                                     <button type="button" 
                                         className="delete" 
                                         onClick={(e) => { if (window.confirm('Are you sure you wish to delete this sub-category?')) removeSubCat(props.chosenSubCatInfo._id) } }

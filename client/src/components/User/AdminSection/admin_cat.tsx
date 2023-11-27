@@ -8,11 +8,17 @@ import 'react-tabs/style/react-tabs.css';
 import { getAllCats  } from '../../../actions';
 import { deleteCat, updateCat }  from '../../../actions';
 import { maxSelectFile, checkMimeType } from '../../../utils';
+import { Category } from '../../../types';
 
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
-const AdminCat = props => {
+type AdminCatProps = {
+    chosenCatInfo: Category;
+    dispatch: Function;
+};
+
+const AdminCat = (props: AdminCatProps): JSX.Element => {
 
     const [formdata, setFormdata] = useState({
         cat: {
@@ -211,14 +217,14 @@ const AdminCat = props => {
                                         <input 
                                             type="checkbox" 
                                             checked={formdata.cat.catIsHidden} 
-                                            onChange={(event) => handleHidden(event)}
+                                            onChange={() => handleHidden()}
                                         />
                                         <span>Hide this category.</span>
                                     </div>
                                 </td>
                             </tr>
                             <tr>
-                                <td colSpan="2">
+                                <td colSpan={2}>
                                     <button type="button" 
                                         className="delete" 
                                         onClick={(e) => { if (window.confirm('Are you sure you wish to delete this category?')) removeCat(e, props.chosenCatInfo._id) } }

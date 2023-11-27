@@ -18,7 +18,7 @@ const AdminIntro = props => {
     });
     const [saved, setSaved] = useState(false);
     const [imgSrc, setImgSrc] = useState(`${FS_PREFIX}/assets/media/intro/intro.jpg`);
-    const [selectedFile, setSelectedFile] = useState(false);
+    const [selectedFile, setSelectedFile] = useState<FileList | null>(null);
     
     useEffect(() => {
         props.dispatch(getIntroText());
@@ -45,7 +45,7 @@ const AdminIntro = props => {
 
     const onSubmitHandler = () => {
         const data = new FormData() 
-        if (selectedFile) {
+        if (selectedFile?.length) {
             for(let x = 0; x < selectedFile.length; x++) {
                 data.append('file', selectedFile[x])
             }

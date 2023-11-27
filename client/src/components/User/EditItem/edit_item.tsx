@@ -435,7 +435,7 @@ const EditItem = props => {
                         {formdata.is_pdf_chapter ? 
                             <React.Fragment>
                                 <tr><td></td><td></td></tr>
-                                <tr><td colSpan="2"><hr /></td></tr>
+                                <tr><td colSpan={2}><hr /></td></tr>
                                 <tr><td></td><td></td></tr>
                                 <tr>
                                     <td>
@@ -495,7 +495,7 @@ const EditItem = props => {
                             </tr>
                         }
                         <tr><td></td><td></td></tr>
-                        <tr><td colSpan="2"><hr /></td></tr>
+                        <tr><td colSpan={2}><hr /></td></tr>
                         <tr><td></td><td></td></tr>
                         <tr></tr>
                         {createTextInput(formdata.location,'location', "The item's general location ie. Cashel", "Location", null)}
@@ -558,7 +558,7 @@ const EditItem = props => {
                         </tr>
 
                         <tr><td></td><td></td></tr>
-                        <tr><td colSpan="2"><hr /></td></tr>
+                        <tr><td colSpan={2}><hr /></td></tr>
                         <tr><td></td><td></td></tr>
 
 
@@ -568,7 +568,7 @@ const EditItem = props => {
                         {createTextInput(formdata.external_link[0].text,'text', "Description of the link", '', "external_link")}
 
                         <tr><td></td><td></td></tr>
-                        <tr><td colSpan="2"><hr /></td></tr>
+                        <tr><td colSpan={2}><hr /></td></tr>
                         <tr><td></td><td></td></tr>
     
                         {createTextInput(formdata.item_format,'item_format', "The item's format", "Format", null)}
@@ -576,7 +576,7 @@ const EditItem = props => {
                         {createTextInput(formdata.physical_dimensions,'physical_dimensions', "Physical dimensions", "Dimensions", null)}
                         
                         <tr><td></td><td></td></tr>
-                        <tr><td colSpan="2"><hr /></td></tr>
+                        <tr><td colSpan={2}><hr /></td></tr>
                         <tr><td></td><td></td></tr>
 
                         {createTextInput(formdata.editor,'editor', "Editor's name(s)", "Editor", null)}
@@ -618,13 +618,13 @@ const EditItem = props => {
                         </tr>
 
                         <tr><td></td><td></td></tr>
-                        <tr><td colSpan="2"><hr /></td></tr>
+                        <tr><td colSpan={2}><hr /></td></tr>
                         <tr><td></td><td></td></tr>
 
                         {createTextInput(formdata.contributor,'contributor', "Add your name here", "Contributor", null)}
 
                         <tr>
-                            <td colSpan="2">
+                            <td colSpan={2}>
                                 
                                 <button 
                                     type="button" 
@@ -637,7 +637,7 @@ const EditItem = props => {
                         </tr>
 
                         <tr className="half_width">
-                            <td colSpan="2" >
+                            <td colSpan={2} >
                                 <button type="button" className="half_width_l" onClick={(e) => { if (window.confirm('Are you sure you wish to cancel? All data entered will be lost!')) cancel(e) }}>Cancel</button>
                                 <button type="submit" className="half_width_r">Save and Continue</button>
                             </td>
