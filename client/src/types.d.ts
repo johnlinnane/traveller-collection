@@ -1,38 +1,72 @@
 export type Item = {
     _id: string,
     title: string,
-    creator: string | null,
+    creator?: string | null,
     subject?: string | null,
+    location?: string | null,
     description?: string | null,
     source?: string | null,
     date_created?: string | null,
-    tags?: string[],
+    tags?: [
+        {
+            value: String,
+            label: String
+        }
+    ]
     contributor?: string | null,
+    ownerId?
+    category_ref?: string | null,
+    subcategory_ref?: string | null,
+    
     item_format?: string | null,
     materials?: string | null,
     physical_dimensions?: string | null,
     pages?: string | null,        
+    
     editor?: string | null,
     publisher?: string | null,
     further_info?: string | null,
-    language?: string | null,
-    reference?: string | null,
-    rights?: string | null,
-    category_ref?: string | null,
-    subcategory_ref?: string | null,
+    
     external_link?: [
         {
             url?: string | null,
             text?: string
         }
     ],
+
+    is_link?: boolean,
+
+    language?: string | null,
+    reference?: string | null,
+    rights?: string | null,
+    
+    image?: [
+        {
+            url: string,
+            text: string
+        }
+    ],
+
+    date_added?: string,
+    date_modified?: string,
+    number_files?: number,
+    
     geo?: {
         address?: string | null,
         latitude?: number | null,
         longitude?: number | null
     },
-    location?: string | null,
-
+    
+    pdf_page_index?: [
+        {
+            page: number,
+            heading: string,
+            description: string,
+            has_child: boolean,
+            child_id: string
+        }
+    ],
+    has_chapter_children?: boolean,
     is_pdf_chapter?: boolean | null,
     pdf_item_pages?: {
         start?: number | null,
@@ -41,7 +75,7 @@ export type Item = {
     pdf_item_parent_id?: string | null,
 
     shareDisabled?: boolean,
-    isPending: boolean | null
+    isPending?: boolean | null
 };
 
 export type Category = {

@@ -16,10 +16,7 @@ const itemSchema = new mongoose.Schema({
         }
     ],
     contributor: String,
-    ownerId: {
-        type:String
-    },
-
+    ownerId: String,
 
     category_ref: [String],
     subcategory_ref: [String], 
@@ -99,14 +96,12 @@ const itemSchema = new mongoose.Schema({
             child_id: String
         }
     ],
-    
     has_chapter_children: Boolean,
     is_pdf_chapter: Boolean,
     pdf_item_pages: {
         start: Number,
         end: Number
     },
-
     pdf_item_parent_id: String,
 
     shareDisabled: Boolean,

@@ -6,6 +6,7 @@ import { withRouter } from "react-router-dom";
 
 import { getInfoText, updateInfoText } from '../../../actions';
 import { maxSelectFile, checkMimeType } from '../../../utils';
+import { Info } from '../../../types';
 
 // import mongoose from 'mongoose';
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
@@ -13,15 +14,22 @@ const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
 const AdminInfo = props => {
 
-    const [formdata, setFormdata] = useState({
+    type LocalInfo = Omit<Info, 'sections'> & {
+        sections: {
+            item_id: string;
+            heading: string;
+            paragraph: string;
+        }[];
+    };
+
+    const [formdata, setFormdata] = useState<LocalInfo>({
         sections: [],
         iconsCaption: ''
     });
     const [selectedFiles, setSelectedFiles] = useState<FileList | null>(null);
     const [imgUrls, setImgUrls] = useState([]);
     const [iconImgSrc, setIconImgSrc] = useState(`${FS_PREFIX}/assets/media/info/icons.jpg`);
-    const [selectedIconImg, setSelectedIconImg] = useState<string | Blob>(null);
-    // const [key, setKey] = useState(null);
+    const [selectedIconImg, setSelectedIconImg] = useState<string | Blob | null>(null);
     // const [imgSrc, setImgSrc] = useState('');
     const [saved, setSaved] = useState(null);
 
@@ -33,28 +41,31 @@ const AdminInfo = props => {
 
     useEffect(() => {
         if (props.infotext?.sections?.length) {
-            let tempSections = [];
-            let tempIconsCaption = props.infotext.iconsCaption || formdata.iconsCaption;
-            let tempImgUrls = [];
-            let tempKey = '';
-            props.infotext.sections.forEach( (section, i) => {
-                tempSections[i] = {
-                    heading: section.heading,
-                    paragraph: section.paragraph,
-                    item_id: section.item_id,
-                }
-                tempKey = tempKey + section.heading;
-                tempImgUrls[i] = `${FS_PREFIX}/assets/media/info/${i}.jpg`;
-            } )
+            const tempSections = props.infotext.sections.map((section, i: number) => ({
+                heading: section.heading,
+                paragraph: section.paragraph,
+                item_id: section.item_id,
+            }));
             setFormdata(prevFormData => ({
                 ...prevFormData,
                 sections: tempSections,
-                iconsCaption: tempIconsCaption
             }));
+
+            const tempImgUrls = props.infotext.sections.map((_, i: number) => 
+                `${FS_PREFIX}/assets/media/info/${i}.jpg`
+            );
             setImgUrls(tempImgUrls);
-            // setKey(tempKey);
         }
-    }, [props.infotext]);
+    }, [props.infotext?.sections]);
+
+    useEffect(() => {
+        if (props.infotext?.iconsCaption) {
+            setFormdata(prevFormData => ({
+                ...prevFormData,
+                iconsCaption: props.infotext.iconsCaption
+            }));
+        }
+    }, [props.infotext?.iconsCaption]);
 
     const onChangeHandler = (event, i, name?) => {
         let files = event.target.files;

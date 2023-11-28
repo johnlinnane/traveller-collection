@@ -3,13 +3,25 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { getItemById, updateItem, createItem } from '../../../actions';
 import config from "../../../config";
+import { Item } from '../../../types';
 
 import mongoose from 'mongoose';
 
 const ChapterIndex = props => {
 
-    const [formdata, setFormdata] = useState({
+    type LocalItem = Omit<Item, 'pdf_page_index'> & {
+        pdf_page_index: {
+            page: number,
+            heading: string,
+            description: string,
+            has_child: boolean,
+            child_id: string
+        }[];
+    };
+
+    const [formdata, setFormdata] = useState<LocalItem>({
         _id: props.match.params.id,
+        title: '',
         pdf_page_index: []
     });
     const [saved, setSaved] = useState(false);
@@ -23,15 +35,14 @@ const ChapterIndex = props => {
                 document.title = config.defaultTitle;
             }
         }
-    }, []);
+    }, [props.match.params?.id]);
 
     useEffect(() => {
         if (props.items?.item) {
-            let tempFormdata = {
-                ...formdata,
+            setFormdata(prevFormData => ({
+                ...prevFormData,
                 ...props.items.item
-            }
-            setFormdata(tempFormdata);
+            }));
         }
     }, [props.items?.item]);
 
