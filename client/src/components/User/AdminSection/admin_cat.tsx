@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from "react-router-dom";
+import { withRouter, RouteComponentProps } from "react-router-dom";
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-tabs/style/react-tabs.css';
@@ -13,14 +13,20 @@ import { Category } from '../../../types';
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
-type AdminCatProps = {
+interface AdminCatProps extends RouteComponentProps {
     chosenCatInfo: Category;
     dispatch: Function;
+    index: number;
+    getTabIndex: Function;
 };
 
 const AdminCat = (props: AdminCatProps): JSX.Element => {
 
-    const [formdata, setFormdata] = useState({
+    interface FormDataState {
+        cat: Category
+    };
+
+    const [formdata, setFormdata] = useState<FormDataState>({
         cat: {
             _id: null,
             title: null,
