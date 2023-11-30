@@ -263,7 +263,7 @@ const ChapterIndex = props => {
             </div>
 
             <button type="submit" className="half_width_l" onClick={onSubmit}>Save and Return</button>
-            <button type="button" className="half_width_l" onClick={(e) => { if (window.confirm('Cancelling will result in loss of all newly inputted information in this form.')) cancel(e) } }>Cancel</button>
+            <button type="button" className="half_width_l" onClick={() => { if (window.confirm('Cancelling will result in loss of all newly inputted information in this form.')) cancel() } }>Cancel</button>
 
         </div>
     )

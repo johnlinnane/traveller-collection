@@ -91,7 +91,7 @@ const CatEdit = props => {
                     <Progress max="100" color="success" value={loaded} >
                         { loaded ?
                             <div>    
-                                {Math.round(loaded,2)}
+                                {Math.round(loaded)}
                                 %
                             </div>
                         :null}

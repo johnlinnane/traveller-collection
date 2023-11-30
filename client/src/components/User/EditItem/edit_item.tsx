@@ -611,7 +611,7 @@ const EditItem = props => {
                                         type="checkbox" 
                                         // className="share_toggle"
                                         checked={!formdata.shareDisabled} 
-                                        onChange={(event) => handleSwitch(event)}
+                                        onChange={() => handleSwitch()}
                                     />
                                 </div>
                             </td>
@@ -629,7 +629,7 @@ const EditItem = props => {
                                 <button 
                                     type="button" 
                                     className="delete"
-                                    onClick={(e) => { if (window.confirm('Are you sure you wish to permanently delete this item?')) deleteThisItem(e) } }
+                                    onClick={() => { if (window.confirm('Are you sure you wish to permanently delete this item?')) deleteThisItem() } }
                                 >
                                     Delete item
                                 </button>
@@ -638,7 +638,7 @@ const EditItem = props => {
 
                         <tr className="half_width">
                             <td colSpan={2} >
-                                <button type="button" className="half_width_l" onClick={(e) => { if (window.confirm('Are you sure you wish to cancel? All data entered will be lost!')) cancel(e) }}>Cancel</button>
+                                <button type="button" className="half_width_l" onClick={() => { if (window.confirm('Are you sure you wish to cancel? All data entered will be lost!')) cancel() }}>Cancel</button>
                                 <button type="submit" className="half_width_r">Save and Continue</button>
                             </td>
                         </tr>  

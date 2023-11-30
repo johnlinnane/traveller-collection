@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import Select from 'react-select';
 import { getItemById, updateItem, clearItem, getFilesFolder } from '../../../actions';
 import { getAllCats, getAllSubCats  } from '../../../actions';
+import { SubCategory } from '../../../types';
 import config from "../../../config";
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
@@ -153,7 +154,7 @@ const EditItemSel = props => {
         let selectedCatIds: string[]= [];
         newCatValues.forEach(cat => selectedCatIds.push(cat.value));
 
-        let selectedSubCatsFullData: string[]= [];
+        let selectedSubCatsFullData: SubCategory[]= [];
         itemSubcatsSelected.forEach(subcat => {
             props.subcats.forEach(propsubcat => {
                 if (propsubcat._id === subcat.value) {
@@ -295,8 +296,10 @@ const EditItemSel = props => {
             <div className="form_input item_form_input edit_page">
                 { props.items?.itemDeleted ?
                     <div className="red_tag">
-                        Item Deleted    
-                        {redirectUser('/user/all-items')}
+                        <>
+                            <div>Item Deleted</div>
+                            {redirectUser('/user/all-items')}
+                        </>
                     </div>
                 : null }
                 {renderForm()}

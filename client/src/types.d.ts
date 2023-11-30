@@ -82,7 +82,7 @@ export type Category = {
     _id: string,
     title: string,
     description?: string,
-    catIsHidden?: Boolean
+    catIsHidden?: boolean
 };
 
 export type SubCategory = {
@@ -90,8 +90,8 @@ export type SubCategory = {
     title?: string;
     description: string,
     parent_cat: string,
-    cover_item?: Number,
-    subCatIsHidden?: Boolean
+    cover_item?: number,
+    subCatIsHidden?: boolean
 }
 
 export type Intro = {

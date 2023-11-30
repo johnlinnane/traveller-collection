@@ -93,7 +93,7 @@ const Admin = props => {
                             props.subcats.map( (subcat, i) => (
                                 <TabPanel key={i}>
 
-                                    <AdminSubCat chosenSubCatInfo={subcat} index={i} getTabIndex={setTabIndex}/>
+                                    <AdminSubCat chosenSubcatInfo={subcat} index={i} getTabIndex={setTabIndex}/>
                                 </TabPanel>
                             ))
                         : null }
