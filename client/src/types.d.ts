@@ -9,8 +9,8 @@ export type Item = {
     date_created?: string | null,
     tags?: [
         {
-            value: String,
-            label: String
+            value: string,
+            label: string
         }
     ]
     contributor?: string | null,
@@ -80,23 +80,23 @@ export type Item = {
 
 export type Category = {
     _id: string,
-    title: String,
-    description?: String,
+    title: string,
+    description?: string,
     catIsHidden?: Boolean
 };
 
 export type SubCategory = {
     _id?: string;
     title?: string;
-    description: String,
-    parent_cat: String,
+    description: string,
+    parent_cat: string,
     cover_item?: Number,
     subCatIsHidden?: Boolean
 }
 
 export type Intro = {
     title: string,
-    body: String
+    body: string
 }
 
 export type Info = {
