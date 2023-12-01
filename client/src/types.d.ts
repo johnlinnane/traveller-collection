@@ -57,22 +57,21 @@ export type Item = {
         longitude?: number | null
     },
     
-    pdf_page_index?: [
-        {
-            page: number,
-            heading: string,
-            description: string,
-            has_child: boolean,
-            child_id: string
-        }
-    ],
     has_chapter_children?: boolean,
+    pdf_page_index?: ({
+        page?: number;
+        heading?: string;
+        description?: string;
+        has_child?: boolean;
+        child_id?: string;
+    })[] | [];
+    
     is_pdf_chapter?: boolean | null,
+    pdf_item_parent_id?: string | null,
     pdf_item_pages?: {
         start?: number | null,
         end?: number | null
     },
-    pdf_item_parent_id?: string | null,
 
     shareDisabled?: boolean,
     isPending?: boolean | null

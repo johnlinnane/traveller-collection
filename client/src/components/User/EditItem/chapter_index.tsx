@@ -9,17 +9,7 @@ import mongoose from 'mongoose';
 
 const ChapterIndex = props => {
 
-    type LocalItem = Omit<Item, 'pdf_page_index'> & {
-        pdf_page_index: {
-            page: number,
-            heading: string,
-            description: string,
-            has_child: boolean,
-            child_id: string
-        }[];
-    };
-
-    const [formdata, setFormdata] = useState<LocalItem>({
+    const [formdata, setFormdata] = useState<Item>({
         _id: props.match.params.id,
         title: '',
         pdf_page_index: []
@@ -104,11 +94,10 @@ const ChapterIndex = props => {
             has_child: true,
             child_id: chapterItemId
         }
-        let newFormdata = {
+        setFormdata({
             ...formdata,
             pdf_page_index: temp_pdf_page_index
-        }
-        setFormdata(newFormdata);
+        });
 
         let temp_has_chapter_children = false;
         formdata.pdf_page_index.forEach(chapt => {

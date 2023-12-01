@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import Header from '../Public/Header/header'
 
-const Layout: React.FC = (props: any) => {
+interface LayoutProps {
+    children: ReactNode;
+}
+
+const Layout: React.FC<LayoutProps> = (props) => {
     return (
         <section className="layoutjs_wrapper">
             <Header />
