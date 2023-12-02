@@ -11,8 +11,7 @@ const ChapterIndex = props => {
 
     const [formdata, setFormdata] = useState<Item>({
         _id: props.match.params.id,
-        title: '',
-        pdf_page_index: []
+        title: ''
     });
     const [saved, setSaved] = useState(false);
     const [cancelled, setCancelled] = useState(false);

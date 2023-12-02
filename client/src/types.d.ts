@@ -64,7 +64,7 @@ export type Item = {
         description?: string;
         has_child?: boolean;
         child_id?: string;
-    })[] | [];
+    })[];
     
     is_pdf_chapter?: boolean | null,
     pdf_item_parent_id?: string | null,

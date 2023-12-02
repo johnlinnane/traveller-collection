@@ -5,7 +5,7 @@
     "module": "esnext",
     "rootDir": "./src",
     "moduleResolution": "node",
-    "outDir": "./dist",
+    "outDir": "./build",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": false,
