@@ -16,15 +16,17 @@ const ChapterIndex = props => {
     const [saved, setSaved] = useState(false);
     const [cancelled, setCancelled] = useState(false);
 
+    const { dispatch } = props;
+
     useEffect(() => {
         if (props.match?.params?.id) {
             document.title = `Chapter Index - ${config.defaultTitle}`;
-            props.dispatch(getItemById(props.match.params.id))
+            dispatch(getItemById(props.match.params.id))
             return () => {
                 document.title = config.defaultTitle;
             }
         }
-    }, [props.match.params?.id]);
+    }, [props.match.params?.id, dispatch]);
 
     useEffect(() => {
         if (props.items?.item) {

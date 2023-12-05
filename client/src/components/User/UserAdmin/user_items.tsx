@@ -8,11 +8,13 @@ const UserItems = props => {
 
     const [loading, setLoading] = useState<boolean>(true);
 
+    const { dispatch } = props;
+
     useEffect(() => {
         if (props.user?.login?.id) {
-            props.dispatch(getUserItems(props.user.login.id))
+            dispatch(getUserItems(props.user.login.id))
         }
-    }, [props.user?.login?.id]);
+    }, [props.user?.login?.id, dispatch]);
 
     useEffect(() => {
         if (props.user?.userItems?.length) {

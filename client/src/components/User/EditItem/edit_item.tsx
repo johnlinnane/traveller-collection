@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet'
 import "leaflet/dist/leaflet.css";
@@ -71,10 +71,10 @@ const EditItem = props => {
     
     useEffect(() => {
         if (typeof props.match.params.id === 'string' || props.match.params.id === 'new') {
-            setFormdata({
-                ...formdata,
+            setFormdata(prevFormData => ({
+                ...prevFormData,
                 _id: props.match.params.id
-            });
+            }));
         } 
     }, [props.match?.params?.id]);
     
@@ -92,13 +92,13 @@ const EditItem = props => {
     useEffect(() => {
         if (typeof props.items?.newitem?.itemId === 'string' && creatingItem === true) {
             setCreatingItem(false);
-            setFormdata({
-                ...formdata,
+            setFormdata(prevFormData => ({
+                ...prevFormData,
                 _id: props.items.newitem.itemId
-            });
+            }));
             reloadEditPage(props.items.newitem.itemId);
-        }
-    }, [props.items.newitem]);
+        } // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [props.items.newitem, creatingItem]);
 
 
     useEffect(() => {
@@ -291,7 +291,7 @@ const EditItem = props => {
     
 
     const MapClickHandler = () => {
-        const map = useMapEvents({
+        useMapEvents({
             click(e) {
                 let lat = Math.round(e.latlng.lat * 1e6) / 1e6;
                 let lng = Math.round(e.latlng.lng * 1e6) / 1e6;
