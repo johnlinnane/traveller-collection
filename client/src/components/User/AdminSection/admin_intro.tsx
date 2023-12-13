@@ -2,17 +2,23 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { withRouter } from "react-router-dom";
+import { withRouter, RouteComponentProps } from "react-router-dom";
 
 import { getIntroText, updateIntroText } from '../../../actions';
 import { maxSelectFile, checkMimeType } from '../../../utils';
+import { Intro } from '../../../types';
 
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
-const AdminIntro = props => {
+interface AdminIntroProps extends RouteComponentProps {
+    text: Intro,
+    dispatch: Function;
+}
 
-    const [introData, setIntroData] = useState({
+const AdminIntro: React.FC<AdminIntroProps> = props => {
+
+    const [introData, setIntroData] = useState<Intro>({
         title: '',
         body: ''
     });

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from "react-router-dom";
+import { withRouter, RouteComponentProps } from "react-router-dom";
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import Select from 'react-select';
@@ -9,12 +9,17 @@ import Select from 'react-select';
 import { getAllCats } from '../../../actions';
 import { addSubcat } from '../../../actions';
 import { maxSelectFile, checkMimeType } from '../../../utils';
+import { Category } from '../../../types';
 
 import mongoose from 'mongoose';
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 
-const AdminAddSubCat = props => {
+interface AdminAddSubcatProps extends RouteComponentProps {
+    cats: Category[];
+    dispatch: Function;
+}
 
+const AdminAddSubCat: React.FC<AdminAddSubcatProps> = props => {
     const [subcatdata, setSubcatdata] = useState({
         _id: new mongoose.Types.ObjectId().toHexString(),
         title: '',
@@ -116,7 +121,7 @@ const AdminAddSubCat = props => {
                 toast.error('upload fail')
             })
         }
-        props.history.push(`/admin/${props.index}`);
+        props.history.push(`/admin/0`);
     }
 
     const submitForm = (e) => {

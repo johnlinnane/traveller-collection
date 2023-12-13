@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Link, withRouter } from 'react-router-dom';
+import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
 import Slick from 'react-slick';   // uses cdn css
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import "leaflet/dist/leaflet.css";
@@ -13,14 +13,37 @@ import { Document, Page, pdfjs } from 'react-pdf';
 import { getItemById, clearItemWithContributor, getAllCats, getAllSubCats, getNextItem, getPrevItem, getParentPdf, getFilesFolder } from '../../../actions';
 import Breadcrumb from '../../widgetsUI/breadcrumb';
 import config from "../../../config";
-import { Item, NavInfo } from '../../../types';
+import { Item, NavInfo, Category, SubCategory } from '../../../types';
 
 const IP_ADDRESS_REMOTE = process.env.REACT_APP_IP_ADDRESS_REMOTE;
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
-const ItemView: React.FC = (props: any) => {
+interface ItemViewProps extends RouteComponentProps<{ id: string }> {
+    dispatch: Function;
+    items: {
+        item: Item | null;
+        error: any; 
+        files: string[];
+        nextitem: Item | null;
+        previtem: Item | null;
+    };
+    cats: Category[];
+    subcats: SubCategory[];
+    
+    parentpdf: Item | null;
+    user: {
+      login: {
+        error: boolean;
+        isAuth: boolean;
+      };
+    };
+  }
+
+
+
+const ItemView: React.FC<ItemViewProps> = props => {
     const [numPages, setNumPages] = useState<number | null>(null);             // total number of pages??
     const [pageNumber, setPageNumber] = useState<number>(1);            // page currently displayed
     const [pdfScale] = useState<number>(1);

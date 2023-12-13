@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from "react-router-dom";
+import { withRouter, RouteComponentProps } from "react-router-dom";
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
@@ -10,7 +10,12 @@ import { maxSelectFile, checkMimeType, addDefaultImg } from '../../../utils';
 import mongoose from 'mongoose';
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 
-const AdminAddCat = props => {
+interface AdminAddCatProps extends RouteComponentProps {
+    dispatch: Function;
+    index: number | null;
+}
+
+const AdminAddCat: React.FC<AdminAddCatProps> = props => {
 
     const [catdata, setCatdata] = useState({
         _id: new mongoose.Types.ObjectId().toHexString(),
@@ -65,7 +70,7 @@ const AdminAddCat = props => {
                 toast.error('upload fail')
             })
         }
-        props.history.push(`/admin/${props.index}`);
+        props.history.push(`/admin/0`);
     }
 
     const submitForm = (e) => {
