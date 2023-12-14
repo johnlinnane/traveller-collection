@@ -12,7 +12,6 @@ const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 
 interface AdminAddCatProps extends RouteComponentProps {
     dispatch: Function;
-    index: number | null;
 }
 
 const AdminAddCat: React.FC<AdminAddCatProps> = props => {

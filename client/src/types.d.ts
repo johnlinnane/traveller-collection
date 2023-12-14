@@ -1,3 +1,12 @@
+export type User = {
+    email: string,
+    password: string,
+    name?: string,
+    lastname?: string,
+    role?: number,
+    token?: string
+}
+
 export type Item = {
     _id: string,
     title: string,

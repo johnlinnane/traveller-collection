@@ -102,10 +102,14 @@ const ItemView: React.FC<ItemViewProps> = props => {
             }
             if (item.is_pdf_chapter && item.pdf_item_pages && item.pdf_item_pages.start) {
                 // if (!getParentCalled) {
+                if (typeof item?.pdf_item_parent_id === 'string') {
                     props.dispatch(getParentPdf(item.pdf_item_parent_id))
                     props.dispatch(getFilesFolder({folder: `/items/${item.pdf_item_parent_id}/original`}))
-                // }
-                setPageNumber(parseInt(item.pdf_item_pages.start));
+                }
+                const pageNumber = typeof item.pdf_item_pages.start === 'string'
+                    ? parseInt(item.pdf_item_pages.start)
+                    : item.pdf_item_pages.start;
+                setPageNumber(pageNumber);
                 // setGetParentCalled(true);
             }
         } // eslint-disable-next-line react-hooks/exhaustive-deps

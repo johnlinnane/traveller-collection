@@ -1,10 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { authGetCredentials } from '../../actions';
-import { withRouter } from "react-router-dom";
+import { withRouter, RouteComponentProps } from "react-router-dom";
+
+interface AuthenticationCheckProps extends RouteComponentProps {
+    redirectTo: string | null;
+    dispatch: Function;
+    user: {
+        login: {
+            isAuth: boolean;
+        }
+    }
+}
 
 export default function foo(Component, redirectTo: string | null) {
-    const AuthenticationCheck = props => {
+    const AuthenticationCheck: React.FC<AuthenticationCheckProps> = props => {
         const [loading, setLoading] = useState(false);
 
         useEffect(() => {
@@ -15,7 +25,7 @@ export default function foo(Component, redirectTo: string | null) {
 
         useEffect(() => {
             setLoading(false);
-            if(props.user && props.user.login) {
+            if(props.user?.login) {
                 if (!props.user.login.isAuth) {
                     if(redirectTo === 'login') {
                         props.history.push('/login');
