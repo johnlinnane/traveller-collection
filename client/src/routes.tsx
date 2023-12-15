@@ -11,6 +11,7 @@ import Search from './components/Public/Search';
 import MainMap from './components/Public/MainMap';
 import Info from './components/Public/Info/info';
 import Login from './components/Public/Login/login';
+import SligoMap from './components/Public/SligoMap';
 
 // CONTAINERS ETC.
 import Layout from './components/HOCs/layout';
@@ -52,6 +53,8 @@ const Routes = () => {
                 <Route path="/edit-item/:id" exact component={AuthContainer(EditItem, null)}/>
                 <Route path="/edit-item-sel/:id" exact component={AuthContainer(EditItemSel, null)}/>
                 <Route path="/edit-item-file/:id" exact component={AuthContainer(EditItemFile, null)}/>
+
+                <Route path="/sligo-map" exact component={AuthContainer(SligoMap, null)}/>
 
                 {/* WHEN LOGGED IN */}
 
