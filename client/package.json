@@ -40,7 +40,12 @@
     "@types/react-router-dom": "^5.3.3",
     "@types/redux-promise": "^0.5.32",
     "source-map-explorer": "^2.5.3",
-    "typescript": "^4.9.5"
+    "typescript": "^5.3.3"
+  },
+  "overrides": {
+    "react-scripts": {
+      "typescript": "^5"
+    }
   },
   "scripts": {
     "start": "PORT=5000 HTTPS=true react-scripts start",
