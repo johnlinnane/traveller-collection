@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { authGetCredentials } from '../../actions';
-import { withRouter, RouteComponentProps } from "react-router-dom";
+import { RouteComponentProps } from "react-router-dom";
 
 interface AuthenticationCheckProps extends RouteComponentProps {
     redirectTo: string | null;
@@ -51,5 +51,5 @@ export default function foo(Component, redirectTo: string | null) {
             user:state.user
         }
     }
-    return withRouter(connect(mapStateToProps)(AuthenticationCheck));
+    return connect(mapStateToProps)(AuthenticationCheck);
 }

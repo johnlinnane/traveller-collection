@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { withRouter, RouteComponentProps } from "react-router-dom";
+import { RouteComponentProps } from "react-router-dom";
 
 import { getIntroText, updateIntroText } from '../../../actions';
 import { maxSelectFile, checkMimeType } from '../../../utils';
@@ -189,4 +189,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default withRouter(connect(mapStateToProps)(AdminIntro));
+export default connect(mapStateToProps)(AdminIntro);
