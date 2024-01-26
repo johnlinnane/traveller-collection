@@ -19,7 +19,7 @@ import mkdirp from 'mkdirp';
 
 
 mongoose.Promise = global.Promise;
-mongoose.connect(process.env.DB, { useNewUrlParser: true }) //old: useMongoClient: true
+mongoose.connect(process.env.DB)
     .catch(error => console.log('MONGOOSE CONNECT ERROR: ', error));
 
 
