@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@types/leaflet": "^1.9.7",
+    "@types/leaflet": "^1.9.8",
     "axios": "^1.6.0",
     "browserify-fs": "^1.0.0",
     "cors": "^2.8.5",
@@ -35,10 +35,10 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "@types/node": "^20.8.10",
-    "@types/react-redux": "^7.1.24",
+    "@types/node": "^20.11.7",
+    "@types/react-redux": "^7.1.33",
     "@types/react-router-dom": "^5.3.3",
-    "@types/redux-promise": "^0.5.29",
+    "@types/redux-promise": "^0.5.32",
     "source-map-explorer": "^2.5.3",
     "typescript": "^4.9.5"
   },
