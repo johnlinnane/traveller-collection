@@ -7,7 +7,7 @@ import promiseMiddleware from 'redux-promise';
 import { thunk } from 'redux-thunk';
 
 import reducers from './reducers';
-import Routes from './routes';
+import URLRoutes from './routes';
 
 const storeWithMiddleware: any = createStore(
     reducers, 
@@ -20,7 +20,7 @@ const root = createRoot(container!);
 root.render(
     <Provider store={storeWithMiddleware}>
         <BrowserRouter>
-            <Routes />
+            <URLRoutes />
         </BrowserRouter>
     </Provider>
 );

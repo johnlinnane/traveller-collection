@@ -36,7 +36,7 @@ import Admin from './components/User/AdminSection';
 import CatEdit from './components/User/EditItem/cat_edit';
 
 
-const Routes = () => {
+const URLRoutes = () => {
     return (
         <Layout>
             <Switch>
@@ -79,4 +79,4 @@ const Routes = () => {
     );
 };
 
-export default Routes;
+export default URLRoutes;
