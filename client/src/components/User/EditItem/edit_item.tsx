@@ -6,6 +6,7 @@ import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet'
 import "leaflet/dist/leaflet.css";
 import markerIconPng from "leaflet/dist/images/marker-icon.png";
 import { Icon } from 'leaflet'
+import { useParams } from "react-router-dom-v5-compat";
 
 import { getItemById, updateItem, clearItem, deleteItem, createItem, getParentPdf, deleteChapter, getFilesFolder } from '../../../actions';
 import config from "../../../config";
@@ -16,6 +17,8 @@ const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
 
 const EditItem = props => {
+
+    const params = useParams();
 
     const [formdata, setFormdata] = useState<Item>({
         _id: '',
@@ -70,10 +73,10 @@ const EditItem = props => {
 
     
     useEffect(() => {
-        if (typeof props.match.params.id === 'string' || props.match.params.id === 'new') {
+        if (typeof params.id === 'string' || params.id === 'new') {
             setFormdata(prevFormData => ({
                 ...prevFormData,
-                _id: props.match.params.id
+                _id: params.id
             }));
         } 
     }, [props.match?.params?.id]);

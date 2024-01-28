@@ -5,6 +5,7 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import "leaflet/dist/leaflet.css";
 import markerIconPng from "leaflet/dist/images/marker-icon.png";
 import { Icon } from 'leaflet'
+import { useParams } from "react-router-dom-v5-compat";
 
 import { getSubcat, getItemsBySubcat, getCatById } from '../../../actions';
 import { addDefaultImg } from '../../../utils';
@@ -16,6 +17,8 @@ const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
 const SubcatView: React.FC = (props: any) => {
     
+    const params = useParams();
+
     const [navInfo, setNavInfo] = useState<NavInfo>({
         catTitle: null,
         catId: null,
@@ -30,14 +33,14 @@ const SubcatView: React.FC = (props: any) => {
     const initZoom = 8;
 
     useEffect(() => {
-        if (props.match?.params?.id) {
-            props.dispatch(getSubcat(props.match.params.id))
-            props.dispatch(getItemsBySubcat(props.match.params.id))
+        if (params?.id) {
+            props.dispatch(getSubcat(params.id))
+            props.dispatch(getItemsBySubcat(params.id))
         }
         return () => {
             document.title = config.defaultTitle;
         } // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [props.match?.params?.id]);
+    }, [params?.id]);
 
     useEffect(() => {
         if (props.catinfo?._id) {

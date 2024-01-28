@@ -4,17 +4,20 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import {Progress} from 'reactstrap';
+import { useParams } from "react-router-dom-v5-compat";
+
 import { getItemById, updateItem, getFilesFolder } from '../../../actions';
-
 import { checkMimeType, checkFileSize, maxSelectFile } from '../../../utils';
-
 import config from "../../../config";
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
 const EditItemFile = props => {
+
+    const params = useParams();
+
     const [formdata, setFormdata] = useState({
-        _id:props.match.params.id,
+        _id: params.id,
         title: '',
         creator: '',
         subject: '',
@@ -58,8 +61,8 @@ const EditItemFile = props => {
 
     useEffect(() => {
         document.title = `Edit Item - ${config.defaultTitle}`;
-        props.dispatch(getItemById(props.match.params.id))
-        props.dispatch(getFilesFolder({folder: `/items/${props.match.params.id}/original`}))
+        props.dispatch(getItemById(params.id))
+        props.dispatch(getFilesFolder({folder: `/items/${params.id}/original`}))
         return () => {
             document.title = config.defaultTitle;
         } // eslint-disable-next-line react-hooks/exhaustive-deps

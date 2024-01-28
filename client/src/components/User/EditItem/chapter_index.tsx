@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { useParams } from "react-router-dom-v5-compat";
+
 import { getItemById, updateItem, createItem } from '../../../actions';
 import config from "../../../config";
 import { Item } from '../../../types';
@@ -9,24 +11,27 @@ import mongoose from 'mongoose';
 
 const ChapterIndex = props => {
 
+    const params = useParams();
+
     const [formdata, setFormdata] = useState<Item>({
-        _id: props.match.params.id,
+        _id: params.id,
         title: ''
     });
+    
     const [saved, setSaved] = useState(false);
     const [cancelled, setCancelled] = useState(false);
 
     const { dispatch } = props;
 
     useEffect(() => {
-        if (props.match?.params?.id) {
+        if (params?.id) {
             document.title = `Chapter Index - ${config.defaultTitle}`;
-            dispatch(getItemById(props.match.params.id))
+            dispatch(getItemById(params.id))
             return () => {
                 document.title = config.defaultTitle;
             }
         }
-    }, [props.match.params?.id, dispatch]);
+    }, [params?.id, dispatch]);
 
     useEffect(() => {
         if (props.items?.item) {
@@ -167,7 +172,7 @@ const ChapterIndex = props => {
         props.dispatch(updateItem({ ...formdata }));
         setSaved(true);
         // setTimeout(() => {
-        //     props.history.push(`/edit-item-file/${props.match.params.id }`)
+        //     props.history.push(`/edit-item-file/${params.id }`)
         // }, 1000)
     }
 

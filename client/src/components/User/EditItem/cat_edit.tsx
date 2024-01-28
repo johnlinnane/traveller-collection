@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import {Progress} from 'reactstrap';
+import { useParams } from "react-router-dom-v5-compat";
 
 import { getAllCats } from '../../../actions';
 import { maxSelectFile, checkMimeType } from '../../../utils';
@@ -11,6 +12,8 @@ const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
 const CatEdit = props => { 
+
+    const params = useParams();
 
     const loaded = 0;
     const [catInfo, setCatInfo] = useState(null);
@@ -24,7 +27,7 @@ const CatEdit = props => {
     useEffect(() => {
         if (props.cats) {
             props.cats.forEach( cat => {
-                if (cat._id === props.match.params.id) {
+                if (cat._id === params.id) {
                     setCatInfo({ ...cat });
                 }
             })
@@ -47,7 +50,7 @@ const CatEdit = props => {
             for(let x = 0; x<selectedFile.length; x++) {
                 data.append('file', selectedFile[x])
             }
-            axios.post(`${API_PREFIX}/upload-cat/${props.match.params.id}`, data, { 
+            axios.post(`${API_PREFIX}/upload-cat/${params.id}`, data, { 
                 onUploadProgress: ProgressEvent => {
                     // this.setState({
                     //     loaded: (ProgressEvent.loaded / ProgressEvent.total*100)
@@ -62,7 +65,7 @@ const CatEdit = props => {
                 toast.error('upload fail')
             })
         }
-        redirectUser(`/category/${props.match.params.id}`)
+        redirectUser(`/category/${params.id}`)
     }
 
     const redirectUser = url => {

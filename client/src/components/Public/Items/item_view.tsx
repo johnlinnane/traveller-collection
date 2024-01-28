@@ -9,6 +9,7 @@ import { Icon } from 'leaflet'
 import { EmailShareButton, FacebookShareButton, WhatsappShareButton } from "react-share";
 import { EmailIcon, FacebookIcon, WhatsappIcon } from "react-share";
 import { Document, Page, pdfjs } from 'react-pdf';
+import { useParams } from "react-router-dom-v5-compat";
 
 import { getItemById, clearItemWithContributor, getAllCats, getAllSubCats, getNextItem, getPrevItem, getParentPdf, getFilesFolder } from '../../../actions';
 import Breadcrumb from '../../widgetsUI/breadcrumb';
@@ -44,6 +45,9 @@ interface ItemViewProps extends RouteComponentProps<{ id: string }> {
 
 
 const ItemView: React.FC<ItemViewProps> = props => {
+
+    const params = useParams();
+
     const [numPages, setNumPages] = useState<number | null>(null);             // total number of pages??
     const [pageNumber, setPageNumber] = useState<number>(1);            // page currently displayed
     const [pdfScale] = useState<number>(1);
@@ -61,13 +65,13 @@ const ItemView: React.FC<ItemViewProps> = props => {
     const MAP_ZOOM: number = 12;
 
     useEffect(() => {
-        if (props.match?.params?.id) {
-            props.dispatch(getItemById(props.match.params.id));
+        if (params?.id) {
+            props.dispatch(getItemById(params.id));
             props.dispatch(getAllCats());
             props.dispatch(getAllSubCats());
-            props.dispatch(getNextItem(props.match.params.id));
-            props.dispatch(getPrevItem(props.match.params.id));
-            props.dispatch(getFilesFolder({folder: `/items/${props.match.params.id}/original`}));
+            props.dispatch(getNextItem(params.id));
+            props.dispatch(getPrevItem(params.id));
+            props.dispatch(getFilesFolder({folder: `/items/${params.id}/original`}));
         }
         return () => {
             props.dispatch(clearItemWithContributor());
@@ -236,7 +240,7 @@ const ItemView: React.FC<ItemViewProps> = props => {
             <div key={i} className="featured_item"> 
               <div className="featured_image"
                 style={{
-                  background: `url(${FS_PREFIX}/assets/media/items/${props.match.params.id}/original/${file}), url(/assets/media/default/default.jpg)`
+                  background: `url(${FS_PREFIX}/assets/media/items/${params.id}/original/${file}), url(/assets/media/default/default.jpg)`
                 }}
               >
               </div>
@@ -268,7 +272,7 @@ const ItemView: React.FC<ItemViewProps> = props => {
         // const scaleUp = () => {
         //     setPdfScale(pdfScale + 0.2);
         // }
-        let pdfId: string | null = props.match.params.id ? props.match.params.id : null;
+        let pdfId: string | null = params.id ? params.id : null;
         if (props.items?.item?.is_pdf_chapter === true) {
             pdfId = props.items?.item?.pdf_item_parent_id ? props.items?.item?.pdf_item_parent_id : null;
         }
@@ -539,7 +543,7 @@ const ItemView: React.FC<ItemViewProps> = props => {
                 }
 
                 {userIsAuth ?
-                    <Link to={`/edit-item/${props.match.params.id}`} className="item_view_edit_link">Edit</Link>
+                    <Link to={`/edit-item/${params.id}`} className="item_view_edit_link">Edit</Link>
                 : null }
 
                 {itemInfo.isPending !== true?

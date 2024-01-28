@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Select from 'react-select';
+import { useParams } from "react-router-dom-v5-compat";
+
 import { getItemById, updateItem, clearItem, getFilesFolder } from '../../../actions';
 import { getAllCats, getAllSubCats  } from '../../../actions';
 import { SubCategory } from '../../../types';
@@ -10,7 +12,9 @@ const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
 const EditItemSel = props => {
 
-    const idParam =  (props.match.params.id?.length === 24) ? props.match.params.id : "";
+    const params = useParams();
+
+    const idParam =  (params.id?.length === 24) ? params.id : "";
 
     interface ItemData {
         _id: string; 

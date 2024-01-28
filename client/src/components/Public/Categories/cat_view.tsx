@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { useParams } from "react-router-dom-v5-compat";
 import { addDefaultImg } from '../../../utils';
 import { getItemsByCat, getCatById, getAllSubCats } from '../../../actions';
 import Breadcrumb from '../../widgetsUI/breadcrumb';
@@ -10,10 +11,12 @@ const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
 const CatView: React.FC = (props: any) => {
     
-    let catId = props.match.params.id
+    const params = useParams();
+
+    let catId = params.id;
 
     useEffect(() => {
-        if (props.match?.params?.id) {
+        if (params?.id) {
             props.dispatch(getItemsByCat(catId));
             props.dispatch(getCatById(catId));
             props.dispatch(getAllSubCats());
@@ -21,7 +24,7 @@ const CatView: React.FC = (props: any) => {
         return () => {
             document.title = config.defaultTitle;            
         } // eslint-disable-next-line
-    }, [props.match?.params?.id]);
+    }, [params?.id]);
 
     const [theseSubcats, setTheseSubcats] = useState<SubCategory[] | []>([]);
     
@@ -35,10 +38,10 @@ const CatView: React.FC = (props: any) => {
 
     useEffect(() => {
         if (props.subcats && props.subcats.length) {
-            const filteredSubcats: SubCategory[] = props.subcats.filter(subcat => subcat.parent_cat === props.match.params.id);
+            const filteredSubcats: SubCategory[] = props.subcats.filter(subcat => subcat.parent_cat === params?.id);
             setTheseSubcats(filteredSubcats);
         }
-    }, [props.subcats, props.match?.params?.id]);
+    }, [props.subcats, params?.id]);
 
     useEffect(() => {
         if (props.catinfo?.title) {
