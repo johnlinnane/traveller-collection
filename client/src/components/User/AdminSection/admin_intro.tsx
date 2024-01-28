@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { RouteComponentProps } from "react-router-dom";
+import { useNavigate } from "react-router-dom-v5-compat";
 
 import { getIntroText, updateIntroText } from '../../../actions';
 import { maxSelectFile, checkMimeType } from '../../../utils';
@@ -17,6 +18,8 @@ interface AdminIntroProps extends RouteComponentProps {
 }
 
 const AdminIntro: React.FC<AdminIntroProps> = props => {
+
+    const navigate = useNavigate();
 
     const [introData, setIntroData] = useState<Intro>({
         title: '',
@@ -99,12 +102,12 @@ const AdminIntro: React.FC<AdminIntroProps> = props => {
         onSubmitHandler();
         setSaved(true);
         setTimeout(() => {
-            props.history.push(`/admin/0`);
+            navigate(`/admin/0`);
         }, 2000)
     }
 
     const cancel = () => {
-        props.history.push(`/admin/0`)
+        navigate(`/admin/0`);
     }
 
     return (

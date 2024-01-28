@@ -1,13 +1,16 @@
 import React from 'react';
 import axios from 'axios';
+import { useNavigate } from "react-router-dom-v5-compat";
 
 
 const Logout = props => {
+
+    const navigate = useNavigate();
     
     axios.get(`${process.env.REACT_APP_API_PREFIX}/logout`)
         .then(request => {
             setTimeout( () => {
-                props.history.push('/')
+                navigate('/');
             }, 2000)
         })
 

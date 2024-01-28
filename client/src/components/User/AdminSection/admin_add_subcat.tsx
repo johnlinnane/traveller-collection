@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from "react-router-dom";
+import { useNavigate } from "react-router-dom-v5-compat";
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import Select from 'react-select';
@@ -20,6 +21,9 @@ interface AdminAddSubcatProps extends RouteComponentProps {
 }
 
 const AdminAddSubCat: React.FC<AdminAddSubcatProps> = props => {
+
+    const navigate = useNavigate();
+
     const [subcatdata, setSubcatdata] = useState({
         _id: new mongoose.Types.ObjectId().toHexString(),
         title: '',
@@ -64,7 +68,7 @@ const AdminAddSubCat: React.FC<AdminAddSubcatProps> = props => {
     }
 
     const cancel = () => {
-        props.history.push(`/admin/0`)
+        navigate(`/admin/0`);
     }
 
     const handleInput = (event, field) => {
@@ -121,7 +125,7 @@ const AdminAddSubCat: React.FC<AdminAddSubcatProps> = props => {
                 toast.error('upload fail')
             })
         }
-        props.history.push(`/admin/0`);
+        navigate(`/admin/0`);
     }
 
     const submitForm = (e) => {
@@ -130,7 +134,7 @@ const AdminAddSubCat: React.FC<AdminAddSubcatProps> = props => {
         onSubmitHandler();
         setSaved(true);
         setTimeout(() => {
-            props.history.push(`/admin/0`);
+            navigate(`/admin/0`);
         }, 2000)
     }
 

@@ -9,7 +9,7 @@ import { Icon } from 'leaflet'
 import { EmailShareButton, FacebookShareButton, WhatsappShareButton } from "react-share";
 import { EmailIcon, FacebookIcon, WhatsappIcon } from "react-share";
 import { Document, Page, pdfjs } from 'react-pdf';
-import { useParams } from "react-router-dom-v5-compat";
+import { useParams, useNavigate } from "react-router-dom-v5-compat";
 
 import { getItemById, clearItemWithContributor, getAllCats, getAllSubCats, getNextItem, getPrevItem, getParentPdf, getFilesFolder } from '../../../actions';
 import Breadcrumb from '../../widgetsUI/breadcrumb';
@@ -47,6 +47,7 @@ interface ItemViewProps extends RouteComponentProps<{ id: string }> {
 const ItemView: React.FC<ItemViewProps> = props => {
 
     const params = useParams();
+    const navigate = useNavigate();
 
     const [numPages, setNumPages] = useState<number | null>(null);             // total number of pages??
     const [pageNumber, setPageNumber] = useState<number>(1);            // page currently displayed
@@ -77,17 +78,17 @@ const ItemView: React.FC<ItemViewProps> = props => {
             props.dispatch(clearItemWithContributor());
             document.title = config.defaultTitle;
         } // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [props?.match?.params?.id]);
+    }, [params?.id]);
 
     useEffect(() => {
         if (props.items.error) {
-            props.history.push('/');
+            navigate('/');
         } // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.items?.error]);
 
     useEffect(() => {
         if (props.items.item?.isPending && props.user.login?.error) {
-            props.history.push('/');
+            navigate('/');
         } // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.items.item, props.user.login]);
 

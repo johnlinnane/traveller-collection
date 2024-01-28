@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import {Progress} from 'reactstrap';
-import { useParams } from "react-router-dom-v5-compat";
+import { useParams, useNavigate } from "react-router-dom-v5-compat";
 
 import { getAllCats } from '../../../actions';
 import { maxSelectFile, checkMimeType } from '../../../utils';
@@ -14,6 +14,7 @@ const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 const CatEdit = props => { 
 
     const params = useParams();
+    const navigate = useNavigate();
 
     const loaded = 0;
     const [catInfo, setCatInfo] = useState(null);
@@ -70,7 +71,7 @@ const CatEdit = props => {
 
     const redirectUser = url => {
         setTimeout(() => {
-            props.history.push(url)
+            navigate(url);
         }, 1000)
     }
 

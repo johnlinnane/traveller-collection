@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
+import { useNavigate } from "react-router-dom-v5-compat";
+
 import { loginUser } from '../../../actions';
 import config from "../../../config";
 
 const Login: React.FC = (props: any) => {
+
+    const navigate = useNavigate();
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
 
     const handleInputEmail = (event) => {
         setEmail(event.target.value);
@@ -25,7 +29,7 @@ const Login: React.FC = (props: any) => {
 
     useEffect(() => {
         if (props.user.login && props.user.login.isAuth) {
-            props.history.push('/user');
+            navigate('/user');
         }
     }, [props]);
 

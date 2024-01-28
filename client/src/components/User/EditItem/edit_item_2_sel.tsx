@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { useParams, useNavigate } from "react-router-dom-v5-compat";
 import Select from 'react-select';
-import { useParams } from "react-router-dom-v5-compat";
 
 import { getItemById, updateItem, clearItem, getFilesFolder } from '../../../actions';
 import { getAllCats, getAllSubCats  } from '../../../actions';
@@ -13,6 +13,7 @@ const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 const EditItemSel = props => {
 
     const params = useParams();
+    const navigate = useNavigate();
 
     const idParam =  (params.id?.length === 24) ? params.id : "";
 
@@ -126,7 +127,7 @@ const EditItemSel = props => {
 
     const redirectUser = url => {
         setTimeout(() => {
-            props.history.push(url)
+            navigate(url);
         }, 1000)
     }
 
@@ -210,7 +211,7 @@ const EditItemSel = props => {
             setSubmitted(true);
             
             setTimeout(() => {
-                props.items?.updateItemSuccess && props.history.push(`/edit-item-file/${idParam}`);
+                props.items?.updateItemSuccess && navigate(`/edit-item-file/${idParam}`);
             }, 1000)
         }
     }

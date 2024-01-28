@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { RouteComponentProps } from "react-router-dom";
+import { useNavigate } from "react-router-dom-v5-compat";
 
 import { getInfoText, updateInfoText } from '../../../actions';
 import { maxSelectFile, checkMimeType } from '../../../utils';
@@ -18,6 +19,8 @@ interface AdminInfoProps extends RouteComponentProps {
 }
 
 const AdminInfo: React.FC<AdminInfoProps> = props => {
+
+    const navigate = useNavigate();
 
     type LocalInfo = Omit<Info, 'sections'> & {
         sections: {
@@ -146,7 +149,7 @@ const AdminInfo: React.FC<AdminInfoProps> = props => {
     }
 
     const cancel = () => {
-        props.history.push(`/admin/0`);
+        navigate(`/admin/0`);
     }
 
     const handleInput = (event, i, field) => {
@@ -206,7 +209,7 @@ const AdminInfo: React.FC<AdminInfoProps> = props => {
         }
         setSaved(true);
         setTimeout(() => {
-            props.history.push(`/admin/0`);
+            navigate(`/admin/0`);
         }, 2000)
     }
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from "react-router-dom";
+import { useNavigate } from "react-router-dom-v5-compat";
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-tabs/style/react-tabs.css';
@@ -21,6 +22,8 @@ interface AdminCatProps extends RouteComponentProps {
 };
 
 const AdminCat = (props: AdminCatProps): JSX.Element => {
+
+    const navigate = useNavigate();
 
     interface FormDataState {
         cat: Category
@@ -94,7 +97,7 @@ const AdminCat = (props: AdminCatProps): JSX.Element => {
             })
         }
         setImgSrc(imgSrc + '?' + Math.random());
-        props.history.push(`/admin/${props.index}`);
+        navigate(`/admin/${props.index}`);
     }
 
     const handleCatInput = (event, field) => {
@@ -131,7 +134,7 @@ const AdminCat = (props: AdminCatProps): JSX.Element => {
         props.dispatch(deleteCat(id));
         setCatDeleted(true);
         setTimeout(() => {
-            props.history.push(`/admin/0`);
+            navigate(`/admin/0`);
         }, 1000)
     }
 
@@ -143,13 +146,13 @@ const AdminCat = (props: AdminCatProps): JSX.Element => {
         onSubmitHandler();
         setSaved(true);
         setTimeout(() => {
-            props.history.push(`/admin/${props.index}`);
+            navigate(`/admin/${props.index}`);
         }, 2000)
         
     }
 
     const cancel = () => {
-        props.history.push(`/admin/0`)
+        navigate(`/admin/0`);
     }
 
     return (

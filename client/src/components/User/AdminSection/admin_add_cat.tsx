@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { RouteComponentProps } from "react-router-dom";
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { useNavigate } from "react-router-dom-v5-compat";
 
 import { addCat } from '../../../actions';
 import { maxSelectFile, checkMimeType, addDefaultImg } from '../../../utils';
@@ -16,6 +17,8 @@ interface AdminAddCatProps extends RouteComponentProps {
 
 const AdminAddCat: React.FC<AdminAddCatProps> = props => {
 
+    const navigate = useNavigate();
+
     const [catdata, setCatdata] = useState({
         _id: new mongoose.Types.ObjectId().toHexString(),
         title: '',
@@ -26,7 +29,7 @@ const AdminAddCat: React.FC<AdminAddCatProps> = props => {
     const [selectedFile, setSelectedFile] = useState(null);
 
     const cancel = () => {
-        props.history.push(`/admin/0`)
+        navigate(`/admin/0`);
     }
 
     const handleInput = (event, field) => {
@@ -69,7 +72,7 @@ const AdminAddCat: React.FC<AdminAddCatProps> = props => {
                 toast.error('upload fail')
             })
         }
-        props.history.push(`/admin/0`);
+        navigate(`/admin/0`);
     }
 
     const submitForm = (e) => {
@@ -80,7 +83,7 @@ const AdminAddCat: React.FC<AdminAddCatProps> = props => {
         onSubmitHandler();
         setSaved(true);
         setTimeout(() => {
-            props.history.push(`/admin/0`);
+            navigate(`/admin/0`);
         }, 2000)
     }
 

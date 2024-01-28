@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { useParams } from "react-router-dom-v5-compat";
+import { useParams, useNavigate } from "react-router-dom-v5-compat";
 
 import { getItemById, updateItem, createItem } from '../../../actions';
 import config from "../../../config";
@@ -12,6 +12,7 @@ import mongoose from 'mongoose';
 const ChapterIndex = props => {
 
     const params = useParams();
+    const navigate = useNavigate();
 
     const [formdata, setFormdata] = useState<Item>({
         _id: params.id,
@@ -163,7 +164,7 @@ const ChapterIndex = props => {
         }
         props.dispatch(createItem(chapterItem))
         // setTimeout(() => {
-        //     props.history.push(`/edit-item/${chapterItem._id}`)
+        //     navigate(`/edit-item/${chapterItem._id}`);
         // }, 1000)
     }
 
@@ -172,7 +173,7 @@ const ChapterIndex = props => {
         props.dispatch(updateItem({ ...formdata }));
         setSaved(true);
         // setTimeout(() => {
-        //     props.history.push(`/edit-item-file/${params.id }`)
+        //     navigate(`/edit-item-file/${params.id }`);
         // }, 1000)
     }
 

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { useParams, useNavigate } from "react-router-dom-v5-compat";
 import axios from 'axios';
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet'
 import "leaflet/dist/leaflet.css";
 import markerIconPng from "leaflet/dist/images/marker-icon.png";
 import { Icon } from 'leaflet'
-import { useParams } from "react-router-dom-v5-compat";
 
 import { getItemById, updateItem, clearItem, deleteItem, createItem, getParentPdf, deleteChapter, getFilesFolder } from '../../../actions';
 import config from "../../../config";
@@ -19,6 +19,7 @@ const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 const EditItem = props => {
 
     const params = useParams();
+    const navigate = useNavigate();
 
     const [formdata, setFormdata] = useState<Item>({
         _id: '',
@@ -79,12 +80,12 @@ const EditItem = props => {
                 _id: params.id
             }));
         } 
-    }, [props.match?.params?.id]);
+    }, [params?.id]);
     
     
     useEffect(() => {
         if (typeof formdata._id !== 'string') {
-            props.history.push('/');
+            navigate('/');
         } else if (formdata._id === 'new') {
             showConfirmationDialog();
         }
@@ -241,11 +242,11 @@ const EditItem = props => {
 
 
     const goBackToPreviousPage = () => {
-        props.history.goBack();
+        props.history.goBack(); // navigate(-1)
     };
 
     const reloadEditPage = (itemId: string) => {
-        props.history.push(`/edit-item/${itemId}`);
+        navigate(`/edit-item/${itemId}`);
     };
 
 
@@ -341,14 +342,14 @@ const EditItem = props => {
             props.dispatch(deleteChapter(formdata.pdf_item_parent_id, formdata.title))
         }
         deleteAllMedia();
-        props.history.push('/user/all-items');
+        navigate('/user/all-items');
     }
 
     const cancel = () => {
         if (typeof formdata._id === 'string') {
-            props.history.push(`/items/${formdata._id}`)
+            navigate(`/items/${formdata._id}`);
         } else {
-            props.history.push('/')
+            navigate('/');
         }
     }
 
@@ -360,7 +361,7 @@ const EditItem = props => {
         ))
         setSaved(true);
         setTimeout(() => {
-            props.history.push({
+            navigate({
                 pathname: `/edit-item-sel/${formdata._id}`
             })
         }, 1000)

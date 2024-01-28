@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from "react-router-dom";
+import { useNavigate } from "react-router-dom-v5-compat";
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-tabs/style/react-tabs.css';
@@ -23,6 +24,8 @@ interface AdminSubcatProps extends RouteComponentProps {
 };
 
 const AdminSubCat = (props: AdminSubcatProps) => {
+
+    const navigate = useNavigate();
 
     interface FormDataState {
         subCat: SubCategory
@@ -135,7 +138,7 @@ const AdminSubCat = (props: AdminSubcatProps) => {
         }
         setImgSrc(imgSrc + '?' + Math.random());
         handleTabIndex();
-        props.history.push(`/admin/${props.index}`);
+        navigate(`/admin/${props.index}`);
     }
 
     const addDefaultImg = ev => {
@@ -182,7 +185,7 @@ const AdminSubCat = (props: AdminSubcatProps) => {
 
     const removeSubCat = id => {
         props.dispatch(deleteSubcat(id))
-        props.history.push(`/admin/0`)
+        navigate(`/admin/0`);
     }
 
     const submitForm = e => {
@@ -192,12 +195,12 @@ const AdminSubCat = (props: AdminSubcatProps) => {
         ))
         onSubmitHandler();
         setTimeout(() => {
-            props.history.push(`/admin/${props.index}`);
+            navigate(`/admin/${props.index}`);
         }, 2000)
     }
 
     const cancel = () => {
-        props.history.push(`/admin/0`)
+        navigate(`/admin/0`);
     }
 
     return (

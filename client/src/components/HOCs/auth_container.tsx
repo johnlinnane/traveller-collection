@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { authGetCredentials } from '../../actions';
 import { RouteComponentProps } from "react-router-dom";
+import { useNavigate } from "react-router-dom-v5-compat";
 
 interface AuthenticationCheckProps extends RouteComponentProps {
     redirectTo: string | null;
@@ -15,6 +16,9 @@ interface AuthenticationCheckProps extends RouteComponentProps {
 
 export default function foo(Component, redirectTo: string | null) {
     const AuthenticationCheck: React.FC<AuthenticationCheckProps> = props => {
+
+        const navigate = useNavigate();
+
         const [loading, setLoading] = useState(false);
 
         useEffect(() => {
@@ -28,11 +32,11 @@ export default function foo(Component, redirectTo: string | null) {
             if(props.user?.login) {
                 if (!props.user.login.isAuth) {
                     if(redirectTo === 'login') {
-                        props.history.push('/login');
+                        navigate('/login');
                     }
                 } else {
                     if (redirectTo === 'user') {
-                        props.history.push('/user')
+                        navigate('/user')
                     } 
                 }
             } // eslint-disable-next-line react-hooks/exhaustive-deps

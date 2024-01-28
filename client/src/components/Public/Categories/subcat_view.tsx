@@ -5,7 +5,7 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import "leaflet/dist/leaflet.css";
 import markerIconPng from "leaflet/dist/images/marker-icon.png";
 import { Icon } from 'leaflet'
-import { useParams } from "react-router-dom-v5-compat";
+import { useParams, useNavigate } from "react-router-dom-v5-compat";
 
 import { getSubcat, getItemsBySubcat, getCatById } from '../../../actions';
 import { addDefaultImg } from '../../../utils';
@@ -18,6 +18,7 @@ const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 const SubcatView: React.FC = (props: any) => {
     
     const params = useParams();
+    const navigate = useNavigate();
 
     const [navInfo, setNavInfo] = useState<NavInfo>({
         catTitle: null,
@@ -78,7 +79,7 @@ const SubcatView: React.FC = (props: any) => {
     }, [props.subcatitems]);
 
     const addItemHandler = () => {
-        props.history.push(`/edit-item/new`);
+        navigate(`/edit-item/new`);
     }
 
     const renderAddItem = (isPartOfGrid) => (

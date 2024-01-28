@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { useParams, useNavigate } from "react-router-dom-v5-compat";
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import {Progress} from 'reactstrap';
-import { useParams } from "react-router-dom-v5-compat";
 
 import { getItemById, updateItem, getFilesFolder } from '../../../actions';
 import { checkMimeType, checkFileSize, maxSelectFile } from '../../../utils';
@@ -15,6 +15,7 @@ const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 const EditItemFile = props => {
 
     const params = useParams();
+    const navigate = useNavigate();
 
     const [formdata, setFormdata] = useState({
         _id: params.id,
@@ -144,7 +145,7 @@ const EditItemFile = props => {
                   
         }
         setTimeout(() => {
-            props.history.push(`/items/${formdata._id}`)
+            navigate(`/items/${formdata._id}`);
         }, 1000)
     }
 
@@ -169,7 +170,7 @@ const EditItemFile = props => {
         setImgSrc('/assets/media/default/default.jpg');
 
         setTimeout(() => {
-            props.history.push(`/edit-item-file/${formdata._id}`)
+            navigate(`/edit-item-file/${formdata._id}`)
         }, 1000)
     }
 
