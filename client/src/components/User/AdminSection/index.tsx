@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
-import { useParams } from "react-router-dom-v5-compat";
+import { useParams } from "react-router-dom";
  
 import { getAllCats, getAllSubCats  } from '../../../actions';
 import AdminCat from './admin_cat';

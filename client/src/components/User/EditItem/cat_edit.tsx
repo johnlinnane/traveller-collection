@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import {Progress} from 'reactstrap';
-import { useParams, useNavigate } from "react-router-dom-v5-compat";
+import { useParams, useNavigate } from "react-router-dom";
 
 import { getAllCats } from '../../../actions';
 import { maxSelectFile, checkMimeType } from '../../../utils';

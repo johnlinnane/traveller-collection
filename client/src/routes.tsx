@@ -1,7 +1,5 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
-import { CompatRouter, CompatRoute } from "react-router-dom-v5-compat";
-
+import { Routes, Route } from 'react-router-dom';
 
 import Intro from './components/Public/Intro/intro';
 import CatList from './components/Public/Categories/cats_list';
@@ -40,43 +38,46 @@ import CatEdit from './components/User/EditItem/cat_edit';
 const URLRoutes = () => {
     return (
         <Layout>
-            <CompatRouter>
-                <Switch>
-                    <CompatRoute path="/" exact component={AuthContainer(Intro, null)}/>
-                    <CompatRoute path="/categories" exact component={AuthContainer(CatList, null)}/>
-                    <CompatRoute path="/category/:id" exact component={AuthContainer(CatView, null)}/>
-                    <CompatRoute path="/subcategory/:id" exact component={AuthContainer(SubcatView, null)}/>
-                    <CompatRoute path="/items/:id" exact component={AuthContainer(ItemView, null)}/>
-                    <CompatRoute path="/search" exact component={AuthContainer(Search, null)}/>
-                    <CompatRoute path="/map" exact component={AuthContainer(MainMap, null)}/>
-                    <CompatRoute path="/info" exact component={AuthContainer(Info, null)}/>
-                    <CompatRoute path="/login" exact component={AuthContainer(Login, 'user')}/> {/* DOESN'T SHOW IF USER IS LOGGED IN */}
+            {/* <CompatRouter> */}
+                <Routes>
+                    <Route path="/" element={<AuthContainer Component={Intro} redirectTo={null} />} />
+                    <Route path="/categories" element={<AuthContainer Component={CatList} redirectTo={null} />} />
 
-                    <CompatRoute path="/edit-item/:id" exact component={AuthContainer(EditItem, null)}/>
-                    <CompatRoute path="/edit-item-sel/:id" exact component={AuthContainer(EditItemSel, null)}/>
-                    <CompatRoute path="/edit-item-file/:id" exact component={AuthContainer(EditItemFile, null)}/>
+                    <Route path="/category/:id" element={<AuthContainer Component={CatView} redirectTo={null} />} />
+                    <Route path="/subcategory/:id" element={<AuthContainer Component={SubcatView} redirectTo={null} />} />
+                    <Route path="/items/:id" element={<AuthContainer Component={ItemView} redirectTo={null} />} />
+                    <Route path="/search" element={<AuthContainer Component={Search} redirectTo={null} />} />
+                    <Route path="/map" element={<AuthContainer Component={MainMap} redirectTo={null} />} />
+                    <Route path="/info" element={<AuthContainer Component={Info} redirectTo={null} />} />
+                    <Route path="/login" element={<AuthContainer Component={Login} redirectTo={'user'} />} /> 
+                    {/* DOESN'T SHOW IF USER IS LOGGED IN */}
 
-                    <CompatRoute path="/sligo-map" exact component={AuthContainer(SligoMap, null)}/>
+                    <Route path="/edit-item/:id" element={<AuthContainer Component={EditItem} redirectTo={null} />} />
+                    <Route path="/edit-item-sel/:id" element={<AuthContainer Component={EditItemSel} redirectTo={null} />} />
+                    <Route path="/edit-item-file/:id" element={<AuthContainer Component={EditItemFile} redirectTo={null} />} />
+
+                    <Route path="/sligo-map" element={<AuthContainer Component={SligoMap} redirectTo={null} />} />
 
                     {/* WHEN LOGGED IN */}
 
-                    <CompatRoute path="/user/logout" exact component={AuthContainer(Logout, 'login')}/>
-                    <CompatRoute path="/user" exact component={AuthContainer(User, 'login')}/>
-                    <CompatRoute path="/user/user_items" exact component={AuthContainer(UserItems, 'login')}/>
-                    <CompatRoute path="/user/all-items" exact component={AuthContainer(AllItems, 'login')}/>
-                    <CompatRoute path="/user/pending-items" exact component={AuthContainer(PendingItemsView, 'login')}/>
+                    <Route path="/user/logout" element={<AuthContainer Component={Logout} redirectTo={'login'} />} />
+                    <Route path="/user" element={<AuthContainer Component={User} redirectTo={'login'} />} />
+                    <Route path="/user/user_items" element={<AuthContainer Component={UserItems} redirectTo={'login'} />} />
+                    <Route path="/user/all-items" element={<AuthContainer Component={AllItems} redirectTo={'login'} />} />
+                    <Route path="/user/pending-items" element={<AuthContainer Component={PendingItemsView} redirectTo={'login'} />} />
 
-                    <CompatRoute path="/user/chapter-index/:id" exact component={AuthContainer(ChapterIndex, 'login')}/>
+                    <Route path="/user/chapter-index/:id" element={<AuthContainer Component={ChapterIndex} redirectTo={'login'} />} />
 
-                    <CompatRoute path="/admin/:tab" exact component={AuthContainer(Admin, 'login')}/>
-                    <CompatRoute path="/cat-edit/:id" exact component={AuthContainer(CatEdit, 'login')}/> {/*STILL USED??*/}
+                    <Route path="/admin/:tab" element={<AuthContainer Component={Admin} redirectTo={'login'} />} />
+                    <Route path="/cat-edit/:id" element={<AuthContainer Component={CatEdit} redirectTo={'login'} />} /> 
+                    {/*STILL USED??*/}
 
                     {/* DEPRECATED & MISC */}
                     
-                    <CompatRoute path="/user/register" exact component={AuthContainer(Register, 'login')}/> 
+                    <Route path="/user/register" element={<AuthContainer Component={Register} redirectTo={'login'} />} /> 
                     
-                </Switch>
-            </CompatRouter>
+                </Routes>
+            {/* </CompatRouter> */}
         </Layout>
         
     );

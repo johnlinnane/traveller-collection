@@ -5,7 +5,7 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import "leaflet/dist/leaflet.css";
 import markerIconPng from "leaflet/dist/images/marker-icon.png";
 import { Icon } from 'leaflet'
-import { useParams, useNavigate } from "react-router-dom-v5-compat";
+import { useParams, useNavigate } from "react-router-dom";
 
 import { getSubcat, getItemsBySubcat, getCatById } from '../../../actions';
 import { addDefaultImg } from '../../../utils';

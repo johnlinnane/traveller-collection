@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Link, RouteComponentProps } from 'react-router-dom';
 import Slick from 'react-slick';   // uses cdn css
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import "leaflet/dist/leaflet.css";
@@ -9,7 +8,7 @@ import { Icon } from 'leaflet'
 import { EmailShareButton, FacebookShareButton, WhatsappShareButton } from "react-share";
 import { EmailIcon, FacebookIcon, WhatsappIcon } from "react-share";
 import { Document, Page, pdfjs } from 'react-pdf';
-import { useParams, useNavigate } from "react-router-dom-v5-compat";
+import { Link, useParams, useNavigate } from "react-router-dom";
 
 import { getItemById, clearItemWithContributor, getAllCats, getAllSubCats, getNextItem, getPrevItem, getParentPdf, getFilesFolder } from '../../../actions';
 import Breadcrumb from '../../widgetsUI/breadcrumb';
@@ -21,7 +20,8 @@ const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
-interface ItemViewProps extends RouteComponentProps<{ id: string }> {
+// interface ItemViewProps extends RouteComponentProps<{ id: string }> {
+interface ItemViewProps {
     dispatch: Function;
     items: {
         item: Item | null;

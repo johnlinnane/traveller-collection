@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { RouteComponentProps } from "react-router-dom";
-import { useNavigate } from "react-router-dom-v5-compat";
+import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import Select from 'react-select';
@@ -15,7 +14,8 @@ import { Category } from '../../../types';
 import mongoose from 'mongoose';
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 
-interface AdminAddSubcatProps extends RouteComponentProps {
+// interface AdminAddSubcatProps extends RouteComponentProps {
+interface AdminAddSubcatProps {
     cats: Category[];
     dispatch: Function;
 }

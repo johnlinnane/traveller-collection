@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { RouteComponentProps } from "react-router-dom";
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { useNavigate } from "react-router-dom-v5-compat";
+import { useNavigate } from "react-router-dom";
 
 import { addCat } from '../../../actions';
 import { maxSelectFile, checkMimeType, addDefaultImg } from '../../../utils';
@@ -11,7 +10,8 @@ import { maxSelectFile, checkMimeType, addDefaultImg } from '../../../utils';
 import mongoose from 'mongoose';
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 
-interface AdminAddCatProps extends RouteComponentProps {
+// interface AdminAddCatProps extends RouteComponentProps {
+interface AdminAddCatProps {
     dispatch: Function;
 }
 

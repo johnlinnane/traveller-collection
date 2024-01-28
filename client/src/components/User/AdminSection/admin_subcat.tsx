@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { RouteComponentProps } from "react-router-dom";
-import { useNavigate } from "react-router-dom-v5-compat";
+import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-tabs/style/react-tabs.css';
@@ -15,7 +14,8 @@ import { Category, SubCategory } from '../../../types';
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
-interface AdminSubcatProps extends RouteComponentProps {
+// interface AdminSubcatProps extends RouteComponentProps {
+interface AdminSubcatProps  {
     chosenSubcatInfo: SubCategory;
     cats: Category[];
     dispatch: Function;

@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { authGetCredentials } from '../../actions';
-import { RouteComponentProps } from "react-router-dom";
-import { useNavigate } from "react-router-dom-v5-compat";
+import { useNavigate } from "react-router-dom";
 
-interface AuthenticationCheckProps extends RouteComponentProps {
+interface AuthenticationCheckProps {
     redirectTo: string | null;
     dispatch: Function;
     user: {
@@ -12,48 +11,49 @@ interface AuthenticationCheckProps extends RouteComponentProps {
             isAuth: boolean;
         }
     }
+    Component: React.FC
 }
 
-export default function foo(Component, redirectTo: string | null) {
-    const AuthenticationCheck: React.FC<AuthenticationCheckProps> = props => {
+const AuthContainer: React.FC<AuthenticationCheckProps> = (props: any) =>  {
 
-        const navigate = useNavigate();
+    const { Component, redirectTo } = props;
 
-        const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
-        useEffect(() => {
-            props.dispatch(authGetCredentials()); 
-            setLoading(true);
-            // eslint-disable-next-line react-hooks/exhaustive-deps
-        }, []);
+    const [loading, setLoading] = useState(false);
 
-        useEffect(() => {
-            setLoading(false);
-            if(props.user?.login) {
-                if (!props.user.login.isAuth) {
-                    if(redirectTo === 'login') {
-                        navigate('/login');
-                    }
-                } else {
-                    if (redirectTo === 'user') {
-                        navigate('/user')
-                    } 
+    useEffect(() => {
+        props.dispatch(authGetCredentials()); 
+        setLoading(true);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    useEffect(() => {
+        setLoading(false);
+        if(props.user?.login) {
+            if (!props.user.login.isAuth) {
+                if(redirectTo === 'login') {
+                    navigate('/login');
                 }
-            } // eslint-disable-next-line react-hooks/exhaustive-deps
-        }, [props.user]);
+            } else {
+                if (redirectTo === 'user') {
+                    navigate('/user')
+                } 
+            }
+        } // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [props.user]);
 
-        if(loading) {
-            return <div className="loader">Loading...</div>
-        }
-        return(
-            <Component {...props} />
-        )
+    if (loading) {
+        return <div className="loader">Loading...</div>
     }
 
-    function mapStateToProps(state) {
-        return {
-            user:state.user
-        }
-    }
-    return connect(mapStateToProps)(AuthenticationCheck);
+    return <Component {...props} />;
 }
+
+function mapStateToProps(state) {
+    return {
+        user:state.user
+    }
+}
+
+export default connect(mapStateToProps)(AuthContainer);

@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { RouteComponentProps } from "react-router-dom";
-import { useNavigate } from "react-router-dom-v5-compat";
+import { useNavigate } from "react-router-dom";
 
 import { getInfoText, updateInfoText } from '../../../actions';
 import { maxSelectFile, checkMimeType } from '../../../utils';
@@ -13,7 +12,8 @@ import { Info } from '../../../types';
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
-interface AdminInfoProps extends RouteComponentProps {
+interface AdminInfoProps {
+// interface AdminInfoProps extends RouteComponentProps {
     infotext: Info;
     dispatch: Function;
 }

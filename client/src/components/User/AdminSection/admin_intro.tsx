@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { RouteComponentProps } from "react-router-dom";
-import { useNavigate } from "react-router-dom-v5-compat";
+import { useNavigate } from "react-router-dom";
 
 import { getIntroText, updateIntroText } from '../../../actions';
 import { maxSelectFile, checkMimeType } from '../../../utils';
@@ -12,7 +11,7 @@ import { Intro } from '../../../types';
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
-interface AdminIntroProps extends RouteComponentProps {
+interface AdminIntroProps {
     text: Intro,
     dispatch: Function;
 }
