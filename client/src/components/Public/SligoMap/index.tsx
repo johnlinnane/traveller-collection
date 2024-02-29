@@ -39,16 +39,19 @@ const SligoMap = (props: any) => {
                 }}
             /> */}
 
-<MapContainer 
+            
+
+            <MapContainer 
                 className="main_map"
                 center={[54.20638315779152, -8.57869767149748]} 
                 zoom={9} 
             >
                 <TileLayer
                     attribution='&copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    url="https://tiles.stadiamaps.com/tiles/stamen_watercolor/{z}/{x}/{y}.jpg"
                 />
                 
+
 
                 {/* {props.items.items && props.items.items.length ?
                     <div>
@@ -92,6 +95,7 @@ const SligoMap = (props: any) => {
             />
 
         </div>
+        
     );
 }
 

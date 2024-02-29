@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import "leaflet/dist/leaflet.css";
@@ -7,16 +7,17 @@ import markerIconPng from "leaflet/dist/images/marker-icon.png";
 import { Icon } from 'leaflet'
 import { useParams, useNavigate } from "react-router-dom";
 
-import { getSubcat, getItemsBySubcat, getCatById } from '../../../actions';
+import { getSubcat, getItemsBySubcat, getCatById } from '../../../../src/slices/catsSlice';
 import { addDefaultImg } from '../../../utils';
 import Breadcrumb from '../../widgetsUI/breadcrumb';
 import config from "../../../config";
 import { NavInfo } from '../../../types';
+import { AppDispatch } from '../../../../src/index';
 
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
 const SubcatView: React.FC = (props: any) => {
-    
+    const dispatch = useDispatch<AppDispatch>();
     const params = useParams();
     const navigate = useNavigate();
 
@@ -35,8 +36,8 @@ const SubcatView: React.FC = (props: any) => {
 
     useEffect(() => {
         if (params?.id) {
-            props.dispatch(getSubcat(params.id))
-            props.dispatch(getItemsBySubcat(params.id))
+            dispatch(getSubcat(params.id))
+            dispatch(getItemsBySubcat(params.id))
         }
         return () => {
             document.title = config.defaultTitle;
@@ -63,7 +64,7 @@ const SubcatView: React.FC = (props: any) => {
                 subCatId: props.subcat[0]._id
             }
             setNavInfo(tempNavInfo);
-            props.dispatch(getCatById(props.subcat[0].parent_cat))
+            dispatch(getCatById(props.subcat[0].parent_cat))
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.subcat]);

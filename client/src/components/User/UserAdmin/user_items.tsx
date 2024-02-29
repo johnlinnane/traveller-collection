@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { getUserItems } from '../../../actions';
+import { getUserItems } from '../../../../src/slices/userSlice';
 
 const UserItems = props => {
 

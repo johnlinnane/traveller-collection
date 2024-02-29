@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import Select from 'react-select';
 
 
-import { getAllCats } from '../../../actions';
-import { addSubcat } from '../../../actions';
+import { getAllCats, addSubcat } from '../../../../src/slices/catsSlice';
 import { maxSelectFile, checkMimeType } from '../../../utils';
 import { Category } from '../../../types';
+import { AppDispatch } from '../../../../src/index';
 
 import mongoose from 'mongoose';
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
@@ -21,6 +21,8 @@ interface AdminAddSubcatProps {
 }
 
 const AdminAddSubCat: React.FC<AdminAddSubcatProps> = props => {
+
+    const dispatch = useDispatch<AppDispatch>();
 
     const navigate = useNavigate();
 
@@ -39,7 +41,7 @@ const AdminAddSubCat: React.FC<AdminAddSubcatProps> = props => {
 
 
     useEffect(() => {
-        props.dispatch(getAllCats());
+        dispatch(getAllCats());
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -130,7 +132,7 @@ const AdminAddSubCat: React.FC<AdminAddSubcatProps> = props => {
 
     const submitForm = (e) => {
         e.preventDefault();
-        props.dispatch(addSubcat({...subcatdata}));
+        dispatch(addSubcat({...subcatdata}));
         onSubmitHandler();
         setSaved(true);
         setTimeout(() => {

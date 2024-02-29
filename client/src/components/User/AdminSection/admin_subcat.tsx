@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-tabs/style/react-tabs.css';
 import Select from 'react-select';
 
-import { getAllCats, getAllSubCats  } from '../../../actions';
-import { deleteSubcat, updateSubcat  }  from '../../../actions';
+import { getAllCats, getAllSubCats, deleteSubcat, updateSubcat  } from '../../../../src/slices/catsSlice';
 import { maxSelectFile, checkMimeType } from '../../../utils';
 import { Category, SubCategory } from '../../../types';
+import { AppDispatch } from '../../../../src/index';
 
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
@@ -24,6 +24,8 @@ interface AdminSubcatProps  {
 };
 
 const AdminSubCat = (props: AdminSubcatProps) => {
+
+    const dispatch = useDispatch<AppDispatch>();
 
     const navigate = useNavigate();
 
@@ -57,8 +59,8 @@ const AdminSubCat = (props: AdminSubcatProps) => {
     const [selectedFile, setSelectedFile] = useState(null);
     
     useEffect(() => {
-        props.dispatch(getAllCats());
-        props.dispatch(getAllSubCats());
+        dispatch(getAllCats());
+        dispatch(getAllSubCats());
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -184,13 +186,13 @@ const AdminSubCat = (props: AdminSubcatProps) => {
     }
 
     const removeSubCat = id => {
-        props.dispatch(deleteSubcat(id))
+        dispatch(deleteSubcat(id))
         navigate(`/admin/0`);
     }
 
     const submitForm = e => {
         e.preventDefault();
-        props.dispatch(updateSubcat(
+        dispatch(updateSubcat(
             formdata.subCat
         ))
         onSubmitHandler();

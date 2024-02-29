@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { connect, useDispatch } from 'react-redux';
+import { Link, useParams } from "react-router-dom";
 
-import { getItemById, updateItem, createItem } from '../../../actions';
+import { getItemById, updateItem, createItem } from '../../../../src/slices/itemsSlice';
 import config from "../../../config";
 import { Item } from '../../../types';
+import { AppDispatch } from '../../../../src/index';
 
 import mongoose from 'mongoose';
 
 const ChapterIndex = props => {
 
+    const dispatch = useDispatch<AppDispatch>();
+
     const params = useParams();
-    const navigate = useNavigate();
 
     const [formdata, setFormdata] = useState<Item>({
         _id: params.id,
@@ -21,7 +23,6 @@ const ChapterIndex = props => {
     const [saved, setSaved] = useState(false);
     const [cancelled, setCancelled] = useState(false);
 
-    const { dispatch } = props;
 
     useEffect(() => {
         if (params?.id) {
@@ -117,7 +118,7 @@ const ChapterIndex = props => {
             has_chapter_children: temp_has_chapter_children
         });
 
-        props.dispatch(updateItem({ ...formdata }))
+        dispatch(updateItem({ ...formdata }))
 
         let chapterItem = {
             _id: chapterItemId,
@@ -161,7 +162,7 @@ const ChapterIndex = props => {
             },
             location: ''
         }
-        props.dispatch(createItem(chapterItem))
+        dispatch(createItem(chapterItem))
         // setTimeout(() => {
         //     navigate(`/edit-item/${chapterItem._id}`);
         // }, 1000)
@@ -169,7 +170,7 @@ const ChapterIndex = props => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        props.dispatch(updateItem({ ...formdata }));
+        dispatch(updateItem({ ...formdata }));
         setSaved(true);
         // setTimeout(() => {
         //     navigate(`/edit-item-file/${params.id }`);

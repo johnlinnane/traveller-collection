@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import {Progress} from 'reactstrap';
 
-import { getItemById, updateItem, getFilesFolder } from '../../../actions';
+import { getItemById, updateItem, getFilesFolder } from '../../../../src/slices/itemsSlice';
 import { checkMimeType, checkFileSize, maxSelectFile } from '../../../utils';
 import config from "../../../config";
+import { AppDispatch } from '../../../../src/index';
+
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
 const EditItemFile = props => {
+
+    const dispatch = useDispatch<AppDispatch>();
 
     const params = useParams();
     const navigate = useNavigate();
@@ -61,8 +65,8 @@ const EditItemFile = props => {
 
     useEffect(() => {
         document.title = `Edit Item - ${config.defaultTitle}`;
-        props.dispatch(getItemById(params.id))
-        props.dispatch(getFilesFolder({folder: `/items/${params.id}/original`}))
+        dispatch(getItemById(params.id))
+        dispatch(getFilesFolder({folder: `/items/${params.id}/original`}))
         return () => {
             document.title = config.defaultTitle;
         } // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -129,7 +133,7 @@ const EditItemFile = props => {
     }
 
     const onSubmitHandler = async () => {
-        props.dispatch(updateItem({ _id: formdata._id}));
+        dispatch(updateItem({ _id: formdata._id}));
         if (selectedFiles.length) {
             let filesForm = new FormData();
             selectedFiles.forEach( (file, i) => {

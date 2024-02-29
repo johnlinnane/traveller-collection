@@ -1,19 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import axios from 'axios';
-import { getAllPendItems, deletePendItem, acceptItem } from '../../../actions';
+import { getAllPendItems, deletePendItem, acceptItem } from '../../../../src/slices/itemsSlice';
 import PendingItem from './pending_item'
 import config from "../../../config";
+import { AppDispatch } from '../../../../src/index';
+
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 
 const PendingItemsView: React.FC = (props: any) => {
 
+    const dispatch = useDispatch<AppDispatch>();
+    
     const [items, setItems] = useState<any[]>([]);
     const [errorMsg, setErrorMsg] = useState<string>('Loading...');
 
     useEffect(() => {
         document.title = `Pending Items - ${config.defaultTitle}`;
-        props.dispatch(getAllPendItems());
+        dispatch(getAllPendItems());
         return () => {
             document.title = config.defaultTitle;
         } // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -50,10 +54,10 @@ const PendingItemsView: React.FC = (props: any) => {
 
     const handleChoice = (itemId, choice) => {
         if (choice === 'accept') {
-            props.dispatch(acceptItem(itemId, props.user.login.id))
+            dispatch(acceptItem(itemId, props.user.login.id))
         }
         if (choice === 'reject') {
-            props.dispatch(deletePendItem(itemId));
+            dispatch(deletePendItem(itemId));
             deleteAllMedia(itemId);
         }
         let tempItems = items;

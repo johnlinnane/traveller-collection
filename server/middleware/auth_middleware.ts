@@ -21,7 +21,7 @@ let authMiddleware = async (req: any, res: Response, next: NextFunction) => {
             error:true
         });
     }
-    next();
+    return next();
 }
 
 module.exports = { authMiddleware }

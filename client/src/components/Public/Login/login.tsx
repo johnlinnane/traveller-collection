@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 
-import { loginUser } from '../../../actions';
+import { loginUser } from '../../../../src/slices/userSlice';
 import config from "../../../config";
+import { AppDispatch } from '../../../../src/index';
 
 const Login: React.FC = (props: any) => {
+
+    const dispatch = useDispatch<AppDispatch>();
 
     const navigate = useNavigate();
 
@@ -31,14 +34,11 @@ const Login: React.FC = (props: any) => {
         if (props.user.login && props.user.login.isAuth) {
             navigate('/user');
         }
-    }, [props]);
+    }, [props, navigate]);
 
     const submitForm = (e) => {
         e.preventDefault();
-        props.dispatch(loginUser({
-            email,
-            password
-        }))
+        dispatch(loginUser(email, password));
     }
 
     return (

@@ -103,7 +103,7 @@ const SidenavItems: React.FC<any> = ( {user, onHideNav}: any) => {
 
     const showItems = () => {
         return(
-            user.login ?
+            user?.login ?
                 items.map((item, i) => {
                     if (user.login.isAuth) {
                         return !item.guestOnly ?

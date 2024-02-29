@@ -1,14 +1,17 @@
 import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
+import { AppDispatch } from '../../../../src/index';
 import { Link } from 'react-router-dom';
-import { getIntroText } from '../../../actions';
+import { getIntroText } from '../../../../src/slices/introsSlice';
 import config from "../../../config";
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
 const Intro: React.FC = (props: any) =>  {
 
+    const dispatch = useDispatch<AppDispatch>();
+    
     useEffect(() => {
-        props.dispatch(getIntroText());
+        dispatch(getIntroText());
         document.title = config.defaultTitle;
         return () => {
             document.title = config.defaultTitle;
@@ -42,7 +45,7 @@ const Intro: React.FC = (props: any) =>  {
                     : null }
                     {props.text && props.text.body ?
                         <p>{props.text.body}</p>
-                    : null}
+                    : null }
                     <Link to={'/categories'} className="btn">
                         Browse
                     </Link>

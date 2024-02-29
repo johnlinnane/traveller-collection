@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
 
-import { getInfoText, updateInfoText } from '../../../actions';
+import { getInfoText, updateInfoText} from '../../../slices/infosSlice';
 import { maxSelectFile, checkMimeType } from '../../../utils';
 import { Info } from '../../../types';
+import { AppDispatch } from '../../../../src/index';
 
 // import mongoose from 'mongoose';
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
@@ -19,6 +20,8 @@ interface AdminInfoProps {
 }
 
 const AdminInfo: React.FC<AdminInfoProps> = props => {
+
+    const dispatch = useDispatch<AppDispatch>();
 
     const navigate = useNavigate();
 
@@ -43,7 +46,7 @@ const AdminInfo: React.FC<AdminInfoProps> = props => {
 
 
     useEffect(() => {
-        props.dispatch(getInfoText());
+        dispatch(getInfoText());
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -196,7 +199,7 @@ const AdminInfo: React.FC<AdminInfoProps> = props => {
 
     const submitForm = e => {
         e.preventDefault();
-        props.dispatch(updateInfoText(
+        dispatch(updateInfoText(
             formdata
         ))
         if (selectedFiles && selectedFiles.length) {

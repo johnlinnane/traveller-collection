@@ -1,13 +1,15 @@
 import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import config from "../../../config";
 
 import Breadcrumb from '../../widgetsUI/breadcrumb';
-import { getAllCats } from '../../../actions';
+import { getAllCats } from '../../../../src/slices/catsSlice';
 import CatItem from './cats_list_item';
+import { AppDispatch } from '../../../../src/index';
 
 const CatList: React.FC = (props: any) => {
+    const dispatch = useDispatch<AppDispatch>();
     const navInfo ={
         catTitle: null,
         catId: null,
@@ -18,7 +20,7 @@ const CatList: React.FC = (props: any) => {
 
     useEffect(() => {
         document.title = `Categories - ${config.defaultTitle}`
-        props.dispatch(getAllCats());
+        dispatch(getAllCats());
         return () => {
             document.title = config.defaultTitle;
         } // eslint-disable-next-line react-hooks/exhaustive-deps

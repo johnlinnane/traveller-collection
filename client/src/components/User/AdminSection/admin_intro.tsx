@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
 
-import { getIntroText, updateIntroText } from '../../../actions';
+import { getIntroText, updateIntroText} from '../../../slices/introsSlice';
 import { maxSelectFile, checkMimeType } from '../../../utils';
 import { Intro } from '../../../types';
+import { AppDispatch } from '../../../../src/index';
 
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
@@ -17,6 +18,8 @@ interface AdminIntroProps {
 }
 
 const AdminIntro: React.FC<AdminIntroProps> = props => {
+
+    const dispatch = useDispatch<AppDispatch>();
 
     const navigate = useNavigate();
 
@@ -29,7 +32,7 @@ const AdminIntro: React.FC<AdminIntroProps> = props => {
     const [selectedFile, setSelectedFile] = useState<FileList | null>(null);
     
     useEffect(() => {
-        props.dispatch(getIntroText());
+        dispatch(getIntroText());
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -97,7 +100,7 @@ const AdminIntro: React.FC<AdminIntroProps> = props => {
 
     const submitForm = e => {
         e.preventDefault();
-        props.dispatch(updateIntroText(introData));
+        dispatch(updateIntroText(introData));
         onSubmitHandler();
         setSaved(true);
         setTimeout(() => {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { Link, useParams, useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet'
@@ -7,15 +7,18 @@ import "leaflet/dist/leaflet.css";
 import markerIconPng from "leaflet/dist/images/marker-icon.png";
 import { Icon } from 'leaflet'
 
-import { getItemById, updateItem, clearItem, deleteItem, createItem, getParentPdf, deleteChapter, getFilesFolder } from '../../../actions';
+import { getItemById, updateItem, clearItem, deleteItem, createItem, getParentPdf, deleteChapter, getFilesFolder } from '../../../../src/slices/itemsSlice';
 import config from "../../../config";
 import { Item } from '../../../types';
+import { AppDispatch } from '../../../../src/index';
 
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
 
 const EditItem = props => {
+
+    const dispatch = useDispatch<AppDispatch>();
 
     const params = useParams();
     const navigate = useNavigate();
@@ -106,12 +109,12 @@ const EditItem = props => {
 
     useEffect(() => {
         if (typeof formdata._id === 'string' && formdata._id.length && formdata._id !== 'new') {
-            props.dispatch(getItemById(formdata._id));
+            dispatch(getItemById(formdata._id));
             document.title = `Edit Item - ${config.defaultTitle}`;
-            props.dispatch(getFilesFolder({folder: `/items/${formdata._id}/original`}));
+            dispatch(getFilesFolder({folder: `/items/${formdata._id}/original`}));
         }
         return () => {
-            props.dispatch(clearItem());
+            dispatch(clearItem());
             document.title = config.defaultTitle;
         } // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [formdata._id]);
@@ -201,7 +204,7 @@ const EditItem = props => {
             
             if (props.items.item.is_pdf_chapter ) {
                 if (!getParentCalled) {
-                    props.dispatch(getParentPdf(props.items.item.pdf_item_parent_id))
+                    dispatch(getParentPdf(props.items.item.pdf_item_parent_id))
                 }
                 setGetParentCalled(true);
             }
@@ -233,7 +236,7 @@ const EditItem = props => {
             };
         }
         try {
-            props.dispatch(createItem(newItemData));
+            dispatch(createItem(newItemData));
         } catch {
             console.log('Error creating item.')
         }
@@ -336,9 +339,9 @@ const EditItem = props => {
     }
 
     const deleteThisItem = () => {
-        props.dispatch(deleteItem(formdata._id)); 
+        dispatch(deleteItem(formdata._id)); 
         if (formdata.is_pdf_chapter === true) {
-            props.dispatch(deleteChapter(formdata.pdf_item_parent_id, formdata.title))
+            dispatch(deleteChapter(formdata.pdf_item_parent_id, formdata.title))
         }
         deleteAllMedia();
         navigate('/user/all-items');
@@ -354,7 +357,7 @@ const EditItem = props => {
 
     const submitForm = e => {
         e.preventDefault();
-        props.dispatch(updateItem({
+        dispatch(updateItem({
                 ...formdata
             }
         ))

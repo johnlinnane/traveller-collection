@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 
-import { connect } from 'react-redux';
-import { getUsers, userRegister } from '../../../actions';
+import { connect, useDispatch } from 'react-redux';
+import { getUsers, userRegister } from '../../../../src/slices/userSlice';
+import { AppDispatch } from '../../../../src/index';
 
 const Register = props => {
+
+    const dispatch = useDispatch<AppDispatch>();
 
     const [name, setName] = useState('');
     const [lastname, setLastname] = useState('');
@@ -12,7 +15,7 @@ const Register = props => {
     const [error, setError] = useState('');
 
     useEffect(() => {
-        props.dispatch(getUsers());
+        dispatch(getUsers());
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -48,7 +51,7 @@ const Register = props => {
         e.preventDefault();
         setError('');
 
-        props.dispatch(userRegister({
+        dispatch(userRegister({
             email: email,
             password: password,
             name: name,

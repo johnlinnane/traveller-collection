@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import {Progress} from 'reactstrap';
 import { useParams, useNavigate } from "react-router-dom";
 
-import { getAllCats } from '../../../actions';
+import { getAllCats } from '../../../../src/slices/catsSlice';
 import { maxSelectFile, checkMimeType } from '../../../utils';
+import { AppDispatch } from '../../../../src/index';
 
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
 const CatEdit = props => { 
+
+    const dispatch = useDispatch<AppDispatch>();
 
     const params = useParams();
     const navigate = useNavigate();
@@ -21,7 +24,7 @@ const CatEdit = props => {
     const [selectedFile, setSelectedFile] = useState(null);
     
     useEffect(() => {
-        props.dispatch(getAllCats());
+        dispatch(getAllCats());
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-tabs/style/react-tabs.css';
 
-import { getAllCats  } from '../../../actions';
-import { deleteCat, updateCat }  from '../../../actions';
+import { getAllCats, deleteCat, updateCat }  from '../../../../src/slices/catsSlice';
 import { maxSelectFile, checkMimeType } from '../../../utils';
 import { Category } from '../../../types';
+import { AppDispatch } from '../../../../src/index';
 
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
@@ -21,6 +21,8 @@ interface AdminCatProps {
 };
 
 const AdminCat = (props: AdminCatProps): JSX.Element => {
+
+    const dispatch = useDispatch<AppDispatch>();
 
     const navigate = useNavigate();
 
@@ -42,7 +44,7 @@ const AdminCat = (props: AdminCatProps): JSX.Element => {
     const [selectedFiles, setSelectedFiles] = useState<FileList | null>(null);
     
     useEffect(() => {
-        props.dispatch(getAllCats());
+        dispatch(getAllCats());
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -130,7 +132,7 @@ const AdminCat = (props: AdminCatProps): JSX.Element => {
     }
 
     const removeCat = (e, id) => {
-        props.dispatch(deleteCat(id));
+        dispatch(deleteCat(id));
         setCatDeleted(true);
         setTimeout(() => {
             navigate(`/admin/0`);
@@ -139,7 +141,7 @@ const AdminCat = (props: AdminCatProps): JSX.Element => {
 
     const submitForm = (e) => {
         e.preventDefault();
-        props.dispatch(updateCat(
+        dispatch(updateCat(
                 formdata.cat
         ))
         onSubmitHandler();

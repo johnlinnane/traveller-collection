@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import Slick from 'react-slick';   // uses cdn css
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import "leaflet/dist/leaflet.css";
@@ -10,10 +10,12 @@ import { EmailIcon, FacebookIcon, WhatsappIcon } from "react-share";
 import { Document, Page, pdfjs } from 'react-pdf';
 import { Link, useParams, useNavigate } from "react-router-dom";
 
-import { getItemById, clearItemWithContributor, getAllCats, getAllSubCats, getNextItem, getPrevItem, getParentPdf, getFilesFolder } from '../../../actions';
+import { getItemById, clearItemWithContributor, getNextItem, getPrevItem, getParentPdf, getFilesFolder } from '../../../../src/slices/itemsSlice';
+import { getAllCats, getAllSubCats } from '../../../../src/slices/catsSlice';
 import Breadcrumb from '../../widgetsUI/breadcrumb';
 import config from "../../../config";
 import { Item, NavInfo, Category, SubCategory } from '../../../types';
+import { AppDispatch } from '../../../../src/index';
 
 const IP_ADDRESS_REMOTE = process.env.REACT_APP_IP_ADDRESS_REMOTE;
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
@@ -46,6 +48,8 @@ interface ItemViewProps {
 
 const ItemView: React.FC<ItemViewProps> = props => {
 
+    const dispatch = useDispatch<AppDispatch>();
+
     const params = useParams();
     const navigate = useNavigate();
 
@@ -67,15 +71,15 @@ const ItemView: React.FC<ItemViewProps> = props => {
 
     useEffect(() => {
         if (params?.id) {
-            props.dispatch(getItemById(params.id));
-            props.dispatch(getAllCats());
-            props.dispatch(getAllSubCats());
-            props.dispatch(getNextItem(params.id));
-            props.dispatch(getPrevItem(params.id));
-            props.dispatch(getFilesFolder({folder: `/items/${params.id}/original`}));
+            dispatch(getItemById(params.id));
+            dispatch(getAllCats());
+            dispatch(getAllSubCats());
+            dispatch(getNextItem(params.id));
+            dispatch(getPrevItem(params.id));
+            dispatch(getFilesFolder({folder: `/items/${params.id}/original`}));
         }
         return () => {
-            props.dispatch(clearItemWithContributor());
+            dispatch(clearItemWithContributor());
             document.title = config.defaultTitle;
         } // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [params?.id]);
@@ -108,8 +112,8 @@ const ItemView: React.FC<ItemViewProps> = props => {
             if (item.is_pdf_chapter && item.pdf_item_pages && item.pdf_item_pages.start) {
                 // if (!getParentCalled) {
                 if (typeof item?.pdf_item_parent_id === 'string') {
-                    props.dispatch(getParentPdf(item.pdf_item_parent_id))
-                    props.dispatch(getFilesFolder({folder: `/items/${item.pdf_item_parent_id}/original`}))
+                    dispatch(getParentPdf(item.pdf_item_parent_id))
+                    dispatch(getFilesFolder({folder: `/items/${item.pdf_item_parent_id}/original`}))
                 }
                 const pageNumber = typeof item.pdf_item_pages.start === 'string'
                     ? parseInt(item.pdf_item_pages.start)

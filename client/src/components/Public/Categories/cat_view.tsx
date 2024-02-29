@@ -1,24 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import { addDefaultImg } from '../../../utils';
-import { getItemsByCat, getCatById, getAllSubCats } from '../../../actions';
+import { getItemsByCat, getCatById, getAllSubCats } from '../../../../src/slices/catsSlice';
 import Breadcrumb from '../../widgetsUI/breadcrumb';
 import config from '../../../config';
 import { SubCategory, NavInfo } from '../../../types';
+import { AppDispatch } from '../../../../src/index';
+
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
+
 const CatView: React.FC = (props: any) => {
-    
+    const dispatch = useDispatch<AppDispatch>();
     const params = useParams();
 
     let catId = params.id;
 
     useEffect(() => {
         if (params?.id) {
-            props.dispatch(getItemsByCat(catId));
-            props.dispatch(getCatById(catId));
-            props.dispatch(getAllSubCats());
+            dispatch(getItemsByCat(catId));
+            dispatch(getCatById(catId));
+            dispatch(getAllSubCats());
         }
         return () => {
             document.title = config.defaultTitle;            

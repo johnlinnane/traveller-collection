@@ -1,18 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import { useParams } from "react-router-dom";
  
-import { getAllCats, getAllSubCats  } from '../../../actions';
+import { getAllCats, getAllSubCats  } from '../../../../src/slices/catsSlice';
 import AdminCat from './admin_cat';
 import AdminSubCat from './admin_subcat';
 import AdminIntro from './admin_intro';
 import AdminInfo from './admin_info';
 import AdminAddCat from './admin_add_cat';
 import AdminAddSubCat from './admin_add_subcat';
+import { AppDispatch } from '../../../../src/index';
 
 const Admin = props => {
+
+    const dispatch = useDispatch<AppDispatch>();
 
     const params = useParams();
 
@@ -20,8 +23,8 @@ const Admin = props => {
     const [tabIndexSide, setTabIndexSide] = useState(parseInt(params.tab));
     
     useEffect(() => {
-        props.dispatch(getAllCats());
-        props.dispatch(getAllSubCats());
+        dispatch(getAllCats());
+        dispatch(getAllSubCats());
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     

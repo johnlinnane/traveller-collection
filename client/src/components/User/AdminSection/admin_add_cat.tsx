@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
 
-import { addCat } from '../../../actions';
+import { addCat } from '../../../../src/slices/catsSlice';
 import { maxSelectFile, checkMimeType, addDefaultImg } from '../../../utils';
+import { AppDispatch } from '../../../../src/index';
 
 import mongoose from 'mongoose';
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
@@ -16,6 +17,8 @@ interface AdminAddCatProps {
 }
 
 const AdminAddCat: React.FC<AdminAddCatProps> = props => {
+
+    const dispatch = useDispatch<AppDispatch>();
 
     const navigate = useNavigate();
 
@@ -77,7 +80,7 @@ const AdminAddCat: React.FC<AdminAddCatProps> = props => {
 
     const submitForm = (e) => {
         e.preventDefault();
-        props.dispatch(addCat({
+        dispatch(addCat({
             ...catdata,
         }));
         onSubmitHandler();

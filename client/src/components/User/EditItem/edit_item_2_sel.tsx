@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 
-import { getItemById, updateItem, clearItem, getFilesFolder } from '../../../actions';
-import { getAllCats, getAllSubCats  } from '../../../actions';
+import { getAllCats, getAllSubCats } from '../../../../src/slices/catsSlice';
+import { getItemById, updateItem, clearItem, getFilesFolder } from '../../../../src/slices/itemsSlice';
 import { SubCategory } from '../../../types';
 import config from "../../../config";
+import { AppDispatch } from '../../../../src/index';
+
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
 const EditItemSel = props => {
+
+    const dispatch = useDispatch<AppDispatch>();
 
     const params = useParams();
     const navigate = useNavigate();
@@ -36,12 +40,12 @@ const EditItemSel = props => {
     useEffect(() => {
         document.title = `Edit Item - ${config.defaultTitle}`;
         if (idParam) {
-            props.dispatch(getAllCats());
-            props.dispatch(getAllSubCats());
-            props.dispatch(getItemById(idParam));
+            dispatch(getAllCats());
+            dispatch(getAllSubCats());
+            dispatch(getItemById(idParam));
         }
         return () => {
-            props.dispatch(clearItem())
+            dispatch(clearItem())
             document.title = config.defaultTitle;
         } // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [idParam]);
@@ -49,7 +53,7 @@ const EditItemSel = props => {
 
     useEffect(() => {
         if (props.items?.item?._id) {
-            props.dispatch(getFilesFolder({folder: `/items/${props.items.item._id}/original`}));
+            dispatch(getFilesFolder({folder: `/items/${props.items.item._id}/original`}));
         } // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.items?.item?._id]);
 
@@ -204,7 +208,7 @@ const EditItemSel = props => {
         } else if (!itemData.subcategory_ref.length) {
             alert('Please select a subcategory');
         } else {
-            props.dispatch(updateItem(
+            dispatch(updateItem(
                 { ...itemData }
             ));
             setSubmitted(true);

@@ -1,22 +1,26 @@
 import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import "leaflet/dist/leaflet.css";
 import markerIconPng from "leaflet/dist/images/marker-icon.png";
 import { Icon } from 'leaflet'
 
-import { getItemsWithCoords } from '../../../actions';
+import { getItemsWithCoords } from '../../../../src/slices/itemsSlice';
 import config from "../../../config";
+import { AppDispatch } from '../../../../src/index';
 
 const MainMap = (props: any) => {
+
+    const dispatch = useDispatch<AppDispatch>();
+
     const initLat = 53.342609;
     const initLong = -7.603976;
     const initZoom = 8;
 
     useEffect(() => {
         document.title = `Map - ${config.defaultTitle}`
-        props.dispatch(getItemsWithCoords());
+        dispatch(getItemsWithCoords());
         return () => {
             document.title = config.defaultTitle;
         }

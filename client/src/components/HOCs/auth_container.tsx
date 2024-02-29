@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
-import { authGetCredentials } from '../../actions';
+import { connect, useDispatch } from 'react-redux';
+import { authGetCredentials } from '../../../src/slices/userSlice';
 import { useNavigate } from "react-router-dom";
+import { AppDispatch } from '../../../src/index';
 
 interface AuthenticationCheckProps {
     redirectTo: string | null;
@@ -15,7 +16,8 @@ interface AuthenticationCheckProps {
 }
 
 const AuthContainer: React.FC<AuthenticationCheckProps> = (props: any) =>  {
-
+    const dispatch = useDispatch<AppDispatch>();
+    
     const { Component, redirectTo } = props;
 
     const navigate = useNavigate();
@@ -23,7 +25,7 @@ const AuthContainer: React.FC<AuthenticationCheckProps> = (props: any) =>  {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        props.dispatch(authGetCredentials()); 
+        dispatch(authGetCredentials()); 
         setLoading(true);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

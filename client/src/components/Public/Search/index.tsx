@@ -1,11 +1,15 @@
 import React, { useEffect, useState} from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 
 import SearchList from './search_list';
-import { searchItems } from '../../../actions';
+import { searchItems } from '../../../../src/slices/itemsSlice';
 import config from "../../../config";
+import { AppDispatch } from '../../../../src/index';
 
 const Search = (props: any) => {
+
+    const dispatch = useDispatch<AppDispatch>();
+
     const [noMatch, setNoMatch] = useState<boolean | null>(null);
     const [results, setResults] = useState([]);
     const [resultsNumber] = useState<number>(10); // setResultsNumber @todo
@@ -35,7 +39,7 @@ const Search = (props: any) => {
             setResults([]);
         } else {
             timeout = setTimeout(() => {
-                props.dispatch(searchItems(keyword, resultsNumber));
+                dispatch(searchItems(keyword, resultsNumber));
             }, 1000);
         }
     }

@@ -26,6 +26,8 @@
     "src/actions"
   ],
   "exclude": [
-    "src/components"
+    "*",
+    "src/components",
+    "src/slices"
   ]
 }

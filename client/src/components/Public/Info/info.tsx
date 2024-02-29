@@ -1,12 +1,16 @@
 import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
-import { getInfoText } from '../../../actions';
+import { connect, useDispatch } from 'react-redux';
+import { getInfoText } from '../../../slices/infosSlice';
+import { AppDispatch } from '../../../../src/index';
+
 const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
 const Info: React.FC = (props: any) => {
 
+    const dispatch = useDispatch<AppDispatch>();
+
     useEffect(() => {
-        props.dispatch(getInfoText());
+        dispatch(getInfoText());
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
