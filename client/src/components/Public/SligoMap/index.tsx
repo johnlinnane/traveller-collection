@@ -1,17 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
+import { MapContainer, TileLayer } from 'react-leaflet' // Marker, Popup
 import "leaflet/dist/leaflet.css";
 // import markerIconPng from "leaflet/dist/images/marker-icon.png";
-import { Icon } from 'leaflet'
+// import { Icon } from 'leaflet'
 
 const SligoMap = (props: any) => {
 
-    var OpenStreetMap_Mapnik = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    });
+    // var OpenStreetMap_Mapnik = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    //     maxZoom: 19,
+    //     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    // });
 
 
     return (

@@ -1,4 +1,4 @@
-import { Info } from '../types';
+// import { Info } from '../types';
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 

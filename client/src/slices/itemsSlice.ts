@@ -106,7 +106,7 @@ export const getItems = createAsyncThunk(
 
 export const getItemById = createAsyncThunk(
     'items/getItemById', 
-    async (id) => {
+    async (id: string) => {
         const request = axios.get(`${API_PREFIX}/get-item-by-id?id=${id}`)
             .then(response => response.data);
         return request;

@@ -15,7 +15,7 @@ dotenv.config({path: '../.env'})
 import cors from 'cors';
 import multer from 'multer';
 import fs from 'fs';
-import mkdirp from 'mkdirp';
+import { mkdirp } from 'mkdirp';
 
 
 mongoose.Promise = global.Promise;
@@ -484,7 +484,6 @@ app.get('/api/accept-item', async (req: Request, res: Response) => {
 })
 
 app.post('/api/get-files-folder', async (req: Request, res: Response) => {
-    console.log('get-files-folder fired');
     try {
         const folderPath = path.join(__dirname, '..', 'public', 'assets', 'media', req.body.folder);
         const files = await fs.promises.readdir(folderPath);
@@ -662,7 +661,7 @@ const storageArray = multer.diskStorage({
     destination: async (req: Request, file: Express.Multer.File, cb: DestinationCallback) => {
         const destinationPath = `./../public/assets/media/items/${req.params.id}/original`;
         try {
-            await mkdirp.sync(destinationPath);
+            await mkdirp(destinationPath);
         } catch (error) {
                 console.error('Error creating directory:', error);
                 throw error;
