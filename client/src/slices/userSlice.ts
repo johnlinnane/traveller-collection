@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'; // PayloadAction
 import axios from 'axios';
-import { Dispatch} from 'redux';
 
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 
@@ -116,7 +115,8 @@ export const userRegister = createAsyncThunk(
     'user/userRegister', 
     async (user, userList) => {
         const request = axios.post(`${API_PREFIX}/register`, user);
-        return (dispatch: Dispatch<any>) => {
+        // return (dispatch: Dispatch<any>) => {
+        return () => {
             request.then(({data}) => {
 
                 let users = data.success ? [...userList, data.user] : userList;
