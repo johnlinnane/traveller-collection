@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect, useDispatch } from 'react-redux';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import {Progress} from 'reactstrap';
+import { Progress} from 'reactstrap';
 import { useParams, useNavigate } from "react-router-dom";
 
 import { getAllCats } from '../../../../src/slices/catsSlice';

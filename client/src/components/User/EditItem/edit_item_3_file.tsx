@@ -3,7 +3,7 @@ import { connect, useDispatch } from 'react-redux';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import {Progress} from 'reactstrap';
+import { Progress} from 'reactstrap';
 
 import { getItemById, updateItem, getFilesFolder } from '../../../../src/slices/itemsSlice';
 import { checkMimeType, checkFileSize, maxSelectFile } from '../../../utils';
