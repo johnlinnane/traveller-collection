@@ -6,12 +6,15 @@ import "leaflet/dist/leaflet.css";
 // import markerIconPng from "leaflet/dist/images/marker-icon.png";
 import { Icon } from 'leaflet'
 
+const STADIA_MAPS_API_KEY = process.env.REACT_APP_STADIA_MAPS_API_KEY;
+
 const SligoMap = (props: any) => {
 
     // var OpenStreetMap_Mapnik = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     //     maxZoom: 19,
     //     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     // });
+
 
 
     const wrapperStyles = {
@@ -31,6 +34,8 @@ const SligoMap = (props: any) => {
 
     const [isVisible, setIsVisible] = useState(true);
     const imageRef = useRef(null);
+
+    const stadiaURL = `https://tiles.stadiamaps.com/tiles/stamen_watercolor/{z}/{x}/{y}.jpg/?api_key=${STADIA_MAPS_API_KEY}`;
 
     // Close the image when clicking outside
     const handleClickOutside = (event) => {
@@ -118,7 +123,7 @@ const SligoMap = (props: any) => {
             >
                 <TileLayer
                     attribution='&copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                    url="https://tiles.stadiamaps.com/tiles/stamen_watercolor/{z}/{x}/{y}.jpg"
+                    url={stadiaURL}
                 />
                 
                 <LayersControl position="topright">
