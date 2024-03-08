@@ -38,46 +38,41 @@ import CatEdit from './components/User/EditItem/cat_edit';
 const URLRoutes = () => {
     return (
         <Layout>
-            {/* <CompatRouter> */}
-                <Routes>
-                    <Route path="/" element={<AuthContainer Component={Intro} redirectTo={null} />} />
-                    <Route path="/categories" element={<AuthContainer Component={CatList} redirectTo={null} />} />
+            <Routes>
+                <Route path="/" element={<AuthContainer Component={Intro} redirectTo={null} />} />
+                <Route path="/categories" element={<AuthContainer Component={CatList} redirectTo={null} />} />
 
-                    <Route path="/category/:id" element={<AuthContainer Component={CatView} redirectTo={null} />} />
-                    <Route path="/subcategory/:id" element={<AuthContainer Component={SubcatView} redirectTo={null} />} />
-                    <Route path="/items/:id" element={<AuthContainer Component={ItemView} redirectTo={null} />} />
-                    <Route path="/search" element={<AuthContainer Component={Search} redirectTo={null} />} />
-                    <Route path="/map" element={<AuthContainer Component={MainMap} redirectTo={null} />} />
-                    <Route path="/info" element={<AuthContainer Component={Info} redirectTo={null} />} />
-                    <Route path="/login" element={<AuthContainer Component={Login} redirectTo={'user'} />} /> 
-                    {/* DOESN'T SHOW IF USER IS LOGGED IN */}
+                <Route path="/category/:id" element={<AuthContainer Component={CatView} redirectTo={null} />} />
+                <Route path="/subcategory/:id" element={<AuthContainer Component={SubcatView} redirectTo={null} />} />
+                <Route path="/items/:id" element={<AuthContainer Component={ItemView} redirectTo={null} />} />
+                <Route path="/search" element={<AuthContainer Component={Search} redirectTo={null} />} />
+                <Route path="/map" element={<AuthContainer Component={MainMap} redirectTo={null} />} />
+                <Route path="/info" element={<AuthContainer Component={Info} redirectTo={null} />} />
+                <Route path="/login" element={<AuthContainer Component={Login} redirectTo={'user'} />} /> 
 
-                    <Route path="/edit-item/:id" element={<AuthContainer Component={EditItem} redirectTo={null} />} />
-                    <Route path="/edit-item-sel/:id" element={<AuthContainer Component={EditItemSel} redirectTo={null} />} />
-                    <Route path="/edit-item-file/:id" element={<AuthContainer Component={EditItemFile} redirectTo={null} />} />
+                {/* DOESN'T SHOW IF USER IS LOGGED IN */}
+                <Route path="/edit-item/:id" element={<AuthContainer Component={EditItem} redirectTo={null} />} />
+                <Route path="/edit-item-sel/:id" element={<AuthContainer Component={EditItemSel} redirectTo={null} />} />
+                <Route path="/edit-item-file/:id" element={<AuthContainer Component={EditItemFile} redirectTo={null} />} />
 
-                    <Route path="/sligo-map" element={<AuthContainer Component={SligoMap} redirectTo={null} />} />
+                {/* WHEN LOGGED IN */}
+                <Route path="/user/logout" element={<AuthContainer Component={Logout} redirectTo={'login'} />} />
+                <Route path="/user" element={<AuthContainer Component={User} redirectTo={'login'} />} />
+                <Route path="/user/user_items" element={<AuthContainer Component={UserItems} redirectTo={'login'} />} />
+                <Route path="/user/all-items" element={<AuthContainer Component={AllItems} redirectTo={'login'} />} />
+                <Route path="/user/pending-items" element={<AuthContainer Component={PendingItemsView} redirectTo={'login'} />} />
 
-                    {/* WHEN LOGGED IN */}
+                <Route path="/user/chapter-index/:id" element={<AuthContainer Component={ChapterIndex} redirectTo={'login'} />} />
 
-                    <Route path="/user/logout" element={<AuthContainer Component={Logout} redirectTo={'login'} />} />
-                    <Route path="/user" element={<AuthContainer Component={User} redirectTo={'login'} />} />
-                    <Route path="/user/user_items" element={<AuthContainer Component={UserItems} redirectTo={'login'} />} />
-                    <Route path="/user/all-items" element={<AuthContainer Component={AllItems} redirectTo={'login'} />} />
-                    <Route path="/user/pending-items" element={<AuthContainer Component={PendingItemsView} redirectTo={'login'} />} />
+                <Route path="/admin/:tab" element={<AuthContainer Component={Admin} redirectTo={'login'} />} />
+                <Route path="/cat-edit/:id" element={<AuthContainer Component={CatEdit} redirectTo={'login'} />} /> 
+                {/*STILL USED??*/}
 
-                    <Route path="/user/chapter-index/:id" element={<AuthContainer Component={ChapterIndex} redirectTo={'login'} />} />
-
-                    <Route path="/admin/:tab" element={<AuthContainer Component={Admin} redirectTo={'login'} />} />
-                    <Route path="/cat-edit/:id" element={<AuthContainer Component={CatEdit} redirectTo={'login'} />} /> 
-                    {/*STILL USED??*/}
-
-                    {/* DEPRECATED & MISC */}
-                    
-                    <Route path="/user/register" element={<AuthContainer Component={Register} redirectTo={'login'} />} /> 
-                    
-                </Routes>
-            {/* </CompatRouter> */}
+                {/* DEPRECATED & MISC */}
+                <Route path="/sligo-map" element={<AuthContainer Component={SligoMap} redirectTo={null} />} />                
+                <Route path="/user/register" element={<AuthContainer Component={Register} redirectTo={'login'} />} /> 
+                
+            </Routes>
         </Layout>
         
     );

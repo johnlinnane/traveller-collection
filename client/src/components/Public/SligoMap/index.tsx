@@ -1,10 +1,10 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import React, { useState, useRef, useEffect } from 'react';import { connect } from 'react-redux';
 
-import { MapContainer, TileLayer } from 'react-leaflet' // Marker, Popup
+import { MapContainer, TileLayer, Marker, Popup, LayersControl, LayerGroup, Circle, FeatureGroup, Rectangle   } from 'react-leaflet';
+import { Link } from 'react-router-dom';
 import "leaflet/dist/leaflet.css";
 // import markerIconPng from "leaflet/dist/images/marker-icon.png";
-// import { Icon } from 'leaflet'
+import { Icon } from 'leaflet'
 
 const SligoMap = (props: any) => {
 
@@ -14,46 +14,153 @@ const SligoMap = (props: any) => {
     // });
 
 
+    const wrapperStyles = {
+        position: 'relative',
+        width: '100vw',
+        height: '100vh',
+        margin: 0,
+        padding: 0,
+        overflow: 'hidden'
+    };
+
+    const mainMapStyles = {
+        width: '100vw',
+        height: '100vh',
+        margin: '0'   
+    }
+
+    const [isVisible, setIsVisible] = useState(true);
+    const imageRef = useRef(null);
+
+    // Close the image when clicking outside
+    const handleClickOutside = (event) => {
+        if (imageRef.current && !imageRef.current.contains(event.target)) {
+        setIsVisible(false);
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener('click', handleClickOutside);
+    
+        return () => {
+          document.removeEventListener('click', handleClickOutside);
+        };
+    }, []);
+
     return (
         <div
-            style={{
-                position: 'relative', // Set container position to relative
-                width: '100vw', // 100% of viewport width
-                height: '100vh', // 100% of viewport height
-                margin: 0,
-                padding: 0,
-                overflow: 'hidden'
-            }}
+            id='wrapper'
+            style={wrapperStyles}
         >
             {/* <img
                 alt="MapUpdated"
-                src="/assets/media/sligo-map/MapUpdated.png"
+                src="/assets/media/sligo-map/Frame1of3.png"
                 style={{ 
                     position: 'absolute',
                     top: 0,
                     left: 0,
                     width: '100%',
-                    height: '100%',
+                    // height: '100%',
                     objectFit: 'cover', 
-                    zIndex: -1 
+                    zIndex: 1 
                 }}
             /> */}
+            <img
+                ref={imageRef}
+                id='title'
+                alt="MapUpdated"
+                src="/assets/media/sligo-map/Headings - Title.png"
+                style={{ 
+                    position: 'absolute',
+                    top: '10vh',
+                    left: 0,
+                    right: 0,
+                    margin: 'auto',
+                    width: '50%',
+                    // height: '100%',
+                    objectFit: 'cover', 
+                    zIndex: 1,
+                    
+                    display: isVisible ? 'block' : 'none', 
+                    transition: 'opacity 2s ease'
+                }}
+            />
+
+<img
+                ref={imageRef}
+                id='title'
+                alt="MapUpdated"
+                src="/assets/media/sligo-map/Headings - Subtitle.png"
+                style={{ 
+                    position: 'absolute',
+                    bottom: '10vh',
+                    left: 0,
+                    right: 0,
+                    margin: 'auto',
+                    width: '50%',
+                    // width: '50%',
+                    // height: '100%',
+                    objectFit: 'cover', 
+                    zIndex: 1,
+                    
+                    display: isVisible ? 'block' : 'none', 
+                    transition: 'opacity 2s ease'
+                }}
+            />
 
             
 
             <MapContainer 
                 className="main_map"
                 center={[54.20638315779152, -8.57869767149748]} 
-                zoom={9} 
+                zoom={10}
+                style={mainMapStyles} 
             >
                 <TileLayer
                     attribution='&copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                     url="https://tiles.stadiamaps.com/tiles/stamen_watercolor/{z}/{x}/{y}.jpg"
                 />
                 
-
-
-                {/* {props.items.items && props.items.items.length ?
+                <LayersControl position="topright">
+                    <LayersControl.Overlay name="Halting Sites">
+                        <Marker position={[54.20638315779152, -8.57869767149748]}>
+                            <Popup>
+                                A pretty CSS3 popup. <br /> Easily customizable.
+                            </Popup>
+                        </Marker>
+                    </LayersControl.Overlay>
+                    <LayersControl.Overlay checked name="Traditional Sites">
+                        <LayerGroup>
+                            <Circle
+                                center={[54.30638315779152, -8.57869767149748]}
+                                pathOptions={{ fillColor: 'blue' }}
+                                radius={1000}
+                            />
+                            <Circle
+                                center={[54.40638315779152, -8.57869767149748]}
+                                pathOptions={{ fillColor: 'red' }}
+                                radius={1000}
+                                stroke={false}
+                            />
+                            <LayerGroup>
+                                <Circle
+                                center={[54.50638315779152, -8.57869767149748]}
+                                pathOptions={{ color: 'green', fillColor: 'green' }}
+                                radius={1000}
+                                />
+                            </LayerGroup>
+                        </LayerGroup>
+                    </LayersControl.Overlay>
+                    <LayersControl.Overlay name="Recent Sites">
+                        <FeatureGroup pathOptions={{ color: 'purple' }}>
+                            <Popup>Popup in FeatureGroup</Popup>
+                            <Circle center={[54.60638315779152, -8.57869767149748]} radius={200} />
+                            <Rectangle bounds={[[54.49, -8.08], [55.5, -9.06]]} />
+                        </FeatureGroup>
+                    </LayersControl.Overlay>
+                </LayersControl>
+                {/* 
+                {props.items.items && props.items.items.length ?
                     <div>
                         {props.items.items.map( (item, i) => (
                             item.geo && item.geo.latitude && item.geo.longitude ?
@@ -79,9 +186,28 @@ const SligoMap = (props: any) => {
                         ) )}     
                     </div>
                 : null} */}
+
+
+                <Marker 
+                    position={[54.250159, -8.745358]} 
+                    
+                    key={'XXXXX'}
+                    icon={new Icon({iconUrl: '/assets/media/sligo-map/Marker.png', iconSize: [25, 25], iconAnchor: [0, 0]})}
+                >
+                    <Popup>
+                        <Link to={`/`} target="_blank">
+                            <span><b>Title</b></span>
+                            <br/>
+                            <div>
+                                <span>Address</span><br/>
+                                <br/>
+                            </div>
+                        </Link>
+                    </Popup>
+                </Marker>
             </MapContainer>
 
-            <img 
+            {/* <img 
                 alt="Leafy Frame"
                 src="/assets/media/sligo-map/Frame-Full.png"
                 style={{
@@ -92,7 +218,7 @@ const SligoMap = (props: any) => {
                     height: '100%',
                     objectFit: 'cover'
                 }}
-            />
+            /> */}
 
         </div>
         
@@ -101,7 +227,7 @@ const SligoMap = (props: any) => {
 
 function mapStateToProps(state: any) {
     return {
-        // items: state.items
+        items: state.items
     }
 }
 
