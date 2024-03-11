@@ -35,7 +35,7 @@ const SligoMap = (props: any) => {
     const [isVisible, setIsVisible] = useState(true);
     const imageRef = useRef(null);
 
-    const stadiaURL = `https://tiles.stadiamaps.com/tiles/stamen_watercolor/{z}/{x}/{y}.jpg/?api_key=${STADIA_MAPS_API_KEY}`;
+    const stadiaURL = `https://tiles.stadiamaps.com/tiles/stamen_watercolor/{z}/{x}/{y}.jpg?api_key=${STADIA_MAPS_API_KEY}`;
 
     // Close the image when clicking outside
     const handleClickOutside = (event) => {
