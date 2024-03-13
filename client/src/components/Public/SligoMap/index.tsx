@@ -57,7 +57,7 @@ const SligoMap = (props: any) => {
             id='wrapper'
             style={wrapperStyles}
         >
-            {/* <img
+            <img
                 alt="MapUpdated"
                 src="/assets/media/sligo-map/Frame1of3.png"
                 style={{ 
@@ -65,11 +65,15 @@ const SligoMap = (props: any) => {
                     top: 0,
                     left: 0,
                     width: '100%',
-                    // height: '100%',
+                    // width: isVisible ? '100%' : '200%', 
+                    height: '100%',
+                    // height: isVisible ? '100%' : '200%', 
                     objectFit: 'cover', 
-                    zIndex: 1 
+                    zIndex: 1,
+                    opacity: isVisible ? '1' : '0', 
+                    transition: 'opacity 1s ease, width 1s ease, height 1s ease'
                 }}
-            /> */}
+            />
             <img
                 ref={imageRef}
                 id='title'
@@ -86,8 +90,8 @@ const SligoMap = (props: any) => {
                     objectFit: 'cover', 
                     zIndex: 1,
                     
-                    display: isVisible ? 'block' : 'none', 
-                    transition: 'opacity 2s ease'
+                    opacity: isVisible ? '1' : '0', 
+                    transition: 'opacity 1s ease'
                 }}
             />
 
@@ -108,8 +112,8 @@ const SligoMap = (props: any) => {
                     objectFit: 'cover', 
                     zIndex: 1,
                     
-                    display: isVisible ? 'block' : 'none', 
-                    transition: 'opacity 2s ease'
+                    opacity: isVisible ? '1' : '0', 
+                    transition: 'opacity 1s ease'
                 }}
             />
 
