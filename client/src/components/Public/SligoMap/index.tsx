@@ -33,14 +33,16 @@ const SligoMap = (props: any) => {
     }
 
     const [isVisible, setIsVisible] = useState(true);
+    const [selectedType, setSelectedType] = useState<null | 'halting' | 'recent' | 'traditional'>(null);
     const imageRef = useRef(null);
+    
 
     const stadiaURL = `https://tiles.stadiamaps.com/tiles/stamen_watercolor/{z}/{x}/{y}.jpg?api_key=${STADIA_MAPS_API_KEY}`;
 
     // Close the image when clicking outside
     const handleClickOutside = (event) => {
         if (imageRef.current && !imageRef.current.contains(event.target)) {
-        setIsVisible(false);
+            setIsVisible(false);
         }
     };
 
@@ -52,6 +54,47 @@ const SligoMap = (props: any) => {
         };
     }, []);
 
+
+    const siteData = [
+        {
+            siteType: 'halting',
+            title: 'Test Halting Site',
+            lat: 54.250159,
+            long: -8.745358
+        },
+        {
+            siteType: 'halting',
+            title: 'Test Halting Site 2',
+            lat: 54.275837,
+            long: -8.466647
+        },
+        {
+            siteType: 'recent',
+            title: 'Test Recent Site',
+            lat: 54.19669618071106,
+            long: -8.62453610206479
+        },
+        {
+            siteType: 'recent',
+            title: 'Test Recent Site 2',
+            lat: 54.18784344217345,
+            long: -8.714913148770755
+        },
+        {
+            siteType: 'traditional',
+            title: 'Test Traditional Site',
+            lat: 54.25090159803158, 
+            long: -8.78571412294487
+        },
+        {
+            siteType: 'traditional',
+            title: 'Test Traditional Site 2',
+            lat: 54.11649181306498, 
+            long: -8.691072525972512
+        }
+    ]
+
+    console.log('selectedType: ', selectedType)
     return (
         <div
             id='wrapper'
@@ -94,8 +137,106 @@ const SligoMap = (props: any) => {
                     transition: 'opacity 1s ease'
                 }}
             />
+            <div
+                style={{ 
+                    position: 'absolute',
+                    top: isVisible ? '70vh' : '80vh',
+                    left: 0,
+                    right: 0,
+                    margin: 'auto',
+                    // width: '10%',
+                    // // height: '100%',
+                    textAlign: 'center',
+                    objectFit: 'cover', 
+                    zIndex: 1,
+                    
+                    // opacity: isVisible ? '1' : '0', 
+                    // transition: 'opacity 1s ease'
+                    transition: 'top 1s ease'
+                }}
+            >
+                <img
+                    ref={imageRef}
+                    alt="MapUpdated"
+                    src="/assets/media/sligo-map/Buttons - Halting Sites.png"
+                    style={{ 
+                        // position: 'absolute',
+                        // top: '50vh',
+                        // left: 0,
+                        // right: 0,
+                        // margin: 'auto',
+                        // width: '10%',
+                        height: '70px',
+                        padding: '5px',
+                        // objectFit: 'cover', 
+                        // zIndex: 1,
+                        
+                        // opacity: isVisible ? '1' : '0', 
+                        // transition: 'opacity 1s ease',
+                        cursor: 'pointer'
+                        
+                    }}
+                    onClick={() => {
+                        // console.log('Recent Sites');
+                        setSelectedType('halting');
+                    }}
+                />
 
-<img
+                <img
+                    ref={imageRef}
+                    alt="MapUpdated"
+                    src="/assets/media/sligo-map/Buttons - Recent Sites.png"
+                    style={{ 
+                        // position: 'absolute',
+                        // top: '10vh',
+                        // left: 0,
+                        // right: 0,
+                        // margin: 'auto',
+                        // width: '10%',
+                        // height: '100%',
+                        height: '70px',
+                        padding: '5px',
+                        // objectFit: 'cover', 
+                        // zIndex: 1,
+                        
+                        // opacity: isVisible ? '1' : '0', 
+                        // transition: 'opacity 1s ease'
+                        cursor: 'pointer'
+                    }}
+                    onClick={() => {
+                        // console.log('Recent Sites');
+                        setSelectedType('recent');
+                    }}
+                />
+                <img
+                    ref={imageRef}
+                    alt="MapUpdated"
+                    src="/assets/media/sligo-map/Buttons - Traditional Sites.png"
+                    style={{ 
+                        // position: 'absolute',
+                        // top: '10vh',
+                        // left: 0,
+                        // right: 0,
+                        // margin: 'auto',
+                        // width: '10%',
+                        // height: '100%',
+                        height: '70px',
+                        padding: '5px',
+                        // objectFit: 'cover', 
+                        // zIndex: 1,
+                        
+                        // opacity: isVisible ? '1' : '0', 
+                        // transition: 'opacity 1s ease'
+                        cursor: 'pointer'
+                    }}
+                    onClick={() => {
+                        // console.log('Recent Sites');
+                        setSelectedType('traditional');
+                    }}
+                /> 
+            </div>
+
+            <img
                 ref={imageRef}
                 id='title'
                 alt="MapUpdated"
@@ -130,7 +271,7 @@ const SligoMap = (props: any) => {
                     url={stadiaURL}
                 />
                 
-                <LayersControl position="topright">
+                {/* <LayersControl position="topright">
                     <LayersControl.Overlay name="Halting Sites">
                         <Marker position={[54.20638315779152, -8.57869767149748]}>
                             <Popup>
@@ -167,9 +308,10 @@ const SligoMap = (props: any) => {
                             <Rectangle bounds={[[54.49, -8.08], [55.5, -9.06]]} />
                         </FeatureGroup>
                     </LayersControl.Overlay>
-                </LayersControl>
-                {/* 
-                {props.items.items && props.items.items.length ?
+                </LayersControl> */}
+
+                
+                {/* {props.items.items && props.items.items.length ?
                     <div>
                         {props.items.items.map( (item, i) => (
                             item.geo && item.geo.latitude && item.geo.longitude ?
@@ -197,23 +339,34 @@ const SligoMap = (props: any) => {
                 : null} */}
 
 
-                <Marker 
-                    position={[54.250159, -8.745358]} 
-                    
-                    key={'XXXXX'}
-                    icon={new Icon({iconUrl: '/assets/media/sligo-map/Marker.png', iconSize: [25, 25], iconAnchor: [0, 0]})}
-                >
-                    <Popup>
-                        <Link to={`/`} target="_blank">
-                            <span><b>Title</b></span>
-                            <br/>
-                            <div>
-                                <span>Address</span><br/>
-                                <br/>
-                            </div>
-                        </Link>
-                    </Popup>
-                </Marker>
+                <div>
+                {siteData.map((site, i) => {
+                    // console.log(site.title);
+                    return (
+                        site.siteType == selectedType ?
+                        <Marker 
+                            position={[site.lat, site.long]} 
+                            
+                            key={i}
+                            icon={new Icon({iconUrl: '/assets/media/sligo-map/Marker.png', iconSize: [25, 25], iconAnchor: [0, 0]})}
+                        >
+                            <Popup>
+                                <Link to={`/`} target="_blank">
+                                    <span><b>{site.title}</b></span>
+                                    <br/>
+                                    <div>
+                                        <span>Address</span><br/>
+                                        <br/>
+                                    </div>
+                                </Link>
+                            </Popup>
+                        </Marker>
+                        : null
+                    )
+                })}
+                </div>
+
+
             </MapContainer>
 
             {/* <img 
