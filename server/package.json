@@ -43,7 +43,7 @@
     "@types/react-dom": "^18.2.19",
     "sass": "^1.71.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5.3.3"
+    "typescript": "^5.5.2"
   },
   "repository": {
     "type": "git",
