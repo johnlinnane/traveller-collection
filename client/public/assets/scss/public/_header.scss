@@ -21,6 +21,7 @@ header {
 
     .open_nav {
         position: absolute;
+        top: 4px;
         left:0px;
     }
 
@@ -30,7 +31,8 @@ header {
 
     .search {
         position: absolute;
-        right:0px;
+        top:5px;
+        right:20px;
     }
 
     .navItem {
@@ -52,10 +54,10 @@ header {
     }
 }
 
-.bars {
+.headerIcon {
     font-size: 17px;
     color: $dark-turq;
-    padding: 0.5vh 10px;
+    padding: 1vh 10px;
     cursor: pointer;
 }
 

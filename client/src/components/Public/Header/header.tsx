@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import FontAwesome from 'react-fontawesome';
 import { Link } from 'react-router-dom';
 import Nav from './Sidenav/sidenav';
 
@@ -9,11 +8,12 @@ const Header: React.FC = () => {
     return (
         <header>
             <div className="open_nav">
-                <FontAwesome 
-                    className="bars"
-                    name="bars" 
+                <span 
+                    className='headerIcon'
                     onClick={() => setShowNav(true)}
-                />
+                >
+                    <img src={'/assets/media/icons/svg/bars.svg'} />
+                </span>
             </div>
             <Nav
                 showNav={showNav}
@@ -23,11 +23,12 @@ const Header: React.FC = () => {
             />
             <div className="search">
                 <Link to="/search">
-                    <FontAwesome 
-                        name="search" 
-                        className="bars"
-                    />
-                </Link>
+                    <span 
+                        className='headerIcon'
+                    >
+                        <img src={'/assets/media/icons/svg/search.svg'} />
+                    </span> 
+                </Link>                     
             </div>
             <Link to="/" className="logo">
                 Traveller Collection

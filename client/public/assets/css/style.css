@@ -380,6 +380,7 @@ header .logo {
 }
 header .open_nav {
   position: absolute;
+  top: 4px;
   left: 0px;
 }
 header .sidenav_menu {
@@ -387,7 +388,8 @@ header .sidenav_menu {
 }
 header .search {
   position: absolute;
-  right: 0px;
+  top: 5px;
+  right: 20px;
 }
 header .navItem {
   font-weight: 300;
@@ -405,10 +407,10 @@ header .navItem span {
   margin-right: 10px;
 }
 
-.bars {
+.headerIcon {
   font-size: 17px;
   color: #2F5C6B;
-  padding: 0.5vh 10px;
+  padding: 1vh 10px;
   cursor: pointer;
 }
 
