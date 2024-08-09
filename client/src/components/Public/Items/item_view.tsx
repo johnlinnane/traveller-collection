@@ -8,6 +8,8 @@ import { Icon } from 'leaflet'
 import { EmailShareButton, FacebookShareButton, WhatsappShareButton } from "react-share";
 import { EmailIcon, FacebookIcon, WhatsappIcon } from "react-share";
 import { Document, Page, pdfjs } from 'react-pdf';
+import 'react-pdf/dist/Page/TextLayer.css';
+import 'react-pdf/dist/Page/AnnotationLayer.css';
 import { Link, useParams, useNavigate } from "react-router-dom";
 
 import { getItemById, clearItemWithContributor, getNextItem, getPrevItem, getParentPdf, getFilesFolder } from '../../../../src/slices/itemsSlice';
