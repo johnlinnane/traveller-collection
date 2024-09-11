@@ -7,7 +7,6 @@
     "start": "node server/server.js",
     "server": "../node_modules/.bin/nodemon server/server.js",
     "client": "npm run start --prefix ../client",
-    "dev": "../node_modules/.bin/concurrently \\\"npm run server\\\" \\\"npm run client\\\"",
     "build": "react-scripts build"
   },
   "engines": {
@@ -19,7 +18,6 @@
     "@mapbox/node-pre-gyp": "^1.0.11",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.18.2",
-    "concurrently": "^8.2.2",
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
