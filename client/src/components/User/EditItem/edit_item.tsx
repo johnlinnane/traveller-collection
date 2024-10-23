@@ -629,9 +629,15 @@ const EditItem = props => {
 
                         {createTextInput(formdata.contributor,'contributor', "Add your name here", "Contributor", null)}
 
+                        <tr className="half_width">
+                            <td colSpan={2} >
+                            <button type="submit" className="half_width_r">Save and Continue</button>
+                                <button type="button" className="half_width_l" onClick={() => { if (window.confirm('Are you sure you wish to cancel? All data entered will be lost!')) cancel() }}>Cancel</button>
+                            </td>
+                        </tr>  
+
                         <tr>
                             <td colSpan={2}>
-                                
                                 <button 
                                     type="button" 
                                     className="delete"
@@ -641,13 +647,6 @@ const EditItem = props => {
                                 </button>
                             </td>
                         </tr>
-
-                        <tr className="half_width">
-                            <td colSpan={2} >
-                                <button type="button" className="half_width_l" onClick={() => { if (window.confirm('Are you sure you wish to cancel? All data entered will be lost!')) cancel() }}>Cancel</button>
-                                <button type="submit" className="half_width_r">Save and Continue</button>
-                            </td>
-                        </tr>  
 
                     </tbody>
                     </table>
