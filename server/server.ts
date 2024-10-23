@@ -149,7 +149,7 @@ app.post('/api/add-cat', async (req: Request, res: Response) => {
 app.delete('/api/delete-cat', async (req: Request, res: Response) => {
     try {
         let { id } = req.query;
-        const data = await Cat.findByIdAndRemove(id);
+        const data = await Cat.findByIdAndDelete(id);
         if(!data) {
             throw new Error('Not found');
         }
@@ -179,7 +179,7 @@ app.post('/api/add-subcat', async (req: Request, res: Response) => {
 app.delete('/api/delete-subcat', async (req: Request, res: Response) => {
     try {
         let { id } = req.query;
-        const data = await SubCat.findByIdAndRemove(id);
+        const data = await SubCat.findByIdAndDelete(id);
         if(!data) {
             throw new Error('Not found');
         }
@@ -409,7 +409,7 @@ app.post('/api/item-update', async (req: Request, res: Response) => {
 app.delete('/api/delete-item', async (req: Request, res: Response) => {
     try {
         let { id } = req.query;
-        const data = await Item.findByIdAndRemove(id);
+        const data = await Item.findByIdAndDelete(id);
         if(!data) {
             throw new Error('Not found');
         }
