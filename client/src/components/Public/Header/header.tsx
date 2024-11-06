@@ -12,7 +12,7 @@ const Header: React.FC = () => {
                     className='headerIcon'
                     onClick={() => setShowNav(true)}
                 >
-                    <img src={'/assets/media/icons/svg/bars.svg'} />
+                    <img src={'/assets/media/icons/svg/bars.svg'} alt="menu"/>
                 </span>
             </div>
             <Nav
@@ -26,7 +26,7 @@ const Header: React.FC = () => {
                     <span 
                         className='headerIcon'
                     >
-                        <img src={'/assets/media/icons/svg/search.svg'} />
+                        <img src={'/assets/media/icons/svg/search.svg'} alt="search"/>
                     </span> 
                 </Link>                     
             </div>
