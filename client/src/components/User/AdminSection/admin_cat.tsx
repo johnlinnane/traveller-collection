@@ -20,7 +20,7 @@ interface AdminCatProps {
     getTabIndex: Function;
 };
 
-const AdminCat = (props: AdminCatProps): JSX.Element => {
+const AdminCat: React.FC<AdminCatProps> = props => {
 
     const dispatch = useDispatch<AppDispatch>();
 
@@ -131,7 +131,7 @@ const AdminCat = (props: AdminCatProps): JSX.Element => {
         }  
     }
 
-    const removeCat = (e, id) => {
+    const removeCat = (e, id: string) => {
         dispatch(deleteCat(id));
         setCatDeleted(true);
         setTimeout(() => {

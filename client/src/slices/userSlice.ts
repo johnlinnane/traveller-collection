@@ -1,73 +1,51 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'; // PayloadAction
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { User } from '../types';
 
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 
-// interface UserState {
-//     isAuth: boolean,
-//     id: string,
-//     email: string,
-//     name: string,
-//     lastname: string,
-    
-//     login: boolean,
-//     userItems: any,
-//     users: any
-//     register: boolean,
+interface UserState {
+  login?: any;
+  logoutSuccess?: any;
+  userItems?: any[];
+  users?: any[];
+  register?: boolean;
+}
 
-//     success: any
-// }
-
-// const initialState: UserState = {
-//     isAuth:true,
-//     id: '',
-//     email: '',
-//     name: '',
-//     lastname: '',
-    
-//     login: false,
-//     userItems: null,
-//     users: null,
-//     register: false,
-
-//     success: false
-// }
-
-interface UserState {}
-const initialState: UserState = {}
+const initialState: UserState = {};
 
 const userSlice = createSlice({
-    name: "user",
-    initialState,
-    reducers: {},
-    extraReducers: (builder) => {
-        builder 
-            .addCase(loginUser.fulfilled, (state, action) => { // PayloadAction<UserState>
-                state.login = action.payload;
-            })
-            .addCase(logOutUser.fulfilled, (state, action) => { // PayloadAction<UserState>
-                state.logoutSuccess = action.payload;
-            })
-            .addCase(authGetCredentials.fulfilled, (state, action) => {
-                state.login = action.payload;
-            })
-            .addCase(getUserItems.fulfilled, (state, action) => {
-                state.userItems = action.payload;
-            })
-            .addCase(getUsers.fulfilled, (state, action) => {
-                state.users = action.payload;
-            })
-            .addCase(userRegister.fulfilled, (state, action) => {
-                state.register = action.payload.success;
-                state.users = action.payload.users;
-            }) // was giving errors
-    }
-})
+  name: "user",
+  initialState,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(loginUser.fulfilled, (state, action: PayloadAction<any>) => {
+        state.login = action.payload;
+      })
+      .addCase(logOutUser.fulfilled, (state, action: PayloadAction<any>) => {
+        state.logoutSuccess = action.payload;
+      })
+      .addCase(authGetCredentials.fulfilled, (state, action: PayloadAction<any>) => {
+        state.login = action.payload;
+      })
+      .addCase(getUserItems.fulfilled, (state, action: PayloadAction<any[]>) => {
+        state.userItems = action.payload;
+      })
+      .addCase(getUsers.fulfilled, (state, action: PayloadAction<any[]>) => {
+        state.users = action.payload;
+      })
+      .addCase(userRegister.fulfilled, (state, action: PayloadAction<any>) => {
+        state.register = action.payload.success;
+        state.users = action.payload.users;
+      });
+  }
+});
 
 
 export const loginUser = createAsyncThunk(
     'user/loginUser', 
-    async (email, password) => {
+    async ({ email, password }: { email: string; password: string }) => {
         const request = axios.post(`${API_PREFIX}/login`, {email, password}, {withCredentials: true})
             .then(response => response.data);
         return request;
@@ -113,7 +91,7 @@ export const getUsers = createAsyncThunk(
 
 export const userRegister = createAsyncThunk(
     'user/userRegister', 
-    async (user, userList) => {
+    async ({user, userList}: {user: User, userList: any}) => {
         const request = axios.post(`${API_PREFIX}/register`, user);
         // return (dispatch: Dispatch<any>) => {
         return () => {

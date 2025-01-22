@@ -54,7 +54,7 @@ const PendingItemsView: React.FC = (props: any) => {
 
     const handleChoice = (itemId, choice) => {
         if (choice === 'accept') {
-            dispatch(acceptItem(itemId, props.user.login.id))
+            dispatch(acceptItem(itemId))
         }
         if (choice === 'reject') {
             dispatch(deletePendItem(itemId));

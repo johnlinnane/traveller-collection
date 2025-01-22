@@ -2,7 +2,7 @@ import SideNav from './react_simple_sidenav';
 import React from 'react';
 import SidenavItems from './sidenav_items';
 
-const Nav = (props: any): JSX.Element => {
+const Nav: React.FC<any> = props => {
     return (
         <SideNav
             showNav={props.showNav}

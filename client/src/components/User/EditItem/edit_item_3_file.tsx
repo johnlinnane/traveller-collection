@@ -133,7 +133,7 @@ const EditItemFile = props => {
     }
 
     const onSubmitHandler = async () => {
-        dispatch(updateItem({ _id: formdata._id}));
+        // dispatch(updateItem({ _id: formdata._id}));
         if (selectedFiles.length) {
             let filesForm = new FormData();
             selectedFiles.forEach( (file, i) => {

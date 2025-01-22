@@ -41,8 +41,8 @@ const introsSlice = createSlice({
 
 export const updateIntroText = createAsyncThunk(
     'intros/updateIntroText', 
-    async (data) => {
-        const request = axios.post(`${API_PREFIX}/update-intro-text`, data)
+    async (intro: Intro) => {
+        const request = axios.post(`${API_PREFIX}/update-intro-text`, intro)
             .then(response => response.data);
         return request;
     }

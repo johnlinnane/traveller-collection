@@ -9,7 +9,7 @@ import { EmailShareButton, FacebookShareButton, WhatsappShareButton } from "reac
 import { EmailIcon, FacebookIcon, WhatsappIcon } from "react-share";
 import { Document, Page, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/Page/TextLayer.css';
-import 'react-pdf/dist/Page/AnnotationLayer.css';
+// import 'react-pdf/dist/Page/AnnotationLayefr.css';
 import { Link, useParams, useNavigate } from "react-router-dom";
 
 import { getItemById, clearItemWithContributor, getNextItem, getPrevItem, getParentPdf, getFilesFolder } from '../../../../src/slices/itemsSlice';
@@ -292,7 +292,6 @@ const ItemView: React.FC<ItemViewProps> = props => {
                         onLoadSuccess={onDocumentLoadSuccess}
                     >   
                             <Page 
-                                size="A4"
                                 pageNumber={pageNumber}
                                 scale={pdfScale}
                             />
@@ -525,7 +524,7 @@ const ItemView: React.FC<ItemViewProps> = props => {
                         <FacebookShareButton
                             url={`${IP_ADDRESS_REMOTE}/items/${itemInfo._id}`}
                             className="shareIcon"
-                            quote={itemInfo.title}
+                            title={itemInfo.title}
                             >
                             <FacebookIcon size={32} round={true}/>
                         </FacebookShareButton>

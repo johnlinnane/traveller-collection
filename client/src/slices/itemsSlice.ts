@@ -1,10 +1,25 @@
 import axios from 'axios';
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-
+import { Item } from '../types';
 
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 
-interface ItemsState {};
+interface ItemsState {
+    list?: Item[];
+    item?: Item;
+    parentpdf?: string;
+    items?: Item[];
+    results?: Item[];
+    chaptDeleted?: boolean;
+    contributor?: string;
+    newitem?: Item;
+    updateItemSuccess?: boolean;
+    postDeleted?: boolean;
+    nextitem?: Item;
+    previtem?: Item;
+    files?: string[];
+    updateItem?: boolean;
+}
 
 const initialState: ItemsState = {};
 
@@ -14,83 +29,86 @@ const itemsSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
-            .addCase(getItems.fulfilled, (state, action: PayloadAction<ItemsState>) => {
+            .addCase(getItems.fulfilled, (state, action: PayloadAction<Item[]>) => {
                 state.list = action.payload;
             })
-            .addCase(getItemById.fulfilled, (state, action: PayloadAction<ItemsState>) => {
+            .addCase(getItemById.fulfilled, (state, action: PayloadAction<Item>) => {
                 state.item = action.payload;
             })
-            .addCase(getParentPdf.fulfilled, (state, action: PayloadAction<ItemsState>) => {
+            .addCase(getParentPdf.fulfilled, (state, action: PayloadAction<string>) => {
                 state.parentpdf = action.payload;
             })
-            .addCase(getAllItems.fulfilled, (state, action: PayloadAction<ItemsState>) => {
+            .addCase(getAllItems.fulfilled, (state, action: PayloadAction<Item[]>) => {
                 state.items = action.payload;
             })
-            .addCase(searchItems.fulfilled, (state, action: PayloadAction<ItemsState>) => {
+            .addCase(searchItems.fulfilled, (state, action: PayloadAction<Item[]>) => {
                 state.results = action.payload;
             })
-            .addCase(getAllPendItems.fulfilled, (state, action: PayloadAction<ItemsState>) => {
+            .addCase(getAllPendItems.fulfilled, (state, action: PayloadAction<Item[]>) => {
                 state.items = action.payload;
             })
-            .addCase(deleteChapter.fulfilled, (state, action: PayloadAction<ItemsState>) => {
+            .addCase(deleteChapter.fulfilled, (state, action: PayloadAction<boolean>) => {
                 state.chaptDeleted = action.payload;
             })
-            .addCase(clearItemWithContributor.fulfilled, (state, action: PayloadAction<ItemsState>) => {
+            .addCase(clearItemWithContributor.fulfilled, (state, action: PayloadAction<{ item: Item; contributor: string }>) => {
                 state.item = action.payload.item;
                 state.contributor = action.payload.contributor;
             })
-            .addCase(createItem.fulfilled, (state, action: PayloadAction<ItemsState>) => {
+            .addCase(createItem.fulfilled, (state, action: PayloadAction<Item>) => {
                 state.newitem = action.payload;
             })
-            .addCase(clearNewItem.fulfilled, (state, action: PayloadAction<any>) => {
+            .addCase(clearNewItem.fulfilled, (state, action: PayloadAction<null>) => {
                 state.newitem = action.payload;
             })
-            .addCase(updateItem.fulfilled, (state, action: PayloadAction<ItemsState>) => {
+            .addCase(updateItem.fulfilled, (state, action: PayloadAction<{ success: boolean; doc: Item }>) => {
                 state.updateItemSuccess = action.payload.success;
                 state.item = action.payload.doc;
             })
-            .addCase(updatePendItem.fulfilled, (state, action: PayloadAction<ItemsState>) => {
+            .addCase(updatePendItem.fulfilled, (state, action: PayloadAction<{ success: boolean; doc: Item }>) => {
                 state.updateItemSuccess = action.payload.success;
                 state.item = action.payload.doc;
             })
-            .addCase(deleteItem.fulfilled, (state, action: PayloadAction<ItemsState>) => {
+            .addCase(deleteItem.fulfilled, (state, action: PayloadAction<boolean>) => {
                 state.postDeleted = action.payload;
             })
-            .addCase(deletePendItem.fulfilled, (state, action: PayloadAction<ItemsState>) => {
+            .addCase(deletePendItem.fulfilled, (state, action: PayloadAction<boolean>) => {
                 state.postDeleted = action.payload;
             })
-            .addCase(clearItem.fulfilled, (state, action: PayloadAction<ItemsState>) => {
+            .addCase(clearItem.fulfilled, (state, action: PayloadAction<{ updateItem: boolean; item: Item; postDeleted: boolean }>) => {
                 state.updateItem = action.payload.updateItem;
                 state.item = action.payload.item;
                 state.postDeleted = action.payload.postDeleted;
             })
-            .addCase(getNextItem.fulfilled, (state, action: PayloadAction<ItemsState>) => {
+            .addCase(getNextItem.fulfilled, (state, action: PayloadAction<Item>) => {
                 state.nextitem = action.payload;
             })
-            .addCase(getPrevItem.fulfilled, (state, action: PayloadAction<ItemsState>) => {
+            .addCase(getPrevItem.fulfilled, (state, action: PayloadAction<Item>) => {
                 state.previtem = action.payload;
             })
-            .addCase(getItemsWithCoords.fulfilled, (state, action: PayloadAction<ItemsState>) => {
+            .addCase(getItemsWithCoords.fulfilled, (state, action: PayloadAction<Item[]>) => {
                 state.items = action.payload;
             })
-            .addCase(acceptItem.fulfilled, (state, action: PayloadAction<ItemsState>) => {
+            .addCase(acceptItem.fulfilled, (state, action: PayloadAction<null>) => {
+                // Uncomment and update if additional handling is needed
                 // state = action.payload;
             })
-            .addCase(getFilesFolder.fulfilled, (state, action: PayloadAction<ItemsState>) => {
+            .addCase(getFilesFolder.fulfilled, (state, action: PayloadAction<string[]>) => {
                 state.files = action.payload;
-            })
-    }
-})
+            });
+    },
+});
 
+
+interface GetItemsParams {
+    limit?: number;
+    start?: number;
+    order?: string;
+    list?: any[];
+}
 
 export const getItems = createAsyncThunk(
     'items/getItems', 
-    async (
-        limit: number = 10,
-        start = 0,
-        order = 'asc',
-        list = ''
-    ) => {
+    async ({ limit = 10, start = 0, order = 'asc', list = [] }: GetItemsParams) => {
         const request = axios.get(`${API_PREFIX}/items?limit=${limit}&skip=${start}&order=${order}`)
             .then(response => {
                 if(list){
@@ -133,8 +151,8 @@ export const getAllItems = createAsyncThunk(
 
 export const searchItems = createAsyncThunk(
     'items/searchItems', 
-    async (input, resultsNumber) => {
-        const request = axios.get(`${API_PREFIX}/search-items?input=${input}&resultsNumber=${resultsNumber}`)
+    async ({keyword, resultsNumber}: {keyword: string, resultsNumber: number}) => {
+        const request = axios.get(`${API_PREFIX}/search-items?input=${keyword}&resultsNumber=${resultsNumber}`)
             .then(response => response.data);
         return request;
     }
@@ -156,7 +174,7 @@ export const getAllPendItems = createAsyncThunk(
 
 export const deleteChapter = createAsyncThunk(
     'items/deleteChapter', 
-    async (parentId, title) => {
+    async ({parentId, title}: {parentId: string, title: string}) => {
         const request = axios.get(`${API_PREFIX}/get-item-by-id?id=${parentId}`)
         return (dispatch) => {
             request.then(({data}) => {
@@ -190,7 +208,7 @@ export const clearItemWithContributor = createAsyncThunk(
 
 export const createItem = createAsyncThunk(
     'items/createItem', 
-    async (item) => {
+    async (item: Item) => {
         const request = await axios.post(`${API_PREFIX}/create-item`, item) 
             .then(response => response.data);
         return request;
@@ -208,8 +226,8 @@ export const clearNewItem = createAsyncThunk(
 
 export const updateItem = createAsyncThunk(
     'items/updateItem', 
-    async (data) => {
-        const request = await axios.post(`${API_PREFIX}/item-update`, data) 
+    async (item: Item) => {
+        const request = await axios.post(`${API_PREFIX}/item-update`, item) 
             .then(response => response.data);
         return request;
     }
@@ -218,7 +236,7 @@ export const updateItem = createAsyncThunk(
 export const updatePendItem = createAsyncThunk(
     'items/updatePendItem', 
     async (data) => {
-        const request = await axios.get(`${API_PREFIX}/item-pend-update`, data) // not in server.ts
+        const request = await axios.post(`${API_PREFIX}/item-pend-update`, data) // not in server.ts
             .then(response => response.data);
         return request;
     }
@@ -235,7 +253,7 @@ export const deleteItem = createAsyncThunk(
 
 export const deletePendItem = createAsyncThunk(
     'items/deletePendItem', 
-    async (id) => {
+    async (id: string) => {
         const request = await axios.delete(`${API_PREFIX}/del-pend-item?id=${id}`) 
             .then(response => response.data);
         return request;

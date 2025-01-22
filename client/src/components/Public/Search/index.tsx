@@ -39,7 +39,7 @@ const Search = (props: any) => {
             setResults([]);
         } else {
             timeout = setTimeout(() => {
-                dispatch(searchItems(keyword, resultsNumber));
+                dispatch(searchItems({keyword, resultsNumber}));
             }, 1000);
         }
     }

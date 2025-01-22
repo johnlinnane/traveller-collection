@@ -8,7 +8,7 @@ type BreadcrumbProps = {
     title?: string;
 };
 
-const Breadcrumb = (props: BreadcrumbProps): JSX.Element => {
+const Breadcrumb: React.FC<BreadcrumbProps> = props => {
     return (
         <div className="nav_bar">
             <Link to={`/`}>

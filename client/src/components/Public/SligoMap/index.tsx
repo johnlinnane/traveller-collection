@@ -18,7 +18,7 @@ const SligoMap = (props: any) => {
 
 
     const wrapperStyles = {
-        position: 'relative',
+        // position: 'relative',
         width: '100vw',
         height: '100vh',
         margin: 0,

@@ -36,12 +36,10 @@ export type Item = {
     publisher?: string | null,
     further_info?: string | null,
     
-    external_link?: [
-        {
-            url?: string | null,
-            text?: string
-        }
-    ],
+    external_link?: {
+        url?: string | null;
+        text?: string | null;
+    }[];
 
     is_link?: boolean,
 
@@ -113,7 +111,7 @@ export type Info = {
         heading : string,
         paragraph : string
     }],
-    iconsCaption: string
+    iconsCaption?: string
 }
 
 export type NavInfo = {

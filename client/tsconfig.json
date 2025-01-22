@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "es2016",
-    "jsx": "react-jsx",
+    "jsx": "react",
     "module": "esnext",
     "rootDir": "./src",
     "moduleResolution": "node",
@@ -23,11 +23,10 @@
     "noEmit": true
   },
   "include": [
-    "src/actions"
-  ],
+    "src/**/*"
+  ], 
   "exclude": [
     "*",
-    "src/components",
-    "src/slices"
+    "node_modules"
   ]
 }

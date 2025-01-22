@@ -120,6 +120,11 @@ const EditItemSel = props => {
         }
     }, [props.subcats, itemCatsSelected]);
 
+    useEffect(() => {
+        if (props.items?.itemDeleted) {
+            redirectUser('/user/all-items');
+        }
+    }, [props.items?.itemDeleted]);
 
     const addDefaultImg = ev => {
         const newImg = '/assets/media/default/default.jpg';
@@ -304,10 +309,7 @@ const EditItemSel = props => {
             <div className="form_input item_form_input edit_page">
                 { props.items?.itemDeleted ?
                     <div className="red_tag">
-                        <>
-                            <div>Item Deleted</div>
-                            {redirectUser('/user/all-items')}
-                        </>
+                        <div>Item Deleted</div>
                     </div>
                 : null }
                 {renderForm()}

@@ -223,20 +223,21 @@ const EditItem = props => {
 
     const handleCreateItem = () => {
         setCreatingItem(true);
-        let { _id, ...newItemData } = {
+        let newItemData = {
             ...formdata,
             ownerId: 'guest',
             isPending: true
         };
         if (props.user?.login?.isAuth && typeof props.user.login.id === 'string') {
             newItemData = { 
-                ...newItemData,
+                ...formdata,
                 ownerId: props.user.login.id,
                 isPending: false
             };
         }
         try {
-            dispatch(createItem(newItemData));
+            const itemDataWithId = { ...newItemData, _id: formdata._id };
+            dispatch(createItem(itemDataWithId));
         } catch {
             console.log('Error creating item.')
         }
@@ -340,8 +341,10 @@ const EditItem = props => {
 
     const deleteThisItem = () => {
         dispatch(deleteItem(formdata._id)); 
+        let parentId = formdata?.pdf_item_parent_id ?? null;
+        let title = formdata?.title ?? null;
         if (formdata.is_pdf_chapter === true) {
-            dispatch(deleteChapter(formdata.pdf_item_parent_id, formdata.title))
+            dispatch(deleteChapter({parentId, title}))
         }
         deleteAllMedia();
         navigate('/user/all-items');

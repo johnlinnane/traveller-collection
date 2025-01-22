@@ -185,7 +185,7 @@ const AdminSubCat = (props: AdminSubcatProps) => {
         setImgSrc('/assets/media/default/default.jpg');
     }
 
-    const removeSubCat = id => {
+    const removeSubCat = (id: string) => {
         dispatch(deleteSubcat(id))
         navigate(`/admin/0`);
     }

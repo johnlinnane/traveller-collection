@@ -1,31 +1,16 @@
-// import { Info } from '../types';
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { Info } from '../types';
 
 const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 
-// interface InfosState {
-//     text: Info,
-//     updateInfoTextSuccess: boolean, 
-//     infoText: Info
-// }
+interface InfosState {
+    updateInfoTextSuccess?: boolean;
+    infoText?: string;
+    text?: string;
+}
 
-// const initialState: InfosState = {
-//     text: {
-//         item_id: '',
-//         heading: '',
-//         paragraph: ''
-//     },
-//     updateTextSuccess: false, 
-//     infoText: {
-//         title: '',
-//         body: ''
-//     }
-// }
-
-interface InfosState {}
-
-const initialState: InfosState = {}
+const initialState: InfosState = {};
 
 const infosSlice = createSlice({
     name: "infos",
@@ -33,38 +18,30 @@ const infosSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
-            .addCase(updateInfoText.fulfilled, (state, action: PayloadAction<InfosState>) => {
+            .addCase(updateInfoText.fulfilled, (state, action: PayloadAction<{ success: boolean; doc: string }>) => {
                 state.updateInfoTextSuccess = action.payload.success;
                 state.infoText = action.payload.doc;
             })
-            .addCase(getInfoText.fulfilled, (state, action: PayloadAction<InfosState>) => {
+            .addCase(getInfoText.fulfilled, (state, action: PayloadAction<string>) => {
                 state.text = action.payload;
-            })
-        }       
-})
-
-
-
-
-
+            });
+    },
+});
 
 export const updateInfoText = createAsyncThunk(
     'infos/updateInfoText',
-    async (data) => {
-        const request = axios.post(`${API_PREFIX}/update-info-text`, data)
-            .then(response => response.data);
-        return request;
+    async (info: Info) => {
+        const response = await axios.post(`${API_PREFIX}/update-info-text`, info);
+        return response.data; // The API is expected to return { success: boolean, doc: string }
     }
 );
 
 export const getInfoText = createAsyncThunk(
     'infos/getInfoText',
     async () => {
-        const request = axios.get(`${API_PREFIX}/get-info-text`)
-            .then(response => response.data);
-        return request;
+        const response = await axios.get(`${API_PREFIX}/get-info-text`);
+        return response.data; // The API is expected to return a string
     }
 );
-
 
 export default infosSlice.reducer;

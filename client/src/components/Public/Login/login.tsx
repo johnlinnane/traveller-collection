@@ -38,7 +38,7 @@ const Login: React.FC = (props: any) => {
 
     const submitForm = (e) => {
         e.preventDefault();
-        dispatch(loginUser(email, password));
+        dispatch(loginUser({email, password}));
     }
 
     return (

@@ -8,7 +8,7 @@ import React, { useRef, useState } from 'react';
 const SideNav = (props) => {
   const { style, navStyle, children, showNav, openFromRight, onHideNav } = props;
 
-  const navEle = useRef<HTMLDivElement>();
+  const navEle = useRef<HTMLDivElement>(null);
   let startX;
   let currentX;
   let touchingSideNav;
