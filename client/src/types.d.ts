@@ -24,8 +24,8 @@ export type Item = {
     ]
     contributor?: string | null,
     ownerId?
-    category_ref?: string | null,
-    subcategory_ref?: string | null,
+    category_ref?: string[] | null,
+    subcategory_ref?: string[] | null,
     
     item_format?: string | null,
     materials?: string | null,
@@ -106,11 +106,11 @@ export type Intro = {
 }
 
 export type Info = {
-    sections : [{
+    sections : {
         item_id : string,
         heading : string,
         paragraph : string
-    }],
+    }[],
     iconsCaption?: string
 }
 

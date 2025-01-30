@@ -36,7 +36,7 @@ const Register = props => {
     }
 
     useEffect(() => {
-        if (props.user.register === false) {
+        if (props.user.success === false) {
             setError('Error, try again');
         } else {
             setName(''); 
@@ -52,11 +52,14 @@ const Register = props => {
         setError('');
 
         dispatch(userRegister({
-            email: email,
-            password: password,
-            name: name,
-            lastname: lastname,
-        }, props.user.users))
+            user: {
+                email: email,
+                password: password,
+                name: name,
+                lastname: lastname
+            },
+            userList: props.user.users
+        }))
     }
 
     const showUsers = user => (

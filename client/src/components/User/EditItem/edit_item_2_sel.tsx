@@ -4,7 +4,7 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 
 import { getAllCats, getAllSubCats } from '../../../../src/slices/catsSlice';
-import { getItemById, updateItem, clearItem, getFilesFolder } from '../../../../src/slices/itemsSlice';
+import { getItemById, updateItem, clearItemFromState, getFilesFolder } from '../../../../src/slices/itemsSlice';
 import { SubCategory } from '../../../types';
 import config from "../../../config";
 import { AppDispatch } from '../../../../src/index';
@@ -45,7 +45,7 @@ const EditItemSel = props => {
             dispatch(getItemById(idParam));
         }
         return () => {
-            dispatch(clearItem())
+            dispatch(clearItemFromState())
             document.title = config.defaultTitle;
         } // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [idParam]);

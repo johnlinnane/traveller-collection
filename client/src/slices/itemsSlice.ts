@@ -23,15 +23,15 @@ interface ItemsState {
 
 const initialState: ItemsState = {};
 
+
+
+
 const itemsSlice = createSlice({
     name: "items",
     initialState,
     reducers: {},
     extraReducers: (builder) => {
         builder
-            .addCase(getItems.fulfilled, (state, action: PayloadAction<Item[]>) => {
-                state.list = action.payload;
-            })
             .addCase(getItemById.fulfilled, (state, action: PayloadAction<Item>) => {
                 state.item = action.payload;
             })
@@ -50,9 +50,11 @@ const itemsSlice = createSlice({
             .addCase(deleteChapter.fulfilled, (state, action: PayloadAction<boolean>) => {
                 state.chaptDeleted = action.payload;
             })
-            .addCase(clearItemWithContributor.fulfilled, (state, action: PayloadAction<{ item: Item; contributor: string }>) => {
-                state.item = action.payload.item;
-                state.contributor = action.payload.contributor;
+            .addCase(clearItemFromState.fulfilled, (state, action: PayloadAction<any>) => {
+                state.items = action.payload.items;
+                state.nextitem = action.payload.nextitem;
+                state.previtem = action.payload.previtem;
+
             })
             .addCase(createItem.fulfilled, (state, action: PayloadAction<Item>) => {
                 state.newitem = action.payload;
@@ -64,20 +66,15 @@ const itemsSlice = createSlice({
                 state.updateItemSuccess = action.payload.success;
                 state.item = action.payload.doc;
             })
-            .addCase(updatePendItem.fulfilled, (state, action: PayloadAction<{ success: boolean; doc: Item }>) => {
-                state.updateItemSuccess = action.payload.success;
-                state.item = action.payload.doc;
-            })
+            // .addCase(updatePendItem.fulfilled, (state, action: PayloadAction<{ success: boolean; doc: Item }>) => {
+            //     state.updateItemSuccess = action.payload.success;
+            //     state.item = action.payload.doc;
+            // })
             .addCase(deleteItem.fulfilled, (state, action: PayloadAction<boolean>) => {
                 state.postDeleted = action.payload;
             })
             .addCase(deletePendItem.fulfilled, (state, action: PayloadAction<boolean>) => {
                 state.postDeleted = action.payload;
-            })
-            .addCase(clearItem.fulfilled, (state, action: PayloadAction<{ updateItem: boolean; item: Item; postDeleted: boolean }>) => {
-                state.updateItem = action.payload.updateItem;
-                state.item = action.payload.item;
-                state.postDeleted = action.payload.postDeleted;
             })
             .addCase(getNextItem.fulfilled, (state, action: PayloadAction<Item>) => {
                 state.nextitem = action.payload;
@@ -105,22 +102,6 @@ interface GetItemsParams {
     order?: string;
     list?: any[];
 }
-
-export const getItems = createAsyncThunk(
-    'items/getItems', 
-    async ({ limit = 10, start = 0, order = 'asc', list = [] }: GetItemsParams) => {
-        const request = axios.get(`${API_PREFIX}/items?limit=${limit}&skip=${start}&order=${order}`)
-            .then(response => {
-                if(list){
-                    return [...list, ...response.data]
-                } else {
-                    return response.data
-                }
-            })
-        return request;
-    }
-);
-
 
 export const getItemById = createAsyncThunk(
     'items/getItemById', 
@@ -172,33 +153,33 @@ export const getAllPendItems = createAsyncThunk(
     }
 );
 
-export const deleteChapter = createAsyncThunk(
-    'items/deleteChapter', 
-    async ({parentId, title}: {parentId: string, title: string}) => {
-        const request = axios.get(`${API_PREFIX}/get-item-by-id?id=${parentId}`)
-        return (dispatch) => {
-            request.then(({data}) => {
-                data.pdf_page_index.forEach( (chapt, i: number) => {
-                    if (chapt.heading === title && chapt.has_child === true) {
-                        data.pdf_page_index[i].has_child = false;
-                        data.pdf_page_index[i].child_id = null
-                    }
-                })
-                const request = axios.post(`${API_PREFIX}/item-update`, data)
-                    .then(response => response.data);
-                return request;
-            })
+export const deleteChapter = createAsyncThunk<boolean, { parentId: string; title: string }>(
+    'items/deleteChapter',
+    async ({ parentId, title }) => {
+        try {
+            const { data } = await axios.get(`${API_PREFIX}/get-item-by-id?id=${parentId}`);
+
+            data.pdf_page_index.forEach((chapt: any, i: number) => {
+                if (chapt.heading === title && chapt.has_child === true) {
+                    data.pdf_page_index[i].has_child = false;
+                    data.pdf_page_index[i].child_id = null;
+                }
+            });
+            await axios.post(`${API_PREFIX}/item-update`, data);
+            return true;
+        } catch (error) {
+            console.error('Error deleting chapter:', error);
+            return false;
         }
     }
 );
 
-export const clearItemWithContributor = createAsyncThunk(
-    'items/clearItemWithContributor', 
+
+export const clearItemFromState = createAsyncThunk(
+    'items/clearItemFromState', 
     async () => {
         return {
             items: null,
-            cats: null,
-            subcats: null,
             nextitem: null,
             previtem: null,
             parentpdf: null
@@ -226,21 +207,21 @@ export const clearNewItem = createAsyncThunk(
 
 export const updateItem = createAsyncThunk(
     'items/updateItem', 
-    async (item: Item) => {
+    async (item: Partial<Item>) => {
         const request = await axios.post(`${API_PREFIX}/item-update`, item) 
             .then(response => response.data);
         return request;
     }
 );
 
-export const updatePendItem = createAsyncThunk(
-    'items/updatePendItem', 
-    async (data) => {
-        const request = await axios.post(`${API_PREFIX}/item-pend-update`, data) // not in server.ts
-            .then(response => response.data);
-        return request;
-    }
-);
+// export const updatePendItem = createAsyncThunk(
+//     'items/updatePendItem', 
+//     async (data) => {
+//         const request = await axios.post(`${API_PREFIX}/item-pend-update`, data) // not in server.ts
+//             .then(response => response.data);
+//         return request;
+//     }
+// );
 
 export const deleteItem = createAsyncThunk(
     'items/deleteItem', 
@@ -259,18 +240,6 @@ export const deletePendItem = createAsyncThunk(
         return request;
     }
 );
-
-export const clearItem = createAsyncThunk(
-    'items/clearItem', 
-    async () => {
-        return {
-            item: null,
-            updateItem:false,
-            itemDeleted:false
-        }
-    }
-);
-
 
 export const getNextItem = createAsyncThunk(
     'items/getNextItem', 

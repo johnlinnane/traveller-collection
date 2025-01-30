@@ -9,37 +9,40 @@ interface UserState {
   logoutSuccess?: any;
   userItems?: any[];
   users?: any[];
-  register?: boolean;
+  success?: boolean;
 }
 
 const initialState: UserState = {};
 
 const userSlice = createSlice({
-  name: "user",
-  initialState,
-  reducers: {},
-  extraReducers: (builder) => {
-    builder
-      .addCase(loginUser.fulfilled, (state, action: PayloadAction<any>) => {
-        state.login = action.payload;
-      })
-      .addCase(logOutUser.fulfilled, (state, action: PayloadAction<any>) => {
-        state.logoutSuccess = action.payload;
-      })
-      .addCase(authGetCredentials.fulfilled, (state, action: PayloadAction<any>) => {
-        state.login = action.payload;
-      })
-      .addCase(getUserItems.fulfilled, (state, action: PayloadAction<any[]>) => {
-        state.userItems = action.payload;
-      })
-      .addCase(getUsers.fulfilled, (state, action: PayloadAction<any[]>) => {
-        state.users = action.payload;
-      })
-      .addCase(userRegister.fulfilled, (state, action: PayloadAction<any>) => {
-        state.register = action.payload.success;
-        state.users = action.payload.users;
-      });
-  }
+    name: "user",
+    initialState,
+    reducers: {},
+    extraReducers: (builder) => {
+        builder
+        .addCase(loginUser.fulfilled, (state, action: PayloadAction<any>) => {
+            state.login = action.payload;
+        })
+        .addCase(logOutUser.fulfilled, (state, action: PayloadAction<any>) => {
+            state.logoutSuccess = action.payload;
+        })
+        .addCase(authGetCredentials.fulfilled, (state, action: PayloadAction<any>) => {
+            state.login = action.payload;
+        })
+        .addCase(getUserItems.fulfilled, (state, action: PayloadAction<any[]>) => {
+            state.userItems = action.payload;
+        })
+        .addCase(getUsers.fulfilled, (state, action: PayloadAction<any[]>) => {
+            state.users = action.payload;
+        })
+        .addCase(userRegister.fulfilled, (state, action: PayloadAction<{ success: boolean, users: User[] }>) => {
+            state.success = action.payload.success;
+            state.users = action.payload.users;
+        })
+        .addCase(userRegister.rejected, (state) => {
+                state.success = false;
+            });
+    }
 });
 
 
@@ -89,21 +92,26 @@ export const getUsers = createAsyncThunk(
     }
 );
 
+interface RegisterResponse {
+    success: boolean;
+    user: User;
+}
+
 export const userRegister = createAsyncThunk(
     'user/userRegister', 
-    async ({user, userList}: {user: User, userList: any}) => {
-        const request = axios.post(`${API_PREFIX}/register`, user);
-        // return (dispatch: Dispatch<any>) => {
-        return () => {
-            request.then(({data}) => {
-
-                let users = data.success ? [...userList, data.user] : userList;
-                let response = {
-                    success:data.success,
-                    users
-                }
-                return response;
-            })
+    async ({ user, userList }: { user: User, userList: User[] }) => {
+        try {
+            const { data } = await axios.post<RegisterResponse>(`${API_PREFIX}/register`, user);
+            const users = data.success ? [...userList, data.user] : userList;
+            return {
+                success: data.success,
+                users
+            };
+        } catch (error) {
+            return {
+                success: false,
+                users: userList
+            };
         }
     }
 );

@@ -7,7 +7,7 @@ import "leaflet/dist/leaflet.css";
 import markerIconPng from "leaflet/dist/images/marker-icon.png";
 import { Icon } from 'leaflet'
 
-import { getItemById, updateItem, clearItem, deleteItem, createItem, getParentPdf, deleteChapter, getFilesFolder } from '../../../../src/slices/itemsSlice';
+import { getItemById, updateItem, clearItemFromState, deleteItem, createItem, getParentPdf, deleteChapter, getFilesFolder } from '../../../../src/slices/itemsSlice';
 import config from "../../../config";
 import { Item } from '../../../types';
 import { AppDispatch } from '../../../../src/index';
@@ -114,7 +114,7 @@ const EditItem = props => {
             dispatch(getFilesFolder({folder: `/items/${formdata._id}/original`}));
         }
         return () => {
-            dispatch(clearItem());
+            dispatch(clearItemFromState());
             document.title = config.defaultTitle;
         } // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [formdata._id]);

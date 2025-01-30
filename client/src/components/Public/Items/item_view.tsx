@@ -12,7 +12,7 @@ import 'react-pdf/dist/Page/TextLayer.css';
 // import 'react-pdf/dist/Page/AnnotationLayefr.css';
 import { Link, useParams, useNavigate } from "react-router-dom";
 
-import { getItemById, clearItemWithContributor, getNextItem, getPrevItem, getParentPdf, getFilesFolder } from '../../../../src/slices/itemsSlice';
+import { getItemById, clearItemFromState, getNextItem, getPrevItem, getParentPdf, getFilesFolder } from '../../../../src/slices/itemsSlice';
 import { getAllCats, getAllSubCats } from '../../../../src/slices/catsSlice';
 import Breadcrumb from '../../widgetsUI/breadcrumb';
 import config from "../../../config";
@@ -81,7 +81,7 @@ const ItemView: React.FC<ItemViewProps> = props => {
             dispatch(getFilesFolder({folder: `/items/${params.id}/original`}));
         }
         return () => {
-            dispatch(clearItemWithContributor());
+            dispatch(clearItemFromState());
             document.title = config.defaultTitle;
         } // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [params?.id]);
