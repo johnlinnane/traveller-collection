@@ -223,21 +223,17 @@ const EditItem = props => {
 
     const handleCreateItem = () => {
         setCreatingItem(true);
-        let newItemData = {
-            ...formdata,
-            ownerId: 'guest',
-            isPending: true
-        };
-        if (props.user?.login?.isAuth && typeof props.user.login.id === 'string') {
-            newItemData = { 
-                ...formdata,
-                ownerId: props.user.login.id,
-                isPending: false
-            };
-        }
+
+        let userIsLoggedIn = props.user?.login?.isAuth && typeof props.user.login.id === 'string' ? true : false;
+
+        setFormdata(prevFormData => ({
+            ...prevFormData,
+            ownerId: userIsLoggedIn ? props.user.login.id : 'guest',
+            isPending: userIsLoggedIn ? false : true
+        }));
+        
         try {
-            const itemDataWithId = { ...newItemData, _id: formdata._id };
-            dispatch(createItem(itemDataWithId));
+            dispatch(createItem(formdata));
         } catch {
             console.log('Error creating item.')
         }

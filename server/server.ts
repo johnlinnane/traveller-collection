@@ -385,14 +385,13 @@ app.post('/api/create-item', async (req: Request, res: Response) => {
             itemId:request._id
         })
     } catch (err) {
-        res.status(400).send(doc);
+        res.status(400).send(err);
     }
 })
 
 
 app.post('/api/item-update', async (req: Request, res: Response) => {
     try {
-
         const data = await Item.findByIdAndUpdate(req.body._id, req.body, {new:true});
         if(!data) {
             throw new Error('Not found');
@@ -584,17 +583,19 @@ app.post('/api/register', async (req: Request, res: Response) => {
     try {
         const user = new User(req.body);
         const data = await user.save();
-        if(!data) {
+        if (!data) {
             throw new Error('Not found');
         }
+        const users = await User.find();
         res.status(200).json({
-            success:true,
-            user:data
-        })
+            success: true,
+            user: data,
+            users: users
+        });
     } catch (err) {
-        res.json({success:false})
+        res.status(500).json({ success: false, error: err.message });
     }
-})
+});
 
 
 // **************** FS  **********************

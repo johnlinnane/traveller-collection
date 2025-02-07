@@ -23,7 +23,7 @@ export type Item = {
         }
     ]
     contributor?: string | null,
-    ownerId?
+    ownerId?: string | null,
     category_ref?: string[] | null,
     subcategory_ref?: string[] | null,
     
