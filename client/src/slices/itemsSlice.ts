@@ -95,14 +95,6 @@ const itemsSlice = createSlice({
     },
 });
 
-
-interface GetItemsParams {
-    limit?: number;
-    start?: number;
-    order?: string;
-    list?: any[];
-}
-
 export const getItemById = createAsyncThunk(
     'items/getItemById', 
     async (id: string) => {

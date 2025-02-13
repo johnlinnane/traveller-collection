@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';import { connect } from 'react-redux';
 
-import { MapContainer, TileLayer, Marker, Popup, LayersControl, LayerGroup, Circle, FeatureGroup, Rectangle   } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'; // LayersControl, LayerGroup, Circle, FeatureGroup, Rectangle
 import { Link } from 'react-router-dom';
 import "leaflet/dist/leaflet.css";
 // import markerIconPng from "leaflet/dist/images/marker-icon.png";
@@ -343,7 +343,7 @@ const SligoMap = (props: any) => {
                 {siteData.map((site, i) => {
                     // console.log(site.title);
                     return (
-                        site.siteType == selectedType ?
+                        site.siteType === selectedType ?
                         <Marker 
                             position={[site.lat, site.long]} 
                             

@@ -5,7 +5,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { Progress} from 'reactstrap';
 
-import { getItemById, updateItem, getFilesFolder } from '../../../../src/slices/itemsSlice';
+import { getItemById, getFilesFolder } from '../../../../src/slices/itemsSlice';
 import { checkMimeType, checkFileSize, maxSelectFile } from '../../../utils';
 import config from "../../../config";
 import { AppDispatch } from '../../../../src/index';
