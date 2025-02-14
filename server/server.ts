@@ -31,7 +31,7 @@ import { Intro } from './models/intro';
 import { Info } from './models/info';
 
 
-import { authMiddleware } from './middleware/auth_middleware';
+import { checkCookieMiddleware } from './middleware/check_cookie_middleware';
 
 
 // middleware
@@ -532,7 +532,7 @@ app.post('/api/login', async (req: Request, res: Response) => {
     }
 });
 
-app.get('/api/logout', authMiddleware, async (req: Request, res: Response) => {
+app.get('/api/logout', checkCookieMiddleware, async (req: Request, res: Response) => {
     try {
         req.user.deleteToken(req.token);
         res.send({logoutSuccess: true});
@@ -541,14 +541,15 @@ app.get('/api/logout', authMiddleware, async (req: Request, res: Response) => {
     }
 }) 
 
-app.get('/api/auth-get-user-creds', authMiddleware, async (req: Request, res: Response) => {
+app.get('/api/get-user-details', checkCookieMiddleware, async (req: Request, res: Response) => {
+    console.log('req: ', req);
     try {
         res.json({
             isAuth:true,
-            id:req.user._id,
-            email:req.user.email,
-            name:req.user.name,
-            lastname:req.user.lastname
+            id:req.userData._id,
+            email:req.userData.email,
+            name:req.userData.name,
+            lastname:req.userData.lastname
         })
     } catch (err) {
         res.status(400).send(err);

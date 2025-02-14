@@ -223,22 +223,25 @@ const EditItem = props => {
 
     const handleCreateItem = () => {
         setCreatingItem(true);
+    
+        const userIsLoggedIn = props.user?.login?.isAuth && typeof props.user.login.id === 'string';
 
-        let userIsLoggedIn = props.user?.login?.isAuth && typeof props.user.login.id === 'string' ? true : false;
-
-        setFormdata(prevFormData => ({
-            ...prevFormData,
+        if (props.user) { console.log('props.user: ', props.user)};
+    
+        const updatedFormData = {
+            ...formdata,
             ownerId: userIsLoggedIn ? props.user.login.id : 'guest',
-            isPending: userIsLoggedIn ? false : true
-        }));
-        
+            isPending: userIsLoggedIn ? false : true,
+        };
+    
+        setFormdata(updatedFormData);
+    
         try {
-            dispatch(createItem(formdata));
-        } catch {
-            console.log('Error creating item.')
+            dispatch(createItem(updatedFormData));
+        } catch (error) {
+            console.error('Error creating item:', error);
         }
     };
-
 
     const goBackToPreviousPage = () => {
         navigate(-1);

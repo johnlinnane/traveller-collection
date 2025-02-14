@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect, useDispatch } from 'react-redux';
-import { authGetCredentials } from '../../../src/slices/userSlice';
+import { getUserDetails } from '../../../src/slices/userSlice';
 import { useNavigate } from "react-router-dom";
 import { AppDispatch } from '../../../src/index';
 
@@ -25,7 +25,7 @@ const AuthContainer: React.FC<AuthenticationCheckProps> = (props: any) =>  {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        dispatch(authGetCredentials()); 
+        dispatch(getUserDetails()); 
         setLoading(true);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

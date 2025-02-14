@@ -26,7 +26,7 @@ const userSlice = createSlice({
         .addCase(logOutUser.fulfilled, (state, action: PayloadAction<any>) => {
             state.logoutSuccess = action.payload;
         })
-        .addCase(authGetCredentials.fulfilled, (state, action: PayloadAction<any>) => {
+        .addCase(getUserDetails.fulfilled, (state, action: PayloadAction<any>) => {
             state.login = action.payload;
         })
         .addCase(getUserItems.fulfilled, (state, action: PayloadAction<any[]>) => {
@@ -64,10 +64,10 @@ export const logOutUser = createAsyncThunk(
     }
 );
 
-export const authGetCredentials = createAsyncThunk(
-    'user/authGetCredentials', 
+export const getUserDetails = createAsyncThunk(
+    'user/getUserDetails', 
     async () => {
-        const request = await axios.get(`${API_PREFIX}/auth-get-user-creds`, {withCredentials: true}) 
+        const request = await axios.get(`${API_PREFIX}/get-user-details`, {withCredentials: true}) 
             .then(response => response.data);
         return request;
     }

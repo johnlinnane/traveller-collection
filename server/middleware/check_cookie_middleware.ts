@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 const { User: UserModel } = require('../models/user');
 
-let authMiddleware = async (req: any, res: Response, next: NextFunction) => {
+let checkCookieMiddleware = async (req: any, res: Response, next: NextFunction) => {
     let token = req.cookies.tc_auth_cookie;
     if (typeof token !== 'undefined') {
         try {
@@ -11,8 +11,12 @@ let authMiddleware = async (req: any, res: Response, next: NextFunction) => {
                     error:true
                 });
             }
-            req.token = token;
-            req.user = user;
+            req.userData = {
+                id: user._id,
+                email: user.email,
+                name: user.name,
+                lastname: user.lastname
+            }
         } catch (err) {
             res.status(400).send(err);
         }
@@ -24,4 +28,4 @@ let authMiddleware = async (req: any, res: Response, next: NextFunction) => {
     return next();
 }
 
-module.exports = { authMiddleware }
+module.exports = { checkCookieMiddleware }
