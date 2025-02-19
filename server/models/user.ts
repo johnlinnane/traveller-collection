@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+
 const SALT_I = 10;
 
 require('dotenv').config({path: '../../.env'})
@@ -66,6 +67,9 @@ userSchema.methods.comparePassword = async function (candidatePassword: string) 
 
 userSchema.methods.generateToken = async function() {
     let user = this;
+    const uniqueId = Date.now().toString();
+    // const input = user._id + uniqueId + process.env.PW;
+    // let token = jwt.sign(input.toHexString(), process.env.PW);
     let token = jwt.sign(user._id.toHexString(), process.env.PW);
     user.token = token;
     

@@ -10,6 +10,7 @@ interface UserState {
   userItems?: any[];
   users?: any[];
   success?: boolean;
+  details?: any;
 }
 
 const initialState: UserState = {};
@@ -25,9 +26,13 @@ const userSlice = createSlice({
         })
         .addCase(logOutUser.fulfilled, (state, action: PayloadAction<any>) => {
             state.logoutSuccess = action.payload;
+            state.login.isAuth = false;
+        })
+        .addCase(getUserAuth.fulfilled, (state, action: PayloadAction<any>) => {
+            state.login = action.payload;
         })
         .addCase(getUserDetails.fulfilled, (state, action: PayloadAction<any>) => {
-            state.login = action.payload;
+            state.details = action.payload;
         })
         .addCase(getUserItems.fulfilled, (state, action: PayloadAction<any[]>) => {
             state.userItems = action.payload;
@@ -64,10 +69,19 @@ export const logOutUser = createAsyncThunk(
     }
 );
 
+export const getUserAuth = createAsyncThunk(
+    'user/getUserAuth', 
+    async () => {
+        const request = await axios.get(`${API_PREFIX}/get-user-auth`, {withCredentials: true}) 
+            .then(response => response.data);
+        return request;
+    }
+);
+
 export const getUserDetails = createAsyncThunk(
     'user/getUserDetails', 
-    async () => {
-        const request = await axios.get(`${API_PREFIX}/get-user-details`, {withCredentials: true}) 
+    async (id: string) => {
+        const request = await axios.post(`${API_PREFIX}/get-user-details`, {id: id}, {withCredentials: true}) 
             .then(response => response.data);
         return request;
     }

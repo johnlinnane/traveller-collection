@@ -94,7 +94,6 @@ const SligoMap = (props: any) => {
         }
     ]
 
-    console.log('selectedType: ', selectedType)
     return (
         <div
             id='wrapper'
@@ -177,7 +176,6 @@ const SligoMap = (props: any) => {
                         
                     }}
                     onClick={() => {
-                        // console.log('Recent Sites');
                         setSelectedType('halting');
                     }}
                 />
@@ -204,7 +202,6 @@ const SligoMap = (props: any) => {
                         cursor: 'pointer'
                     }}
                     onClick={() => {
-                        // console.log('Recent Sites');
                         setSelectedType('recent');
                     }}
                 />
@@ -230,7 +227,6 @@ const SligoMap = (props: any) => {
                         cursor: 'pointer'
                     }}
                     onClick={() => {
-                        // console.log('Recent Sites');
                         setSelectedType('traditional');
                     }}
                 /> 
@@ -341,7 +337,6 @@ const SligoMap = (props: any) => {
 
                 <div>
                 {siteData.map((site, i) => {
-                    // console.log(site.title);
                     return (
                         site.siteType === selectedType ?
                         <Marker 

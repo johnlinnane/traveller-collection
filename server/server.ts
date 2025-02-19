@@ -374,18 +374,15 @@ app.get('/api/all-pend-items', async (req: Request, res: response) => {
 
 app.post('/api/create-item', async (req: Request, res: Response) => {
     try {
-        const item = new Item( req.body );
+        const { _id, ...data } = req.body;
+        const item = new Item(data);
         const request = await item.save();
-        
-        if(!request) {
-            throw new Error('Error creating item.');
-        }
         res.status(200).json({
             post:true,
             itemId:request._id
         })
     } catch (err) {
-        res.status(400).send(err);
+        console.error('Error saving item:', err);
     }
 })
 
@@ -510,7 +507,7 @@ app.post('/api/login', async (req: Request, res: Response) => {
             return res.json({isAuth:false, message:'Incorrect username or password'})
         };
         try {
-            const isMatch = data.comparePassword(req.body.password.requestId);
+            const isMatch = await data.comparePassword(req.body.password);
             if(!isMatch) {
                 return res.json({
                     isAuth:false,
@@ -534,26 +531,49 @@ app.post('/api/login', async (req: Request, res: Response) => {
 
 app.get('/api/logout', checkCookieMiddleware, async (req: Request, res: Response) => {
     try {
-        req.user.deleteToken(req.token);
-        res.send({logoutSuccess: true});
+        const user = await User.findByToken(req.token);
+        if (user) {
+            user.deleteToken(req.token);
+            res.clearCookie('tc_auth_cookie');
+            res.send({logoutSuccess: true});
+        }
     } catch (err) {
         res.status(400).send(err);
     }
 }) 
 
-app.get('/api/get-user-details', checkCookieMiddleware, async (req: Request, res: Response) => {
-    console.log('req: ', req);
-    try {
+app.get('/api/get-user-auth', checkCookieMiddleware, async (req: Request, res: Response) => {
+    if (req.success) {
         res.json({
             isAuth:true,
-            id:req.userData._id,
-            email:req.userData.email,
-            name:req.userData.name,
-            lastname:req.userData.lastname
+            token:req.token
         })
-    } catch (err) {
+    } else {
+        res.json({
+            isAuth:false,
+            // res.status(400).send(err);
+        })
+    }
+})
+
+app.post('/api/get-user-details', checkCookieMiddleware, async (req: Request, res: Response) => {
+    if (typeof req.body.id === 'string') {
+        // const data = await User.findOne({'token':req.body.token});
+        const data = await User.findById(req.body.id);
+        try {
+            res.json({
+                email:data.email,
+                name:data.name,
+                lastname:data.lastname
+            })
+        } catch (err) {
+            res.status(400).send(err);
+        }
+    } else {
         res.status(400).send(err);
     }
+    
+
 })
 
 app.get('/api/user-items', async (req: Request, res: Response) => {

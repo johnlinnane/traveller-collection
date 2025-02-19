@@ -1,8 +1,33 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { connect, useDispatch } from 'react-redux';
+import { AppDispatch } from '../../../../src/index';
+import { getUserDetails } from '../../../../src/slices/userSlice';
 
 const User = props => {
-    let user = props.user.login;
+
+    const dispatch = useDispatch<AppDispatch>();
+
+    interface User {
+        name: string | null;
+        lastname: string | null;
+        email: string | null;
+    }
+
+    const [user, setUser] = useState<User>(null);
+
+    useEffect(() => {
+        const id = props.user?.login?.id;
+        if (id) {
+            dispatch(getUserDetails(id))
+        }
+    }, [props.user?.login]);
+
+    useEffect(() => {
+        if (typeof props.user?.details?.email === 'string') {
+            setUser(props.user.details);
+        }
+    }, [props.user?.details]);
 
     return (
         <div className="user_container">
@@ -28,4 +53,11 @@ const User = props => {
     )
 };
 
-export default User;  
+function mapStateToProps(state) {
+    return {
+        details:state.details,
+        login:state.login
+    }
+}
+
+export default connect(mapStateToProps)(User)

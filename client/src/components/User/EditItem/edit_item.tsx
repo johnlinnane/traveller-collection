@@ -74,7 +74,6 @@ const EditItem = props => {
     const [getParentCalled, setGetParentCalled] = useState(false);
     const [creatingItem, setCreatingItem] = useState<boolean>(false);
 
-    
     useEffect(() => {
         if (typeof params.id === 'string' || params.id === 'new') {
             setFormdata(prevFormData => ({
@@ -83,7 +82,6 @@ const EditItem = props => {
             }));
         } 
     }, [params?.id]);
-    
     
     useEffect(() => {
         if (typeof formdata._id !== 'string') {
@@ -226,8 +224,6 @@ const EditItem = props => {
     
         const userIsLoggedIn = props.user?.login?.isAuth && typeof props.user.login.id === 'string';
 
-        if (props.user) { console.log('props.user: ', props.user)};
-    
         const updatedFormData = {
             ...formdata,
             ownerId: userIsLoggedIn ? props.user.login.id : 'guest',

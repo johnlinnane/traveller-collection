@@ -11,20 +11,12 @@ let checkCookieMiddleware = async (req: any, res: Response, next: NextFunction) 
                     error:true
                 });
             }
-            req.userData = {
-                id: user._id,
-                email: user.email,
-                name: user.name,
-                lastname: user.lastname
-            }
+            req.token = user.token;
+            req.success = true;
         } catch (err) {
             res.status(400).send(err);
         }
-    } else {
-        return res.json({
-            error:true
-        });
-    }
+    } 
     return next();
 }
 

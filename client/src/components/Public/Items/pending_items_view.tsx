@@ -60,12 +60,7 @@ const PendingItemsView: React.FC = (props: any) => {
             dispatch(deletePendItem(itemId));
             deleteAllMedia(itemId);
         }
-        let tempItems = items;
-        let index = tempItems.findIndex(p => p._id === itemId)
-        if (index > -1) {
-            tempItems.splice(index, 1);
-        }
-        setItems(tempItems);
+        setItems((prevItems) => prevItems.filter((item) => item._id !== itemId));
     }
 
     return (
