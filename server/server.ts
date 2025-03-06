@@ -576,9 +576,14 @@ app.post('/api/get-user-details', checkCookieMiddleware, async (req: Request, re
 
 })
 
-app.get('/api/user-items', async (req: Request, res: Response) => {
+app.post('/api/user-items', async (req: Request, res: Response) => {
     try {
-        const data = await Item.find({ownerId:req.query.user}).exec();
+        const user = await User.findByToken(req.body.token);
+        if (!user) {
+            return res.status(404).json({ message: 'No user found' });
+        }
+
+        const data = await Item.find({ownerId:user.id}).exec();
         if(!data) {
             throw new Error('Not found');
         }

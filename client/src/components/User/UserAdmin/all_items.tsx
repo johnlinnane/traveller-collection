@@ -11,7 +11,7 @@ const AllItems = props => {
     const { dispatch } = props;
 
     useEffect(() => {
-        if (props.user?.login?.id) {
+        if (props.user?.login?.token && typeof props.user?.login?.token === 'string') {
             dispatch(getAllItems())
         }
     }, [props.user?.login?.id, dispatch]);

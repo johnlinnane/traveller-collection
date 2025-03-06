@@ -90,8 +90,8 @@ export const getUserDetails = createAsyncThunk(
 
 export const getUserItems = createAsyncThunk(
     'user/getUserItems', 
-    async (userId: string | number) => {
-        const request = axios.get(`${API_PREFIX}/user-items?user=${userId}`)
+    async (token: string) => {
+        const request = axios.post(`${API_PREFIX}/user-items`, { token: token})
             .then(response => response.data);
         return request;
     }

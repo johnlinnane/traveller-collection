@@ -11,8 +11,8 @@ const UserItems = props => {
     const { dispatch } = props;
 
     useEffect(() => {
-        if (props.user?.login?.id) {
-            dispatch(getUserItems(props.user.login.id))
+        if (props.user?.login?.token && typeof props.user?.login?.token === 'string') {
+            dispatch(getUserItems(props.user.login.token))
         }
     }, [props.user?.login?.id, dispatch]);
 
