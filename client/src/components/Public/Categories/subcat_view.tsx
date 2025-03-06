@@ -80,7 +80,14 @@ const SubcatView: React.FC = (props: any) => {
     }, [props.subcatitems]);
 
     const addItemHandler = () => {
-        navigate(`/edit-item/new`);
+        let paramString = '';
+        if (props.catinfo?._id && typeof props.catinfo._id === 'string') {
+            paramString = `/${props.catinfo._id}`;
+            if (props.subcat[0]?._id && typeof props.subcat[0]?._id === 'string') {
+                paramString += `/${props.subcat[0]._id}`;
+            }
+        }
+        navigate(`/create-item${paramString}`);
     }
 
     const renderAddItem = (isPartOfGrid) => (

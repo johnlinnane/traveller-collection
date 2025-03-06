@@ -54,6 +54,7 @@ const itemsSlice = createSlice({
                 state.items = action.payload.items;
                 state.nextitem = action.payload.nextitem;
                 state.previtem = action.payload.previtem;
+                state.newitem = action.payload.newitem;
 
             })
             .addCase(createItem.fulfilled, (state, action: PayloadAction<Item>) => {
@@ -174,7 +175,8 @@ export const clearItemFromState = createAsyncThunk(
             items: null,
             nextitem: null,
             previtem: null,
-            parentpdf: null
+            parentpdf: null,
+            newitem: null
         };
     }
 );

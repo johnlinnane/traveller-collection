@@ -112,4 +112,11 @@ const itemSchema = new mongoose.Schema({
 
 const Item = mongoose.model('Item', itemSchema);
 
-module.exports = { Item }
+const newItemSchema = new mongoose.Schema({
+    category_ref: [String],
+    subcategory_ref: [String]
+}, { timestamps: true, strict: false });
+
+const NewItem = mongoose.model('NewItem', newItemSchema);
+
+module.exports = { Item, NewItem }

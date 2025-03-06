@@ -11,6 +11,7 @@ import MainMap from './components/Public/MainMap';
 import Info from './components/Public/Info/info';
 import Login from './components/Public/Login/login';
 import SligoMap from './components/Public/SligoMap';
+import CreateItem from './components/User/EditItem/create_item';
 
 // CONTAINERS ETC.
 import Layout from './components/HOCs/layout';
@@ -50,10 +51,10 @@ const URLRoutes = () => {
                 <Route path="/info" element={<AuthContainer Component={Info} redirectTo={null} />} />
                 <Route path="/login" element={<AuthContainer Component={Login} redirectTo={'user'} />} /> 
 
-                {/* DOESN'T SHOW IF USER IS LOGGED IN */}
                 <Route path="/edit-item/:id" element={<AuthContainer Component={EditItem} redirectTo={null} />} />
                 <Route path="/edit-item-sel/:id" element={<AuthContainer Component={EditItemSel} redirectTo={null} />} />
                 <Route path="/edit-item-file/:id" element={<AuthContainer Component={EditItemFile} redirectTo={null} />} />
+                <Route path="/create-item/:c?/:s?" element={<AuthContainer Component={CreateItem} redirectTo={null} />} />
 
                 {/* WHEN LOGGED IN */}
                 <Route path="/user/logout" element={<AuthContainer Component={Logout} redirectTo={'login'} />} />

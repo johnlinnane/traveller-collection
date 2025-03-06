@@ -38,7 +38,7 @@ const SidenavItems: React.FC<any> = ( {user, onHideNav}: any) => {
         {   type:'navItem',
             icon:'fa-solid fa-plus',
             text:'Add Item',
-            link:'/edit-item/new',
+            link:'/create-item',
             authOnly:false
         },
         {   type:'navItem',

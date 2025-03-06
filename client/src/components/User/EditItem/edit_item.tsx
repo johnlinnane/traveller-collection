@@ -7,7 +7,7 @@ import "leaflet/dist/leaflet.css";
 import markerIconPng from "leaflet/dist/images/marker-icon.png";
 import { Icon } from 'leaflet'
 
-import { getItemById, updateItem, clearItemFromState, deleteItem, createItem, getParentPdf, deleteChapter, getFilesFolder } from '../../../../src/slices/itemsSlice';
+import { getItemById, updateItem, deleteItem, clearItemFromState, getParentPdf, deleteChapter, getFilesFolder } from '../../../../src/slices/itemsSlice';
 import config from "../../../config";
 import { Item } from '../../../types';
 import { AppDispatch } from '../../../../src/index';
@@ -72,51 +72,22 @@ const EditItem = props => {
     });
     const [saved, setSaved] = useState(false);
     const [getParentCalled, setGetParentCalled] = useState(false);
-    const [creatingItem, setCreatingItem] = useState<boolean>(false);
-
-    useEffect(() => {
-        if (typeof params.id === 'string' || params.id === 'new') {
-            setFormdata(prevFormData => ({
-                ...prevFormData,
-                _id: params.id
-            }));
-        } 
-    }, [params?.id]);
-    
-    useEffect(() => {
-        if (typeof formdata._id !== 'string') {
-            navigate('/');
-        } else if (formdata._id === 'new') {
-            showConfirmationDialog();
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [formdata._id]);
 
 
     useEffect(() => {
-        if (typeof props.items?.newitem?.itemId === 'string' && creatingItem === true) {
-            setCreatingItem(false);
-            setFormdata(prevFormData => ({
-                ...prevFormData,
-                _id: props.items.newitem.itemId
-            }));
-            reloadEditPage(props.items.newitem.itemId);
-        } // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [props.items.newitem, creatingItem]);
-
-
-    useEffect(() => {
-        if (typeof formdata._id === 'string' && formdata._id.length && formdata._id !== 'new') {
-            dispatch(getItemById(formdata._id));
+        if (typeof params.id === 'string' && params.id.length) {
+            dispatch(getItemById(params.id));
             document.title = `Edit Item - ${config.defaultTitle}`;
-            dispatch(getFilesFolder({folder: `/items/${formdata._id}/original`}));
+            dispatch(getFilesFolder({folder: `/items/${params.id}/original`}));
         }
+    }, [params]);
+
+    useEffect(() => {
         return () => {
             dispatch(clearItemFromState());
             document.title = config.defaultTitle;
         } // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [formdata._id]);
-
+    }, []);
     
     useEffect(() => {
         if (props.items.item) {
@@ -210,42 +181,97 @@ const EditItem = props => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.items?.item]);
 
+    useEffect(() => {
+        if (props.items.item) {
+            let item = props.items.item;
+            let newFormdata: Item = {
+                ...formdata,
+                _id:item._id,
+                title:item.title,
+                creator:item.creator,
+                description:item.description,
+                pages:item.pages,
+                source:item.source,
+                subject: item.subject,
+                date_created: item.date_created,
+                tags: item.tags,
+                contributor: item.contributor,
+                item_format: item.item_format,
+                materials: item.materials,
+                physical_dimensions: item.physical_dimensions,
+                editor: item.editor,
+                publisher: item.publisher,
+                further_info: item.further_info,
+                language: item.language,
+                reference: item.reference,
+                rights: item.rights,
+                category_ref: item.category_ref,
+                subcategory_ref: item.subcategory_ref,
+                location: item.location,
+                is_pdf_chapter: item.is_pdf_chapter,
+                pdf_item_parent_id: item.pdf_item_parent_id,
+                shareDisabled: item.shareDisabled,
+                isPending: item.isPending
+            }
+            let newLatLng = initMap;
 
-    const showConfirmationDialog = () => {
-        if (window.confirm('Would you like to add a new item to this collection?')) {
-            handleCreateItem();
-        } else {
-            goBackToPreviousPage();
+            if (item.external_link && item.external_link.length) {
+                if (item.external_link[0].url || item.external_link[0].text) {
+                    newFormdata = {
+                        ...newFormdata,
+                        external_link: [
+                            {
+                                url: item.external_link[0].url,
+                                text: item.external_link[0].text
+                            }
+                        ]
+                    }
+                }
+            } 
+
+            if (item.geo) {
+                if (item.geo.address || item.geo.latitude || item.geo.longitude ) {
+                    newFormdata = {
+                        ...newFormdata,
+                        geo: {
+                            address: item.geo.address,
+                            latitude: item.geo.latitude,
+                            longitude: item.geo.longitude
+                        }
+                    }
+                }
+            }
+
+            if (item.geo && item.geo.latitude && item.geo.longitude) {
+                newLatLng = {
+                    initLat: item.geo.latitude,
+                    initLong: item.geo.longitude,
+                    initZoom: 6.5
+                }
+            }
+
+            if (item.pdf_item_pages) {
+                newFormdata = {
+                    ...newFormdata,
+                    pdf_item_pages: {
+                        start: item.pdf_item_pages.start || formdata.pdf_item_pages?.start,
+                        end: item.pdf_item_pages.end || formdata.pdf_item_pages?.end
+                    }
+                }
+            }
+            
+            setFormdata(newFormdata);
+            setInitMap(newLatLng);
+            
+            if (props.items.item.is_pdf_chapter ) {
+                if (!getParentCalled) {
+                    dispatch(getParentPdf(props.items.item.pdf_item_parent_id))
+                }
+                setGetParentCalled(true);
+            }
         }
-    };
-
-    const handleCreateItem = () => {
-        setCreatingItem(true);
-    
-        const userIsLoggedIn = props.user?.login?.isAuth && typeof props.user.login.id === 'string';
-
-        const updatedFormData = {
-            ...formdata,
-            ownerId: userIsLoggedIn ? props.user.login.id : 'guest',
-            isPending: userIsLoggedIn ? false : true,
-        };
-    
-        setFormdata(updatedFormData);
-    
-        try {
-            dispatch(createItem(updatedFormData));
-        } catch (error) {
-            console.error('Error creating item:', error);
-        }
-    };
-
-    const goBackToPreviousPage = () => {
-        navigate(-1);
-    };
-
-    const reloadEditPage = (itemId: string) => {
-        navigate(`/edit-item/${itemId}`);
-    };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [props.items?.item]);
 
 
     const handleInput = <T extends HTMLInputElement | HTMLTextAreaElement>(
