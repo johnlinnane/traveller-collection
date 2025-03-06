@@ -37,6 +37,12 @@ const AllItems = props => {
         : null
     )
 
+    const showNumberOfItems = items => (
+        items.items?.length ?
+            <span>({items.items.length})</span>
+        : null
+    )
+
     return loading ? (
         <div className="form_input">
             <div><br />Loading...</div>
@@ -44,7 +50,7 @@ const AllItems = props => {
     ) : (
         props.items && (
             <div className="user_posts">
-                <h4>All Items</h4>
+                <h4>All Items {showNumberOfItems(props.items)}</h4>
                 <table className="item_list">
                     <thead>
                         <tr>
