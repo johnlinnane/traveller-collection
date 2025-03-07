@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import ItemList from './item_list';
 import { getAllItems } from '../../../../src/slices/itemsSlice';
 
 const AllItems = props => {
@@ -22,47 +23,13 @@ const AllItems = props => {
         };
     }, [props.items?.items]);
 
-    const showAllItems = items => (
-        items.items ?
-            items.items.map(item => (
-                <tr key={item._id}> 
-                    <td>
-                        <Link to={`/edit-item/${item._id}`}>
-                            {item.title}
-                        </Link>
-                    </td>
-                    <td>{item.creator}</td>
-                </tr>
-            ))
-        : null
-    )
-
-    const showNumberOfItems = items => (
-        items.items?.length ?
-            <span>({items.items.length})</span>
-        : null
-    )
-
     return loading ? (
         <div className="form_input">
             <div><br />Loading...</div>
         </div>
     ) : (
-        props.items && (
-            <div className="user_posts">
-                <h4>All Items {showNumberOfItems(props.items)}</h4>
-                <table className="item_list">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Creator</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {showAllItems(props.items)}
-                    </tbody>
-                </table>
-            </div>
+        props.items?.items?.length && (
+            <ItemList items={props.items.items}/>
         )
     );
 }
