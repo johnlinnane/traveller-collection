@@ -75,6 +75,7 @@ const EditItem = props => {
 
 
     useEffect(() => {
+        console.log('useEffect 1');
         if (typeof params.id === 'string' && params.id.length) {
             dispatch(getItemById(params.id));
             document.title = `Edit Item - ${config.defaultTitle}`;
@@ -83,7 +84,9 @@ const EditItem = props => {
     }, [params]);
 
     useEffect(() => {
+        console.log('useEffect 2');
         return () => {
+            console.log('useEffect 2 unmount');
             dispatch(clearItemFromState());
             document.title = config.defaultTitle;
         } // eslint-disable-next-line react-hooks/exhaustive-deps

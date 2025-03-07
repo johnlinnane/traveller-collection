@@ -95,16 +95,18 @@ const CreateItem = props => {
     };
 
     return (
-        <div className="form_input item_form_input edit_page">
+        <div className="form_input">
             <h1>This will create a new item.</h1>
             <button 
                 type="button" 
+                style={{ margin: '3px' }}
                 onClick={() => {handleCreateItem()}}
             >
                 Create New Item
             </button>
             <button 
                 type="button" 
+                style={{ margin: '3px' }}
                 onClick={() => {navigate(-1)}}
             >
                 Cancel
