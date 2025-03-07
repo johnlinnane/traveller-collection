@@ -17,7 +17,7 @@ const FS_PREFIX = process.env.REACT_APP_FILE_SERVER_PREFIX;
 
 
 const EditItem = props => {
-
+    
     const dispatch = useDispatch<AppDispatch>();
 
     const params = useParams();
@@ -60,7 +60,6 @@ const EditItem = props => {
     };
       
     const [formdata, setFormdata] = useState<Item>(initialFormState);
-
     const [initMap, setInitMap] = useState({
         initLat: 53.342609,
         initLong: -7.603976,
@@ -69,6 +68,9 @@ const EditItem = props => {
     const [saved, setSaved] = useState(false);
     const [getParentCalled, setGetParentCalled] = useState(false);
 
+    useEffect(() => {
+        setFormdata(initialFormState);
+    }, []);
 
     useEffect(() => {
         if (params.id) {
@@ -77,7 +79,6 @@ const EditItem = props => {
             dispatch(getFilesFolder({folder: `/items/${params.id}/original`}));
         }
     }, [params.id]);
-
 
     useEffect(() => {
         return () => {
@@ -116,65 +117,50 @@ const EditItem = props => {
                 is_pdf_chapter: item.is_pdf_chapter,
                 pdf_item_parent_id: item.pdf_item_parent_id,
                 shareDisabled: item.shareDisabled,
-                isPending: item.isPending
-            }
-            let newLatLng = initMap;
-
-            if (item.external_link?.[0].url || item.external_link?.[0].text) {
-                newFormdata = {
-                    ...newFormdata,
-                    external_link: [
-                        {
-                            url: item.external_link?.[0]?.url || '',
-                            text: item.external_link?.[0]?.text || ''
-                        }
-                    ]
-                }
-            }
-
-            if (item.geo) {
-                if (item.geo.address || item.geo.latitude || item.geo.longitude ) {
-                    newFormdata = {
-                        ...newFormdata,
-                        geo: {
-                            address: item.geo.address,
-                            latitude: item.geo.latitude,
-                            longitude: item.geo.longitude
-                        }
+                isPending: item.isPending,
+                external_link: [
+                    {
+                        url: item.external_link?.[0]?.url || '',
+                        text: item.external_link?.[0]?.text || ''
                     }
-                }
-            }
-
-            if (item.geo && item.geo.latitude && item.geo.longitude) {
-                newLatLng = {
-                    initLat: item.geo.latitude,
-                    initLong: item.geo.longitude,
-                    initZoom: 6.5
-                }
-            }
-
-            if (item.pdf_item_pages) {
-                newFormdata = {
-                    ...newFormdata,
-                    pdf_item_pages: {
-                        start: item.pdf_item_pages.start || formdata.pdf_item_pages?.start,
-                        end: item.pdf_item_pages.end || formdata.pdf_item_pages?.end
-                    }
+                ],
+                geo: {
+                    address: item.geo?.address || '',
+                    latitude: item.geo?.latitude || null,
+                    longitude: item.geo?.longitude || null
+                },
+                pdf_item_pages: {
+                    start: item.pdf_item_pages.start || null,
+                    end: item.pdf_item_pages.end || null
                 }
             }
             
             setFormdata(newFormdata);
-            setInitMap(newLatLng);
-            
-            if (props.items.item.is_pdf_chapter ) {
-                if (!getParentCalled) {
-                    dispatch(getParentPdf(props.items.item.pdf_item_parent_id))
-                }
-                setGetParentCalled(true);
+        } // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [props.items?.item]);
+
+    useEffect(() => {
+        let item = props.items?.item;
+        let newLatLng = initMap;
+        if (item?.geo?.latitude && item?.geo?.longitude) {
+            newLatLng = {
+                initLat: item.geo.latitude,
+                initLong: item.geo.longitude,
+                initZoom: 6.5
             }
         }
+        setInitMap(newLatLng);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [props.items?.item]);
+    }, [props.items?.item?.geo]);
+
+    useEffect(() => {
+        if (props.items.item.is_pdf_chapter ) {
+            if (!getParentCalled) {
+                dispatch(getParentPdf(props.items.item.pdf_item_parent_id))
+            }
+            setGetParentCalled(true);
+        } // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [props.items?.item?.is_pdf_chapter]);
 
 
     const handleInput = <T extends HTMLInputElement | HTMLTextAreaElement>(
