@@ -23,7 +23,7 @@ const EditItem = props => {
     const params = useParams();
     const navigate = useNavigate();
 
-    const [formdata, setFormdata] = useState<Item>({
+    const initialFormState: Item = {
         _id: '',
         title: '',
         creator: '',
@@ -42,29 +42,25 @@ const EditItem = props => {
         language: '',
         reference: '',
         rights: '',
-        external_link: [
-            {
-                url: '',
-                text: ''
-            }
-        ],
+        external_link: [{ url: '', text: '' }],
         geo: {
             address: '',
             latitude: null,
             longitude: null
         },
         location: '',
-
         is_pdf_chapter: null,
         pdf_item_pages: {
             start: null,
             end: null
         },
         pdf_item_parent_id: '',
-
         shareDisabled: false,
         isPending: null
-    });
+    };
+      
+    const [formdata, setFormdata] = useState<Item>(initialFormState);
+
     const [initMap, setInitMap] = useState({
         initLat: 53.342609,
         initLong: -7.603976,
@@ -75,18 +71,16 @@ const EditItem = props => {
 
 
     useEffect(() => {
-        console.log('useEffect 1');
-        if (typeof params.id === 'string' && params.id.length) {
+        if (params.id) {
             dispatch(getItemById(params.id));
             document.title = `Edit Item - ${config.defaultTitle}`;
             dispatch(getFilesFolder({folder: `/items/${params.id}/original`}));
         }
-    }, [params]);
+    }, [params.id]);
+
 
     useEffect(() => {
-        console.log('useEffect 2');
         return () => {
-            console.log('useEffect 2 unmount');
             dispatch(clearItemFromState());
             document.title = config.defaultTitle;
         } // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -98,7 +92,7 @@ const EditItem = props => {
             let newFormdata: Item = {
                 ...formdata,
                 _id:item._id,
-                title:item.title,
+                title:item.title,   
                 creator:item.creator,
                 description:item.description,
                 pages:item.pages,
@@ -126,111 +120,17 @@ const EditItem = props => {
             }
             let newLatLng = initMap;
 
-            if (item.external_link && item.external_link.length) {
-                if (item.external_link[0].url || item.external_link[0].text) {
-                    newFormdata = {
-                        ...newFormdata,
-                        external_link: [
-                            {
-                                url: item.external_link[0].url,
-                                text: item.external_link[0].text
-                            }
-                        ]
-                    }
-                }
-            } 
-
-            if (item.geo) {
-                if (item.geo.address || item.geo.latitude || item.geo.longitude ) {
-                    newFormdata = {
-                        ...newFormdata,
-                        geo: {
-                            address: item.geo.address,
-                            latitude: item.geo.latitude,
-                            longitude: item.geo.longitude
-                        }
-                    }
-                }
-            }
-
-            if (item.geo && item.geo.latitude && item.geo.longitude) {
-                newLatLng = {
-                    initLat: item.geo.latitude,
-                    initLong: item.geo.longitude,
-                    initZoom: 6.5
-                }
-            }
-
-            if (item.pdf_item_pages) {
+            if (item.external_link?.[0].url || item.external_link?.[0].text) {
                 newFormdata = {
                     ...newFormdata,
-                    pdf_item_pages: {
-                        start: item.pdf_item_pages.start || formdata.pdf_item_pages?.start,
-                        end: item.pdf_item_pages.end || formdata.pdf_item_pages?.end
-                    }
+                    external_link: [
+                        {
+                            url: item.external_link?.[0]?.url || '',
+                            text: item.external_link?.[0]?.text || ''
+                        }
+                    ]
                 }
             }
-            
-            setFormdata(newFormdata);
-            setInitMap(newLatLng);
-            
-            if (props.items.item.is_pdf_chapter ) {
-                if (!getParentCalled) {
-                    dispatch(getParentPdf(props.items.item.pdf_item_parent_id))
-                }
-                setGetParentCalled(true);
-            }
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [props.items?.item]);
-
-    useEffect(() => {
-        if (props.items.item) {
-            let item = props.items.item;
-            let newFormdata: Item = {
-                ...formdata,
-                _id:item._id,
-                title:item.title,
-                creator:item.creator,
-                description:item.description,
-                pages:item.pages,
-                source:item.source,
-                subject: item.subject,
-                date_created: item.date_created,
-                tags: item.tags,
-                contributor: item.contributor,
-                item_format: item.item_format,
-                materials: item.materials,
-                physical_dimensions: item.physical_dimensions,
-                editor: item.editor,
-                publisher: item.publisher,
-                further_info: item.further_info,
-                language: item.language,
-                reference: item.reference,
-                rights: item.rights,
-                category_ref: item.category_ref,
-                subcategory_ref: item.subcategory_ref,
-                location: item.location,
-                is_pdf_chapter: item.is_pdf_chapter,
-                pdf_item_parent_id: item.pdf_item_parent_id,
-                shareDisabled: item.shareDisabled,
-                isPending: item.isPending
-            }
-            let newLatLng = initMap;
-
-            if (item.external_link && item.external_link.length) {
-                if (item.external_link[0].url || item.external_link[0].text) {
-                    newFormdata = {
-                        ...newFormdata,
-                        external_link: [
-                            {
-                                url: item.external_link[0].url,
-                                text: item.external_link[0].text
-                            }
-                        ]
-                    }
-                }
-            } 
 
             if (item.geo) {
                 if (item.geo.address || item.geo.latitude || item.geo.longitude ) {
