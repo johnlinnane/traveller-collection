@@ -244,9 +244,6 @@ const EditItem = props => {
             .then(res => {
                 alert('Media deleted successfully')
             })
-            .catch(err => { 
-                alert('No media deleted')
-            });
     }
 
     const deleteThisItem = () => {
