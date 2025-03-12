@@ -130,8 +130,8 @@ const EditItem = props => {
                     longitude: item.geo?.longitude || null
                 },
                 pdf_item_pages: {
-                    start: item.pdf_item_pages.start || null,
-                    end: item.pdf_item_pages.end || null
+                    start: item.pdf_item_pages?.start || null,
+                    end: item.pdf_item_pages?.end || null
                 }
             }
             
@@ -154,7 +154,7 @@ const EditItem = props => {
     }, [props.items?.item?.geo]);
 
     useEffect(() => {
-        if (props.items.item.is_pdf_chapter ) {
+        if (props.items?.item?.is_pdf_chapter ) {
             if (!getParentCalled) {
                 dispatch(getParentPdf(props.items.item.pdf_item_parent_id))
             }
