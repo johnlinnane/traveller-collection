@@ -14,6 +14,17 @@ interface PendingItemProps {
     handleChoicePass: (itemId: string, choice: 'accept' | 'reject') => void;
 }
 
+function formatDate(isoString) {
+    const date = new Date(isoString);
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const dayOfMonth = date.getDate();
+    const month = date.toLocaleString('default', { month: 'long' });
+    const year = date.getFullYear();
+    const time = `${hours}:${minutes < 10 ? '0' + minutes : minutes}`;
+    return `${dayOfMonth} ${month} ${year} at ${time}`;
+}
+
 const PendingItem: React.FC<PendingItemProps> = (props: any) => {
     return (
         <div className="p_item_card">
@@ -24,11 +35,12 @@ const PendingItem: React.FC<PendingItemProps> = (props: any) => {
             </div>
             <div className="p_item_text">
                 <Link to={`/items/${props.item._id}`} target="_blank">
-                    <b>Title:</b> {props.item.title ? props.item.title : '<NO TITLE>'}<br />
+                    <b>Title:</b> {props.item.title ? props.item.title : '[NO TITLE]'}<br />
                 </Link>
-                {props.item.creator && (<p><b>Creator:</b> {props.item.creator}</p>)}
+                {props.item?.creator && (<p><b>Creator:</b> {props.item.creator}</p>)}
                 {props.catTitle && (<p><b>Category:</b> {props.catTitle}</p>)}
                 {props.subcatTitle && (<p><b>Subcategory:</b> {props.subcatTitle}</p>)}
+                {props.item?.createdAt && (<p><b>Created:</b> {formatDate(props.item?.createdAt)}</p>)}
 
             </div>
             <div className="p_item_accept">
